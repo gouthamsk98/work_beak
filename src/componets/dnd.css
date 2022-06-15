@@ -1,0 +1,366 @@
+.dndflow {
+  flex-direction: row;
+  display: flex;
+  height: 100%;
+}
+
+.dndflow aside {
+  /* border-right: 1px solid #eee;
+  padding: 15px 0px;
+  font-size: 12px; */
+}
+
+.dndflow aside .description {
+  margin-bottom: 20px;
+}
+
+/* .react-flow__pane{
+    left:30%;
+  }
+  aside{
+    margin-right:90%;
+  } */
+
+.dndnode_beeper {
+  background-image: url("/src/Assets/beeper.png");
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: contain;
+  height: 12vh;
+  width: 11vw;
+  margin-bottom: 20px;
+  transform: scale(1);
+}
+.dndnode_capasitor100 {
+  background-image: url("/src/Assets/capasitor100.png");
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: contain;
+  height: 12vh;
+  width: 11vw;
+  margin-bottom: 20px;
+  transform: scale(1);
+}
+.dndnode_capasitor1000 {
+  background-image: url("/src/Assets/capasitor1000.png");
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: contain;
+  height: 12vh;
+  width: 11vw;
+  margin-bottom: 20px;
+  transform: scale(1);
+}
+.dndnode_diode {
+  background-image: url("/src/Assets/diode.png");
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: contain;
+  height: 12vh;
+  width: 11vw;
+  margin-bottom: 20px;
+  transform: scale(1);
+}
+.dndnode_dip {
+  background-image: url("/src/Assets/dip.png");
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: contain;
+  height: 12vh;
+  width: 11vw;
+  margin-bottom: 20px;
+  transform: scale(1);
+}
+.dndnode_junction {
+  background-image: url("/src/Assets/junction.png");
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: contain;
+  height: 12vh;
+  width: 11vw;
+  margin-bottom: 20px;
+  transform: scale(1);
+}
+.dndnode_ldr {
+  background-image: url("/src/Assets/ldr.png");
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: contain;
+  height: 12vh;
+  width: 11vw;
+  margin-bottom: 20px;
+  transform: scale(1);
+}
+.dndnode_led {
+  background-image: url("/src/Assets/led.png");
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: contain;
+  height: 12vh;
+  width: 11vw;
+  margin-bottom: 20px;
+  transform: scale(1);
+}
+.dndnode_pot {
+  background-image: url("/src/Assets/pot.png");
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: contain;
+  height: 12vh;
+  width: 11vw;
+  margin-bottom: 20px;
+  transform: scale(1);
+}
+.dndnode_power {
+  background-image: url("/src/Assets/Power.png");
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: contain;
+  height: 12vh;
+  width: 11vw;
+  margin-bottom: 20px;
+  transform: scale(1);
+}
+.dndnode_res_100 {
+  background-image: url("/src/Assets/ldr.png");
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: contain;
+  height: 12vh;
+  width: 11vw;
+  margin-bottom: 20px;
+  transform: scale(1);
+}
+.dndnode_res_250 {
+  background-image: url("/src/Assets/ldr.png");
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: contain;
+  height: 12vh;
+  width: 11vw;
+  margin-bottom: 20px;
+  transform: scale(1);
+}
+.dndnode_tact {
+  background-image: url("/src/Assets/ldr.png");
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: contain;
+  height: 12vh;
+  width: 11vw;
+  margin-bottom: 20px;
+  transform: scale(1);
+}
+.dndnode_timer_ic {
+  background-image: url("/src/Assets/ldr.png");
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: contain;
+  height: 12vh;
+  width: 11vw;
+  margin-bottom: 20px;
+  transform: scale(1);
+}
+.dndnode_transistor {
+  background-image: url("/src/Assets/ldr.png");
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: contain;
+  height: 12vh;
+  width: 11vw;
+  margin-bottom: 20px;
+  transform: scale(1);
+}
+/* .dndflow .dndnode {
+    height: 20px;
+    padding: 4px;
+    border: 1px solid #1a192b;
+    border-radius: 2px;
+    margin-bottom: 20px;
+    display: flex;
+    background-image: url("learn_flow_if.png");
+    justify-content: center;
+    align-items: center;
+    cursor: grab;
+  } */
+/*
+  .dndnode{
+    background-image: url("learn_flow_if.png");
+    height: 20px;
+    width: 20px;
+  
+  
+  } */
+/* .dndflow .dndnode.input {
+    border-color: #0041d0;
+    background-image: url("start.png");
+  }
+  
+  .dndflow .dndnode.output {
+    border-color: #ff0072;
+    background-image: url('start.png');
+  } */
+
+.dndflow .reactflow-wrapper {
+  flex-grow: 1;
+  height: 100%;
+}
+/* gskedit */
+.react-flow-screen {
+  height: 88.3vh;
+  width: inherit;
+}
+.reactflow-wrapper {
+  padding: 0;
+}
+
+/* gsk code end */
+
+/* @media screen and (min-width: 768px) {
+  .dndflow {
+    flex-direction: row;
+  }
+
+  .dndflow aside {
+    width: 20%;
+    max-width: 145px;
+  }
+} */
+
+.MuiSwitch-root {
+  transform: rotate(90deg);
+}
+
+.react-flow__node {
+  border: none !important;
+  box-shadow: none !important;
+}
+
+/* .react-flow__handle-bottom{
+    position: relative !important;
+    right: 50px !important;
+  } */
+
+.react-flow__node-default.selected {
+  box-shadow: none !important;
+}
+.react-flow__node-default,
+.react-flow__node-input,
+.react-flow__node-output {
+  padding: 0 !important;
+  width: 1px !important;
+  height: 1px !important;
+}
+
+.react-flow__node-input {
+  padding: 0 !important;
+  width: 1px !important;
+  height: 1px !important;
+}
+
+.react-flow__node-default {
+  background: none !important;
+}
+
+.react-flow__handle {
+  background: #fc8469 !important;
+  left: 60px !important;
+}
+.react-flow__handle-bottom {
+  left: 60px !important;
+}
+.react-flow__handle-left,
+.react-flow__handle-right {
+  left: 114px !important;
+}
+/* .react-flow__handle-bottom {
+    display: none !important;
+    left:50;
+  } 
+   .react-flow__handle-top {
+    display: none !important;
+    top:50;
+  }  */
+
+.path.react-flow__edge-path {
+  stroke: red !important;
+
+  stroke-width: 3 !important;
+  /* stroke-linecap: round !important;
+    z-index: 100 !important;
+    cursor: pointer !important;*/
+}
+
+/* .react-flow__edge.animated path {
+    stroke-dasharray: 5 !important;
+    -webkit-animation: dashdraw .01s reverse infinite !important;
+    animation: dashdraw .02s reverse infinite !important;
+    z-index: 100 !important;
+  }  */
+.description {
+  position: relative;
+}
+.Image-render {
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: contain;
+  height: 42px;
+  width: 117px;
+  position: relative;
+  z-index: -4;
+  /* right: 14px; */
+}
+
+.Image-render > .span {
+  width: 50px;
+  height: 50px;
+  border-radius: 100px;
+  z-index: 55;
+  position: absolute;
+  top: 35px;
+  left: 65px;
+}
+
+.slider-mark {
+  position: relative !important;
+  top: -80px !important;
+  left: 10px !important;
+  width: 120px !important;
+}
+
+/* @media screen and (min-width: 1400px) {
+  .panelcloseImg {
+    left: 210% !important;
+  }
+}
+@media screen and (min-width: 1500px) {
+  .panelcloseImg {
+    left: 220% !important;
+  }
+}
+@media screen and (min-width: 1600px) {
+  .panelcloseImg {
+    left: 230% !important;
+  }
+}
+@media screen and (min-width: 1700px) {
+  .panelcloseImg {
+    left: 240% !important;
+  }
+}
+@media screen and (min-width: 1800px) {
+  .panelcloseImg {
+    left: 250% !important;
+  }
+}
+@media screen and (min-width: 1900px) {
+  .panelcloseImg {
+    left: 260% !important;
+  }
+} */
+.description {
+  width: 100%;
+  height: 87vh;
+  overflow: auto;
+  text-align: justify;
+}

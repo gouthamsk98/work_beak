@@ -6,10 +6,10 @@
 }
 
 .dndflow aside {
-  border-right: none;
-  padding: none;
+  border-right: 1px solid #eee;
+  padding: 15px 10px;
   font-size: 12px;
-  background: none;
+  background: #fcfcfc;
 }
 
 .dndflow aside .description {
@@ -27,6 +27,7 @@
   align-items: center;
   cursor: grab;
 }
+/* gsk begin */
 .dndnode_beeper {
   background-image: url("/src/Assets/beeper.png");
   background-position: center;
@@ -36,8 +37,6 @@
   width: 11vw;
   margin-bottom: 20px;
   transform: scale(2);
-  left: 3vw;
-  position: relative;
 }
 .dndnode_capasitor100 {
   background-image: url("/src/Assets/capasitor100.png");
@@ -48,8 +47,6 @@
   width: 11vw;
   margin-bottom: 20px;
   transform: scale(2);
-  left: 3vw;
-  position: relative;
 }
 .dndnode_capasitor1000 {
   background-image: url("/src/Assets/capasitor1000.png");
@@ -60,8 +57,6 @@
   width: 11vw;
   margin-bottom: 20px;
   transform: scale(2);
-  left: 3vw;
-  position: relative;
 }
 .dndnode_diode {
   background-image: url("/src/Assets/diode.png");
@@ -72,8 +67,6 @@
   width: 11vw;
   margin-bottom: 20px;
   transform: scale(2);
-  left: 3vw;
-  position: relative;
 }
 .dndnode_dip {
   background-image: url("/src/Assets/dip.png");
@@ -84,8 +77,6 @@
   width: 11vw;
   margin-bottom: 20px;
   transform: scale(2);
-  left: 3vw;
-  position: relative;
 }
 .dndnode_junction {
   background-image: url("/src/Assets/junction.png");
@@ -96,8 +87,6 @@
   width: 11vw;
   margin-bottom: 20px;
   transform: scale(2);
-  left: 3vw;
-  position: relative;
 }
 .dndnode_ldr {
   background-image: url("/src/Assets/ldr.png");
@@ -108,8 +97,6 @@
   width: 11vw;
   margin-bottom: 20px;
   transform: scale(2);
-  left: 3vw;
-  position: relative;
 }
 .dndnode_led {
   background-image: url("/src/Assets/led.png");
@@ -120,8 +107,6 @@
   width: 11vw;
   margin-bottom: 20px;
   transform: scale(2);
-  left: 3vw;
-  position: relative;
 }
 .dndnode_pot {
   background-image: url("/src/Assets/pot.png");
@@ -132,8 +117,6 @@
   width: 11vw;
   margin-bottom: 20px;
   transform: scale(2);
-  left: 3vw;
-  position: relative;
 }
 .dndnode_power {
   background-image: url("/src/Assets/Power.png");
@@ -144,11 +127,9 @@
   width: 11vw;
   margin-bottom: 20px;
   transform: scale(2);
-  left: 3vw;
-  position: relative;
 }
 .dndnode_res_100 {
-  background-image: url("/src/Assets/res_100_ohm.png");
+  background-image: url("/src/Assets/ldr.png");
   background-position: center;
   background-repeat: no-repeat;
   background-size: contain;
@@ -156,11 +137,9 @@
   width: 11vw;
   margin-bottom: 20px;
   transform: scale(2);
-  left: 3vw;
-  position: relative;
 }
 .dndnode_res_250 {
-  background-image: url("/src/Assets/res_250_ohm.png");
+  background-image: url("/src/Assets/ldr.png");
   background-position: center;
   background-repeat: no-repeat;
   background-size: contain;
@@ -168,11 +147,9 @@
   width: 11vw;
   margin-bottom: 20px;
   transform: scale(2);
-  left: 3vw;
-  position: relative;
 }
 .dndnode_tact {
-  background-image: url("/src/Assets/tact.png");
+  background-image: url("/src/Assets/ldr.png");
   background-position: center;
   background-repeat: no-repeat;
   background-size: contain;
@@ -180,11 +157,9 @@
   width: 11vw;
   margin-bottom: 20px;
   transform: scale(2);
-  left: 3vw;
-  position: relative;
 }
 .dndnode_timer_ic {
-  background-image: url("/src/Assets/timer_ic.png");
+  background-image: url("/src/Assets/ldr.png");
   background-position: center;
   background-repeat: no-repeat;
   background-size: contain;
@@ -192,11 +167,9 @@
   width: 11vw;
   margin-bottom: 20px;
   transform: scale(2);
-  left: 3vw;
-  position: relative;
 }
 .dndnode_transistor {
-  background-image: url("/src/Assets/transistor.png");
+  background-image: url("/src/Assets/ldr.png");
   background-position: center;
   background-repeat: no-repeat;
   background-size: contain;
@@ -204,9 +177,8 @@
   width: 11vw;
   margin-bottom: 20px;
   transform: scale(2);
-  left: 3vw;
-  position: relative;
 }
+/* gsk end */
 .dndflow .dndnode.input {
   border-color: #0041d0;
 }
@@ -227,12 +199,13 @@
 @media screen and (min-width: 768px) {
   .dndflow {
     flex-direction: row;
+    /* flowsize Increse dndflow for fullhd */
     height: 90vh;
   }
 
   .dndflow aside {
-    width: 23%;
-    /* max-width: 250px; */
+    width: 20%;
+    max-width: 250px;
   }
 }
 .Image-render {
@@ -244,23 +217,12 @@
   position: relative;
   z-index: -4;
   transform: scale(2);
+  /* right: 14px; */
 }
 .react-flow__node-default,
 .react-flow__node-input,
 .react-flow__node-output {
   padding: 0 !important;
-  background: none !important;
-  border: none !important;
-  width: 1px !important;
-  height: 1px !important;
-}
-.side {
-  width: 75%;
-  height: 87vh;
-  overflow-y: auto;
-  text-align: justify;
-  margin: 0px 5vw;
-}
-.react-flow__handle-top {
-  display: none;
+  width: 0 !important;
+  height: 0 !important;
 }

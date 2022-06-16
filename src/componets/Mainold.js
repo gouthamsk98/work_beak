@@ -1,29 +1,32 @@
-import React, { useState, useRef, useCallback } from "react";
+import React, { useState, useLayoutEffect, useEffect, useRef } from "react";
 import ReactFlow, {
   ReactFlowProvider,
   addEdge,
-  useNodesState,
-  useEdgesState,
-  Controls,
+  removeElements,
   Handle,
+  getOutgoers,
 } from "react-flow-renderer";
-import renderImage from "./renderImage";
-import Sidebar from "./Sidebar";
 import { v4 } from "uuid";
+import Sidebar from "./Sidebarold";
 import "./dnd.css";
-
-const initialNodes = [
-  //   {
-  //     id: "1",
-  //     type: "input",
-  //     data: { label: "input node" },
-  //     position: { x: 250, y: 5 },
-  //   },
-];
+import beeper from "../Assets/beeper.png";
+import capasitor100 from "../Assets/capasitor100.png";
+import capasitor1000 from "../Assets/capasitor1000.png";
+import diode from "../Assets/diode.png";
+import dip from "../Assets/dip.png";
+import junction from "../Assets/junction.png";
+import ldr from "../Assets/ldr.png";
+import pot from "../Assets/led.png";
+import power from "../Assets/Power.png";
+import res_100 from "../Assets/res_100_ohm.png";
+import res_250 from "../Assets/res_250_ohm.png";
+import tact from "../Assets/tact.png";
+import timer from "../Assets/timer_ic.png";
+import transistor from "../Assets/transistor.png";
+import two_way_switch from "../Assets/two_way_switch.png";
 
 let id = 0;
-const getId = () => `dndnode_${id++}`;
-//return image to drop
+const getId = () => `${id++}`;
 const text = (type, _id) => {
   if (type == "beeper") {
     // console.log("start");
@@ -33,24 +36,12 @@ const text = (type, _id) => {
         <div
           className="Image-render"
           style={{
-            backgroundImage: `url(${renderImage("beeper")})`,
+            backgroundImage: `url(${beeper})`,
             bottom: "38px",
           }}
           id="image-render"
           key={v4()}
         ></div>
-        <Handle
-          type="target"
-          position="bottom"
-          style={{ left: 90, top: 35 }}
-          id="d"
-        />
-        <Handle
-          type="source"
-          position="left"
-          style={{ left: 90, top: 75 }}
-          id="d"
-        />
       </>
     );
   }
@@ -61,7 +52,7 @@ const text = (type, _id) => {
         <div
           className="Image-render"
           style={{
-            backgroundImage: `url(${renderImage("capasitor100")})`,
+            backgroundImage: `url(${capasitor100})`,
           }}
           id="image-render"
           key={v4()}
@@ -88,7 +79,7 @@ const text = (type, _id) => {
         <div
           className="Image-render"
           style={{
-            backgroundImage: `url(${renderImage("capasitor1000")})`,
+            backgroundImage: `url(${capasitor1000})`,
           }}
           id="image-render"
           key={v4()}
@@ -103,7 +94,7 @@ const text = (type, _id) => {
         <div
           className="Image-render"
           style={{
-            backgroundImage: `url(${renderImage("diode")})`,
+            backgroundImage: `url(${diode})`,
           }}
           id="image-render"
           key={v4()}
@@ -123,7 +114,7 @@ const text = (type, _id) => {
         <div
           className="Image-render"
           style={{
-            backgroundImage: `url(${renderImage("dip")})`,
+            backgroundImage: `url(${dip})`,
           }}
           id="image-render"
           key={v4()}
@@ -149,7 +140,7 @@ const text = (type, _id) => {
         <div
           className="Image-render"
           style={{
-            backgroundImage: `url(${renderImage("junction")})`,
+            backgroundImage: `url(${junction})`,
           }}
           id="image-render"
           key={v4()}
@@ -163,21 +154,7 @@ const text = (type, _id) => {
         <div
           className="Image-render"
           style={{
-            backgroundImage: `url(${renderImage("ldr")})`,
-          }}
-          id="image-render"
-          key={v4()}
-        ></div>
-      </>
-    );
-  }
-  if (type == "led") {
-    return (
-      <>
-        <div
-          className="Image-render"
-          style={{
-            backgroundImage: `url(${renderImage("led")})`,
+            backgroundImage: `url(${ldr})`,
           }}
           id="image-render"
           key={v4()}
@@ -191,7 +168,7 @@ const text = (type, _id) => {
         <div
           className="Image-render"
           style={{
-            backgroundImage: `url(${renderImage("pot")})`,
+            backgroundImage: `url(${pot})`,
           }}
           id="image-render"
           key={v4()}
@@ -205,7 +182,7 @@ const text = (type, _id) => {
         <div
           className="Image-render"
           style={{
-            backgroundImage: `url(${renderImage("power")})`,
+            backgroundImage: `url(${power})`,
           }}
           id="image-render"
           key={v4()}
@@ -219,7 +196,7 @@ const text = (type, _id) => {
         <div
           className="Image-render"
           style={{
-            backgroundImage: `url(${renderImage("res_100")})`,
+            backgroundImage: `url(${res_100})`,
           }}
           id="image-render"
           key={v4()}
@@ -233,7 +210,7 @@ const text = (type, _id) => {
         <div
           className="Image-render"
           style={{
-            backgroundImage: `url(${renderImage("res_250")})`,
+            backgroundImage: `url(${res_250})`,
           }}
           id="image-render"
           key={v4()}
@@ -247,7 +224,7 @@ const text = (type, _id) => {
         <div
           className="Image-render"
           style={{
-            backgroundImage: `url(${renderImage("tact")})`,
+            backgroundImage: `url(${tact})`,
           }}
           id="image-render"
           key={v4()}
@@ -261,7 +238,7 @@ const text = (type, _id) => {
         <div
           className="Image-render"
           style={{
-            backgroundImage: `url(${renderImage("timer")})`,
+            backgroundImage: `url(${timer})`,
           }}
           id="image-render"
           key={v4()}
@@ -275,7 +252,7 @@ const text = (type, _id) => {
         <div
           className="Image-render"
           style={{
-            backgroundImage: `url(${renderImage("transistor")})`,
+            backgroundImage: `url(${transistor})`,
           }}
           id="image-render"
           key={v4()}
@@ -289,7 +266,7 @@ const text = (type, _id) => {
         <div
           className="Image-render"
           style={{
-            backgroundImage: `url(${renderImage("two_way_switch")})`,
+            backgroundImage: `url(${two_way_switch})`,
           }}
           id="image-render"
           key={v4()}
@@ -298,74 +275,88 @@ const text = (type, _id) => {
     );
   }
 };
-const DnDFlow = () => {
-  const reactFlowWrapper = useRef(null);
-  const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
-  const [edges, setEdges, onEdgesChange] = useEdgesState([]);
+let prevElement = [
+  {
+    id: "0",
+
+    position: { x: 500, y: 65 },
+    type: `input`,
+    data: {
+      label: text(`beeper`, 0),
+      elType: "node",
+    },
+  },
+];
+const DnDFlow = (props) => {
   const [reactFlowInstance, setReactFlowInstance] = useState(null);
+  const reactFlowWrapper = useRef(null);
+  const [elements, setElements] = useState([]);
+  const onLoad = (_reactFlowInstance) =>
+    setReactFlowInstance(_reactFlowInstance);
+  const onDrop = async (event) => {
+    // console.log("event", event);
 
-  const onConnect = useCallback(
-    (params) => setEdges((eds) => addEdge(params, eds)),
-    []
-  );
-
-  const onDragOver = useCallback((event) => {
     event.preventDefault();
-    event.dataTransfer.dropEffect = "move";
-  }, []);
-
-  const onDrop = useCallback(
-    (event) => {
-      event.preventDefault();
-
-      const reactFlowBounds = reactFlowWrapper.current.getBoundingClientRect();
+    const reactFlowBounds = reactFlowWrapper.current.getBoundingClientRect();
+    if (reactFlowInstance) {
       const type = event.dataTransfer.getData("application/reactflow");
 
-      // check if the dropped element is valid
-      if (typeof type === "undefined" || !type) {
-        return;
-      }
-      let nodeType = "output";
+      if (type == null || type == "") return;
       const position = reactFlowInstance.project({
         x: event.clientX - reactFlowBounds.left,
         y: event.clientY - reactFlowBounds.top,
       });
-      const newNode = {
-        id: getId(),
 
-        type: `${nodeType}`,
+      let nodeType = "output";
+
+      let newNode;
+
+      newNode = await {
+        id: `${getId()}`,
+
         position,
+        type: `${nodeType}`,
         data: {
           label: text(`${type}`, id),
+          elType: "node",
           specificElType: `${type}`,
         },
       };
-      console.log(newNode);
-      setNodes((nds) => nds.concat(newNode));
-    },
-    [reactFlowInstance]
-  );
 
+      await setElements([...elements, newNode]);
+    }
+  };
+  const onNodeMouseEnter = async (event, node) => {
+    console.log(event);
+  };
+  const onNodeDrag = async (event, node) => {
+    event.preventDefault();
+  };
+  const onDragOver = (event) => {
+    event.preventDefault();
+    event.dataTransfer.dropEffect = "move";
+  };
   return (
-    <div className="dndflow">
-      <ReactFlowProvider>
-        <div className="reactflow-wrapper" ref={reactFlowWrapper}>
-          <ReactFlow
-            nodes={nodes}
-            edges={edges}
-            onNodesChange={onNodesChange}
-            onEdgesChange={onEdgesChange}
-            onConnect={onConnect}
-            onInit={setReactFlowInstance}
-            onDrop={onDrop}
-            onDragOver={onDragOver}
-          >
-            <Controls />
-          </ReactFlow>
-        </div>
-        <Sidebar />
-      </ReactFlowProvider>
-    </div>
+    <>
+      <div className="dndflow">
+        <ReactFlowProvider>
+          <div className="reactflow-wrapper">
+            <ReactFlow
+              elements={elements}
+              onLoad={onLoad}
+              onDrop={onDrop}
+              onNodeDrag={onNodeDrag}
+              onDragOver={onDragOver}
+              onMouseMove={onNodeMouseEnter}
+              className="react-flow-screen"
+              style={{ height: "88.3vh", width: "inherit" }}
+              id="reactFlow"
+            ></ReactFlow>
+          </div>
+          <Sidebar />
+        </ReactFlowProvider>
+      </div>
+    </>
   );
 };
 

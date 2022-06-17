@@ -207,6 +207,18 @@
   left: 3vw;
   position: relative;
 }
+.dndnode_two_way_switch {
+  background-image: url("/src/Assets/two_way_switch.png");
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: contain;
+  height: 12vh;
+  width: 11vw;
+  margin-bottom: 20px;
+  transform: scale(2);
+  left: 3vw;
+  position: relative;
+}
 .dndflow .dndnode.input {
   border-color: #0041d0;
 }

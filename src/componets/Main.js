@@ -11,21 +11,9 @@ import renderImage from "./renderImage";
 import Sidebar from "./Sidebar";
 import { v4 } from "uuid";
 import "./dnd.css";
-
-const initialNodes = [
-  //   {
-  //     id: "1",
-  //     type: "input",
-  //     data: { label: "input node" },
-  //     position: { x: 250, y: 5 },
-  //   },
-];
-
-let id = 0;
-const getId = () => `dndnode_${id++}`;
 //return image to drop
 const text = (type, _id) => {
-  if (type == "beeper") {
+  if (type === "beeper") {
     // console.log("start");
 
     return (
@@ -42,19 +30,19 @@ const text = (type, _id) => {
         <Handle
           type="target"
           position="bottom"
-          style={{ left: 90, top: 35 }}
-          id="d"
+          style={{ left: " -0.7vw", top: " 1.8vh" }}
+          id="l"
         />
         <Handle
           type="source"
           position="left"
-          style={{ left: 90, top: 75 }}
-          id="d"
+          style={{ left: "11.5vw", top: " 2.2vh" }}
+          id="r"
         />
       </>
     );
   }
-  if (type == "capasitor100") {
+  if (type === "capasitor100") {
     // console.log("if");
     return (
       <>
@@ -67,22 +55,21 @@ const text = (type, _id) => {
           key={v4()}
         ></div>
         <Handle
-          type="source"
+          type="target"
           position="bottom"
-          style={{ left: 90, top: 35 }}
-          id="d"
+          style={{ left: " 0.3vw", top: " 4.6vh" }}
+          id="l"
         />
-        <Handle position="left" style={{ left: 140, top: 10 }} id="rYes" />
         <Handle
           type="source"
           position="left"
-          style={{ left: 140, top: 30 }}
-          id="rNo"
+          style={{ left: "10.5vw", top: " 5.2vh" }}
+          id="r"
         />
       </>
     );
   }
-  if (type == "capasitor1000") {
+  if (type === "capasitor1000") {
     return (
       <>
         <div
@@ -93,11 +80,22 @@ const text = (type, _id) => {
           id="image-render"
           key={v4()}
         ></div>
-        <Handle position="bottom" style={{ left: 90, top: 35 }} id="b" />
+        <Handle
+          type="target"
+          position="bottom"
+          style={{ left: " 0.3vw", top: " 4.6vh" }}
+          id="l"
+        />
+        <Handle
+          type="source"
+          position="left"
+          style={{ left: "10.5vw", top: " 5.2vh" }}
+          id="r"
+        />
       </>
     );
   }
-  if (type == "diode") {
+  if (type === "diode") {
     return (
       <>
         <div
@@ -109,15 +107,21 @@ const text = (type, _id) => {
           key={v4()}
         ></div>
         <Handle
-          type="source"
+          type="target"
           position="bottom"
-          style={{ left: 90, top: 35 }}
-          id="d"
+          style={{ left: " 0.3vw", top: " 4.6vh" }}
+          id="l"
+        />
+        <Handle
+          type="source"
+          position="left"
+          style={{ left: "10.5vw", top: " 5.2vh" }}
+          id="r"
         />
       </>
     );
   }
-  if (type == "dip") {
+  if (type === "dip") {
     return (
       <>
         <div
@@ -143,7 +147,7 @@ const text = (type, _id) => {
       </>
     );
   }
-  if (type == "junction") {
+  if (type === "junction") {
     return (
       <>
         <div
@@ -157,7 +161,7 @@ const text = (type, _id) => {
       </>
     );
   }
-  if (type == "ldr") {
+  if (type === "ldr") {
     return (
       <>
         <div
@@ -168,10 +172,22 @@ const text = (type, _id) => {
           id="image-render"
           key={v4()}
         ></div>
+        <Handle
+          type="target"
+          position="bottom"
+          style={{ left: " 0.3vw", top: " 4.6vh" }}
+          id="l"
+        />
+        <Handle
+          type="source"
+          position="left"
+          style={{ left: "10.5vw", top: " 5.2vh" }}
+          id="r"
+        />
       </>
     );
   }
-  if (type == "led") {
+  if (type === "led") {
     return (
       <>
         <div
@@ -182,10 +198,22 @@ const text = (type, _id) => {
           id="image-render"
           key={v4()}
         ></div>
+        <Handle
+          type="target"
+          position="bottom"
+          style={{ left: " 0.3vw", top: " 4.6vh" }}
+          id="l"
+        />
+        <Handle
+          type="source"
+          position="left"
+          style={{ left: "10.5vw", top: " 5.2vh" }}
+          id="r"
+        />
       </>
     );
   }
-  if (type == "pot") {
+  if (type === "pot") {
     return (
       <>
         <div
@@ -199,7 +227,7 @@ const text = (type, _id) => {
       </>
     );
   }
-  if (type == "power") {
+  if (type === "power") {
     return (
       <>
         <div
@@ -210,10 +238,34 @@ const text = (type, _id) => {
           id="image-render"
           key={v4()}
         ></div>
+        <Handle
+          type="source"
+          position="bottom"
+          style={{ left: "8.7vw", top: " 5.5vh" }}
+          id="r1"
+        />
+        <Handle
+          type="source"
+          position="left"
+          style={{ left: "8.5vw", top: " 8.9vh" }}
+          id="r2"
+        />
+        <Handle
+          type="source"
+          position="bottom"
+          style={{ left: "8.7vw", top: " 10.4vh" }}
+          id="r3"
+        />
+        <Handle
+          type="source"
+          position="left"
+          style={{ left: "8.5vw", top: " 4.2vh" }}
+          id="r4"
+        />
       </>
     );
   }
-  if (type == "res_100") {
+  if (type === "res_100") {
     return (
       <>
         <div
@@ -224,10 +276,22 @@ const text = (type, _id) => {
           id="image-render"
           key={v4()}
         ></div>
+        <Handle
+          type="target"
+          position="bottom"
+          style={{ left: " 0.3vw", top: " 4.6vh" }}
+          id="l"
+        />
+        <Handle
+          type="source"
+          position="left"
+          style={{ left: "10.5vw", top: " 5.2vh" }}
+          id="r"
+        />
       </>
     );
   }
-  if (type == "res_250") {
+  if (type === "res_250") {
     return (
       <>
         <div
@@ -238,10 +302,22 @@ const text = (type, _id) => {
           id="image-render"
           key={v4()}
         ></div>
+        <Handle
+          type="target"
+          position="bottom"
+          style={{ left: " 0.3vw", top: " 4.6vh" }}
+          id="l"
+        />
+        <Handle
+          type="source"
+          position="left"
+          style={{ left: "10.5vw", top: " 5.2vh" }}
+          id="r"
+        />
       </>
     );
   }
-  if (type == "tact") {
+  if (type === "tact") {
     return (
       <>
         <div
@@ -252,10 +328,22 @@ const text = (type, _id) => {
           id="image-render"
           key={v4()}
         ></div>
+        <Handle
+          type="target"
+          position="bottom"
+          style={{ left: " 0.3vw", top: " 4.6vh" }}
+          id="l"
+        />
+        <Handle
+          type="source"
+          position="left"
+          style={{ left: "10.5vw", top: " 5.2vh" }}
+          id="r"
+        />
       </>
     );
   }
-  if (type == "timer") {
+  if (type === "timer") {
     return (
       <>
         <div
@@ -269,7 +357,7 @@ const text = (type, _id) => {
       </>
     );
   }
-  if (type == "transistor") {
+  if (type === "transistor") {
     return (
       <>
         <div
@@ -280,10 +368,22 @@ const text = (type, _id) => {
           id="image-render"
           key={v4()}
         ></div>
+        <Handle
+          type="target"
+          position="bottom"
+          style={{ left: " 0.3vw", top: " 4.6vh" }}
+          id="l"
+        />
+        <Handle
+          type="source"
+          position="left"
+          style={{ left: "10.5vw", top: " 5.2vh" }}
+          id="r"
+        />
       </>
     );
   }
-  if (type == "two_way_switch") {
+  if (type === "two_way_switch") {
     return (
       <>
         <div
@@ -298,6 +398,22 @@ const text = (type, _id) => {
     );
   }
 };
+const initialNodes = [
+  {
+    id: " 0",
+
+    type: `output`,
+    position: { x: 120, y: 120 },
+    data: {
+      label: text(`power`, 0),
+      specificElType: `power`,
+    },
+  },
+];
+
+let id = 1;
+const getId = () => `dndnode_${id++}`;
+
 const DnDFlow = () => {
   const reactFlowWrapper = useRef(null);
   const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
@@ -345,6 +461,9 @@ const DnDFlow = () => {
     },
     [reactFlowInstance]
   );
+  const onNodeDrag = async (event, node) => {
+    console.log(node);
+  };
 
   return (
     <div className="dndflow">
@@ -357,6 +476,7 @@ const DnDFlow = () => {
             onEdgesChange={onEdgesChange}
             onConnect={onConnect}
             onInit={setReactFlowInstance}
+            onNodeDrag={onNodeDrag}
             onDrop={onDrop}
             onDragOver={onDragOver}
           >

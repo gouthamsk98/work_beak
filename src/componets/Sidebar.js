@@ -1,11 +1,11 @@
 import React from "react";
 
-export default () => {
+export default (props) => {
   const onDragStart = (event, nodeType) => {
     event.dataTransfer.setData("application/reactflow", nodeType);
     event.dataTransfer.effectAllowed = "move";
   };
-
+  console.log(props, "props");
   return (
     <aside>
       <div className="side">
@@ -16,6 +16,7 @@ export default () => {
         <div
           className="dndnode_beeper"
           value="beeper"
+          visible={false}
           draggable
           id="beeper"
           onDragStart={(event) => onDragStart(event, "beeper")}

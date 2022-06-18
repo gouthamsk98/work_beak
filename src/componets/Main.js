@@ -224,6 +224,24 @@ const text = (type, _id) => {
           id="image-render"
           key={v4()}
         ></div>
+        <Handle
+          type="target"
+          position="bottom"
+          style={{ left: " -0.2vw", top: " 6.6vh" }}
+          id="l"
+        />
+        <Handle
+          type="source"
+          position="left"
+          style={{ left: "11.3vw", top: " 4.1vh" }}
+          id="r"
+        />
+        <Handle
+          type="source"
+          position="left"
+          style={{ left: "11.3vw", top: " 9.9vh" }}
+          id="r"
+        />
       </>
     );
   }
@@ -371,13 +389,19 @@ const text = (type, _id) => {
         <Handle
           type="target"
           position="bottom"
-          style={{ left: " 0.3vw", top: " 4.6vh" }}
+          style={{ left: " 0.4vw", top: " 6.7vh" }}
           id="l"
         />
         <Handle
           type="source"
           position="left"
-          style={{ left: "10.5vw", top: " 5.2vh" }}
+          style={{ left: "10.1vw", top: " 5.7vh" }}
+          id="r"
+        />
+        <Handle
+          type="source"
+          position="left"
+          style={{ left: "10.1vw", top: " 8.5vh" }}
           id="r"
         />
       </>
@@ -394,6 +418,24 @@ const text = (type, _id) => {
           id="image-render"
           key={v4()}
         ></div>
+        <Handle
+          type="target"
+          position="bottom"
+          style={{ left: " 0.4vw", top: " 7.2vh" }}
+          id="l"
+        />
+        <Handle
+          type="source"
+          position="left"
+          style={{ left: "11.6vw", top: " 5.533vh" }}
+          id="r"
+        />
+        <Handle
+          type="source"
+          position="left"
+          style={{ left: "11.6vw", top: " 9.9vh" }}
+          id="r"
+        />
       </>
     );
   }
@@ -414,16 +456,16 @@ const initialNodes = [
 let id = 1;
 const getId = () => `dndnode_${id++}`;
 
-const DnDFlow = () => {
+const DnDFlow = (props) => {
   const reactFlowWrapper = useRef(null);
   const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
   const [edges, setEdges, onEdgesChange] = useEdgesState([]);
   const [reactFlowInstance, setReactFlowInstance] = useState(null);
 
-  const onConnect = useCallback(
-    (params) => setEdges((eds) => addEdge(params, eds)),
-    []
-  );
+  const onConnect = useCallback((params) => {
+    console.log(params);
+    setEdges((eds) => addEdge(params, eds));
+  }, []);
 
   const onDragOver = useCallback((event) => {
     event.preventDefault();
@@ -462,7 +504,45 @@ const DnDFlow = () => {
     [reactFlowInstance]
   );
   const onNodeDrag = async (event, node) => {
-    console.log(node);
+    nodes.map((e) => {
+      if (e.id !== node.id) {
+        console.log(
+          node.position.x - e.position.x,
+          node.position.y - e.position.y
+        );
+        switch (e.data.specificElType) {
+          case "beeper":
+            if (
+              node.position.x - e.position.x >= 221 - 5 &&
+              node.position.x - e.position.x < 221 + 5 &&
+              node.position.y - e.position.y >= -28 - 5 &&
+              node.position.y - e.position.y < -28 + 5 &&
+              node.data.specificElType !== "transistor"
+            )
+              console.log("beeper");
+            else if (
+              node.position.x - e.position.x >= 221 - 5 &&
+              node.position.x - e.position.x < 221 + 5 &&
+              node.position.y - e.position.y >= -50 - 5 &&
+              node.position.y - e.position.y < -50 + 5 &&
+              (node.data.specificElType === "transistor" ||
+                node.data.specificElType === "two_way_switch")
+            )
+              console.log("beeper");
+            else if (
+              node.position.x - e.position.x >= 231 - 5 &&
+              node.position.x - e.position.x < 231 + 5 &&
+              node.position.y - e.position.y >= -50 - 5 &&
+              node.position.y - e.position.y < -50 + 5 &&
+              node.data.specificElType === "pot"
+            )
+              console.log("beeper");
+            break;
+          case "capacitor":
+            console.log(node.position.x - e.position.x);
+        }
+      }
+    });
   };
 
   return (
@@ -483,7 +563,7 @@ const DnDFlow = () => {
             <Controls />
           </ReactFlow>
         </div>
-        <Sidebar />
+        <Sidebar send={props} />
       </ReactFlowProvider>
     </div>
   );

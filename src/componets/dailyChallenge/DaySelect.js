@@ -14,7 +14,59 @@ class DaySelect extends Component {
     };
     const mainRender = (e) => {
       if (e === "day0") return <></>;
-      else return <Main beeper={true} led={true} />;
+      else if (e === "simpleCircuit")
+        return <Main beeper={true} led={true} tact={true} />;
+      else if (e === "seriesCircuit") return <Main led={true} tact={true} />;
+      else if (e === "parallelCircuit")
+        return <Main led={true} tact={true} beeper={true} />;
+      else if (e === "resistorCircuit")
+        return <Main led={true} res_100={true} res_250={true} tact={true} />;
+      else if (e === "capacitorCircuit")
+        return (
+          <Main
+            beeper={true}
+            capacitor100={true}
+            capacitor1000={true}
+            tact={true}
+          />
+        );
+      else if (e === "voltageDividerCircuit")
+        return <Main led={true} pot={true} tact={true} />;
+      else if (e === "semi-conductorDiodeCircuit")
+        return <Main led={true} diode={true} tact={true} />;
+      else if (e === "transistorCircuit")
+        return (
+          <Main
+            led={true}
+            transistor={true}
+            tact={true}
+            ldr={true}
+            diode={true}
+            pot={true}
+            res_100={true}
+            res_250={true}
+          />
+        );
+      else if (e === "freedomCircuit")
+        return (
+          <Main
+            beeper={true}
+            capacitor100={true}
+            capacitor1000={true}
+            diode={true}
+            dip={true}
+            junction={true}
+            ldr={true}
+            led={true}
+            pot={true}
+            res_100={true}
+            res_250={true}
+            tact={true}
+            timer_ic={true}
+            transistor={true}
+            two_way_switch={true}
+          />
+        );
     };
     return (
       <>
@@ -37,11 +89,16 @@ class DaySelect extends Component {
           <button onClick={(value) => onClick(value, "voltageDividerCircuit")}>
             Voltage Divider Circuit
           </button>
-          <button onClick={(value) => onClick(value, "day7")}>
+          <button
+            onClick={(value) => onClick(value, "semi-conductorDiodeCircuit")}
+          >
             Semi-Conductor Diode Circuit
           </button>
-          <button onClick={(value) => onClick(value, "day8")}>
+          <button onClick={(value) => onClick(value, "transistorCircuit")}>
             Transistor Circuit
+          </button>
+          <button onClick={(value) => onClick(value, "freedomCircuit")}>
+            Freedom Circuit
           </button>
         </div>
         {mainRender(this.state.value)}

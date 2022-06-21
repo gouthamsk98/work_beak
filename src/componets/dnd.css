@@ -27,7 +27,7 @@
   align-items: center;
   cursor: grab;
 }
-.dndnode_beeper {
+.dndnode_beepertrue {
   background-image: url("/src/Assets/beeper.png");
   background-position: center;
   background-repeat: no-repeat;
@@ -39,19 +39,11 @@
   left: 3vw;
   position: relative;
 }
-.dndnode_capasitor100 {
-  background-image: url("/src/Assets/capasitor100.png");
-  background-position: center;
-  background-repeat: no-repeat;
-  background-size: contain;
-  height: 12vh;
-  width: 11vw;
-  margin-bottom: 20px;
-  transform: scale(2);
-  left: 3vw;
-  position: relative;
+.dndnode_beeperfalse {
+  display: none;
 }
-.dndnode_capasitor1000 {
+
+.dndnode_capacitor1000true {
   background-image: url("/src/Assets/capasitor1000.png");
   background-position: center;
   background-repeat: no-repeat;
@@ -63,7 +55,27 @@
   left: 3vw;
   position: relative;
 }
-.dndnode_diode {
+.dndnode_capacitor1000false {
+  display: none;
+}
+
+.dndnode_capacitor100true {
+  background-image: url("/src/Assets/capasitor100.png");
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: contain;
+  height: 12vh;
+  width: 11vw;
+  margin-bottom: 20px;
+  transform: scale(2);
+  left: 3vw;
+  position: relative;
+}
+.dndnode_capacitor100false {
+  display: none;
+}
+
+.dndnode_diodetrue {
   background-image: url("/src/Assets/diode.png");
   background-position: center;
   background-repeat: no-repeat;
@@ -75,7 +87,10 @@
   left: 3vw;
   position: relative;
 }
-.dndnode_dip {
+.dndnode_diodefalse {
+  display: none;
+}
+.dndnode_diptrue {
   background-image: url("/src/Assets/dip.png");
   background-position: center;
   background-repeat: no-repeat;
@@ -87,7 +102,10 @@
   left: 3vw;
   position: relative;
 }
-.dndnode_junction {
+.dndnode_dipfalse {
+  display: none;
+}
+.dndnode_junctiontrue {
   background-image: url("/src/Assets/junction.png");
   background-position: center;
   background-repeat: no-repeat;
@@ -99,7 +117,10 @@
   left: 3vw;
   position: relative;
 }
-.dndnode_ldr {
+.dndnode_junctionfalse {
+  display: none;
+}
+.dndnode_ldrtrue {
   background-image: url("/src/Assets/ldr.png");
   background-position: center;
   background-repeat: no-repeat;
@@ -111,7 +132,10 @@
   left: 3vw;
   position: relative;
 }
-.dndnode_led {
+.dndnode_ldrfalse {
+  display: none;
+}
+.dndnode_ledtrue {
   background-image: url("/src/Assets/led.png");
   background-position: center;
   background-repeat: no-repeat;
@@ -123,7 +147,10 @@
   left: 3vw;
   position: relative;
 }
-.dndnode_pot {
+.dndnode_ledfalse {
+  display: none;
+}
+.dndnode_pottrue {
   background-image: url("/src/Assets/pot.png");
   background-position: center;
   background-repeat: no-repeat;
@@ -135,7 +162,10 @@
   left: 3vw;
   position: relative;
 }
-.dndnode_power {
+.dndnode_potfalse {
+  display: none;
+}
+.dndnode_powertrue {
   background-image: url("/src/Assets/Power.png");
   background-position: center;
   background-repeat: no-repeat;
@@ -147,7 +177,10 @@
   left: 3vw;
   position: relative;
 }
-.dndnode_res_100 {
+.dndnode_powerfalse {
+  display: none;
+}
+.dndnode_res_100true {
   background-image: url("/src/Assets/res_100_ohm.png");
   background-position: center;
   background-repeat: no-repeat;
@@ -159,7 +192,19 @@
   left: 3vw;
   position: relative;
 }
-.dndnode_res_250 {
+.dndnode_res_100false {
+  background-image: url("/src/Assets/res_100_ohm.png");
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: contain;
+  height: 12vh;
+  width: 11vw;
+  margin-bottom: 20px;
+  transform: scale(2);
+  left: 3vw;
+  position: relative;
+}
+.dndnode_res_250true {
   background-image: url("/src/Assets/res_250_ohm.png");
   background-position: center;
   background-repeat: no-repeat;
@@ -171,7 +216,10 @@
   left: 3vw;
   position: relative;
 }
-.dndnode_tact {
+.dndnode_res_250false {
+  display: none;
+}
+.dndnode_tacttrue {
   background-image: url("/src/Assets/tact.png");
   background-position: center;
   background-repeat: no-repeat;
@@ -183,7 +231,10 @@
   left: 3vw;
   position: relative;
 }
-.dndnode_timer_ic {
+.dndnode_tactfalse {
+  display: none;
+}
+.dndnode_timer_ictrue {
   background-image: url("/src/Assets/timer_ic.png");
   background-position: center;
   background-repeat: no-repeat;
@@ -195,7 +246,10 @@
   left: 3vw;
   position: relative;
 }
-.dndnode_transistor {
+.dndnode_timer_icfalse {
+  display: none;
+}
+.dndnode_transistortrue {
   background-image: url("/src/Assets/transistor.png");
   background-position: center;
   background-repeat: no-repeat;
@@ -207,7 +261,10 @@
   left: 3vw;
   position: relative;
 }
-.dndnode_two_way_switch {
+.dndnode_transistorfalse {
+  display: none;
+}
+.dndnode_two_way_switchtrue {
   background-image: url("/src/Assets/two_way_switch.png");
   background-position: center;
   background-repeat: no-repeat;
@@ -218,6 +275,9 @@
   transform: scale(2);
   left: 3vw;
   position: relative;
+}
+.dndnode_two_way_switchfalse {
+  position: none;
 }
 .dndflow .dndnode.input {
   border-color: #0041d0;
@@ -275,4 +335,8 @@
 }
 .react-flow__handle-top {
   display: none;
+}
+.react-flow__edge-path {
+  stroke: green;
+  stroke-width: 4;
 }

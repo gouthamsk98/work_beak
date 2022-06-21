@@ -42,7 +42,7 @@ const text = (type, _id) => {
       </>
     );
   }
-  if (type === "capasitor100") {
+  if (type === "capacitor100") {
     // console.log("if");
     return (
       <>
@@ -69,7 +69,7 @@ const text = (type, _id) => {
       </>
     );
   }
-  if (type === "capasitor1000") {
+  if (type === "capacitor1000") {
     return (
       <>
         <div
@@ -263,13 +263,13 @@ const text = (type, _id) => {
           id="r1"
         />
         <Handle
-          type="source"
+          type="target"
           position="left"
           style={{ left: "8.5vw", top: " 8.9vh" }}
           id="r2"
         />
         <Handle
-          type="source"
+          type="target"
           position="bottom"
           style={{ left: "8.7vw", top: " 10.4vh" }}
           id="r3"
@@ -462,10 +462,24 @@ const DnDFlow = (props) => {
   const [edges, setEdges, onEdgesChange] = useEdgesState([]);
   const [reactFlowInstance, setReactFlowInstance] = useState(null);
 
-  const onConnect = useCallback((params) => {
-    console.log(params);
-    setEdges((eds) => addEdge(params, eds));
-  }, []);
+  const onConnect = async (params) => {
+    console.log(params, edges);
+    var index1 = await edges.findIndex(
+      (e) =>
+        e.source === params.source && e.sourceHandle === params.sourceHandle
+    );
+    var index2 = await edges.findIndex(
+      (e) =>
+        e.target === params.target && e.targetHandle === params.targetHandle
+    );
+    console.log("indexs", index1, index2);
+    if (index1 != -1) return;
+    if (index2 != -1) return;
+
+    await setEdges((eds) => addEdge(params, eds));
+    console.log("after connect", edges);
+    return;
+  };
 
   const onDragOver = useCallback((event) => {
     event.preventDefault();
@@ -503,43 +517,208 @@ const DnDFlow = (props) => {
     },
     [reactFlowInstance]
   );
+
   const onNodeDrag = async (event, node) => {
-    nodes.map((e) => {
+    nodes.map(async (e) => {
       if (e.id !== node.id) {
-        console.log(
-          node.position.x - e.position.x,
-          node.position.y - e.position.y
-        );
+        let offsetX = 0,
+          offsetY = 0;
+        let params = {
+          source: "",
+          sourceHandle: "",
+          target: "dndnode_1",
+          targetHandle: "",
+        };
         switch (e.data.specificElType) {
           case "beeper":
+            switch (node.data.specificElType) {
+              case "beeper":
+                offsetX = 18;
+                offsetY = 28;
+                break;
+              case "capacitor100":
+              case "diode":
+              case "ldr":
+              case "led":
+              case "res_100":
+              case "res_250":
+              case "capacitor1000":
+              case "led":
+                offsetX = 0;
+                offsetY = 0;
+                break;
+              case "transistor":
+                offsetX = -3;
+                offsetY = -21;
+                break;
+            }
             if (
-              node.position.x - e.position.x >= 221 - 5 &&
-              node.position.x - e.position.x < 221 + 5 &&
-              node.position.y - e.position.y >= -28 - 5 &&
-              node.position.y - e.position.y < -28 + 5 &&
-              node.data.specificElType !== "transistor"
-            )
-              console.log("beeper");
-            else if (
-              node.position.x - e.position.x >= 221 - 5 &&
-              node.position.x - e.position.x < 221 + 5 &&
-              node.position.y - e.position.y >= -50 - 5 &&
-              node.position.y - e.position.y < -50 + 5 &&
-              (node.data.specificElType === "transistor" ||
-                node.data.specificElType === "two_way_switch")
-            )
-              console.log("beeper");
-            else if (
-              node.position.x - e.position.x >= 231 - 5 &&
-              node.position.x - e.position.x < 231 + 5 &&
-              node.position.y - e.position.y >= -50 - 5 &&
-              node.position.y - e.position.y < -50 + 5 &&
-              node.data.specificElType === "pot"
-            )
-              console.log("beeper");
+              node.position.x - e.position.x >= 221 - 5 + offsetX &&
+              node.position.x - e.position.x < 221 + 5 + offsetX &&
+              node.position.y - e.position.y >= -28 - 5 + offsetY &&
+              node.position.y - e.position.y < -28 + 5 + offsetY
+            ) {
+              params = {
+                source: `${e.id}`,
+                sourceHandle: `r`,
+                target: `${node.id}`,
+                targetHandle: "l",
+              };
+              await onConnect(params);
+              return;
+            }
+
             break;
-          case "capacitor":
-            console.log(node.position.x - e.position.x);
+          case "led":
+          case "ldr":
+          case "diode":
+          case "res_100":
+          case "res_250":
+          case "tact":
+          case "capacitor100":
+          case "capacitor1000":
+            console.log(
+              "led",
+              node.position.x - e.position.x,
+              node.position.y - e.position.y
+            );
+            switch (node.data.specificElType) {
+              case "beeper":
+                offsetX = 0;
+                offsetY = 0;
+                break;
+              case "capacitor100":
+              case "diode":
+              case "ldr":
+              case "led":
+              case "res_100":
+              case "res_250":
+              case "tact":
+              case "capacitor1000":
+                offsetX = -20;
+                offsetY = -30;
+                break;
+              case "transistor":
+                offsetX = -21;
+                offsetY = -48;
+                break;
+              case "two_way_switch":
+                offsetX = 0;
+                offsetY = 0;
+                break;
+              default:
+                offsetX = 0;
+                offsetY = 0;
+                break;
+            }
+            if (
+              node.position.x - e.position.x >= 221 - 5 + offsetX &&
+              node.position.x - e.position.x < 221 + 5 + offsetX &&
+              node.position.y - e.position.y >= 31 - 5 + offsetY &&
+              node.position.y - e.position.y < 31 + 5 + offsetY
+            ) {
+              params = {
+                source: `${e.id}`,
+                sourceHandle: `r`,
+                target: `${node.id}`,
+                targetHandle: "l",
+              };
+              await onConnect(params);
+              return;
+            }
+            break;
+          case "power":
+            console.log(
+              node.position.x - e.position.x,
+              node.position.y - e.position.y,
+              "power"
+            );
+            switch (node.data.specificElType) {
+              case "beeper":
+                offsetX = 0;
+                offsetY = 0;
+                break;
+              case "capacitor100":
+              case "diode":
+              case "ldr":
+              case "led":
+              case "res_100":
+              case "res_250":
+              case "capacitor1000":
+                offsetX = -20;
+                offsetY = -27;
+                break;
+              case "transistor":
+                offsetX = -21;
+                offsetY = -48;
+                break;
+              case "two_way_switch":
+                offsetX = 0;
+                offsetY = 0;
+                break;
+              default:
+                offsetX = 0;
+                offsetY = 0;
+                break;
+            }
+            if (
+              node.position.x - e.position.x >= 181 - 5 + offsetX &&
+              node.position.x - e.position.x < 181 + 5 + offsetX &&
+              node.position.y - e.position.y >= 20 - 5 + offsetY &&
+              node.position.y - e.position.y < 20 + 5 + offsetY
+            ) {
+              params = {
+                source: `${e.id}`,
+                sourceHandle: `r4`,
+                target: `${node.id}`,
+                targetHandle: "l",
+              };
+              await onConnect(params);
+              return;
+            } else if (
+              node.position.x - e.position.x >= 181 - 5 + offsetX &&
+              node.position.x - e.position.x < 181 + 5 + offsetX &&
+              node.position.y - e.position.y >= 38 - 5 + offsetY &&
+              node.position.y - e.position.y < 38 + 5 + offsetY
+            ) {
+              params = {
+                source: `${e.id}`,
+                sourceHandle: `r1`,
+                target: `${node.id}`,
+                targetHandle: "l",
+              };
+              await onConnect(params);
+            } else if (
+              node.position.x - e.position.x >= -59 - 5 - offsetX &&
+              node.position.x - e.position.x < -59 + 5 - offsetX &&
+              node.position.y - e.position.y >= 67 - 5 + offsetY &&
+              node.position.y - e.position.y < 67 + 5 + offsetY
+            ) {
+              params = {
+                source: `${node.id}`,
+                sourceHandle: `r`,
+                target: `${e.id}`,
+                targetHandle: "r2",
+              };
+              await onConnect(params);
+              return;
+            } else if (
+              node.position.x - e.position.x >= -59 - 5 - offsetX &&
+              node.position.x - e.position.x < -59 + 5 - offsetX &&
+              node.position.y - e.position.y >= 86 - 5 + offsetY &&
+              node.position.y - e.position.y < 86 + 5 + offsetY
+            ) {
+              params = {
+                source: `${node.id}`,
+                sourceHandle: `r`,
+                target: `${e.id}`,
+                targetHandle: "r3",
+              };
+              await onConnect(params);
+              return;
+            }
+
+            break;
         }
       }
     });
@@ -561,6 +740,12 @@ const DnDFlow = (props) => {
             onDragOver={onDragOver}
           >
             <Controls />
+            <canvas
+              id="myCanvas"
+              width="inherit"
+              height="884"
+              className="react-flow__edges"
+            ></canvas>
           </ReactFlow>
         </div>
         <Sidebar send={props} />

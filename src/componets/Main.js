@@ -1,4 +1,4 @@
-import React, { useState, useRef, useCallback } from "react";
+import React, { useState, useRef, useCallback, useEffect } from "react";
 import ReactFlow, {
   ReactFlowProvider,
   addEdge,
@@ -6,6 +6,7 @@ import ReactFlow, {
   useEdgesState,
   Controls,
   Handle,
+  getOutgoers,
 } from "react-flow-renderer";
 import renderImage from "./renderImage";
 import Sidebar from "./Sidebar";
@@ -198,6 +199,7 @@ const text = (type, _id) => {
           id="image-render"
           key={v4()}
         ></div>
+        <div className="led-light" style={{}}></div>
         <Handle
           type="target"
           position="bottom"
@@ -455,29 +457,35 @@ const initialNodes = [
 
 let id = 1;
 const getId = () => `dndnode_${id++}`;
-
+let edge;
 const DnDFlow = (props) => {
   const reactFlowWrapper = useRef(null);
   const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
   const [edges, setEdges, onEdgesChange] = useEdgesState([]);
   const [reactFlowInstance, setReactFlowInstance] = useState(null);
 
+  useEffect(() => {
+    console.log(edges, "edges use effect");
+    edge = edges;
+
+    closedChk(nodes, edges);
+  }, [edges]);
+
   const onConnect = async (params) => {
-    console.log(params, edges);
-    var index1 = await edges.findIndex(
+    var index1 = await edge.findIndex(
       (e) =>
         e.source === params.source && e.sourceHandle === params.sourceHandle
     );
-    var index2 = await edges.findIndex(
+    var index2 = await edge.findIndex(
       (e) =>
         e.target === params.target && e.targetHandle === params.targetHandle
     );
-    console.log("indexs", index1, index2);
+
     if (index1 != -1) return;
     if (index2 != -1) return;
 
     await setEdges((eds) => addEdge(params, eds));
-    console.log("after connect", edges);
+
     return;
   };
 
@@ -529,6 +537,7 @@ const DnDFlow = (props) => {
           target: "dndnode_1",
           targetHandle: "",
         };
+
         switch (e.data.specificElType) {
           case "beeper":
             switch (node.data.specificElType) {
@@ -564,7 +573,12 @@ const DnDFlow = (props) => {
                 target: `${node.id}`,
                 targetHandle: "l",
               };
-              await onConnect(params);
+              switch (props.type) {
+                case "simpleCircuit":
+                  if (node.data.specificElType === "power")
+                    await onConnect(params);
+              }
+
               return;
             }
 
@@ -577,11 +591,6 @@ const DnDFlow = (props) => {
           case "tact":
           case "capacitor100":
           case "capacitor1000":
-            console.log(
-              "led",
-              node.position.x - e.position.x,
-              node.position.y - e.position.y
-            );
             switch (node.data.specificElType) {
               case "beeper":
                 offsetX = 0;
@@ -623,16 +632,19 @@ const DnDFlow = (props) => {
                 target: `${node.id}`,
                 targetHandle: "l",
               };
-              await onConnect(params);
+              switch (props.type) {
+                case "simpleCircuit":
+                  if (
+                    e.data.specificElType === "tact" &&
+                    (node.data.specificElType == "beeper" ||
+                      node.data.specificElType == "led")
+                  )
+                    await onConnect(params);
+              }
               return;
             }
             break;
           case "power":
-            console.log(
-              node.position.x - e.position.x,
-              node.position.y - e.position.y,
-              "power"
-            );
             switch (node.data.specificElType) {
               case "beeper":
                 offsetX = 0;
@@ -645,6 +657,7 @@ const DnDFlow = (props) => {
               case "res_100":
               case "res_250":
               case "capacitor1000":
+              case "tact":
                 offsetX = -20;
                 offsetY = -27;
                 break;
@@ -673,7 +686,13 @@ const DnDFlow = (props) => {
                 target: `${node.id}`,
                 targetHandle: "l",
               };
-              await onConnect(params);
+              console.log("props@@@@@", props.type, node.data.specificElType);
+              switch (props.type) {
+                case "simpleCircuit":
+                  if (node.data.specificElType === "tact")
+                    await onConnect(params);
+              }
+
               return;
             } else if (
               node.position.x - e.position.x >= 181 - 5 + offsetX &&
@@ -687,7 +706,12 @@ const DnDFlow = (props) => {
                 target: `${node.id}`,
                 targetHandle: "l",
               };
-              await onConnect(params);
+
+              switch (props.type) {
+                case "simpleCircuit":
+                  if (node.data.specificElType === "tact")
+                    await onConnect(params);
+              }
             } else if (
               node.position.x - e.position.x >= -59 - 5 - offsetX &&
               node.position.x - e.position.x < -59 + 5 - offsetX &&
@@ -700,7 +724,14 @@ const DnDFlow = (props) => {
                 target: `${e.id}`,
                 targetHandle: "r2",
               };
-              await onConnect(params);
+              switch (props.type) {
+                case "simpleCircuit":
+                  if (
+                    node.data.specificElType === "led" ||
+                    node.data.specificElType === "beeper"
+                  )
+                    await onConnect(params);
+              }
               return;
             } else if (
               node.position.x - e.position.x >= -59 - 5 - offsetX &&
@@ -714,7 +745,14 @@ const DnDFlow = (props) => {
                 target: `${e.id}`,
                 targetHandle: "r3",
               };
-              await onConnect(params);
+              switch (props.type) {
+                case "simpleCircuit":
+                  if (
+                    node.data.specificElType === "led" ||
+                    node.data.specificElType === "beeper"
+                  )
+                    await onConnect(params);
+              }
               return;
             }
 
@@ -723,7 +761,47 @@ const DnDFlow = (props) => {
       }
     });
   };
+  let toDeleteEdge;
+  const onEdgeClick = (event, edge) => {
+    toDeleteEdge = edge.id;
+  };
+  const onNodeClick = (event, node) => {
+    console.log(node);
+    if (node.data.specificElType === "tact") {
+      const ele = document.querySelector(".led-light");
+      console.log(ele.style.backgroundColor);
+      if (ele.style.backgroundColor != "red") ele.style.backgroundColor = "red";
+      if (ele.style.backgroundColor === "red") {
+        const ele = document.querySelector(".led-light");
+        ele.style.backgroundColor = "none";
+      }
+    }
+  };
+  //to check the circuit is completed
+  const closedChk = async (n, e) => {
+    let start = getOutgoers(n[0], n, e);
+    if (start.length !== 0) return await closedChkRec(start[0], n, e);
+    else return false;
+  };
+  const closedChkRec = async (ele, n, e) => {
+    if (ele.id === nodes[0].id) {
+      return true;
+    }
+    let start = await getOutgoers(ele, n, e);
+    console.log({ start }, { ele });
+    if (start.length != 0) return await closedChkRec(start[0], n, e);
+    else if (start.length === 0) return false;
+  };
 
+  const onDoubleClick = async () => {
+    var index = await edges.findIndex((e) => e.id === toDeleteEdge);
+    if (index != -1) {
+      //edge is double clicked
+      setEdges(edges.filter((node) => node.id !== toDeleteEdge));
+      toDeleteEdge = null;
+      console.log(toDeleteEdge);
+    }
+  };
   return (
     <div className="dndflow">
       <ReactFlowProvider>
@@ -738,6 +816,10 @@ const DnDFlow = (props) => {
             onNodeDrag={onNodeDrag}
             onDrop={onDrop}
             onDragOver={onDragOver}
+            onDoubleClick={onDoubleClick}
+            onEdgeClick={onEdgeClick}
+            onNodeClick={onNodeClick}
+            // onElementClick={onElementClick}
           >
             <Controls />
             <canvas

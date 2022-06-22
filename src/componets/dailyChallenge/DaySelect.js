@@ -15,12 +15,15 @@ class DaySelect extends Component {
     const mainRender = (e) => {
       if (e === "day0") return <></>;
       else if (e === "simpleCircuit")
-        return <Main beeper={true} led={true} tact={true} />;
-      else if (e === "seriesCircuit") return <Main led={true} tact={true} />;
+        return <Main beeper={true} led={true} tact={true} type={e} />;
+      else if (e === "seriesCircuit")
+        return <Main led={true} tact={true} type={e} />;
       else if (e === "parallelCircuit")
-        return <Main led={true} tact={true} beeper={true} />;
+        return <Main led={true} tact={true} beeper={true} type={e} />;
       else if (e === "resistorCircuit")
-        return <Main led={true} res_100={true} res_250={true} tact={true} />;
+        return (
+          <Main led={true} res_100={true} res_250={true} tact={true} type={e} />
+        );
       else if (e === "capacitorCircuit")
         return (
           <Main
@@ -31,9 +34,9 @@ class DaySelect extends Component {
           />
         );
       else if (e === "voltageDividerCircuit")
-        return <Main led={true} pot={true} tact={true} />;
+        return <Main led={true} pot={true} tact={true} type={e} />;
       else if (e === "semi-conductorDiodeCircuit")
-        return <Main led={true} diode={true} tact={true} />;
+        return <Main led={true} diode={true} tact={true} type={e} />;
       else if (e === "transistorCircuit")
         return (
           <Main
@@ -45,6 +48,7 @@ class DaySelect extends Component {
             pot={true}
             res_100={true}
             res_250={true}
+            type={e}
           />
         );
       else if (e === "freedomCircuit")
@@ -65,6 +69,7 @@ class DaySelect extends Component {
             timer_ic={true}
             transistor={true}
             two_way_switch={true}
+            type={e}
           />
         );
     };

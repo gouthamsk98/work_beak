@@ -5,7 +5,6 @@ export default (props) => {
     event.dataTransfer.setData("application/reactflow", nodeType);
     event.dataTransfer.effectAllowed = "move";
   };
-
   let send = {
     beeper: props.send.beeper,
     capacitor100: props.send.capacitor100,
@@ -23,6 +22,25 @@ export default (props) => {
     transistor: props.send.transistor,
     two_way_switch: props.send.two_way_switch,
   };
+  const eles = document.querySelectorAll("[data-type]");
+
+  const onDrag = (event, nodeType) => {
+    let ele;
+    eles.forEach((e) => {
+      if (e.id == nodeType) {
+        ele = e;
+        return;
+      }
+    });
+
+    switch (props.send.type) {
+      case "simpleCircuit":
+        if (nodeType == "beeper" || nodeType == "led" || nodeType == "tact") {
+          if (ele.id === nodeType) ele.style.display = "none";
+        }
+    }
+  };
+  const onDragEnd = (event, nodeType) => {};
 
   return (
     <aside>
@@ -34,94 +52,140 @@ export default (props) => {
         <div
           className={"dndnode_beeper" + send.beeper}
           value="beeper"
+          data-type="beeper"
           draggable
           id="beeper"
+          style={{}}
           onDragStart={(event) => onDragStart(event, "beeper")}
+          onDrag={(event) => onDrag(event, "beeper")}
         ></div>
         <div
           className={"dndnode_capacitor100" + send.capacitor100}
           draggable
+          data-type="capacitor100"
           id="capacitor100"
+          style={{}}
           onDragStart={(event) => onDragStart(event, "capacitor100")}
+          onDrag={(event) => onDrag(event, "capacitor100")}
         ></div>
         <div
+          style={{}}
+          onDrag={(event) => onDrag(event, "capacitor1000")}
           className={"dndnode_capacitor1000" + send.capacitor1000}
           draggable
+          data-type="capacitor1000"
           id="capacitor1000"
           onDragStart={(event) => onDragStart(event, "capacitor1000")}
         ></div>
         <div
+          style={{}}
+          onDrag={(event) => onDrag(event, "junction")}
           className={"dndnode_junction" + send.junction}
           draggable
+          data-type="junction"
           id="junction"
           onDragStart={(event) => onDragStart(event, "junction")}
         ></div>
 
         <div
+          style={{}}
+          onDrag={(event) => onDrag(event, "diode")}
           className={"dndnode_diode" + send.diode}
           draggable
+          data-type="diode"
           id="diode"
           onDragStart={(event) => onDragStart(event, "diode")}
         ></div>
 
         <div
+          style={{}}
+          onDrag={(event) => onDrag(event, "ldr")}
           className={"dndnode_ldr" + send.ldr}
           draggable
+          data-type="ldr"
           id="ldr"
           onDragStart={(event) => onDragStart(event, "ldr")}
         ></div>
         <div
+          style={{}}
+          onDrag={(event) => onDrag(event, "led")}
+          onDragEnd={(event) => onDragEnd(event, "led")}
           className={"dndnode_led" + send.led}
           draggable
+          data-type="led"
           id="led"
           onDragStart={(event) => onDragStart(event, "led")}
         ></div>
 
         <div
+          style={{}}
+          onDrag={(event) => onDrag(event, "power")}
           className={"dndnode_power" + send.power}
           draggable
+          data-type="power"
           id="power"
           onDragStart={(event) => onDragStart(event, "power")}
         ></div>
         <div
+          style={{}}
+          onDrag={(event) => onDrag(event, "res_100")}
           className={"dndnode_res_100" + send.res_100}
           draggable
+          data-type="res_100"
           id="res_100"
           onDragStart={(event) => onDragStart(event, "res_100")}
         ></div>
         <div
+          style={{}}
+          onDrag={(event) => onDrag(event, "res_250")}
           className={"dndnode_res_250" + send.res_250}
           draggable
+          data-type="res_250"
           id="res_250"
           onDragStart={(event) => onDragStart(event, "res_250")}
         ></div>
         <div
+          style={{}}
+          onDrag={(event) => onDrag(event, "tact")}
           className={"dndnode_tact" + send.tact}
           draggable
+          data-type="tact"
           id="tact"
           onDragStart={(event) => onDragStart(event, "tact")}
         ></div>
         <div
+          style={{}}
+          onDrag={(event) => onDrag(event, "timer_ic")}
           className={"dndnode_timer_ic" + send.timer_ic}
           draggable
+          data-type="timer_ic"
           id="timer_ic"
           onDragStart={(event) => onDragStart(event, "timer")}
         ></div>
         <div
+          style={{}}
+          onDrag={(event) => onDrag(event, "transistor")}
           className={"dndnode_transistor" + send.transistor}
           draggable
+          data-type="transistor"
           id="transistor"
           onDragStart={(event) => onDragStart(event, "transistor")}
         ></div>
         <div
+          style={{}}
+          onDrag={(event) => onDrag(event, "two_way_switch")}
           className={"dndnode_two_way_switch" + send.two_way_switch}
           draggable
+          data-type="two_way_switch"
           id="two_way_switch"
           onDragStart={(event) => onDragStart(event, "two_way_switch")}
         ></div>
         <div
+          style={{}}
+          onDrag={(event) => onDrag(event, "pot")}
           className={"dndnode_pot" + send.pot}
           draggable
+          data="pot"
           id="pot"
           onDragStart={(event) => onDragStart(event, "pot")}
         ></div>

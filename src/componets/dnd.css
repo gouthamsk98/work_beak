@@ -325,6 +325,7 @@
   border: none !important;
   width: 1px !important;
   height: 1px !important;
+  /* z-index: -1 !important; */
 }
 .side {
   width: 75%;
@@ -339,4 +340,15 @@
 .react-flow__edge-path {
   stroke: green;
   stroke-width: 4;
+}
+.led-light {
+  height: 35px;
+  width: 50;
+  width: 35px;
+
+  border-radius: 50%;
+  display: inline-block;
+  left: 4.6vw;
+  top: -9vh;
+  position: relative;
 }

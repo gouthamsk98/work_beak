@@ -199,7 +199,7 @@ const text = (type, _id) => {
           id="image-render"
           key={v4()}
         ></div>
-        <div className="led-light" style={{}}></div>
+        <div id="led" style={{}}></div>
         <Handle
           type="target"
           position="bottom"
@@ -458,6 +458,9 @@ const initialNodes = [
 let id = 1;
 const getId = () => `dndnode_${id++}`;
 let edge;
+let mouseDownChk = false,
+  circuitClosed,
+  mouseDownChknodeId;
 const DnDFlow = (props) => {
   const reactFlowWrapper = useRef(null);
   const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
@@ -468,7 +471,7 @@ const DnDFlow = (props) => {
     console.log(edges, "edges use effect");
     edge = edges;
 
-    closedChk(nodes, edges);
+    circuitClosed = closedChk(nodes, edges);
   }, [edges]);
 
   const onConnect = async (params) => {
@@ -488,7 +491,30 @@ const DnDFlow = (props) => {
 
     return;
   };
+  //get cordinate while zooming
+  function getCoords(elem) {
+    // crossbrowser version
 
+    var box = elem.getBoundingClientRect();
+
+    var body = document.body;
+    var docEl = document.documentElement;
+
+    var scrollTop = window.pageYOffset || docEl.scrollTop || body.scrollTop;
+    var scrollLeft = window.pageXOffset || docEl.scrollLeft || body.scrollLeft;
+
+    var clientTop = docEl.clientTop || body.clientTop || 0;
+    var clientLeft = docEl.clientLeft || body.clientLeft || 0;
+
+    var top = box.top + scrollTop - clientTop;
+    var left = box.left + scrollLeft - clientLeft;
+
+    return {
+      x: Math.round(left) - 145,
+      y: Math.round(top) - 96,
+      id: parseInt(elem.dataset.id),
+    };
+  }
   const onDragOver = useCallback((event) => {
     event.preventDefault();
     event.dataTransfer.dropEffect = "move";
@@ -761,21 +787,38 @@ const DnDFlow = (props) => {
       }
     });
   };
-  let toDeleteEdge;
-  const onEdgeClick = (event, edge) => {
-    toDeleteEdge = edge.id;
-  };
+
   const onNodeClick = (event, node) => {
     console.log(node);
     if (node.data.specificElType === "tact") {
-      const ele = document.querySelector(".led-light");
-      console.log(ele.style.backgroundColor);
-      if (ele.style.backgroundColor != "red") ele.style.backgroundColor = "red";
-      if (ele.style.backgroundColor === "red") {
-        const ele = document.querySelector(".led-light");
-        ele.style.backgroundColor = "none";
-      }
+      const ele = document.getElementById("led");
+      ele.classList.remove("led-light");
     }
+  };
+  const onMouseDownCapture = async (e) => {
+    console.log(await circuitClosed);
+    if (mouseDownChk && (await circuitClosed)) {
+      const ele = document.getElementById("led");
+
+      let global = document.getElementsByClassName("react-flow__nodes")[0];
+      global = global.childNodes;
+      let cord;
+      for (let i = 0; i < global.length; i++) {
+        if (mouseDownChknodeId === global[i].dataset.id) {
+          cord = await getCoords(global[i]);
+          break;
+        }
+      }
+      console.log({ cord });
+      if (
+        e.clientX - cord.x >= 250 - 10 &&
+        e.clientX - cord.x < 250 + 10 &&
+        e.clientY - cord.y >= 142 - 10 &&
+        e.clientY - cord.y < 142 + 10
+      )
+        ele.classList.add("led-light");
+    }
+    console.log(e);
   };
   //to check the circuit is completed
   const closedChk = async (n, e) => {
@@ -793,14 +836,20 @@ const DnDFlow = (props) => {
     else if (start.length === 0) return false;
   };
 
-  const onDoubleClick = async () => {
-    var index = await edges.findIndex((e) => e.id === toDeleteEdge);
+  const onEdgeDoubleClick = async (e, toDeleteEdge) => {
+    var index = await edges.findIndex((e) => e.id === toDeleteEdge.id);
     if (index != -1) {
       //edge is double clicked
-      setEdges(edges.filter((node) => node.id !== toDeleteEdge));
-      toDeleteEdge = null;
-      console.log(toDeleteEdge);
+      setEdges(edges.filter((node) => node.id !== toDeleteEdge.id));
     }
+  };
+
+  const onNodeMouseEnter = (e, node) => {
+    console.log("node moyse enter", node);
+    if (node.data.specificElType === "tact") {
+      mouseDownChk = true;
+      mouseDownChknodeId = node.id;
+    } else mouseDownChk = false;
   };
   return (
     <div className="dndflow">
@@ -816,9 +865,10 @@ const DnDFlow = (props) => {
             onNodeDrag={onNodeDrag}
             onDrop={onDrop}
             onDragOver={onDragOver}
-            onDoubleClick={onDoubleClick}
-            onEdgeClick={onEdgeClick}
+            onEdgeDoubleClick={onEdgeDoubleClick}
             onNodeClick={onNodeClick}
+            onMouseDownCapture={onMouseDownCapture}
+            onNodeMouseEnter={onNodeMouseEnter}
             // onElementClick={onElementClick}
           >
             <Controls />

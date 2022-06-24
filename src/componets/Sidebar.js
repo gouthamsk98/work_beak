@@ -1,5 +1,6 @@
 import React from "react";
-
+let seriesCircuitLedCount = 0,
+  seriesCircuitBeeperCount = 0;
 export default (props) => {
   const onDragStart = (event, nodeType) => {
     event.dataTransfer.setData("application/reactflow", nodeType);
@@ -38,9 +39,25 @@ export default (props) => {
         if (nodeType == "beeper" || nodeType == "led" || nodeType == "tact") {
           if (ele.id === nodeType) ele.style.display = "none";
         }
+        break;
+      case "seriesCircuit":
+        if (nodeType == "tact") {
+          if (ele.id === nodeType) ele.style.display = "none";
+        }
+        if (nodeType === "led" && seriesCircuitLedCount === 1) {
+          if (ele.id === nodeType) ele.style.display = "none";
+          seriesCircuitLedCount = 0;
+        }
+        if (nodeType === "beeper" && seriesCircuitBeeperCount === 1) {
+          if (ele.id === nodeType) ele.style.display = "none";
+          seriesCircuitBeeperCount = 0;
+        }
     }
   };
-  const onDragEnd = (event, nodeType) => {};
+  const onDragEnd = (event, nodeType) => {
+    if (nodeType === "led") seriesCircuitLedCount = 1;
+    if (nodeType === "beeper") seriesCircuitBeeperCount = 1;
+  };
 
   return (
     <aside>
@@ -58,6 +75,7 @@ export default (props) => {
           style={{}}
           onDragStart={(event) => onDragStart(event, "beeper")}
           onDrag={(event) => onDrag(event, "beeper")}
+          onDragEnd={(event) => onDragEnd(event, "beeper")}
         ></div>
         <div
           className={"dndnode_capacitor100" + send.capacitor100}

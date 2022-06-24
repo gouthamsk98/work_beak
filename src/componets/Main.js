@@ -28,6 +28,7 @@ const text = (type, _id) => {
           id="image-render"
           key={v4()}
         ></div>
+        <div id="beeper" style={{}}></div>
         <Handle
           type="target"
           position="bottom"
@@ -199,7 +200,7 @@ const text = (type, _id) => {
           id="image-render"
           key={v4()}
         ></div>
-        <div id="led" style={{}}></div>
+        <div id={"led" + _id} style={{}}></div>
         <Handle
           type="target"
           position="bottom"
@@ -460,7 +461,8 @@ const getId = () => `dndnode_${id++}`;
 let edge;
 let mouseDownChk = false,
   circuitClosed,
-  mouseDownChknodeId;
+  mouseDownChknodeId,
+  nodeDetail;
 const DnDFlow = (props) => {
   const reactFlowWrapper = useRef(null);
   const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
@@ -666,6 +668,19 @@ const DnDFlow = (props) => {
                       node.data.specificElType == "led")
                   )
                     await onConnect(params);
+                  break;
+                case "seriesCircuit":
+                  if (
+                    e.data.specificElType === "tact" &&
+                    (node.data.specificElType == "beeper" ||
+                      node.data.specificElType == "led")
+                  )
+                    await onConnect(params);
+                  if (
+                    e.data.specificElType === "led" &&
+                    node.data.specificElType == "led"
+                  )
+                    await onConnect(params);
               }
               return;
             }
@@ -715,6 +730,7 @@ const DnDFlow = (props) => {
               console.log("props@@@@@", props.type, node.data.specificElType);
               switch (props.type) {
                 case "simpleCircuit":
+                case "seriesCircuit":
                   if (node.data.specificElType === "tact")
                     await onConnect(params);
               }
@@ -735,6 +751,7 @@ const DnDFlow = (props) => {
 
               switch (props.type) {
                 case "simpleCircuit":
+                case "seriesCircuit":
                   if (node.data.specificElType === "tact")
                     await onConnect(params);
               }
@@ -752,6 +769,7 @@ const DnDFlow = (props) => {
               };
               switch (props.type) {
                 case "simpleCircuit":
+                case "seriesCircuit":
                   if (
                     node.data.specificElType === "led" ||
                     node.data.specificElType === "beeper"
@@ -773,11 +791,13 @@ const DnDFlow = (props) => {
               };
               switch (props.type) {
                 case "simpleCircuit":
+                case "seriesCircuit":
                   if (
                     node.data.specificElType === "led" ||
                     node.data.specificElType === "beeper"
                   )
                     await onConnect(params);
+                  break;
               }
               return;
             }
@@ -791,15 +811,17 @@ const DnDFlow = (props) => {
   const onNodeClick = (event, node) => {
     console.log(node);
     if (node.data.specificElType === "tact") {
-      const ele = document.getElementById("led");
+      const ele = document.getElementById(`led${nodeDetail.id}`);
+      const ele2 = document.getElementById("beeper");
       ele.classList.remove("led-light");
+      ele2.classList.remove("beeper");
     }
   };
   const onMouseDownCapture = async (e) => {
     console.log(await circuitClosed);
     if (mouseDownChk && (await circuitClosed)) {
-      const ele = document.getElementById("led");
-
+      const ele = document.getElementById(`led${nodeDetail.id}`);
+      const ele2 = document.getElementById("beeper");
       let global = document.getElementsByClassName("react-flow__nodes")[0];
       global = global.childNodes;
       let cord;
@@ -815,8 +837,12 @@ const DnDFlow = (props) => {
         e.clientX - cord.x < 250 + 10 &&
         e.clientY - cord.y >= 142 - 10 &&
         e.clientY - cord.y < 142 + 10
-      )
-        ele.classList.add("led-light");
+      ) {
+        if (nodeDetail.data.specificElType === "led")
+          ele.classList.add("led-light");
+        else if (nodeDetail.data.specificElType === "beeper")
+          ele2.classList.add("beeper");
+      }
     }
     console.log(e);
   };
@@ -835,7 +861,7 @@ const DnDFlow = (props) => {
     if (start.length != 0) return await closedChkRec(start[0], n, e);
     else if (start.length === 0) return false;
   };
-
+  //delete the edge
   const onEdgeDoubleClick = async (e, toDeleteEdge) => {
     var index = await edges.findIndex((e) => e.id === toDeleteEdge.id);
     if (index != -1) {
@@ -844,12 +870,24 @@ const DnDFlow = (props) => {
     }
   };
 
-  const onNodeMouseEnter = (e, node) => {
+  const onNodeMouseEnter = async (e, node) => {
     console.log("node moyse enter", node);
     if (node.data.specificElType === "tact") {
       mouseDownChk = true;
       mouseDownChknodeId = node.id;
+      nodeDetail = await getOutgoers(node, nodes, edges);
+      nodeDetail = nodeDetail[0];
     } else mouseDownChk = false;
+  };
+  const onNodeDragEnd = (e, node) => {
+    const ele = document.getElementById(
+      `led${() => {
+        return nodeDetail.id.slice();
+      }}`
+    );
+    const ele2 = document.getElementById("beeper");
+    ele.classList.remove("led-light");
+    ele2.classList.remove("beeper");
   };
   return (
     <div className="dndflow">
@@ -867,8 +905,10 @@ const DnDFlow = (props) => {
             onDragOver={onDragOver}
             onEdgeDoubleClick={onEdgeDoubleClick}
             onNodeClick={onNodeClick}
+            zoomOnDoubleClick={false}
             onMouseDownCapture={onMouseDownCapture}
             onNodeMouseEnter={onNodeMouseEnter}
+            onNodeDragStop={onNodeDragEnd}
             // onElementClick={onElementClick}
           >
             <Controls />

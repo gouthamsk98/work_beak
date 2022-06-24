@@ -17,7 +17,7 @@ class DaySelect extends Component {
       else if (e === "simpleCircuit")
         return <Main beeper={true} led={true} tact={true} type={e} />;
       else if (e === "seriesCircuit")
-        return <Main led={true} tact={true} type={e} />;
+        return <Main led={true} tact={true} type={e} beeper={true} />;
       else if (e === "parallelCircuit")
         return <Main led={true} tact={true} beeper={true} type={e} />;
       else if (e === "resistorCircuit")

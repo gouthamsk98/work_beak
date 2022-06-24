@@ -354,3 +354,16 @@
   background-color: red;
   opacity: 0.6;
 }
+.beeper {
+  height: 57px;
+
+  width: 57px;
+
+  border-radius: 50%;
+  display: inline-block;
+  left: 4vw;
+  top: -12.7vh;
+  position: relative;
+  background-color: blue;
+  opacity: 0.6;
+}

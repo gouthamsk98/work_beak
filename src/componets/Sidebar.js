@@ -41,6 +41,7 @@ export default (props) => {
         }
         break;
       case "seriesCircuit":
+      case "parallelCircuit":
         if (nodeType == "tact") {
           if (ele.id === nodeType) ele.style.display = "none";
         }

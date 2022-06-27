@@ -53,6 +53,49 @@ export default (props) => {
           if (ele.id === nodeType) ele.style.display = "none";
           seriesCircuitBeeperCount = 0;
         }
+        break;
+      case "resistorCircuit":
+        if (nodeType == "tact") {
+          if (ele.id === nodeType) ele.style.display = "none";
+        }
+        if (nodeType === "led") {
+          if (ele.id === nodeType) ele.style.display = "none";
+        }
+        if (nodeType === "res_100") {
+          if (ele.id === nodeType) ele.style.display = "none";
+        }
+        if (nodeType === "res_250") {
+          if (ele.id === nodeType) ele.style.display = "none";
+        }
+        break;
+      case "capacitorCircuit":
+        if (nodeType == "tact") {
+          if (ele.id === nodeType) ele.style.display = "none";
+        }
+        if (nodeType === "beeper") {
+          if (ele.id === nodeType) ele.style.display = "none";
+        }
+        if (nodeType === "capacitor100") {
+          if (ele.id === nodeType) ele.style.display = "none";
+        }
+        if (nodeType === "capacitor1000") {
+          if (ele.id === nodeType) ele.style.display = "none";
+        }
+        break;
+      case "voltageDividerCircuit":
+        if (nodeType == "tact") {
+          if (ele.id === nodeType) ele.style.display = "none";
+        }
+        if (nodeType === "pot") {
+          if (ele.id === nodeType) ele.style.display = "none";
+        }
+        if (nodeType === "led") {
+          if (ele.id === nodeType) ele.style.display = "none";
+        }
+        if (nodeType === "junction") {
+          if (ele.id === nodeType) ele.style.display = "none";
+        }
+        break;
     }
   };
   const onDragEnd = (event, nodeType) => {
@@ -204,7 +247,7 @@ export default (props) => {
           onDrag={(event) => onDrag(event, "pot")}
           className={"dndnode_pot" + send.pot}
           draggable
-          data="pot"
+          data-type="pot"
           id="pot"
           onDragStart={(event) => onDragStart(event, "pot")}
         ></div>

@@ -31,10 +31,13 @@ class DaySelect extends Component {
             capacitor100={true}
             capacitor1000={true}
             tact={true}
+            type={e}
           />
         );
       else if (e === "voltageDividerCircuit")
-        return <Main led={true} pot={true} tact={true} type={e} />;
+        return (
+          <Main led={true} pot={true} tact={true} junction={true} type={e} />
+        );
       else if (e === "semi-conductorDiodeCircuit")
         return <Main led={true} diode={true} tact={true} type={e} />;
       else if (e === "transistorCircuit")

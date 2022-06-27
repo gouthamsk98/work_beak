@@ -22,7 +22,8 @@ let mouseDownChk = false,
   mouseDownChknodeId,
   nodeDetail,
   index1Count = 0,
-  index2Count = 0;
+  index2Count = 0,
+  index3Count = 0;
 const DnDFlow = (props) => {
   const text = (type, _id) => {
     switch (props.type) {
@@ -481,7 +482,8 @@ const DnDFlow = (props) => {
           );
         }
         break;
-      default:
+
+      case "resistorCircuit":
         if (type === "beeper") {
           // console.log("start");
 
@@ -677,7 +679,13 @@ const DnDFlow = (props) => {
                 type="target"
                 position="bottom"
                 style={{ left: " 0.3vw", top: " 4.6vh" }}
-                id="l"
+                id="l1"
+              />
+              <Handle
+                type="target"
+                position="bottom"
+                style={{ left: " 0.3vw", top: " 4.6vh" }}
+                id="l2"
               />
               <Handle
                 type="source"
@@ -716,6 +724,1019 @@ const DnDFlow = (props) => {
                 position="left"
                 style={{ left: "11.3vw", top: " 9.9vh" }}
                 id="r"
+              />
+            </>
+          );
+        }
+        if (type === "power") {
+          return (
+            <>
+              <div
+                className="Image-render"
+                style={{
+                  backgroundImage: `url(${renderImage("power")})`,
+                }}
+                id="image-render"
+                key={v4()}
+              ></div>
+              <Handle
+                type="source"
+                position="bottom"
+                style={{ left: "8.7vw", top: " 5.5vh" }}
+                id="r1"
+              />
+              <Handle
+                type="source"
+                position="left"
+                style={{ left: "8.5vw", top: " 4.2vh" }}
+                id="r4"
+              />
+              <Handle
+                type="target"
+                position="left"
+                style={{ left: "8.5vw", top: " 8.9vh" }}
+                id="r2"
+              />
+
+              <Handle
+                type="target"
+                position="bottom"
+                style={{ left: "8.7vw", top: " 10.4vh" }}
+                id="r3"
+              />
+            </>
+          );
+        }
+        if (type === "res_100") {
+          return (
+            <>
+              <div
+                className="Image-render"
+                style={{
+                  backgroundImage: `url(${renderImage("res_100")})`,
+                }}
+                id="image-render"
+                key={v4()}
+              ></div>
+              <Handle
+                type="target"
+                position="bottom"
+                style={{ left: " 0.3vw", top: " 4.6vh" }}
+                id="l"
+              />
+              <Handle
+                type="source"
+                position="left"
+                style={{ left: "10.5vw", top: " 5.2vh" }}
+                id="r"
+              />
+            </>
+          );
+        }
+        if (type === "res_250") {
+          return (
+            <>
+              <div
+                className="Image-render"
+                style={{
+                  backgroundImage: `url(${renderImage("res_250")})`,
+                }}
+                id="image-render"
+                key={v4()}
+              ></div>
+              <Handle
+                type="target"
+                position="bottom"
+                style={{ left: " 0.3vw", top: " 4.6vh" }}
+                id="l"
+              />
+              <Handle
+                type="source"
+                position="left"
+                style={{ left: "10.5vw", top: " 5.2vh" }}
+                id="r"
+              />
+            </>
+          );
+        }
+        if (type === "tact") {
+          //parallelCircuit 2way connection on r1 and r2
+
+          return (
+            <>
+              <div
+                className="Image-render"
+                style={{
+                  backgroundImage: `url(${renderImage("tact")})`,
+                }}
+                id="image-render"
+                key={v4()}
+              ></div>
+              <Handle
+                type="target"
+                position="bottom"
+                style={{ left: " 0.3vw", top: " 4.6vh" }}
+                id="l"
+              />
+              <Handle
+                type="source"
+                position="left"
+                style={{ left: "10.5vw", top: " 5.2vh" }}
+                id="r1"
+              />
+              <Handle
+                type="source"
+                position="left"
+                style={{ left: "10.5vw", top: " 5.2vh" }}
+                id="r2"
+              />
+            </>
+          );
+        }
+        if (type === "timer") {
+          return (
+            <>
+              <div
+                className="Image-render"
+                style={{
+                  backgroundImage: `url(${renderImage("timer")})`,
+                }}
+                id="image-render"
+                key={v4()}
+              ></div>
+            </>
+          );
+        }
+        if (type === "transistor") {
+          return (
+            <>
+              <div
+                className="Image-render"
+                style={{
+                  backgroundImage: `url(${renderImage("transistor")})`,
+                }}
+                id="image-render"
+                key={v4()}
+              ></div>
+              <Handle
+                type="target"
+                position="bottom"
+                style={{ left: " 0.4vw", top: " 6.7vh" }}
+                id="l"
+              />
+              <Handle
+                type="source"
+                position="left"
+                style={{ left: "10.1vw", top: " 5.7vh" }}
+                id="r"
+              />
+              <Handle
+                type="source"
+                position="left"
+                style={{ left: "10.1vw", top: " 8.5vh" }}
+                id="r"
+              />
+            </>
+          );
+        }
+        if (type === "two_way_switch") {
+          return (
+            <>
+              <div
+                className="Image-render"
+                style={{
+                  backgroundImage: `url(${renderImage("two_way_switch")})`,
+                }}
+                id="image-render"
+                key={v4()}
+              ></div>
+              <Handle
+                type="target"
+                position="bottom"
+                style={{ left: " 0.4vw", top: " 7.2vh" }}
+                id="l"
+              />
+              <Handle
+                type="source"
+                position="left"
+                style={{ left: "11.6vw", top: " 5.533vh" }}
+                id="r"
+              />
+              <Handle
+                type="source"
+                position="left"
+                style={{ left: "11.6vw", top: " 9.9vh" }}
+                id="r"
+              />
+            </>
+          );
+        }
+        break;
+      case "capacitorCircuit":
+        if (type === "beeper") {
+          // console.log("start");
+
+          return (
+            <>
+              <div
+                className="Image-render"
+                style={{
+                  backgroundImage: `url(${renderImage("beeper")})`,
+                  bottom: "38px",
+                }}
+                id="image-render"
+                key={v4()}
+              ></div>
+              <div id={"beeperdndnode_" + _id} style={{}}></div>
+              <Handle
+                type="target"
+                position="bottom"
+                style={{ left: " -0.7vw", top: " 1.8vh" }}
+                id="l"
+              />
+              <Handle
+                type="source"
+                position="left"
+                style={{ left: "11.5vw", top: " 2.2vh" }}
+                id="r"
+              />
+            </>
+          );
+        }
+        if (type === "capacitor100") {
+          // console.log("if");
+          return (
+            <>
+              <div
+                className="Image-render"
+                style={{
+                  backgroundImage: `url(${renderImage("capasitor100")})`,
+                }}
+                id="image-render"
+                key={v4()}
+              ></div>
+              <Handle
+                type="target"
+                position="bottom"
+                style={{ left: " 0.3vw", top: " 4.6vh" }}
+                id="l"
+              />
+              <Handle
+                type="source"
+                position="left"
+                style={{ left: "10.5vw", top: " 5.2vh" }}
+                id="r"
+              />
+            </>
+          );
+        }
+        if (type === "capacitor1000") {
+          return (
+            <>
+              <div
+                className="Image-render"
+                style={{
+                  backgroundImage: `url(${renderImage("capasitor1000")})`,
+                }}
+                id="image-render"
+                key={v4()}
+              ></div>
+              <Handle
+                type="target"
+                position="bottom"
+                style={{ left: " 0.3vw", top: " 4.6vh" }}
+                id="l"
+              />
+              <Handle
+                type="source"
+                position="left"
+                style={{ left: "10.5vw", top: " 5.2vh" }}
+                id="r"
+              />
+            </>
+          );
+        }
+        if (type === "diode") {
+          return (
+            <>
+              <div
+                className="Image-render"
+                style={{
+                  backgroundImage: `url(${renderImage("diode")})`,
+                }}
+                id="image-render"
+                key={v4()}
+              ></div>
+              <Handle
+                type="target"
+                position="bottom"
+                style={{ left: " 0.3vw", top: " 4.6vh" }}
+                id="l"
+              />
+              <Handle
+                type="source"
+                position="left"
+                style={{ left: "10.5vw", top: " 5.2vh" }}
+                id="r"
+              />
+            </>
+          );
+        }
+        if (type === "dip") {
+          return (
+            <>
+              <div
+                className="Image-render"
+                style={{
+                  backgroundImage: `url(${renderImage("dip")})`,
+                }}
+                id="image-render"
+                key={v4()}
+              ></div>
+              <Handle
+                type="source"
+                position="bottom"
+                style={{ left: 90, top: 35 }}
+                id="d"
+              />
+              <Handle
+                type="source"
+                position="right"
+                style={{ left: 140, top: 20 }}
+                id="r"
+              />
+            </>
+          );
+        }
+        if (type === "junction") {
+          return (
+            <>
+              <div
+                className="Image-render"
+                style={{
+                  backgroundImage: `url(${renderImage("junction")})`,
+                }}
+                id="image-render"
+                key={v4()}
+              ></div>
+            </>
+          );
+        }
+        if (type === "ldr") {
+          return (
+            <>
+              <div
+                className="Image-render"
+                style={{
+                  backgroundImage: `url(${renderImage("ldr")})`,
+                }}
+                id="image-render"
+                key={v4()}
+              ></div>
+              <Handle
+                type="target"
+                position="bottom"
+                style={{ left: " 0.3vw", top: " 4.6vh" }}
+                id="l"
+              />
+              <Handle
+                type="source"
+                position="left"
+                style={{ left: "10.5vw", top: " 5.2vh" }}
+                id="r"
+              />
+            </>
+          );
+        }
+        if (type === "led") {
+          console.log("ledId", _id);
+          switch (props.type) {
+            case "simpleCircuit":
+          }
+          return (
+            <>
+              <div
+                className="Image-render"
+                style={{
+                  backgroundImage: `url(${renderImage("led")})`,
+                }}
+                id="image-render"
+                key={v4()}
+              ></div>
+              <div id={"leddndnode_" + _id} style={{}}></div>
+              <Handle
+                type="target"
+                position="bottom"
+                style={{ left: " 0.3vw", top: " 4.6vh" }}
+                id="l1"
+              />
+              <Handle
+                type="target"
+                position="bottom"
+                style={{ left: " 0.3vw", top: " 4.6vh" }}
+                id="l2"
+              />
+              <Handle
+                type="source"
+                position="left"
+                style={{ left: "10.5vw", top: " 5.2vh" }}
+                id="r"
+              />
+            </>
+          );
+        }
+        if (type === "pot") {
+          return (
+            <>
+              <div
+                className="Image-render"
+                style={{
+                  backgroundImage: `url(${renderImage("pot")})`,
+                }}
+                id="image-render"
+                key={v4()}
+              ></div>
+              <Handle
+                type="target"
+                position="bottom"
+                style={{ left: " -0.2vw", top: " 6.6vh" }}
+                id="l"
+              />
+              <Handle
+                type="source"
+                position="left"
+                style={{ left: "11.3vw", top: " 4.1vh" }}
+                id="r"
+              />
+              <Handle
+                type="source"
+                position="left"
+                style={{ left: "11.3vw", top: " 9.9vh" }}
+                id="r"
+              />
+            </>
+          );
+        }
+        if (type === "power") {
+          return (
+            <>
+              <div
+                className="Image-render"
+                style={{
+                  backgroundImage: `url(${renderImage("power")})`,
+                }}
+                id="image-render"
+                key={v4()}
+              ></div>
+              <Handle
+                type="source"
+                position="bottom"
+                style={{ left: "8.7vw", top: " 5.5vh" }}
+                id="r1"
+              />
+              <Handle
+                type="source"
+                position="left"
+                style={{ left: "8.5vw", top: " 4.2vh" }}
+                id="r4"
+              />
+              <Handle
+                type="target"
+                position="left"
+                style={{ left: "8.5vw", top: " 8.9vh" }}
+                id="r2.0"
+              />
+              <Handle
+                type="target"
+                position="left"
+                style={{ left: "8.5vw", top: " 8.9vh" }}
+                id="r2.1"
+              />
+              <Handle
+                type="target"
+                position="left"
+                style={{ left: "8.5vw", top: " 8.9vh" }}
+                id="r2.2"
+              />
+              <Handle
+                type="target"
+                position="bottom"
+                style={{ left: "8.7vw", top: " 10.4vh" }}
+                id="r3.0"
+              />
+              <Handle
+                type="target"
+                position="bottom"
+                style={{ left: "8.7vw", top: " 10.4vh" }}
+                id="r3.1"
+              />
+              <Handle
+                type="target"
+                position="bottom"
+                style={{ left: "8.7vw", top: " 10.4vh" }}
+                id="r3.2"
+              />
+            </>
+          );
+        }
+        if (type === "res_100") {
+          return (
+            <>
+              <div
+                className="Image-render"
+                style={{
+                  backgroundImage: `url(${renderImage("res_100")})`,
+                }}
+                id="image-render"
+                key={v4()}
+              ></div>
+              <Handle
+                type="target"
+                position="bottom"
+                style={{ left: " 0.3vw", top: " 4.6vh" }}
+                id="l"
+              />
+              <Handle
+                type="source"
+                position="left"
+                style={{ left: "10.5vw", top: " 5.2vh" }}
+                id="r"
+              />
+            </>
+          );
+        }
+        if (type === "res_250") {
+          return (
+            <>
+              <div
+                className="Image-render"
+                style={{
+                  backgroundImage: `url(${renderImage("res_250")})`,
+                }}
+                id="image-render"
+                key={v4()}
+              ></div>
+              <Handle
+                type="target"
+                position="bottom"
+                style={{ left: " 0.3vw", top: " 4.6vh" }}
+                id="l"
+              />
+              <Handle
+                type="source"
+                position="left"
+                style={{ left: "10.5vw", top: " 5.2vh" }}
+                id="r"
+              />
+            </>
+          );
+        }
+        if (type === "tact") {
+          //parallelCircuit 2way connection on r1 and r2
+
+          return (
+            <>
+              <div
+                className="Image-render"
+                style={{
+                  backgroundImage: `url(${renderImage("tact")})`,
+                }}
+                id="image-render"
+                key={v4()}
+              ></div>
+              <Handle
+                type="target"
+                position="bottom"
+                style={{ left: " 0.3vw", top: " 4.6vh" }}
+                id="l"
+              />
+              <Handle
+                type="source"
+                position="left"
+                style={{ left: "10.5vw", top: " 5.2vh" }}
+                id="r1"
+              />
+              <Handle
+                type="source"
+                position="left"
+                style={{ left: "10.5vw", top: " 5.2vh" }}
+                id="r2"
+              />
+              <Handle
+                type="source"
+                position="left"
+                style={{ left: "10.5vw", top: " 5.2vh" }}
+                id="r3"
+              />
+            </>
+          );
+        }
+        if (type === "timer") {
+          return (
+            <>
+              <div
+                className="Image-render"
+                style={{
+                  backgroundImage: `url(${renderImage("timer")})`,
+                }}
+                id="image-render"
+                key={v4()}
+              ></div>
+            </>
+          );
+        }
+        if (type === "transistor") {
+          return (
+            <>
+              <div
+                className="Image-render"
+                style={{
+                  backgroundImage: `url(${renderImage("transistor")})`,
+                }}
+                id="image-render"
+                key={v4()}
+              ></div>
+              <Handle
+                type="target"
+                position="bottom"
+                style={{ left: " 0.4vw", top: " 6.7vh" }}
+                id="l"
+              />
+              <Handle
+                type="source"
+                position="left"
+                style={{ left: "10.1vw", top: " 5.7vh" }}
+                id="r"
+              />
+              <Handle
+                type="source"
+                position="left"
+                style={{ left: "10.1vw", top: " 8.5vh" }}
+                id="r"
+              />
+            </>
+          );
+        }
+        if (type === "two_way_switch") {
+          return (
+            <>
+              <div
+                className="Image-render"
+                style={{
+                  backgroundImage: `url(${renderImage("two_way_switch")})`,
+                }}
+                id="image-render"
+                key={v4()}
+              ></div>
+              <Handle
+                type="target"
+                position="bottom"
+                style={{ left: " 0.4vw", top: " 7.2vh" }}
+                id="l"
+              />
+              <Handle
+                type="source"
+                position="left"
+                style={{ left: "11.6vw", top: " 5.533vh" }}
+                id="r"
+              />
+              <Handle
+                type="source"
+                position="left"
+                style={{ left: "11.6vw", top: " 9.9vh" }}
+                id="r"
+              />
+            </>
+          );
+        }
+        break;
+      default:
+        if (type === "beeper") {
+          // console.log("start");
+
+          return (
+            <>
+              <div
+                className="Image-render"
+                style={{
+                  backgroundImage: `url(${renderImage("beeper")})`,
+                  bottom: "38px",
+                }}
+                id="image-render"
+                key={v4()}
+              ></div>
+              <div id={"beeperdndnode_" + _id} style={{}}></div>
+              <Handle
+                type="target"
+                position="bottom"
+                style={{ left: " -0.7vw", top: " 1.8vh" }}
+                id="l"
+              />
+              <Handle
+                type="source"
+                position="left"
+                style={{ left: "11.5vw", top: " 2.2vh" }}
+                id="r"
+              />
+            </>
+          );
+        }
+        if (type === "capacitor100") {
+          // console.log("if");
+          return (
+            <>
+              <div
+                className="Image-render"
+                style={{
+                  backgroundImage: `url(${renderImage("capasitor100")})`,
+                }}
+                id="image-render"
+                key={v4()}
+              ></div>
+              <Handle
+                type="target"
+                position="bottom"
+                style={{ left: " 0.3vw", top: " 4.6vh" }}
+                id="l"
+              />
+              <Handle
+                type="source"
+                position="left"
+                style={{ left: "10.5vw", top: " 5.2vh" }}
+                id="r"
+              />
+            </>
+          );
+        }
+        if (type === "capacitor1000") {
+          return (
+            <>
+              <div
+                className="Image-render"
+                style={{
+                  backgroundImage: `url(${renderImage("capasitor1000")})`,
+                }}
+                id="image-render"
+                key={v4()}
+              ></div>
+              <Handle
+                type="target"
+                position="bottom"
+                style={{ left: " 0.3vw", top: " 4.6vh" }}
+                id="l"
+              />
+              <Handle
+                type="source"
+                position="left"
+                style={{ left: "10.5vw", top: " 5.2vh" }}
+                id="r"
+              />
+            </>
+          );
+        }
+        if (type === "diode") {
+          return (
+            <>
+              <div
+                className="Image-render"
+                style={{
+                  backgroundImage: `url(${renderImage("diode")})`,
+                }}
+                id="image-render"
+                key={v4()}
+              ></div>
+              <Handle
+                type="target"
+                position="bottom"
+                style={{ left: " 0.3vw", top: " 4.6vh" }}
+                id="l"
+              />
+              <Handle
+                type="source"
+                position="left"
+                style={{ left: "10.5vw", top: " 5.2vh" }}
+                id="r"
+              />
+            </>
+          );
+        }
+        if (type === "dip") {
+          return (
+            <>
+              <div
+                className="Image-render"
+                style={{
+                  backgroundImage: `url(${renderImage("dip")})`,
+                }}
+                id="image-render"
+                key={v4()}
+              ></div>
+              <Handle
+                type="source"
+                position="bottom"
+                style={{ left: 90, top: 35 }}
+                id="d"
+              />
+              <Handle
+                type="source"
+                position="right"
+                style={{ left: 140, top: 20 }}
+                id="r"
+              />
+            </>
+          );
+        }
+        if (type === "junction") {
+          return (
+            <>
+              <div
+                className="Image-render"
+                style={{
+                  backgroundImage: `url(${renderImage("junction")})`,
+                }}
+                id="image-render"
+                key={v4()}
+              ></div>
+              <Handle
+                type="source"
+                position="bottom"
+                style={{ left: "2.5vw", top: " 3.99vh" }}
+                id="l1"
+              />
+              <Handle
+                type="source"
+                position="bottom"
+                style={{ left: "2.5vw", top: " 5.79vh" }}
+                id="l2"
+              />
+              <Handle
+                type="source"
+                position="bottom"
+                style={{ left: "2.5vw", top: " 7.5vh" }}
+                id="l3"
+              />
+              <Handle
+                type="source"
+                position="bottom"
+                style={{ left: "2.5vw", top: " 9.3vh" }}
+                id="l4"
+              />
+              <Handle
+                type="target"
+                position="bottom"
+                style={{ left: "2.5vw", top: " 3.99vh" }}
+                id="l1.t"
+              />
+              <Handle
+                type="target"
+                position="bottom"
+                style={{ left: "2.5vw", top: " 5.79vh" }}
+                id="l2.t"
+              />
+              <Handle
+                type="target"
+                position="bottom"
+                style={{ left: "2.5vw", top: " 7.5vh" }}
+                id="l3.t"
+              />
+              <Handle
+                type="target"
+                position="bottom"
+                style={{ left: "2.5vw", top: " 9.3vh" }}
+                id="l4.t"
+              />
+              <Handle
+                type="source"
+                position="bottom"
+                style={{ left: "9.28vw", top: " 3.99vh" }}
+                id="r1"
+              />
+              <Handle
+                type="source"
+                position="bottom"
+                style={{ left: "9.28vw", top: " 5.79vh" }}
+                id="r2"
+              />
+              <Handle
+                type="source"
+                position="bottom"
+                style={{ left: "9.28vw", top: " 7.5vh" }}
+                id="r3"
+              />{" "}
+              <Handle
+                type="source"
+                position="bottom"
+                style={{ left: "9.28vw", top: " 9.3vh" }}
+                id="r4"
+              />
+              <Handle
+                type="target"
+                position="bottom"
+                style={{ left: "9.28vw", top: " 3.99vh" }}
+                id="r1.t"
+              />
+              <Handle
+                type="target"
+                position="bottom"
+                style={{ left: "9.28vw", top: " 5.79vh" }}
+                id="r2.t"
+              />
+              <Handle
+                type="target"
+                position="bottom"
+                style={{ left: "9.28vw", top: " 7.5vh" }}
+                id="r3.t"
+              />{" "}
+              <Handle
+                type="target"
+                position="bottom"
+                style={{ left: "9.28vw", top: " 9.3vh" }}
+                id="r4.t"
+              />
+            </>
+          );
+        }
+        if (type === "ldr") {
+          return (
+            <>
+              <div
+                className="Image-render"
+                style={{
+                  backgroundImage: `url(${renderImage("ldr")})`,
+                }}
+                id="image-render"
+                key={v4()}
+              ></div>
+              <Handle
+                type="target"
+                position="bottom"
+                style={{ left: " 0.3vw", top: " 4.6vh" }}
+                id="l"
+              />
+              <Handle
+                type="source"
+                position="left"
+                style={{ left: "10.5vw", top: " 5.2vh" }}
+                id="r"
+              />
+            </>
+          );
+        }
+        if (type === "led") {
+          return (
+            <>
+              <div
+                className="Image-render"
+                style={{
+                  backgroundImage: `url(${renderImage("led")})`,
+                }}
+                id="image-render"
+                key={v4()}
+              ></div>
+              <div id={"leddndnode_" + _id} style={{}}></div>
+              <Handle
+                type="target"
+                position="bottom"
+                style={{ left: " 0.3vw", top: " 4.6vh" }}
+                id="l"
+              />
+              <Handle
+                type="source"
+                position="left"
+                style={{ left: "10.5vw", top: " 5.2vh" }}
+                id="r"
+              />
+            </>
+          );
+        }
+        if (type === "pot") {
+          return (
+            <>
+              <div
+                className="Image-render"
+                style={{
+                  backgroundImage: `url(${renderImage("pot")})`,
+                }}
+                id="image-render"
+                key={v4()}
+              ></div>
+              <Handle
+                type="source"
+                position="bottom"
+                style={{ left: " -0.2vw", top: " 6.6vh" }}
+                id="l"
+              />
+              <Handle
+                type="target"
+                position="left"
+                style={{ left: "11.3vw", top: " 4.1vh" }}
+                id="r1"
+              />
+              <Handle
+                type="target"
+                position="left"
+                style={{ left: "11.3vw", top: " 9.9vh" }}
+                id="r2"
               />
             </>
           );
@@ -943,6 +1964,7 @@ const DnDFlow = (props) => {
     node = nodes;
   }, [nodes]);
   const onConnect = async (params) => {
+    console.log(params);
     var index1 = await edge.findIndex(
       (e) =>
         e.source === params.source && e.sourceHandle === params.sourceHandle
@@ -967,18 +1989,22 @@ const DnDFlow = (props) => {
     else return false;
   };
   const closedChkRec = async (ele, n, e) => {
-    if (ele.id === nodes[0].id) {
-      return true;
-    }
-    let start = await getOutgoers(ele, n, e);
-    console.log({ start }, { ele });
-    if (start.length === 1) return await closedChkRec(start[0], n, e);
-    else if(start.length === 2){
-      let y= await closedChkRec(start[0],n,e)
-      let x = await closedChkRec(start[1],n,e)
-      return y*x
-    }
-    else if (start.length === 0) return false;
+    // if (ele.id === nodes[0].id) {
+    //   return true;
+    // }
+    // let start = await getOutgoers(ele, n, e);
+    // // console.log({ start }, { ele });
+    // if (start.length === 1) return await closedChkRec(start[0], n, e);
+    // else if (start.length >= 1) {
+    //   let y = 1;
+    //   for (let i = 0; i < start.length; i++) {
+    //     y = y * (await closedChkRec(start[i], n, e));
+    //   }
+    //   // let y = await closedChkRec(start[0], n, e);
+    //   // let x = await closedChkRec(start[1], n, e);
+    //   return y;
+    // } else if (start.length === 0) return false;
+    return false;
   };
   //delete the edge
   const onEdgeDoubleClick = async (e, toDeleteEdge) => {
@@ -986,8 +2012,9 @@ const DnDFlow = (props) => {
     if (index != -1) {
       //edge is double clicked
       setEdges(edges.filter((node) => node.id !== toDeleteEdge.id));
-      index1Count=0
-      index2Count=0
+      index1Count = 0;
+      index2Count = 0;
+      index3Count = 0;
     }
   };
 
@@ -1152,11 +2179,20 @@ const DnDFlow = (props) => {
                 offsetX = 0;
                 offsetY = 0;
                 break;
+              case "pot":
+                offsetX = -238;
+                offsetY = -21;
+                break;
               default:
                 offsetX = 0;
                 offsetY = 0;
                 break;
             }
+            console.log(
+              "pot^^^^^^^^",
+              node.position.x - e.position.x,
+              node.position.y - e.position.y
+            );
             if (
               node.position.x - e.position.x >= 221 - 5 + offsetX &&
               node.position.x - e.position.x < 221 + 5 + offsetX &&
@@ -1204,6 +2240,68 @@ const DnDFlow = (props) => {
                   }
 
                   break;
+                case "resistorCircuit":
+                  if (
+                    e.data.specificElType == "tact" &&
+                    (node.data.specificElType === "res_100" ||
+                      node.data.specificElType === "res_250")
+                  ) {
+                    if (index1Count === 0) params.sourceHandle = "r1";
+                    else if (index1Count === 1) params.sourceHandle = "r2";
+
+                    await onConnect(params);
+                    index1Count = 1;
+                  } else if (
+                    (e.data.specificElType === "res_100" ||
+                      e.data.specificElType === "res_250") &&
+                    node.data.specificElType === "led"
+                  ) {
+                    if (index2Count === 0) params.targetHandle = "l1";
+                    else if (index2Count === 1) params.targetHandle = "l2";
+                    await onConnect(params);
+
+                    index2Count = 1;
+                  } else if (
+                    (e.data.specificElType === "res_100" ||
+                      e.data.specificElType === "res_250") &&
+                    (node.data.specificElType === "res_100" ||
+                      node.data.specificElType === "res_250")
+                  ) {
+                    await onConnect(params);
+                  }
+                  break;
+                case "capacitorCircuit":
+                  if (
+                    e.data.specificElType === "tact" &&
+                    (node.data.specificElType === "capacitor100" ||
+                      node.data.specificElType === "capacitor1000" ||
+                      node.data.specificElType === "beeper")
+                  ) {
+                    console.log(
+                      "&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&",
+                      index3Count
+                    );
+                    if (index3Count === 0) params.sourceHandle = "r1";
+                    else if (index3Count === 1) params.sourceHandle = "r2";
+                    if (
+                      edge.findIndex((e) => e.sourceHandle === "r1") != -1 &&
+                      edge.findIndex((e) => e.sourceHandle === "r2") != -1 &&
+                      edge.findIndex((e) => e.sourceHandle === "r3") === -1
+                    )
+                      params.sourceHandle = "r3";
+
+                    await onConnect(params);
+                    index3Count = 1;
+                  }
+                  break;
+                case "voltageDividerCircuit":
+                  if (
+                    e.data.specificElType === "tact" &&
+                    node.data.specificElType === "pot"
+                  ) {
+                    params.targetHandle = "r1";
+                    await onConnect(params);
+                  }
               }
               return;
             }
@@ -1255,6 +2353,9 @@ const DnDFlow = (props) => {
                 case "simpleCircuit":
                 case "seriesCircuit":
                 case "parallelCircuit":
+                case "resistorCircuit":
+                case "capacitorCircuit":
+                case "voltageDividerCircuit":
                   if (node.data.specificElType === "tact")
                     await onConnect(params);
               }
@@ -1277,6 +2378,8 @@ const DnDFlow = (props) => {
                 case "simpleCircuit":
                 case "seriesCircuit":
                 case "parallelCircuit":
+                case "resistorCircuit":
+                case "capacitorCircuit":
                   if (node.data.specificElType === "tact")
                     await onConnect(params);
               }
@@ -1295,6 +2398,7 @@ const DnDFlow = (props) => {
               switch (props.type) {
                 case "simpleCircuit":
                 case "seriesCircuit":
+                case "resistorCircuit":
                   if (
                     node.data.specificElType === "led" ||
                     node.data.specificElType === "beeper"
@@ -1311,6 +2415,24 @@ const DnDFlow = (props) => {
                   await onConnect(params);
                   index2Count = 1;
                   break;
+                case "capacitorCircuit":
+                  if (
+                    node.data.specificElType === "beeper" ||
+                    node.data.specificElType === "capacitor100" ||
+                    node.data.specificElType === "capacitor1000"
+                  ) {
+                    if (index2Count === 0) params.targetHandle = "r2.0";
+                    else if (index2Count == 1) params.targetHandle = "r2.1";
+                    if (
+                      edge.findIndex((e) => e.targetHandle === "r2.0") != -1 &&
+                      edge.findIndex((e) => e.targetHandle === "r2.1") != -1 &&
+                      edge.findIndex((e) => e.targetHandle === "r2.2") === -1
+                    )
+                      params.targetHandle = "r2.2";
+
+                    await onConnect(params);
+                    index2Count = 1;
+                  }
               }
               return;
             } else if (
@@ -1328,6 +2450,13 @@ const DnDFlow = (props) => {
               switch (props.type) {
                 case "simpleCircuit":
                 case "seriesCircuit":
+                case "resistorCircuit":
+                  if (
+                    node.data.specificElType === "led" ||
+                    node.data.specificElType === "beeper"
+                  )
+                    await onConnect(params);
+                  break;
                 case "parallelCircuit":
                   if (
                     node.data.specificElType === "led" ||
@@ -1344,11 +2473,88 @@ const DnDFlow = (props) => {
             }
 
             break;
+          case "pot":
+            switch (node.data.specificElType) {
+              case "junction":
+                console.log(
+                  "pot#########",
+                  node.position.x - e.position.x,
+                  node.position.y - e.position.y
+                );
+
+                params = {
+                  source: `${node.id}`,
+                  sourceHandle: `l1`,
+                  target: `${e.id}`,
+                  targetHandle: "r1",
+                };
+                let index1 = edge.findIndex(
+                  (e) =>
+                    e.target === params.target && params.targetHandle == "r1"
+                );
+                let y = node.position.y - e.position.y;
+
+                if (index1 != -1) {
+                  console.log("entered $$$$$$$$$$$$$$$$$$$$$$$$$$$$$");
+                  params.targetHandle = "r2";
+                }
+                if (
+                  node.position.x - e.position.x >= 176 - 5 &&
+                  node.position.x - e.position.x <= 176 + 5
+                ) {
+                  //l1.t or l1
+                  if (y >= -3 - 5 && y <= -3 + 5) {
+                    params.sourceHandle = "l1";
+                    await onConnect(params);
+                  }
+                  //l2.t or l2
+                  else if (y >= -22 - 5 && y <= -22 + 5) {
+                    params.sourceHandle = "l2";
+                    await onConnect(params);
+                  }
+                  //l3.t or l3
+                  else if (y >= -38 - 5 && y <= -38 + 5) {
+                    params.sourceHandle = "l3";
+                    await onConnect(params);
+                  }
+                  //l4.t or l4
+                  else if (y >= -56 - 5 && y <= -56 + 5) {
+                    params.sourceHandle = "l4";
+                    await onConnect(params);
+                  }
+                } else if (
+                  node.position.x - e.position.x >= 40 - 5 &&
+                  node.position.x - e.position.x <= 40 + 5
+                ) {
+                  //r1.t or r1
+                  if (y >= -3 - 5 && y <= -3 + 5) {
+                    params.sourceHandle = "r1";
+                    await onConnect(params);
+                  }
+                  //r2.t or r2
+                  else if (y >= -22 - 5 && y <= -22 + 5) {
+                    params.sourceHandle = "r2";
+                    await onConnect(params);
+                  }
+                  //r3.t or r3
+                  else if (y >= -38 - 5 && y <= -38 + 5) {
+                    params.sourceHandle = "r3";
+                    await onConnect(params);
+                  }
+                  //r4.t or r4
+                  else if (y >= -56 - 5 && y <= -56 + 5) {
+                    params.sourceHandle = "r4";
+                    await onConnect(params);
+                  }
+                }
+
+                break;
+            }
+            break;
         }
       }
     });
   };
-
 
   const onNodeClick = async (event, node) => {
     console.log(node);
@@ -1397,41 +2603,68 @@ const DnDFlow = (props) => {
           }
         }
         break;
-        case "parallelCircuit":
-          if(await circuitClosed === 1 ){
-            let nodeDetail2 = await getOutgoers(nodeDetail, nodes, edges);
-            let nodeDetail1 = nodeDetail2[0];
-            nodeDetail2 = nodeDetail2[1]
-            if (
-              nodeDetail1.data.specificElType === "led" &&
-              nodeDetail2.data.specificElType === "led"
-            ) {
-              const eleLed2 = document.getElementById(`led${nodeDetail2.id}`);
-              const eleLed1 = document.getElementById(`led${nodeDetail1.id}`);
+      case "parallelCircuit":
+        if ((await circuitClosed) === 1) {
+          let nodeDetail2 = await getOutgoers(nodeDetail, nodes, edges);
+          let nodeDetail1 = nodeDetail2[0];
+          nodeDetail2 = nodeDetail2[1];
+          if (
+            nodeDetail1.data.specificElType === "led" &&
+            nodeDetail2.data.specificElType === "led"
+          ) {
+            const eleLed2 = document.getElementById(`led${nodeDetail2.id}`);
+            const eleLed1 = document.getElementById(`led${nodeDetail1.id}`);
 
-              eleLed1.classList.remove("led-light");
-              eleLed2.classList.remove("led-light");
-            }  else if (
-              nodeDetail1.data.specificElType == "beeper" &&
-              nodeDetail2.data.specificElType == "beeper"
-            ) {
-              const eleLed1 = document.getElementById(`beeper${nodeDetail1.id}`);
+            eleLed1.classList.remove("led-light");
+            eleLed2.classList.remove("led-light");
+          } else if (
+            nodeDetail1.data.specificElType == "beeper" &&
+            nodeDetail2.data.specificElType == "beeper"
+          ) {
+            const eleLed1 = document.getElementById(`beeper${nodeDetail1.id}`);
 
-              const eleLed2 = document.getElementById(
-                `beeper${nodeDetail2.id}`
-              );
+            const eleLed2 = document.getElementById(`beeper${nodeDetail2.id}`);
 
-              eleLed1.classList.remove("beeper");
-              eleLed2.classList.remove("beeper");
-            }
+            eleLed1.classList.remove("beeper");
+            eleLed2.classList.remove("beeper");
           }
-          break;
-     }
-    
-};
+        }
+        break;
+      case "resistorCircuit":
+        if ((await circuitClosed) === true) {
+          let nodeDetail1 = await getOutgoers(nodeDetail, nodes, edges);
+          nodeDetail1 = nodeDetail1[0];
+          let nodeDetail2 = await getOutgoers(nodeDetail1, nodes, edges);
+          nodeDetail2 = nodeDetail2[0];
+          if (nodeDetail2.data.specificElType === "led") {
+            const eleLed1 = document.getElementById(`led${nodeDetail2.id}`);
+            eleLed1.classList.remove("led-light");
+          } else if (
+            nodeDetail2.data.specificElType === "res_100" ||
+            nodeDetail2.data.specificElType === "res_250"
+          ) {
+            let nodeDetail3 = await getOutgoers(nodeDetail2, nodes, edges);
+            nodeDetail3 = nodeDetail3[0];
+            const eleLed1 = document.getElementById(`led${nodeDetail3.id}`);
+            eleLed1.classList.remove("led-light");
+          }
+        } else if ((await circuitClosed) === 1) {
+          let nodeDetail1 = await getOutgoers(nodeDetail, nodes, edges);
+          if (nodeDetail1.length === 2) {
+            let nodeDetail2 = nodeDetail1[1];
+            nodeDetail1 = nodeDetail1[0];
+            let nodeDetail3 = await getOutgoers(nodeDetail2, nodes, edges);
+            nodeDetail3 = nodeDetail3[0];
+
+            const eleLed1 = document.getElementById(`led${nodeDetail3.id}`);
+            eleLed1.classList.remove("led-light");
+          }
+        }
+    }
+  };
   const onMouseDownCapture = async (e) => {
     console.log(await circuitClosed, "closedC");
-    
+
     if (mouseDownChk && (await circuitClosed)) {
       let global = document.getElementsByClassName("react-flow__nodes")[0];
       global = global.childNodes;
@@ -1486,32 +2719,76 @@ const DnDFlow = (props) => {
 
             break;
           case "parallelCircuit":
-            if(await circuitClosed === 1 ){
+            if ((await circuitClosed) === 1) {
               let nodeDetail2 = await getOutgoers(nodeDetail, nodes, edges);
               let nodeDetail1 = nodeDetail2[0];
-              nodeDetail2 = nodeDetail2[1]
+              nodeDetail2 = nodeDetail2[1];
               if (
                 nodeDetail1.data.specificElType === "led" &&
                 nodeDetail2.data.specificElType === "led"
               ) {
                 const eleLed2 = document.getElementById(`led${nodeDetail2.id}`);
                 const eleLed1 = document.getElementById(`led${nodeDetail1.id}`);
-  
+
                 eleLed1.classList.add("led-light");
                 eleLed2.classList.add("led-light");
-              } 
-              else if (
+              } else if (
                 nodeDetail1.data.specificElType === "beeper" &&
                 nodeDetail2.data.specificElType === "beeper"
               ) {
                 const eleLed2 = document.getElementById(
                   `beeper${nodeDetail2.id}`
                 );
-                const eleLed1 = document.getElementById(`beeper${nodeDetail1.id}`);
-  
+                const eleLed1 = document.getElementById(
+                  `beeper${nodeDetail1.id}`
+                );
+
                 eleLed1.classList.add("beeper");
                 eleLed2.classList.add("beeper");
               }
+            }
+            break;
+          case "resistorCircuit":
+            if ((await circuitClosed) === true) {
+              let nodeDetail1 = await getOutgoers(nodeDetail, nodes, edges);
+              nodeDetail1 = nodeDetail1[0];
+              let nodeDetail2 = await getOutgoers(nodeDetail1, nodes, edges);
+              nodeDetail2 = nodeDetail2[0];
+              if (nodeDetail2.data.specificElType === "led") {
+                const eleLed1 = document.getElementById(`led${nodeDetail2.id}`);
+                eleLed1.classList.add("led-light");
+                if (nodeDetail1.data.specificElType === "res_100")
+                  eleLed1.style.opacity = ".65";
+                else if (nodeDetail1.data.specificElType === "res_250")
+                  eleLed1.style.opacity = ".5";
+              } else if (
+                nodeDetail2.data.specificElType === "res_100" ||
+                nodeDetail2.data.specificElType === "res_250"
+              ) {
+                let nodeDetail3 = await getOutgoers(nodeDetail2, nodes, edges);
+                nodeDetail3 = nodeDetail3[0];
+                const eleLed1 = document.getElementById(`led${nodeDetail3.id}`);
+                eleLed1.classList.add("led-light");
+                eleLed1.style.opacity = ".4";
+              }
+            } else if ((await circuitClosed) === 1) {
+              let nodeDetail1 = await getOutgoers(nodeDetail, nodes, edges);
+              if (nodeDetail1.length === 2) {
+                let nodeDetail2 = nodeDetail1[1];
+                nodeDetail1 = nodeDetail1[0];
+                let nodeDetail3 = await getOutgoers(nodeDetail2, nodes, edges);
+                nodeDetail3 = nodeDetail3[0];
+
+                const eleLed1 = document.getElementById(`led${nodeDetail3.id}`);
+                eleLed1.classList.add("led-light");
+                eleLed1.style.opacity = ".7";
+              }
+            }
+            break;
+          case "capacitorCircuit":
+          case "resistorCircuit":
+            if ((await circuitClosed) === true) {
+            } else if ((await circuitClosed) === 1) {
             }
             break;
         }
@@ -1525,11 +2802,16 @@ const DnDFlow = (props) => {
     if (node.data.specificElType === "tact") {
       mouseDownChk = true;
       mouseDownChknodeId = node.id;
-      if(props.type==="parallelCircuit")
-     { nodeDetail=node}
-      else
-     { nodeDetail = await getOutgoers(node, nodes, edges);
-      nodeDetail = nodeDetail[0];}
+      if (
+        props.type === "parallelCircuit" ||
+        props.type === "resistorCircuit" ||
+        props.type === "capacitorCircuit"
+      ) {
+        nodeDetail = node;
+      } else {
+        nodeDetail = await getOutgoers(node, nodes, edges);
+        nodeDetail = nodeDetail[0];
+      }
     } else mouseDownChk = false;
   };
   const onNodeDragEnd = async (e, node) => {
@@ -1570,34 +2852,37 @@ const DnDFlow = (props) => {
           }
           // ele2.classList.remove("beeper");
           break;
-          case "parallelCircuit":
-            if(await circuitClosed === 1 ){
-              let nodeDetail2 = await getOutgoers(nodeDetail, nodes, edges);
-              let nodeDetail1 = nodeDetail2[0];
-              nodeDetail2 = nodeDetail2[1]
-              if (
-                nodeDetail1.data.specificElType === "led" &&
-                nodeDetail2.data.specificElType === "led"
-              ) {
-                const eleLed2 = document.getElementById(`led${nodeDetail2.id}`);
-                const eleLed1 = document.getElementById(`led${nodeDetail1.id}`);
-  
-                eleLed1.classList.remove("led-light");
-                eleLed2.classList.remove("led-light");
-              } 
-              else if (
-                nodeDetail1.data.specificElType == "beeper" &&
-                nodeDetail2.data.specificElType == "beeper"
-              ) {
-                const eleLed1 = document.getElementById(`beeper${nodeDetail1.id}`);
-    
-                const eleLed2 = document.getElementById(`beeper${nodeDetail2.id}`);
-    
-                eleLed1.classList.remove("beeper");
-                eleLed2.classList.remove("beeper");
-              }
+        case "parallelCircuit":
+          if ((await circuitClosed) === 1) {
+            let nodeDetail2 = await getOutgoers(nodeDetail, nodes, edges);
+            let nodeDetail1 = nodeDetail2[0];
+            nodeDetail2 = nodeDetail2[1];
+            if (
+              nodeDetail1.data.specificElType === "led" &&
+              nodeDetail2.data.specificElType === "led"
+            ) {
+              const eleLed2 = document.getElementById(`led${nodeDetail2.id}`);
+              const eleLed1 = document.getElementById(`led${nodeDetail1.id}`);
+
+              eleLed1.classList.remove("led-light");
+              eleLed2.classList.remove("led-light");
+            } else if (
+              nodeDetail1.data.specificElType == "beeper" &&
+              nodeDetail2.data.specificElType == "beeper"
+            ) {
+              const eleLed1 = document.getElementById(
+                `beeper${nodeDetail1.id}`
+              );
+
+              const eleLed2 = document.getElementById(
+                `beeper${nodeDetail2.id}`
+              );
+
+              eleLed1.classList.remove("beeper");
+              eleLed2.classList.remove("beeper");
             }
-            break;
+          }
+          break;
       }
   };
   return (

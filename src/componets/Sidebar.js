@@ -1,6 +1,7 @@
 import React from "react";
 let seriesCircuitLedCount = 0,
-  seriesCircuitBeeperCount = 0;
+  seriesCircuitBeeperCount = 0,
+  junctionCount = 0;
 export default (props) => {
   const onDragStart = (event, nodeType) => {
     event.dataTransfer.setData("application/reactflow", nodeType);
@@ -36,7 +37,7 @@ export default (props) => {
 
     switch (props.send.type) {
       case "simpleCircuit":
-        if (nodeType == "beeper" || nodeType == "led" || nodeType == "tact") {
+        if (nodeType == "beeper" || "led" || "tact") {
           if (ele.id === nodeType) ele.style.display = "none";
         }
         break;
@@ -53,54 +54,47 @@ export default (props) => {
           if (ele.id === nodeType) ele.style.display = "none";
           seriesCircuitBeeperCount = 0;
         }
+        if (nodeType === "junction" && junctionCount === 1) {
+          if (ele.id === nodeType) ele.style.display = "none";
+          junctionCount = 0;
+        }
         break;
       case "resistorCircuit":
-        if (nodeType == "tact") {
+        if (nodeType == "tact" || "led" || "res_100" || "res_250")
           if (ele.id === nodeType) ele.style.display = "none";
-        }
-        if (nodeType === "led") {
-          if (ele.id === nodeType) ele.style.display = "none";
-        }
-        if (nodeType === "res_100") {
-          if (ele.id === nodeType) ele.style.display = "none";
-        }
-        if (nodeType === "res_250") {
-          if (ele.id === nodeType) ele.style.display = "none";
-        }
+
         break;
       case "capacitorCircuit":
-        if (nodeType == "tact") {
+        if (nodeType == "tact" || "beeper" || "capacitor100" || "capacitor1000")
           if (ele.id === nodeType) ele.style.display = "none";
-        }
-        if (nodeType === "beeper") {
-          if (ele.id === nodeType) ele.style.display = "none";
-        }
-        if (nodeType === "capacitor100") {
-          if (ele.id === nodeType) ele.style.display = "none";
-        }
-        if (nodeType === "capacitor1000") {
-          if (ele.id === nodeType) ele.style.display = "none";
-        }
+
         break;
       case "voltageDividerCircuit":
-        if (nodeType == "tact") {
+        if (nodeType == "tact" || "pot" || "led" || "junction")
           if (ele.id === nodeType) ele.style.display = "none";
-        }
-        if (nodeType === "pot") {
-          if (ele.id === nodeType) ele.style.display = "none";
-        }
-        if (nodeType === "led") {
-          if (ele.id === nodeType) ele.style.display = "none";
-        }
-        if (nodeType === "junction") {
-          if (ele.id === nodeType) ele.style.display = "none";
-        }
+
         break;
+      case "semi-conductorDiodeCircuit":
+        if (nodeType == "tact" || "diode" || "led")
+          if (ele.id === nodeType) ele.style.display = "none";
+
+        break;
+      case "transistorCircuit":
+        if (
+          nodeType === "tact" ||
+          "led" ||
+          "res_100" ||
+          "transistor" ||
+          "ldr" ||
+          "junction"
+        )
+          if (ele.id === nodeType) ele.style.display = "none";
     }
   };
   const onDragEnd = (event, nodeType) => {
     if (nodeType === "led") seriesCircuitLedCount = 1;
     if (nodeType === "beeper") seriesCircuitBeeperCount = 1;
+    if (nodeType === "junction") junctionCount = 1;
   };
 
   return (
@@ -147,6 +141,7 @@ export default (props) => {
           data-type="junction"
           id="junction"
           onDragStart={(event) => onDragStart(event, "junction")}
+          onDragEnd={(event) => onDragEnd(event, "junction")}
         ></div>
 
         <div

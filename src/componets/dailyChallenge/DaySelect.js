@@ -19,7 +19,9 @@ class DaySelect extends Component {
       else if (e === "seriesCircuit")
         return <Main led={true} tact={true} type={e} beeper={true} />;
       else if (e === "parallelCircuit")
-        return <Main led={true} tact={true} beeper={true} type={e} />;
+        return (
+          <Main junction={true} led={true} tact={true} beeper={true} type={e} />
+        );
       else if (e === "resistorCircuit")
         return (
           <Main led={true} res_100={true} res_250={true} tact={true} type={e} />
@@ -47,10 +49,8 @@ class DaySelect extends Component {
             transistor={true}
             tact={true}
             ldr={true}
-            diode={true}
-            pot={true}
             res_100={true}
-            res_250={true}
+            junction={true}
             type={e}
           />
         );

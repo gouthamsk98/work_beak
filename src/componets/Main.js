@@ -24,6 +24,7 @@ let mouseDownChk = false,
   index1Count = 0,
   index2Count = 0,
   index3Count = 0;
+let eleLed1;
 const DnDFlow = (props) => {
   const text = (type, _id) => {
     switch (props.type) {
@@ -127,13 +128,25 @@ const DnDFlow = (props) => {
                 type="target"
                 position="bottom"
                 style={{ left: " 0.3vw", top: " 4.6vh" }}
-                id="l"
+                id="l1"
               />
               <Handle
                 type="source"
                 position="left"
                 style={{ left: "10.5vw", top: " 5.2vh" }}
-                id="r"
+                id="r1"
+              />
+              <Handle
+                type="source"
+                position="bottom"
+                style={{ left: " 0.3vw", top: " 4.6vh" }}
+                id="l2"
+              />
+              <Handle
+                type="target"
+                position="left"
+                style={{ left: "10.5vw", top: " 5.2vh" }}
+                id="r2"
               />
             </>
           );
@@ -175,6 +188,102 @@ const DnDFlow = (props) => {
                 id="image-render"
                 key={v4()}
               ></div>
+              <Handle
+                type="source"
+                position="bottom"
+                style={{ left: "2.5vw", top: " 3.99vh" }}
+                id={"l1" + "dndnode_" + _id}
+              />
+              <Handle
+                type="source"
+                position="bottom"
+                style={{ left: "2.5vw", top: " 5.79vh" }}
+                id={"l2" + "dndnode_" + _id}
+              />
+              <Handle
+                type="source"
+                position="bottom"
+                style={{ left: "2.5vw", top: " 7.5vh" }}
+                id={"l3" + "dndnode_" + _id}
+              />
+              <Handle
+                type="source"
+                position="bottom"
+                style={{ left: "2.5vw", top: " 9.3vh" }}
+                id={"l4" + "dndnode_" + _id}
+              />
+              <Handle
+                type="target"
+                position="bottom"
+                style={{ left: "2.5vw", top: " 3.99vh" }}
+                id={"l1.t" + "dndnode_" + _id}
+              />
+              <Handle
+                type="target"
+                position="bottom"
+                style={{ left: "2.5vw", top: " 5.79vh" }}
+                id={"l2.t" + "dndnode_" + _id}
+              />
+              <Handle
+                type="target"
+                position="bottom"
+                style={{ left: "2.5vw", top: " 7.5vh" }}
+                id={"l3.t" + "dndnode_" + _id}
+              />
+              <Handle
+                type="target"
+                position="bottom"
+                style={{ left: "2.5vw", top: " 9.3vh" }}
+                id={"l4.t" + "dndnode_" + _id}
+              />
+              <Handle
+                type="source"
+                position="bottom"
+                style={{ left: "9.28vw", top: " 3.99vh" }}
+                id={"r1" + "dndnode_" + _id}
+              />
+              <Handle
+                type="source"
+                position="bottom"
+                style={{ left: "9.28vw", top: " 5.79vh" }}
+                id={"r2" + "dndnode_" + _id}
+              />
+              <Handle
+                type="source"
+                position="bottom"
+                style={{ left: "9.28vw", top: " 7.5vh" }}
+                id={"r3" + "dndnode_" + _id}
+              />{" "}
+              <Handle
+                type="source"
+                position="bottom"
+                style={{ left: "9.28vw", top: " 9.3vh" }}
+                id={"r4" + "dndnode_" + _id}
+              />
+              <Handle
+                type="target"
+                position="bottom"
+                style={{ left: "9.28vw", top: " 3.99vh" }}
+                id={"r1.t" + "dndnode_" + _id}
+              />
+              <Handle
+                type="target"
+                position="bottom"
+                style={{ left: "9.28vw", top: " 5.79vh" }}
+                id={"r2.t" + "dndnode_" + _id}
+              />
+              <Handle
+                type="target"
+                position="bottom"
+                style={{ left: "9.28vw", top: " 7.5vh" }}
+                id={"r3.t" + "dndnode_" + _id}
+              />{" "}
+              <Handle
+                type="target"
+                position="bottom"
+                style={{ left: "9.28vw", top: " 9.3vh" }}
+                id={"r4.t" + "dndnode_" + _id}
+              />
             </>
           );
         }
@@ -189,6 +298,30 @@ const DnDFlow = (props) => {
                 id="image-render"
                 key={v4()}
               ></div>
+              <div
+                class="slidecontainer"
+                style={{ top: "2vh", left: "2vw", position: "relative" }}
+              >
+                <input
+                  type="range"
+                  min="1"
+                  max="100"
+                  class="slider"
+                  onInput={(e) => {
+                    console.log(e.target.value);
+                    setRangeVal(e.target.value);
+                  }}
+                  onChange={sliderOnChange}
+                  id={"myRangedndnode_" + _id}
+                  onMouseEnter={(e) => {
+                    console.log(e.target.value, "e.target.value@@@@@@@@@@@@");
+                    setNodesDraggable(false);
+                  }}
+                  onMouseLeave={(e) => {
+                    setNodesDraggable(true);
+                  }}
+                />
+              </div>
               <Handle
                 type="target"
                 position="bottom"
@@ -205,10 +338,6 @@ const DnDFlow = (props) => {
           );
         }
         if (type === "led") {
-          console.log("ledId", _id);
-          switch (props.type) {
-            case "simpleCircuit":
-          }
           return (
             <>
               <div
@@ -246,23 +375,46 @@ const DnDFlow = (props) => {
                 id="image-render"
                 key={v4()}
               ></div>
+              <div
+                class="slidecontainer"
+                style={{ top: "2vh", left: "2vw", position: "relative" }}
+              >
+                <input
+                  type="range"
+                  min="1"
+                  max="100"
+                  class="slider"
+                  onInput={(e) => {
+                    console.log(e.target.value);
+                    setRangeVal(e.target.value);
+                  }}
+                  id={"myRangedndnode_" + _id}
+                  onMouseEnter={(e) => {
+                    console.log(e.target.value, "e.target.value@@@@@@@@@@@@");
+                    setNodesDraggable(false);
+                  }}
+                  onMouseLeave={(e) => {
+                    setNodesDraggable(true);
+                  }}
+                />
+              </div>
               <Handle
-                type="target"
+                type="source"
                 position="bottom"
                 style={{ left: " -0.2vw", top: " 6.6vh" }}
                 id="l"
               />
               <Handle
-                type="source"
+                type="target"
                 position="left"
                 style={{ left: "11.3vw", top: " 4.1vh" }}
-                id="r"
+                id="r1"
               />
               <Handle
-                type="source"
+                type="target"
                 position="left"
                 style={{ left: "11.3vw", top: " 9.9vh" }}
-                id="r"
+                id="r2"
               />
             </>
           );
@@ -285,34 +437,22 @@ const DnDFlow = (props) => {
                 id="r1"
               />
               <Handle
+                type="target"
+                position="left"
+                style={{ left: "8.5vw", top: " 8.9vh" }}
+                id="r2"
+              />
+              <Handle
+                type="target"
+                position="bottom"
+                style={{ left: "8.7vw", top: " 10.4vh" }}
+                id="r3"
+              />
+              <Handle
                 type="source"
                 position="left"
                 style={{ left: "8.5vw", top: " 4.2vh" }}
                 id="r4"
-              />
-              <Handle
-                type="target"
-                position="left"
-                style={{ left: "8.5vw", top: " 8.9vh" }}
-                id="r2.0"
-              />
-              <Handle
-                type="target"
-                position="left"
-                style={{ left: "8.5vw", top: " 8.9vh" }}
-                id="r2.1"
-              />
-              <Handle
-                type="target"
-                position="bottom"
-                style={{ left: "8.7vw", top: " 10.4vh" }}
-                id="r3.0"
-              />
-              <Handle
-                type="target"
-                position="bottom"
-                style={{ left: "8.7vw", top: " 10.4vh" }}
-                id="r3.1"
               />
             </>
           );
@@ -370,8 +510,6 @@ const DnDFlow = (props) => {
           );
         }
         if (type === "tact") {
-          //parallelCircuit 2way connection on r1 and r2
-
           return (
             <>
               <div
@@ -392,13 +530,7 @@ const DnDFlow = (props) => {
                 type="source"
                 position="left"
                 style={{ left: "10.5vw", top: " 5.2vh" }}
-                id="r1"
-              />
-              <Handle
-                type="source"
-                position="left"
-                style={{ left: "10.5vw", top: " 5.2vh" }}
-                id="r2"
+                id="r"
               />
             </>
           );
@@ -435,10 +567,10 @@ const DnDFlow = (props) => {
                 id="l"
               />
               <Handle
-                type="source"
+                type="target"
                 position="left"
                 style={{ left: "10.1vw", top: " 5.7vh" }}
-                id="r"
+                id="r.t"
               />
               <Handle
                 type="source"
@@ -482,7 +614,6 @@ const DnDFlow = (props) => {
           );
         }
         break;
-
       case "resistorCircuit":
         if (type === "beeper") {
           // console.log("start");
@@ -1509,13 +1640,25 @@ const DnDFlow = (props) => {
                 type="target"
                 position="bottom"
                 style={{ left: " 0.3vw", top: " 4.6vh" }}
-                id="l"
+                id="l1"
               />
               <Handle
                 type="source"
                 position="left"
                 style={{ left: "10.5vw", top: " 5.2vh" }}
-                id="r"
+                id="r1"
+              />
+              <Handle
+                type="source"
+                position="bottom"
+                style={{ left: " 0.3vw", top: " 4.6vh" }}
+                id="l2"
+              />
+              <Handle
+                type="target"
+                position="left"
+                style={{ left: "10.5vw", top: " 5.2vh" }}
+                id="r2"
               />
             </>
           );
@@ -1667,6 +1810,30 @@ const DnDFlow = (props) => {
                 id="image-render"
                 key={v4()}
               ></div>
+              <div
+                class="slidecontainer"
+                style={{ top: "2vh", left: "2vw", position: "relative" }}
+              >
+                <input
+                  type="range"
+                  min="1"
+                  max="100"
+                  class="slider"
+                  onInput={(e) => {
+                    console.log(e.target.value);
+                    setRangeVal(e.target.value);
+                  }}
+                  onChange={sliderOnChange}
+                  id={"myRangedndnode_" + _id}
+                  onMouseEnter={(e) => {
+                    console.log(e.target.value, "e.target.value@@@@@@@@@@@@");
+                    setNodesDraggable(false);
+                  }}
+                  onMouseLeave={(e) => {
+                    setNodesDraggable(true);
+                  }}
+                />
+              </div>
               <Handle
                 type="target"
                 position="bottom"
@@ -1720,6 +1887,29 @@ const DnDFlow = (props) => {
                 id="image-render"
                 key={v4()}
               ></div>
+              <div
+                class="slidecontainer"
+                style={{ top: "2vh", left: "2vw", position: "relative" }}
+              >
+                <input
+                  type="range"
+                  min="1"
+                  max="100"
+                  class="slider"
+                  onInput={(e) => {
+                    console.log(e.target.value);
+                    setRangeVal(e.target.value);
+                  }}
+                  id={"myRangedndnode_" + _id}
+                  onMouseEnter={(e) => {
+                    console.log(e.target.value, "e.target.value@@@@@@@@@@@@");
+                    setNodesDraggable(false);
+                  }}
+                  onMouseLeave={(e) => {
+                    setNodesDraggable(true);
+                  }}
+                />
+              </div>
               <Handle
                 type="source"
                 position="bottom"
@@ -1889,10 +2079,10 @@ const DnDFlow = (props) => {
                 id="l"
               />
               <Handle
-                type="source"
+                type="target"
                 position="left"
                 style={{ left: "10.1vw", top: " 5.7vh" }}
-                id="r"
+                id="r.t"
               />
               <Handle
                 type="source"
@@ -1953,16 +2143,48 @@ const DnDFlow = (props) => {
   const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
   const [edges, setEdges, onEdgesChange] = useEdgesState([]);
   const [reactFlowInstance, setReactFlowInstance] = useState(null);
-
+  const [nodesDraggable, setNodesDraggable] = useState(true);
+  const [rangeVal, setRangeVal] = useState(50);
   useEffect(() => {
     console.log(edges, "edges use effect");
     edge = edges;
+    console.log("range", Object.keys(edges).length);
 
     circuitClosed = closedChk(nodes, edges);
+    if (props.type === "transistorCircuit" && Object.keys(edges).length < 6) {
+      console.log("range$$%&^&^^^&*^&*", Object.keys(edges).length, eleLed1);
+
+      if (eleLed1 !== undefined) eleLed1.classList.remove("led-light");
+    }
   }, [edges]);
   useEffect(() => {
     node = nodes;
   }, [nodes]);
+
+  useEffect(() => {
+    return async () => {
+      if ((await circuitClosed) === 1 && props.type === "transistorCircuit") {
+        let flag = false;
+        let nodeDetail1 = await getOutgoers(nodes[0], nodes, edges);
+        nodeDetail1 = nodeDetail1[0];
+        let nodeDetail2 = await getOutgoers(nodeDetail1, nodes, edges);
+        if (nodeDetail2.length === 2) {
+          if (nodeDetail2[0].data.specificElType === "ldr") flag = true;
+          else if (nodeDetail2[1].data.specificElType === "ldr") flag = true;
+          if (nodeDetail2[0].data.specificElType === "led")
+            nodeDetail2 = nodeDetail2[0];
+          else if (nodeDetail2[1].data.specificElType === "led")
+            nodeDetail2 = nodeDetail2[1];
+        }
+
+        if (nodeDetail2.data.specificElType === "led" && flag) {
+          eleLed1 = document.getElementById(`led${nodeDetail2.id}`);
+          eleLed1.classList.add("led-light");
+          eleLed1.style.opacity = `${rangeVal / 100 + 0.1}`;
+        }
+      }
+    };
+  }, [rangeVal]);
   const onConnect = async (params) => {
     console.log(params);
     var index1 = await edge.findIndex(
@@ -1982,28 +2204,39 @@ const DnDFlow = (props) => {
 
     return;
   };
+
   //to check the circuit is completed
   const closedChk = async (n, e) => {
     let start = getOutgoers(n[0], n, e);
+    chkCount = 1;
     if (start.length !== 0) return await closedChkRec(start[0], n, e);
     else return false;
   };
+  let chkCount;
   const closedChkRec = async (ele, n, e) => {
-    // if (ele.id === nodes[0].id) {
-    //   return true;
-    // }
-    // let start = await getOutgoers(ele, n, e);
-    // // console.log({ start }, { ele });
-    // if (start.length === 1) return await closedChkRec(start[0], n, e);
-    // else if (start.length >= 1) {
-    //   let y = 1;
-    //   for (let i = 0; i < start.length; i++) {
-    //     y = y * (await closedChkRec(start[i], n, e));
-    //   }
-    //   // let y = await closedChkRec(start[0], n, e);
-    //   // let x = await closedChkRec(start[1], n, e);
-    //   return y;
-    // } else if (start.length === 0) return false;
+    switch (props.type) {
+      case "voltageDividerCircuit":
+        if (ele.id === nodes[0].id) return true;
+        if (ele.data.specificElType === "pot" && chkCount > 4) return true;
+
+        break;
+      default:
+        if (ele.id === nodes[0].id) return true;
+    }
+
+    let start = await getOutgoers(ele, n, e);
+    chkCount++;
+    console.log({ start }, { ele });
+    if (start.length === 1) return await closedChkRec(start[0], n, e);
+    else if (start.length >= 1) {
+      let y = 1;
+      for (let i = 0; i < start.length; i++) {
+        y = y * (await closedChkRec(start[i], n, e));
+      }
+      // let y = await closedChkRec(start[0], n, e);
+      // let x = await closedChkRec(start[1], n, e);
+      return y;
+    } else if (start.length === 0) return false;
     return false;
   };
   //delete the edge
@@ -2080,6 +2313,10 @@ const DnDFlow = (props) => {
   );
 
   const onNodeDrag = async (event, node) => {
+    switch (props.type) {
+      case "voltageDividerCircuit":
+        break;
+    }
     nodes.map(async (e) => {
       if (e.id !== node.id) {
         let offsetX = 0,
@@ -2090,10 +2327,6 @@ const DnDFlow = (props) => {
           target: "dndnode_1",
           targetHandle: "",
         };
-        switch (props.type) {
-          case "voltageDividerCircuit":
-            break;
-        }
 
         switch (e.data.specificElType) {
           case "beeper":
@@ -2118,6 +2351,11 @@ const DnDFlow = (props) => {
                 offsetY = -21;
                 break;
             }
+            console.log(
+              "default",
+              node.position.x - e.position.x - offsetX,
+              node.position.y - e.position.y - offsetY
+            );
             if (
               node.position.x - e.position.x >= 221 - 5 + offsetX &&
               node.position.x - e.position.x < 221 + 5 + offsetX &&
@@ -2148,12 +2386,65 @@ const DnDFlow = (props) => {
               }
 
               return;
+            } else if (
+              node.position.x - e.position.x >= -221 - 5 + offsetX &&
+              node.position.x - e.position.x < -221 + 5 + offsetX &&
+              node.position.y - e.position.y >= -28 - 5 + offsetY &&
+              node.position.y - e.position.y < -28 + 5 + offsetY
+            ) {
+              switch (props.type) {
+                case "simpleCircuit":
+                  params = {
+                    source: `${node.id}`,
+                    sourceHandle: `r`,
+                    target: `${e.id}`,
+                    targetHandle: "l",
+                  };
+                  if (node.data.specificElType === "tact")
+                    await onConnect(params);
+                  break;
+                case "seriesCircuit":
+                  params = {
+                    source: `${node.id}`,
+                    sourceHandle: `r`,
+                    target: `${e.id}`,
+                    targetHandle: "l",
+                  };
+                  if (
+                    (node.data.specificElType === "tact" &&
+                      e.data.specificElType === "beeper") ||
+                    (node.data.specificElType === "beeper" &&
+                      e.data.specificElType === "beeper")
+                  )
+                    await onConnect(params);
+                  break;
+              }
+            } else if (
+              node.position.x - e.position.x >= -258 - 5 + offsetX &&
+              node.position.x - e.position.x < -258 + 5 + offsetX &&
+              node.position.y - e.position.y >= -28 - 5 + offsetY &&
+              node.position.y - e.position.y < -28 + 5 + offsetY
+            ) {
+              switch (props.type) {
+                case "seriesCircuit":
+                  params = {
+                    source: `${node.id}`,
+                    sourceHandle: `r`,
+                    target: `${e.id}`,
+                    targetHandle: "l",
+                  };
+                  if (
+                    node.data.specificElType === "beeper" &&
+                    e.data.specificElType === "beeper"
+                  )
+                    await onConnect(params);
+                  break;
+              }
             }
 
             break;
           case "led":
           case "ldr":
-          case "diode":
           case "res_100":
           case "res_250":
           case "tact":
@@ -2196,11 +2487,6 @@ const DnDFlow = (props) => {
 
             switch (node.data.specificElType) {
               case "junction":
-                console.log(
-                  "junction^^^^^^^^",
-                  node.position.x - e.position.x,
-                  node.position.y - e.position.y
-                );
                 params = {
                   source: `${e.id}`,
                   sourceHandle: `r`,
@@ -2226,75 +2512,265 @@ const DnDFlow = (props) => {
                       return;
                     break;
                 }
-                if (
-                  node.position.x - e.position.x >= 159 - 5 &&
-                  node.position.x - e.position.x <= 159 + 5
-                ) {
+                if (props.type === "transistorCircuit") {
+                  params = {
+                    source: `${node.id}`,
+                    sourceHandle: `r`,
+                    target: `${e.id}`,
+                    targetHandle: "l",
+                  };
+
                   if (
-                    node.position.y - e.position.y >= 7 - 5 &&
-                    node.position.y - e.position.y <= 7 + 5
+                    node.position.x - e.position.x >= -40 - 5 &&
+                    node.position.x - e.position.x <= -40 + 5
                   ) {
-                    params.targetHandle = "l1.t";
-                    if (edge.findIndex((e) => e.sourceHandle === "l1") === -1)
-                      await onConnect(params);
+                    if (
+                      node.position.y - e.position.y >= 7 - 5 &&
+                      node.position.y - e.position.y <= 7 + 5
+                    ) {
+                      params.sourceHandle = "l1";
+                      if (
+                        edge.findIndex((e) => e.targetHandle === "l1.t") === -1
+                      )
+                        await onConnect(params);
+                    } else if (
+                      node.position.y - e.position.y >= -9 - 5 &&
+                      node.position.y - e.position.y <= -9 + 5
+                    ) {
+                      params.sourceHandle = "l2";
+                      if (
+                        edge.findIndex((e) => e.targetHandle === "l2.t") === -1
+                      )
+                        await onConnect(params);
+                    } else if (
+                      node.position.y - e.position.y >= -27 - 5 &&
+                      node.position.y - e.position.y <= -27 + 5
+                    ) {
+                      params.sourceHandle = "l3";
+                      if (
+                        edge.findIndex((e) => e.targetHandle === "l3.t") === -1
+                      )
+                        await onConnect(params);
+                    } else if (
+                      node.position.y - e.position.y >= -44 - 5 &&
+                      node.position.y - e.position.y <= -44 + 5
+                    ) {
+                      params.sourceHandle = "l4";
+                      if (
+                        edge.findIndex((e) => e.targetHandle === "l4.t") === -1
+                      )
+                        await onConnect(params);
+                    }
                   } else if (
-                    node.position.y - e.position.y >= -9 - 5 &&
-                    node.position.y - e.position.y <= -9 + 5
+                    node.position.x - e.position.x >= -177 - 5 &&
+                    node.position.x - e.position.x <= -177 + 5
                   ) {
-                    params.targetHandle = "l2.t";
-                    if (edge.findIndex((e) => e.sourceHandle === "l2") === -1)
-                      await onConnect(params);
-                  } else if (
-                    node.position.y - e.position.y >= -27 - 5 &&
-                    node.position.y - e.position.y <= -27 + 5
-                  ) {
-                    params.targetHandle = "l3.t";
-                    if (edge.findIndex((e) => e.sourceHandle === "l3") === -1)
-                      await onConnect(params);
-                  } else if (
-                    node.position.y - e.position.y >= -44 - 5 &&
-                    node.position.y - e.position.y <= -44 + 5
-                  ) {
-                    params.targetHandle = "l4.t";
-                    if (edge.findIndex((e) => e.sourceHandle === "l4") === -1)
-                      await onConnect(params);
+                    if (
+                      node.position.y - e.position.y >= 7 - 5 &&
+                      node.position.y - e.position.y <= 7 + 5
+                    ) {
+                      params.sourceHandle = "r1";
+                      if (
+                        edge.findIndex((e) => e.targetHandle === "r1.t") === -1
+                      )
+                        await onConnect(params);
+                    } else if (
+                      node.position.y - e.position.y >= -9 - 5 &&
+                      node.position.y - e.position.y <= -9 + 5
+                    ) {
+                      params.sourceHandle = "r2";
+                      if (
+                        edge.findIndex((e) => e.targetHandle === "r2.t") === -1
+                      )
+                        await onConnect(params);
+                    } else if (
+                      node.position.y - e.position.y >= -27 - 5 &&
+                      node.position.y - e.position.y <= -27 + 5
+                    ) {
+                      params.sourceHandle = "r3";
+                      if (
+                        edge.findIndex((e) => e.targetHandle === "r3.t") === -1
+                      )
+                        await onConnect(params);
+                    } else if (
+                      node.position.y - e.position.y >= -44 - 5 &&
+                      node.position.y - e.position.y <= -44 + 5
+                    ) {
+                      params.sourceHandle = "r4";
+                      if (edge.findIndex((e) => e.targetHandle === "r4") === -1)
+                        await onConnect(params);
+                    }
                   }
-                } else if (
-                  node.position.x - e.position.x >= 30 - 5 &&
-                  node.position.x - e.position.x <= 30 + 5
-                ) {
+                } else if (props.type === "parallelCircuit") {
+                } else {
                   if (
-                    node.position.y - e.position.y >= 7 - 5 &&
-                    node.position.y - e.position.y <= 7 + 5
+                    node.position.x - e.position.x >= 159 - 5 &&
+                    node.position.x - e.position.x <= 159 + 5
                   ) {
-                    params.targetHandle = "r1.t";
-                    if (edge.findIndex((e) => e.sourceHandle === "r1") === -1)
-                      await onConnect(params);
+                    if (
+                      node.position.y - e.position.y >= 7 - 5 &&
+                      node.position.y - e.position.y <= 7 + 5
+                    ) {
+                      params.targetHandle = "l1.t";
+                      if (edge.findIndex((e) => e.sourceHandle === "l1") === -1)
+                        await onConnect(params);
+                    } else if (
+                      node.position.y - e.position.y >= -9 - 5 &&
+                      node.position.y - e.position.y <= -9 + 5
+                    ) {
+                      params.targetHandle = "l2.t";
+                      if (edge.findIndex((e) => e.sourceHandle === "l2") === -1)
+                        await onConnect(params);
+                    } else if (
+                      node.position.y - e.position.y >= -27 - 5 &&
+                      node.position.y - e.position.y <= -27 + 5
+                    ) {
+                      params.targetHandle = "l3.t";
+                      if (edge.findIndex((e) => e.sourceHandle === "l3") === -1)
+                        await onConnect(params);
+                    } else if (
+                      node.position.y - e.position.y >= -44 - 5 &&
+                      node.position.y - e.position.y <= -44 + 5
+                    ) {
+                      params.targetHandle = "l4.t";
+                      if (edge.findIndex((e) => e.sourceHandle === "l4") === -1)
+                        await onConnect(params);
+                    }
                   } else if (
-                    node.position.y - e.position.y >= -9 - 5 &&
-                    node.position.y - e.position.y <= -9 + 5
+                    node.position.x - e.position.x >= 30 - 5 &&
+                    node.position.x - e.position.x <= 30 + 5
                   ) {
-                    params.targetHandle = "r2.t";
-                    if (edge.findIndex((e) => e.sourceHandle === "r2") === -1)
-                      await onConnect(params);
-                  } else if (
-                    node.position.y - e.position.y >= -27 - 5 &&
-                    node.position.y - e.position.y <= -27 + 5
-                  ) {
-                    params.targetHandle = "r3.t";
-                    if (edge.findIndex((e) => e.sourceHandle === "r3") === -1)
-                      await onConnect(params);
-                  } else if (
-                    node.position.y - e.position.y >= -44 - 5 &&
-                    node.position.y - e.position.y <= -44 + 5
-                  ) {
-                    params.targetHandle = "r4.t";
-                    if (edge.findIndex((e) => e.sourceHandle === "r4") === -1)
-                      await onConnect(params);
+                    if (
+                      node.position.y - e.position.y >= 7 - 5 &&
+                      node.position.y - e.position.y <= 7 + 5
+                    ) {
+                      params.targetHandle = "r1.t";
+                      if (edge.findIndex((e) => e.sourceHandle === "r1") === -1)
+                        await onConnect(params);
+                    } else if (
+                      node.position.y - e.position.y >= -9 - 5 &&
+                      node.position.y - e.position.y <= -9 + 5
+                    ) {
+                      params.targetHandle = "r2.t";
+                      if (edge.findIndex((e) => e.sourceHandle === "r2") === -1)
+                        await onConnect(params);
+                    } else if (
+                      node.position.y - e.position.y >= -27 - 5 &&
+                      node.position.y - e.position.y <= -27 + 5
+                    ) {
+                      params.targetHandle = "r3.t";
+                      if (edge.findIndex((e) => e.sourceHandle === "r3") === -1)
+                        await onConnect(params);
+                    } else if (
+                      node.position.y - e.position.y >= -44 - 5 &&
+                      node.position.y - e.position.y <= -44 + 5
+                    ) {
+                      params.targetHandle = "r4.t";
+                      if (edge.findIndex((e) => e.sourceHandle === "r4") === -1)
+                        await onConnect(params);
+                    }
                   }
                 }
-                break;
 
+                break;
+              case "diode":
+                console.log(
+                  "diode665674675________",
+                  node.position.x - e.position.x,
+                  node.position.y - e.position.y
+                );
+                params = {
+                  source: `${e.id}`,
+                  sourceHandle: `r`,
+                  target: `${node.id}`,
+                  targetHandle: "l1",
+                };
+                if (
+                  node.position.x - e.position.x >= 202 - 5 &&
+                  node.position.x - e.position.x <= 202 + 5 &&
+                  node.position.y - e.position.y >= 2 - 5 &&
+                  node.position.y - e.position.y <= 2 + 5 &&
+                  e.data.specificElType !== "led"
+                ) {
+                  let index1 = edge.findIndex((e) => e.sourceHandle === "l2");
+
+                  if (index1 == -1) await onConnect(params);
+                } else if (
+                  node.position.x - e.position.x >= -1 - 5 &&
+                  node.position.x - e.position.x <= -1 + 5 &&
+                  node.position.y - e.position.y >= 1 - 5 &&
+                  node.position.y - e.position.y <= 1 + 5
+                ) {
+                  params.targetHandle = "r2";
+                  let index1 = edge.findIndex((e) => e.sourceHandle === "r1");
+
+                  if (e.data.specificElType !== "led" && index1 == -1)
+                    await onConnect(params);
+                  else if (e.data.specificElType === "led") {
+                    params = {
+                      source: `${node.id}`,
+                      sourceHandle: `l2`,
+                      target: `${e.id}`,
+                      targetHandle: "l",
+                    };
+                    let index1 = edge.findIndex((e) => e.targetHandle === "l1");
+                    if (index1 == -1) await onConnect(params);
+                  }
+                } else if (
+                  node.position.x - e.position.x >= -202 - 5 &&
+                  node.position.x - e.position.x <= -202 + 5 &&
+                  node.position.y - e.position.y >= -2 - 5 &&
+                  node.position.y - e.position.y <= -2 + 5 &&
+                  e.data.specificElType === "led"
+                ) {
+                  params = {
+                    source: `${node.id}`,
+                    sourceHandle: `r1`,
+                    target: `${e.id}`,
+                    targetHandle: "l",
+                  };
+                  let index1 = edge.findIndex((e) => e.targetHandle === "r2");
+
+                  if (index1 === -1) await onConnect(params);
+                }
+                break;
+              case "transistor":
+                if (
+                  e.data.specificElType === "tact" ||
+                  e.data.specificElType === "ldr"
+                ) {
+                  params = {
+                    source: `${e.id}`,
+                    sourceHandle: `r`,
+                    target: `${node.id}`,
+                    targetHandle: "l",
+                  };
+                  if (
+                    node.position.x - e.position.x >= 200 - 5 &&
+                    node.position.x - e.position.x <= 200 + 5 &&
+                    node.position.y - e.position.y >= -20 - 5 &&
+                    node.position.y - e.position.y <= -20 + 5
+                  ) {
+                    await onConnect(params);
+                  }
+                } else if (e.data.specificElType === "led") {
+                  if (
+                    node.position.x - e.position.x >= 9 - 5 &&
+                    node.position.x - e.position.x <= 9 + 5 &&
+                    node.position.y - e.position.y >= -5 - 5 &&
+                    node.position.y - e.position.y <= -5 + 5
+                  ) {
+                    params = {
+                      source: `${e.id}`,
+                      sourceHandle: `r`,
+                      target: `${node.id}`,
+                      targetHandle: "r.t",
+                    };
+                    await onConnect(params);
+                  }
+                } else if (e.data.specificElType === "power") {
+                }
+                break;
               default:
                 if (
                   node.position.x - e.position.x >= 221 - 5 + offsetX &&
@@ -2302,6 +2778,7 @@ const DnDFlow = (props) => {
                   node.position.y - e.position.y >= 31 - 5 + offsetY &&
                   node.position.y - e.position.y < 31 + 5 + offsetY
                 ) {
+                  console.log("entered@@@@55658");
                   params = {
                     source: `${e.id}`,
                     sourceHandle: `r`,
@@ -2316,6 +2793,16 @@ const DnDFlow = (props) => {
                           node.data.specificElType == "led")
                       )
                         await onConnect(params);
+                      else if (node.data.specificElType === "tact") {
+                        console.log("en$$$$$$$$$tered@@@@55658");
+                        // params = {
+                        //   source: `${node.id}`,
+                        //   sourceHandle: `r`,
+                        //   target: `${e.id}`,
+                        //   targetHandle: "l",
+                        // };
+                        // await onConnect(params);
+                      }
                       break;
                     case "seriesCircuit":
                       if (
@@ -2407,8 +2894,55 @@ const DnDFlow = (props) => {
                         params.targetHandle = "r1";
                         await onConnect(params);
                       }
+                      break;
+                    case "transistorCircuit":
+                      if (
+                        e.data.specificElType === "res_100" &&
+                        node.data.specificElType === "tact"
+                      )
+                        await onConnect(params);
+
+                      break;
                   }
                   return;
+                } else if (
+                  node.position.x - e.position.x >= -189 - 5 + offsetX &&
+                  node.position.x - e.position.x < -189 + 5 + offsetX &&
+                  node.position.y - e.position.y >= 31 - 5 + offsetY &&
+                  node.position.y - e.position.y < 31 + 5 + offsetY
+                ) {
+                  switch (props.type) {
+                    case "simpleCircuit":
+                      if (
+                        (node.data.specificElType === "tact" &&
+                          e.data.specificElType === "beeper") ||
+                        e.data.specificElType === "led"
+                      ) {
+                        params = {
+                          source: `${node.id}`,
+                          sourceHandle: `r`,
+                          target: `${e.id}`,
+                          targetHandle: "l",
+                        };
+                        await onConnect(params);
+                      }
+                      break;
+                    case "seriesCircuit":
+                      params = {
+                        source: `${node.id}`,
+                        sourceHandle: `r`,
+                        target: `${e.id}`,
+                        targetHandle: "l",
+                      };
+                      if (
+                        (node.data.specificElType === "tact" &&
+                          e.data.specificElType === "led") ||
+                        (node.data.specificElType === "led" &&
+                          e.data.specificElType === "led")
+                      )
+                        await onConnect(params);
+                      break;
+                  }
                 }
             }
 
@@ -2443,85 +2977,207 @@ const DnDFlow = (props) => {
                 offsetY = 0;
                 break;
             }
-            console.log(
-              "powr665674675________",
-              node.position.x - e.position.x,
-              node.position.y - e.position.y
-            );
+
             switch (node.data.specificElType) {
               case "junction":
-                params = {
-                  source: `${node.id}`,
-                  sourceHandle: `r`,
-                  target: `${e.id}`,
-                  targetHandle: "r2",
-                };
+                if (props.type === "voltageDividerCircuit") {
+                  params = {
+                    source: `${node.id}`,
+                    sourceHandle: `r`,
+                    target: `${e.id}`,
+                    targetHandle: "r2",
+                  };
+                  if (
+                    node.position.x - e.position.x >= 120 - 5 &&
+                    node.position.x - e.position.x <= 120 + 5
+                  ) {
+                    if (
+                      node.position.y - e.position.y >= 45 - 5 &&
+                      node.position.y - e.position.y <= 45 + 5
+                    ) {
+                      params.sourceHandle = "l1";
+                      if (
+                        edge.findIndex((e) => e.tragetHandle === "l1.t") === -1
+                      )
+                        await onConnect(params);
+                    } else if (
+                      node.position.y - e.position.y >= 28 - 5 &&
+                      node.position.y - e.position.y <= 28 + 5
+                    ) {
+                      params.sourceHandle = "l2";
+                      if (
+                        edge.findIndex((e) => e.targetHandle === "l2.t") === -1
+                      )
+                        await onConnect(params);
+                    } else if (
+                      node.position.y - e.position.y >= 10 - 5 &&
+                      node.position.y - e.position.y <= 10 + 5
+                    ) {
+                      params.sourceHandle = "l3";
+                      if (
+                        edge.findIndex((e) => e.targetHandle === "l3.t") === -1
+                      )
+                        await onConnect(params);
+                    } else if (
+                      node.position.y - e.position.y >= -6 - 5 &&
+                      node.position.y - e.position.y <= -6 + 5
+                    ) {
+                      params.sourceHandle = "l4";
+                      if (
+                        edge.findIndex((e) => e.targetHandle === "l4.t") === -1
+                      )
+                        await onConnect(params);
+                    }
+                  } else if (
+                    node.position.x - e.position.x >= -13 - 5 &&
+                    node.position.x - e.position.x <= -13 + 5
+                  ) {
+                    if (
+                      node.position.y - e.position.y >= 45 - 5 &&
+                      node.position.y - e.position.y <= 45 + 5
+                    ) {
+                      params.sourceHandle = "r1";
+                      if (
+                        edge.findIndex((e) => e.targetHandle === "r1.t") === -1
+                      )
+                        await onConnect(params);
+                    } else if (
+                      node.position.y - e.position.y >= 28 - 5 &&
+                      node.position.y - e.position.y <= 28 + 5
+                    ) {
+                      params.sourceHandle = "r2";
+                      if (
+                        edge.findIndex((e) => e.targetHandle === "r2.t") === -1
+                      )
+                        await onConnect(params);
+                    } else if (
+                      node.position.y - e.position.y >= 10 - 5 &&
+                      node.position.y - e.position.y <= 10 + 5
+                    ) {
+                      params.sourceHandle = "r3";
+                      if (
+                        edge.findIndex((e) => e.targetHandle === "r3.t") === -1
+                      )
+                        await onConnect(params);
+                    } else if (
+                      node.position.y - e.position.y >= -6 - 5 &&
+                      node.position.y - e.position.y <= -6 + 5
+                    ) {
+                      params.sourceHandle = "r4";
+                      if (
+                        edge.findIndex((e) => e.targetHandle === "r4.t") === -1
+                      )
+                        await onConnect(params);
+                    }
+                  }
+                } else if (props.type === "transistorCircuit") {
+                  params = {
+                    source: `${e.id}`,
+                    sourceHandle: `r4`,
+                    target: `${node.id}`,
+                    targetHandle: "r3",
+                  };
+                  if (
+                    node.position.x - e.position.x >= 120 - 5 &&
+                    node.position.x - e.position.x <= 120 + 5
+                  ) {
+                    if (
+                      node.position.y - e.position.y >= 1 - 5 &&
+                      node.position.y - e.position.y <= 1 + 5
+                    ) {
+                      params.targetHandle = "l1.t";
+                      if (edge.findIndex((e) => e.sourceHandle === "l1") === -1)
+                        await onConnect(params);
+                    } else if (
+                      node.position.y - e.position.y >= 16 - 5 &&
+                      node.position.y - e.position.y <= 16 + 5
+                    ) {
+                      params.targetHandle = "l2.t";
+                      if (edge.findIndex((e) => e.sourceHandle === "l2") === -1)
+                        await onConnect(params);
+                    } else if (
+                      node.position.y - e.position.y >= 44 - 5 &&
+                      node.position.y - e.position.y <= 44 + 5
+                    ) {
+                      params.targetHandle = "l3.t";
+                      if (edge.findIndex((e) => e.sourceHandle === "l3") === -1)
+                        await onConnect(params);
+                    } else if (
+                      node.position.y - e.position.y >= 64 - 5 &&
+                      node.position.y - e.position.y <= 64 + 5
+                    ) {
+                      params.targetHandle = "l4.t";
+                      if (edge.findIndex((e) => e.sourceHandle === "l4") === -1)
+                        await onConnect(params);
+                    }
+                  } else if (
+                    node.position.x - e.position.x >= -13 - 5 &&
+                    node.position.x - e.position.x <= -13 + 5
+                  ) {
+                    if (
+                      node.position.y - e.position.y >= -1 - 5 &&
+                      node.position.y - e.position.y <= -1 + 5
+                    ) {
+                      params.targetHandle = "r1.t";
+                      if (edge.findIndex((e) => e.sourceHandle === "r1") === -1)
+                        await onConnect(params);
+                    } else if (
+                      node.position.y - e.position.y >= -16 - 5 &&
+                      node.position.y - e.position.y <= -16 + 5
+                    ) {
+                      params.targetHandle = "r2.t";
+                      if (edge.findIndex((e) => e.sourceHandle === "r2") === -1)
+                        await onConnect(params);
+                    } else if (
+                      node.position.y - e.position.y >= -44 - 5 &&
+                      node.position.y - e.position.y <= -44 + 5
+                    ) {
+                      params.targetHandle = "r3.t";
+                      if (edge.findIndex((e) => e.sourceHandle === "r3") === -1)
+                        await onConnect(params);
+                    } else if (
+                      node.position.y - e.position.y >= -64 - 5 &&
+                      node.position.y - e.position.y <= -64 + 5
+                    ) {
+                      params.targetHandle = "r4.t";
+                      if (edge.findIndex((e) => e.sourceHandle === "r4") === -1)
+                        await onConnect(params);
+                    }
+                  }
+                }
+                break;
+              case "transistor":
+                console.log(
+                  "trans^^^^^^^",
+                  node.position.x - e.position.x,
+                  node.position.y - e.position.y
+                );
                 if (
-                  node.position.x - e.position.x >= 120 - 5 &&
-                  node.position.x - e.position.x <= 120 + 5
+                  node.position.x - e.position.x >= -35 - 5 &&
+                  node.position.x - e.position.x <= -35 + 5 &&
+                  node.position.y - e.position.y >= 4 - 5 &&
+                  node.position.y - e.position.y < 4 + 5
                 ) {
-                  if (
-                    node.position.y - e.position.y >= 45 - 5 &&
-                    node.position.y - e.position.y <= 45 + 5
-                  ) {
-                    params.sourceHandle = "l1";
-                    if (edge.findIndex((e) => e.tragetHandle === "l1.t") === -1)
-                      await onConnect(params);
-                  } else if (
-                    node.position.y - e.position.y >= 28 - 5 &&
-                    node.position.y - e.position.y <= 28 + 5
-                  ) {
-                    params.sourceHandle = "l2";
-                    if (edge.findIndex((e) => e.targetHandle === "l2.t") === -1)
-                      await onConnect(params);
-                  } else if (
-                    node.position.y - e.position.y >= 10 - 5 &&
-                    node.position.y - e.position.y <= 10 + 5
-                  ) {
-                    params.sourceHandle = "l3";
-                    if (edge.findIndex((e) => e.targetHandle === "l3.t") === -1)
-                      await onConnect(params);
-                  } else if (
-                    node.position.y - e.position.y >= -6 - 5 &&
-                    node.position.y - e.position.y <= -6 + 5
-                  ) {
-                    params.sourceHandle = "l4";
-                    if (edge.findIndex((e) => e.targetHandle === "l4.t") === -1)
-                      await onConnect(params);
-                  }
+                  params = {
+                    source: `${node.id}`,
+                    sourceHandle: `r`,
+                    target: `${e.id}`,
+                    targetHandle: "r2",
+                  };
+                  await onConnect(params);
                 } else if (
-                  node.position.x - e.position.x >= -13 - 5 &&
-                  node.position.x - e.position.x <= -13 + 5
+                  node.position.x - e.position.x >= -35 - 5 &&
+                  node.position.x - e.position.x <= -35 + 5 &&
+                  node.position.y - e.position.y >= 20 - 5 &&
+                  node.position.y - e.position.y < 20 + 5
                 ) {
-                  if (
-                    node.position.y - e.position.y >= 45 - 5 &&
-                    node.position.y - e.position.y <= 45 + 5
-                  ) {
-                    params.sourceHandle = "r1";
-                    if (edge.findIndex((e) => e.targetHandle === "r1.t") === -1)
-                      await onConnect(params);
-                  } else if (
-                    node.position.y - e.position.y >= 28 - 5 &&
-                    node.position.y - e.position.y <= 28 + 5
-                  ) {
-                    params.sourceHandle = "r2";
-                    if (edge.findIndex((e) => e.targetHandle === "r2.t") === -1)
-                      await onConnect(params);
-                  } else if (
-                    node.position.y - e.position.y >= 10 - 5 &&
-                    node.position.y - e.position.y <= 10 + 5
-                  ) {
-                    params.sourceHandle = "r3";
-                    if (edge.findIndex((e) => e.targetHandle === "r3.t") === -1)
-                      await onConnect(params);
-                  } else if (
-                    node.position.y - e.position.y >= -6 - 5 &&
-                    node.position.y - e.position.y <= -6 + 5
-                  ) {
-                    params.sourceHandle = "r4";
-                    if (edge.findIndex((e) => e.targetHandle === "r4.t") === -1)
-                      await onConnect(params);
-                  }
+                  params = {
+                    source: `${node.id}`,
+                    sourceHandle: `r`,
+                    target: `${e.id}`,
+                    targetHandle: "r3",
+                  };
+                  await onConnect(params);
                 }
                 break;
               default:
@@ -2549,6 +3205,7 @@ const DnDFlow = (props) => {
                     case "resistorCircuit":
                     case "capacitorCircuit":
                     case "voltageDividerCircuit":
+                    case "semi-conductorDiodeCircuit":
                       if (node.data.specificElType === "tact")
                         await onConnect(params);
                   }
@@ -2573,6 +3230,7 @@ const DnDFlow = (props) => {
                     case "parallelCircuit":
                     case "resistorCircuit":
                     case "capacitorCircuit":
+                    case "semi-conductorDiodeCircuit":
                       if (node.data.specificElType === "tact")
                         await onConnect(params);
                   }
@@ -2592,6 +3250,7 @@ const DnDFlow = (props) => {
                     case "simpleCircuit":
                     case "seriesCircuit":
                     case "resistorCircuit":
+                    case "semi-conductorDiodeCircuit":
                       if (
                         node.data.specificElType === "led" ||
                         node.data.specificElType === "beeper"
@@ -2648,6 +3307,7 @@ const DnDFlow = (props) => {
                     case "simpleCircuit":
                     case "seriesCircuit":
                     case "resistorCircuit":
+                    case "semi-conductorDiodeCircuit":
                       if (
                         node.data.specificElType === "led" ||
                         node.data.specificElType === "beeper"
@@ -2758,6 +3418,37 @@ const DnDFlow = (props) => {
                 }
 
                 break;
+              case "tact":
+                console.log(
+                  "tact#####^^^^^^^^^^####",
+                  node.position.x - e.position.x,
+                  node.position.y - e.position.y
+                );
+                params = {
+                  source: `${node.id}`,
+                  sourceHandle: `r`,
+                  target: `${e.id}`,
+                  targetHandle: "r1",
+                };
+                if (
+                  node.position.x - e.position.x >= 14 - 5 &&
+                  node.position.x - e.position.x <= 14 + 5 &&
+                  node.position.y - e.position.y >= -10 - 5 &&
+                  node.position.y - e.position.y <= -10 + 5
+                ) {
+                  params.targetHandle = "r1";
+                  await onConnect(params);
+                } else if (
+                  node.position.x - e.position.x >= 14 - 5 &&
+                  node.position.x - e.position.x <= 14 + 5 &&
+                  node.position.y - e.position.y >= 47 - 5 &&
+                  node.position.y - e.position.y <= 47 + 5
+                ) {
+                  params.targetHandle = "r2";
+                  await onConnect(params);
+                }
+                break;
+
               case "led":
                 params = {
                   source: `${e.id}`,
@@ -2787,11 +3478,6 @@ const DnDFlow = (props) => {
               case "voltageDividerCircuit":
                 switch (node.data.specificElType) {
                   case "led":
-                    console.log(
-                      "led#####^^^^^^^^^^####",
-                      node.position.x - e.position.x,
-                      node.position.y - e.position.y
-                    );
                     if (
                       node.position.x - e.position.x >= -159 - 5 &&
                       node.position.x - e.position.x <= -159 + 5
@@ -2876,7 +3562,568 @@ const DnDFlow = (props) => {
                       }
                     }
                     break;
+                  case "pot":
+                    params = {
+                      source: `${e.id}`,
+                      sourceHandle: `l1`,
+                      target: `${node.id}`,
+                      targetHandle: "r1",
+                    };
+                    console.log(
+                      "potttTTTTTTTTTTTT",
+                      node.position.x - e.position.x,
+                      node.position.y - e.position.y
+                    );
+                    let index1 = edge.findIndex(
+                      (e) =>
+                        e.target === params.target &&
+                        params.targetHandle == "r1"
+                    );
+                    let y = node.position.y - e.position.y;
+
+                    if (index1 != -1) {
+                      params.targetHandle = "r2";
+                    }
+                    if (
+                      node.position.x - e.position.x >= -176 - 5 &&
+                      node.position.x - e.position.x <= -176 + 5
+                    ) {
+                      //l1.t or l1
+                      if (y)
+                        if (y >= 3 - 5 && y <= 3 + 5) {
+                          params.sourceHandle = "l1";
+                          if (
+                            edge.findIndex((e) => e.targetHandle === "l1.t") ===
+                            -1
+                          )
+                            await onConnect(params);
+                        }
+                        //l2.t or l2
+                        else if (y >= 22 - 5 && y <= 22 + 5) {
+                          params.sourceHandle = "l2";
+                          if (
+                            edge.findIndex((e) => e.targetHandle === "l2.t") ===
+                            -1
+                          )
+                            await onConnect(params);
+                        }
+                        //l3.t or l3
+                        else if (y >= 38 - 5 && y <= 38 + 5) {
+                          params.sourceHandle = "l3";
+                          if (
+                            edge.findIndex((e) => e.targetHandle === "l3.t") ===
+                            -1
+                          )
+                            await onConnect(params);
+                        }
+                        //l4.t or l4
+                        else if (y >= 56 - 5 && y <= 56 + 5) {
+                          params.sourceHandle = "l4";
+                          if (
+                            edge.findIndex((e) => e.targetHandle === "l4.t") ===
+                            -1
+                          )
+                            await onConnect(params);
+                        }
+                    } else if (
+                      node.position.x - e.position.x >= -40 - 5 &&
+                      node.position.x - e.position.x <= -40 + 5
+                    ) {
+                      //r1.t or r1
+                      if (y >= 3 - 5 && y <= 3 + 5) {
+                        params.sourceHandle = "r1";
+                        if (
+                          edge.findIndex((e) => e.targetHandle === "r1.t") ===
+                          -1
+                        )
+                          await onConnect(params);
+                      }
+                      //r2.t or r2
+                      else if (y >= 22 - 5 && y <= 22 + 5) {
+                        params.sourceHandle = "r2";
+                        if (
+                          edge.findIndex((e) => e.targetHandle === "r2.t") ===
+                          -1
+                        )
+                          await onConnect(params);
+                      }
+                      //r3.t or r3
+                      else if (y >= 38 - 5 && y <= 38 + 5) {
+                        params.sourceHandle = "r3";
+                        if (
+                          edge.findIndex((e) => e.targetHandle === "r3.t") ===
+                          -1
+                        )
+                          await onConnect(params);
+                      }
+                      //r4.t or r4
+                      else if (y >= 56 - 5 && y <= 56 + 5) {
+                        params.sourceHandle = "r4";
+                        if (
+                          edge.findIndex((e) => e.targetHandle === "r4.t") ===
+                          -1
+                        )
+                          await onConnect(params);
+                      }
+                    }
+
+                    break;
                 }
+                break;
+              case "transistorCircuit":
+                switch (node.data.specificElType) {
+                  case "led":
+                  case "res_100":
+                  case "ldr":
+                    params = {
+                      source: `${e.id}`,
+                      sourceHandle: `r`,
+                      target: `${node.id}`,
+                      targetHandle: "l",
+                    };
+                    if (
+                      node.position.x - e.position.x >= 43 - 5 &&
+                      node.position.x - e.position.x <= 43 + 5
+                    ) {
+                      if (
+                        node.position.y - e.position.y >= -7 - 5 &&
+                        node.position.y - e.position.y <= -7 + 5
+                      ) {
+                        params.sourceHandle = "l1";
+                        if (
+                          edge.findIndex((e) => e.targetHandle === "l1.t") ===
+                          -1
+                        )
+                          await onConnect(params);
+                      } else if (
+                        node.position.y - e.position.y >= 9 - 5 &&
+                        node.position.y - e.position.y <= 9 + 5
+                      ) {
+                        params.sourceHandle = "l2";
+                        if (
+                          edge.findIndex((e) => e.targetHandle === "l2.t") ===
+                          -1
+                        )
+                          await onConnect(params);
+                      } else if (
+                        node.position.y - e.position.y >= 27 - 5 &&
+                        node.position.y - e.position.y <= 27 + 5
+                      ) {
+                        params.sourceHandle = "l3";
+                        if (
+                          edge.findIndex((e) => e.targetHandle === "l3.t") ===
+                          -1
+                        )
+                          await onConnect(params);
+                      } else if (
+                        node.position.y - e.position.y >= 44 - 5 &&
+                        node.position.y - e.position.y <= 44 + 5
+                      ) {
+                        params.sourceHandle = "l4";
+                        if (
+                          edge.findIndex((e) => e.targetHandle === "l4.t") ===
+                          -1
+                        )
+                          await onConnect(params);
+                      }
+                    } else if (
+                      node.position.x - e.position.x >= 173 - 5 &&
+                      node.position.x - e.position.x <= 173 + 5
+                    ) {
+                      if (
+                        node.position.y - e.position.y >= -7 - 5 &&
+                        node.position.y - e.position.y <= -7 + 5
+                      ) {
+                        params.sourceHandle = "r1";
+                        if (
+                          edge.findIndex((e) => e.targetHandle === "r1.t") ===
+                          -1
+                        )
+                          await onConnect(params);
+                      } else if (
+                        node.position.y - e.position.y >= 9 - 5 &&
+                        node.position.y - e.position.y <= 9 + 5
+                      ) {
+                        params.sourceHandle = "r2";
+                        if (
+                          edge.findIndex((e) => e.targetHandle === "r2.t") ===
+                          -1
+                        )
+                          await onConnect(params);
+                      } else if (
+                        node.position.y - e.position.y >= 27 - 5 &&
+                        node.position.y - e.position.y <= 27 + 5
+                      ) {
+                        params.sourceHandle = "r3";
+                        if (
+                          edge.findIndex((e) => e.targetHandle === "r3.t") ===
+                          -1
+                        )
+                          await onConnect(params);
+                      } else if (
+                        node.position.y - e.position.y >= 44 - 5 &&
+                        node.position.y - e.position.y <= 44 + 5
+                      ) {
+                        params.sourceHandle = "r4";
+                        if (
+                          edge.findIndex((e) => e.targetHandle === "r4.t") ===
+                          -1
+                        )
+                          await onConnect(params);
+                      }
+                    }
+                    break;
+                }
+                break;
+              case "parallelCircuit":
+                let index1 = nodes.find(
+                  (n) => n.data.specificElType === "junction"
+                );
+                if (index1.id === e.id)
+                  switch (node.data.specificElType) {
+                    //add offset for beeper
+                    case "tact":
+                    case "led":
+                    case "beeper":
+                      params = {
+                        source: `${e.id}`,
+                        sourceHandle: `r`,
+                        target: `${node.id}`,
+                        targetHandle: "l",
+                      };
+                      console.log(
+                        "params",
+                        node.position.x - e.position.x,
+                        node.position.y - e.position.y
+                      );
+                      if (
+                        node.position.x - e.position.x >= 43 - 5 &&
+                        node.position.x - e.position.x <= 43 + 5
+                      ) {
+                        if (
+                          node.position.y - e.position.y >= -7 - 5 &&
+                          node.position.y - e.position.y <= -7 + 5
+                        ) {
+                          params.sourceHandle = "l1" + index1.id;
+                          if (
+                            edge.findIndex(
+                              (e) => e.targetHandle === "l1.t" + index1.id
+                            ) === -1
+                          )
+                            await onConnect(params);
+                        } else if (
+                          node.position.y - e.position.y >= 9 - 5 &&
+                          node.position.y - e.position.y <= 9 + 5
+                        ) {
+                          params.sourceHandle = "l2" + index1.id;
+                          if (
+                            edge.findIndex(
+                              (e) => e.targetHandle === "l2.t" + index1.id
+                            ) === -1
+                          )
+                            await onConnect(params);
+                        } else if (
+                          node.position.y - e.position.y >= 27 - 5 &&
+                          node.position.y - e.position.y <= 27 + 5
+                        ) {
+                          params.sourceHandle = "l3" + index1.id;
+                          if (
+                            edge.findIndex(
+                              (e) => e.targetHandle === "l3.t" + index1.id
+                            ) === -1
+                          )
+                            await onConnect(params);
+                        } else if (
+                          node.position.y - e.position.y >= 44 - 5 &&
+                          node.position.y - e.position.y <= 44 + 5
+                        ) {
+                          params.sourceHandle = "l4" + index1.id;
+                          if (
+                            edge.findIndex(
+                              (e) => e.targetHandle === "l4.t" + index1.id
+                            ) === -1
+                          )
+                            await onConnect(params);
+                        }
+                      } else if (
+                        node.position.x - e.position.x >= 173 - 5 &&
+                        node.position.x - e.position.x <= 173 + 5
+                      ) {
+                        if (
+                          node.position.y - e.position.y >= -7 - 5 &&
+                          node.position.y - e.position.y <= -7 + 5
+                        ) {
+                          params.sourceHandle = "r1" + index1.id;
+                          if (
+                            edge.findIndex(
+                              (e) => e.targetHandle === "r1.t" + index1.id
+                            ) === -1
+                          )
+                            await onConnect(params);
+                        } else if (
+                          node.position.y - e.position.y >= 9 - 5 &&
+                          node.position.y - e.position.y <= 9 + 5
+                        ) {
+                          params.sourceHandle = "r2" + index1.id;
+                          if (
+                            edge.findIndex(
+                              (e) => e.targetHandle === "r2.t" + index1.id
+                            ) === -1
+                          )
+                            await onConnect(params);
+                        } else if (
+                          node.position.y - e.position.y >= 27 - 5 &&
+                          node.position.y - e.position.y <= 27 + 5
+                        ) {
+                          params.sourceHandle = "r3" + index1.id;
+                          if (
+                            edge.findIndex(
+                              (e) => e.targetHandle === "r3.t" + index1.id
+                            ) === -1
+                          )
+                            await onConnect(params);
+                        } else if (
+                          node.position.y - e.position.y >= 44 - 5 &&
+                          node.position.y - e.position.y <= 44 + 5
+                        ) {
+                          params.sourceHandle = "r4" + index1.id;
+                          if (
+                            edge.findIndex(
+                              (e) => e.targetHandle === "r4.t" + index1.id
+                            ) === -1
+                          )
+                            await onConnect(params);
+                        }
+                      } else if (
+                        node.position.x - e.position.x >= -160 - 5 &&
+                        node.position.x - e.position.x <= -160 + 5 &&
+                        props.type === "tact"
+                      ) {
+                      } //gsk end code today
+                      break;
+                  }
+                else
+                  switch (node.data.specificElType) {
+                    case "led":
+                      let index3 = nodes.find(
+                        (n) => n.data.specificElType === "junction"
+                      );
+                      let index2 = nodes.find(
+                        (n) =>
+                          n.data.specificElType === "junction" &&
+                          n.id != index3.id
+                      );
+                      if (
+                        node.position.x - e.position.x >= -159 - 5 &&
+                        node.position.x - e.position.x <= -159 + 5
+                      ) {
+                        if (
+                          node.position.y - e.position.y >= -7 - 5 &&
+                          node.position.y - e.position.y <= -7 + 5
+                        ) {
+                          params.targetHandle = "l1.t" + index2.id;
+                          if (
+                            edge.findIndex(
+                              (e) => e.sourceHandle === "l1" + index2.id
+                            ) === -1
+                          )
+                            await onConnect(params);
+                        } else if (
+                          node.position.y - e.position.y >= 9 - 5 &&
+                          node.position.y - e.position.y <= 9 + 5
+                        ) {
+                          params.targetHandle = "l2.t" + index2.id;
+                          if (
+                            edge.findIndex(
+                              (e) => e.sourceHandle === "l2" + index2.id
+                            ) === -1
+                          )
+                            await onConnect(params);
+                        } else if (
+                          node.position.y - e.position.y >= 27 - 5 &&
+                          node.position.y - e.position.y <= 27 + 5
+                        ) {
+                          params.targetHandle = "l3.t" + index2.id;
+                          if (
+                            edge.findIndex(
+                              (e) => e.sourceHandle === "l3" + index2.id
+                            ) === -1
+                          )
+                            await onConnect(params);
+                        } else if (
+                          node.position.y - e.position.y >= 44 - 5 &&
+                          node.position.y - e.position.y <= 44 + 5
+                        ) {
+                          params.targetHandle = "l4.t" + index2.id;
+                          if (
+                            edge.findIndex(
+                              (e) => e.sourceHandle === "l4" + index2.id
+                            ) === -1
+                          )
+                            await onConnect(params);
+                        }
+                      } else if (
+                        node.position.x - e.position.x >= -30 - 5 &&
+                        node.position.x - e.position.x <= -30 + 5
+                      ) {
+                        if (
+                          node.position.y - e.position.y >= -7 - 5 &&
+                          node.position.y - e.position.y <= -7 + 5
+                        ) {
+                          params.targetHandle = "r1.t" + index2.id;
+                          if (
+                            edge.findIndex(
+                              (e) => e.sourceHandle === "r1" + index2.id
+                            ) === -1
+                          )
+                            await onConnect(params);
+                        } else if (
+                          node.position.y - e.position.y >= 9 - 5 &&
+                          node.position.y - e.position.y <= 9 + 5
+                        ) {
+                          params.targetHandle = "r2.t" + index2.id;
+                          if (
+                            edge.findIndex(
+                              (e) => e.sourceHandle === "r2" + index2.id
+                            ) === -1
+                          )
+                            await onConnect(params);
+                        } else if (
+                          node.position.y - e.position.y >= 27 - 5 &&
+                          node.position.y - e.position.y <= 27 + 5
+                        ) {
+                          params.targetHandle = "r3.t" + index2.id;
+                          if (
+                            edge.findIndex(
+                              (e) => e.sourceHandle === "r3" + index2.id
+                            ) === -1
+                          )
+                            await onConnect(params);
+                        } else if (
+                          node.position.y - e.position.y >= 44 - 5 &&
+                          node.position.y - e.position.y <= 44 + 5
+                        ) {
+                          params.targetHandle = "r4.t" + index2.id;
+                          if (
+                            edge.findIndex(
+                              (e) => e.sourceHandle === "r4" + index2.id
+                            ) === -1
+                          )
+                            await onConnect(params);
+                        }
+                      }
+                      break;
+                    case "pot":
+                      params = {
+                        source: `${e.id}`,
+                        sourceHandle: `l1`,
+                        target: `${node.id}`,
+                        targetHandle: "r1",
+                      };
+                      console.log(
+                        "potttTTTTTTTTTTTT",
+                        node.position.x - e.position.x,
+                        node.position.y - e.position.y
+                      );
+                      let index1 = edge.findIndex(
+                        (e) =>
+                          e.target === params.target &&
+                          params.targetHandle == "r1"
+                      );
+                      let y = node.position.y - e.position.y;
+
+                      if (index1 != -1) {
+                        params.targetHandle = "r2";
+                      }
+                      if (
+                        node.position.x - e.position.x >= -176 - 5 &&
+                        node.position.x - e.position.x <= -176 + 5
+                      ) {
+                        //l1.t or l1
+                        if (y)
+                          if (y >= 3 - 5 && y <= 3 + 5) {
+                            params.sourceHandle = "l1";
+                            if (
+                              edge.findIndex(
+                                (e) => e.targetHandle === "l1.t"
+                              ) === -1
+                            )
+                              await onConnect(params);
+                          }
+                          //l2.t or l2
+                          else if (y >= 22 - 5 && y <= 22 + 5) {
+                            params.sourceHandle = "l2";
+                            if (
+                              edge.findIndex(
+                                (e) => e.targetHandle === "l2.t"
+                              ) === -1
+                            )
+                              await onConnect(params);
+                          }
+                          //l3.t or l3
+                          else if (y >= 38 - 5 && y <= 38 + 5) {
+                            params.sourceHandle = "l3";
+                            if (
+                              edge.findIndex(
+                                (e) => e.targetHandle === "l3.t"
+                              ) === -1
+                            )
+                              await onConnect(params);
+                          }
+                          //l4.t or l4
+                          else if (y >= 56 - 5 && y <= 56 + 5) {
+                            params.sourceHandle = "l4";
+                            if (
+                              edge.findIndex(
+                                (e) => e.targetHandle === "l4.t"
+                              ) === -1
+                            )
+                              await onConnect(params);
+                          }
+                      } else if (
+                        node.position.x - e.position.x >= -40 - 5 &&
+                        node.position.x - e.position.x <= -40 + 5
+                      ) {
+                        //r1.t or r1
+                        if (y >= 3 - 5 && y <= 3 + 5) {
+                          params.sourceHandle = "r1";
+                          if (
+                            edge.findIndex((e) => e.targetHandle === "r1.t") ===
+                            -1
+                          )
+                            await onConnect(params);
+                        }
+                        //r2.t or r2
+                        else if (y >= 22 - 5 && y <= 22 + 5) {
+                          params.sourceHandle = "r2";
+                          if (
+                            edge.findIndex((e) => e.targetHandle === "r2.t") ===
+                            -1
+                          )
+                            await onConnect(params);
+                        }
+                        //r3.t or r3
+                        else if (y >= 38 - 5 && y <= 38 + 5) {
+                          params.sourceHandle = "r3";
+                          if (
+                            edge.findIndex((e) => e.targetHandle === "r3.t") ===
+                            -1
+                          )
+                            await onConnect(params);
+                        }
+                        //r4.t or r4
+                        else if (y >= 56 - 5 && y <= 56 + 5) {
+                          params.sourceHandle = "r4";
+                          if (
+                            edge.findIndex((e) => e.targetHandle === "r4.t") ===
+                            -1
+                          )
+                            await onConnect(params);
+                        }
+                      }
+
+                      break;
+                  }
                 break;
               default:
                 switch (node.data.specificElType) {
@@ -2949,6 +4196,75 @@ const DnDFlow = (props) => {
                     break;
                 }
             }
+            break;
+          case "diode":
+            params = {
+              source: `${node.id}`,
+              sourceHandle: `r`,
+              target: `${e.id}`,
+              targetHandle: "l1",
+            };
+            if (
+              node.position.x - e.position.x >= -200 - 5 &&
+              node.position.x - e.position.x <= -200 + 5 &&
+              node.position.y - e.position.y >= -2 - 5 &&
+              node.position.y - e.position.y <= -2 + 5
+            ) {
+              let index1 = edge.findIndex((e) => e.targetHandle === "r1");
+              if (index1 === -1) await onConnect(params);
+            } else if (
+              node.position.x - e.position.x >= 200 - 5 &&
+              node.position.x - e.position.x <= 200 + 5 &&
+              node.position.y - e.position.y >= 2 - 5 &&
+              node.position.y - e.position.y <= 2 + 5
+            ) {
+              params = {
+                source: `${e.id}`,
+                sourceHandle: `r1`,
+                target: `${node.id}`,
+                targetHandle: "l",
+              };
+              let index1 = edge.findIndex((e) => e.sourceHandle === "l1");
+              if (index1 === -1) await onConnect(params);
+              await onConnect(params);
+            }
+            break;
+          case "transistor":
+            if (
+              node.data.specificElType === "tact" ||
+              node.data.specificElType === "ldr"
+            ) {
+              params = {
+                source: `${node.id}`,
+                sourceHandle: `r`,
+                target: `${e.id}`,
+                targetHandle: "l",
+              };
+              if (
+                node.position.x - e.position.x >= -200 - 5 &&
+                node.position.x - e.position.x <= -200 + 5 &&
+                node.position.y - e.position.y >= 20 - 5 &&
+                node.position.y - e.position.y <= 20 + 5
+              ) {
+                await onConnect(params);
+              }
+            } else if (node.data.specificElType === "led") {
+              if (
+                node.position.x - e.position.x >= -9 - 5 &&
+                node.position.x - e.position.x <= -9 + 5 &&
+                node.position.y - e.position.y >= 5 - 5 &&
+                node.position.y - e.position.y <= 5 + 5
+              ) {
+                params = {
+                  source: `${node.id}`,
+                  sourceHandle: `r`,
+                  target: `${e.id}`,
+                  targetHandle: "r.t",
+                };
+                await onConnect(params);
+              }
+            }
+            break;
         }
       }
     });
@@ -3058,6 +4374,53 @@ const DnDFlow = (props) => {
             eleLed1.classList.remove("led-light");
           }
         }
+        break;
+      case "voltageDividerCircuit":
+        if ((await circuitClosed) === 1) {
+          let nodeDetail1 = await getOutgoers(nodeDetail, nodes, edges);
+          let nodeDetail2 = await getOutgoers(nodeDetail1[0], nodes, edges);
+          nodeDetail2 = nodeDetail2[0];
+          nodeDetail1 = nodeDetail1[0];
+          if (nodeDetail2.data.specificElType === "led") {
+            const eleLed1 = document.getElementById(`led${nodeDetail2.id}`);
+            eleLed1.classList.remove("led-light");
+          }
+        }
+        break;
+      case "semi-conductorDiodeCircuit":
+        if (await circuitClosed) {
+          let nodeDetail1 = await getOutgoers(nodeDetail, nodes, edges);
+
+          nodeDetail1 = nodeDetail1[0];
+
+          if (nodeDetail1.data.specificElType === "led") {
+            const eleLed1 = document.getElementById(`led${nodeDetail1.id}`);
+            eleLed1.classList.remove("led-light");
+          }
+        }
+        break;
+      case "transistorCircuit": {
+        if ((await circuitClosed) === 1) {
+          let flag;
+          let nodeDetail1 = await getOutgoers(nodes[0], nodes, edges);
+          nodeDetail1 = nodeDetail1[0];
+          let nodeDetail2 = await getOutgoers(nodeDetail1, nodes, edges);
+          if (nodeDetail2.length === 2) {
+            if (nodeDetail2[0].data.specificElType === "ldr") flag = true;
+            else if (nodeDetail2[1].data.specificElType === "ldr") flag = true;
+            if (nodeDetail2[0].data.specificElType === "led") {
+              nodeDetail2 = nodeDetail2[0];
+            } else if (nodeDetail2[1].data.specificElType === "led") {
+              nodeDetail2 = nodeDetail2[1];
+            }
+          }
+
+          if (nodeDetail2.data.specificElType === "led" && !flag) {
+            const eleLed1 = document.getElementById(`led${nodeDetail2.id}`);
+            eleLed1.classList.remove("led-light");
+          }
+        }
+      }
     }
   };
   const onMouseDownCapture = async (e) => {
@@ -3189,12 +4552,67 @@ const DnDFlow = (props) => {
             } else if ((await circuitClosed) === 1) {
             }
             break;
+          case "voltageDividerCircuit":
+            if ((await circuitClosed) === 1) {
+              let nodeDetail1 = await getOutgoers(nodeDetail, nodes, edges);
+              let nodeDetail2 = await getOutgoers(nodeDetail1[0], nodes, edges);
+              nodeDetail2 = nodeDetail2[0];
+              nodeDetail1 = nodeDetail1[0];
+              if (nodeDetail2.data.specificElType === "led") {
+                const eleLed1 = document.getElementById(`led${nodeDetail2.id}`);
+                eleLed1.classList.add("led-light");
+                // const eleLed2 = document.getElementById(
+                //   `myRange${nodeDetail1.id}`
+                // );
+                // console.log("traget@@", eleLed2);
+                eleLed1.style.opacity = `${rangeVal / 100 + 0.1}`;
+              }
+            }
+            break;
+          case "semi-conductorDiodeCircuit":
+            if (await circuitClosed) {
+              let nodeDetail1 = await getOutgoers(nodeDetail, nodes, edges);
+
+              nodeDetail1 = nodeDetail1[0];
+              let index1 = edge.findIndex(
+                (e) => e.targetHandle === "l1" && e.sourceHandle === "r"
+              );
+              console.log("nodeDE", index1);
+              if (nodeDetail1.data.specificElType === "led" && index1 != -1) {
+                const eleLed1 = document.getElementById(`led${nodeDetail1.id}`);
+                eleLed1.classList.add("led-light");
+              }
+            }
+            break;
+          case "transistorCircuit": {
+            if ((await circuitClosed) === 1) {
+              let flag = false;
+              let nodeDetail1 = await getOutgoers(nodes[0], nodes, edges);
+              nodeDetail1 = nodeDetail1[0];
+              let nodeDetail2 = await getOutgoers(nodeDetail1, nodes, edges);
+              if (nodeDetail2.length === 2) {
+                if (nodeDetail2[0].data.specificElType === "ldr") flag = true;
+                else if (nodeDetail2[1].data.specificElType === "ldr")
+                  flag = true;
+                if (nodeDetail2[0].data.specificElType === "led")
+                  nodeDetail2 = nodeDetail2[0];
+                else if (nodeDetail2[1].data.specificElType === "led")
+                  nodeDetail2 = nodeDetail2[1];
+              }
+
+              if (nodeDetail2.data.specificElType === "led") {
+                const eleLed1 = document.getElementById(`led${nodeDetail2.id}`);
+                eleLed1.classList.add("led-light");
+                if (flag) eleLed1.style.opacity = `${rangeVal / 100 + 0.1}`;
+              }
+            }
+          }
         }
       }
     }
     console.log(e);
   };
-
+  const sliderOnChange = async () => {};
   const onNodeMouseEnter = async (e, node) => {
     console.log("node moyse enter", node);
     if (node.data.specificElType === "tact") {
@@ -3203,7 +4621,9 @@ const DnDFlow = (props) => {
       if (
         props.type === "parallelCircuit" ||
         props.type === "resistorCircuit" ||
-        props.type === "capacitorCircuit"
+        props.type === "capacitorCircuit" ||
+        props.type === "voltageDividerCircuit" ||
+        props.typr === "semi-conductorDiodeCircuit"
       ) {
         nodeDetail = node;
       } else {
@@ -3281,8 +4701,70 @@ const DnDFlow = (props) => {
             }
           }
           break;
+        case "voltageDividerCircuit":
+          if ((await circuitClosed) === 1) {
+            let nodeDetail1 = await getOutgoers(nodeDetail, nodes, edges);
+            let nodeDetail2 = await getOutgoers(nodeDetail1[0], nodes, edges);
+            nodeDetail2 = nodeDetail2[0];
+            nodeDetail1 = nodeDetail1[0];
+            if (nodeDetail2.data.specificElType === "led") {
+              const eleLed1 = document.getElementById(`led${nodeDetail2.id}`);
+              eleLed1.classList.remove("led-light");
+            }
+          }
+          break;
+        case "semi-conductorDiodeCircuit":
+          if (await circuitClosed) {
+            let nodeDetail1 = await getOutgoers(nodeDetail, nodes, edges);
+
+            nodeDetail1 = nodeDetail1[0];
+
+            if (nodeDetail1.data.specificElType === "led") {
+              const eleLed1 = document.getElementById(`led${nodeDetail1.id}`);
+              eleLed1.classList.remove("led-light");
+            }
+          }
+          break;
+        case "transistorCircuit":
+          {
+            if ((await circuitClosed) === 1) {
+              let flag = false;
+
+              let nodeDetail1 = await getOutgoers(nodes[0], nodes, edges);
+              nodeDetail1 = nodeDetail1[0];
+              let nodeDetail2 = await getOutgoers(nodeDetail1, nodes, edges);
+              if (nodeDetail2.length === 2) {
+                if (nodeDetail2[0].data.specificElType === "ldr") flag = true;
+                else if (nodeDetail2[1].data.specificElType === "ldr")
+                  flag = true;
+                if (nodeDetail2[0].data.specificElType === "led") {
+                  nodeDetail2 = nodeDetail2[0];
+                } else if (nodeDetail2[1].data.specificElType === "led") {
+                  nodeDetail2 = nodeDetail2[1];
+                }
+              }
+              if (nodeDetail2.data.specificElType === "led" && flag) {
+                eleLed1 = document.getElementById(`led${nodeDetail2.id}`);
+                eleLed1.classList.add("led-light");
+                eleLed1.style.opacity = `${rangeVal / 100 + 0.1}`;
+              } else if (nodeDetail2.data.specificElType === "led") {
+                const eleLed1 = document.getElementById(`led${nodeDetail2.id}`);
+                eleLed1.classList.remove("led-light");
+              }
+            }
+          }
+          break;
       }
   };
+
+  // var slider = document.getElementById("myRange");
+  // var output = document.getElementById("demo");
+  // output.innerHTML = slider.value;
+
+  // slider.oninput = function () {
+  //   output.innerHTML = this.value;
+  // };
+
   return (
     <div className="dndflow">
       <ReactFlowProvider>
@@ -3303,6 +4785,7 @@ const DnDFlow = (props) => {
             onMouseDownCapture={onMouseDownCapture}
             onNodeMouseEnter={onNodeMouseEnter}
             onNodeDragStop={onNodeDragEnd}
+            nodesDraggable={nodesDraggable}
             // onElementClick={onElementClick}
           >
             <Controls />

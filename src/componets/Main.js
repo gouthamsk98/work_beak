@@ -3144,6 +3144,132 @@ const DnDFlow = (props) => {
                         await onConnect(params);
                     }
                   }
+                } else if (props.type === "parallelCircuit") {
+                  let index3 = nodes.find(
+                    (n) => n.data.specificElType === "junction"
+                  );
+                  let index1 = nodes.find(
+                    (n) =>
+                      n.data.specificElType === "junction" && n.id != index3.id
+                  );
+                  console.log(
+                    "junction end",
+                    node.position.x - e.position.x,
+                    node.position.y - e.position.y
+                  );
+                  if (index1.id === node.id) {
+                    if (
+                      node.position.x - e.position.x >= 122 - 5 &&
+                      node.position.x - e.position.x <= 122 + 5
+                    ) {
+                      params = {
+                        source: `${node.id}`,
+                        sourceHandle: `r`,
+                        target: `${e.id}`,
+                        targetHandle: "r2",
+                      };
+                      if (
+                        node.position.y - e.position.y >= -7 - 5 &&
+                        node.position.y - e.position.y <= -7 + 5
+                      ) {
+                        params.sourceHandle = "l4" + index1.id;
+                        if (
+                          edge.findIndex(
+                            (e) => e.targetHandle === "l4.t" + index1.id
+                          ) === -1
+                        )
+                          await onConnect(params);
+                      } else if (
+                        node.position.y - e.position.y >= 9 - 5 &&
+                        node.position.y - e.position.y <= 9 + 5
+                      ) {
+                        params.sourceHandle = "l3" + index1.id;
+                        if (
+                          edge.findIndex(
+                            (e) => e.targetHandle === "l3.t" + index1.id
+                          ) === -1
+                        )
+                          await onConnect(params);
+                      } else if (
+                        node.position.y - e.position.y >= 27 - 5 &&
+                        node.position.y - e.position.y <= 27 + 5
+                      ) {
+                        params.sourceHandle = "l2" + index1.id;
+                        if (
+                          edge.findIndex(
+                            (e) => e.targetHandle === "l2.t" + index1.id
+                          ) === -1
+                        )
+                          await onConnect(params);
+                      } else if (
+                        node.position.y - e.position.y >= 44 - 5 &&
+                        node.position.y - e.position.y <= 44 + 5
+                      ) {
+                        params.sourceHandle = "l1" + index1.id;
+                        if (
+                          edge.findIndex(
+                            (e) => e.targetHandle === "l1.t" + index1.id
+                          ) === -1
+                        )
+                          await onConnect(params);
+                      }
+                    } else if (
+                      node.position.x - e.position.x >= -14 - 5 &&
+                      node.position.x - e.position.x <= -14 + 5
+                    ) {
+                      params = {
+                        source: `${node.id}`,
+                        sourceHandle: `r`,
+                        target: `${e.id}`,
+                        targetHandle: "r2",
+                      };
+                      if (
+                        node.position.y - e.position.y >= -7 - 5 &&
+                        node.position.y - e.position.y <= -7 + 5
+                      ) {
+                        params.sourceHandle = "r4" + index1.id;
+                        if (
+                          edge.findIndex(
+                            (e) => e.targetHandle === "r4.t" + index1.id
+                          ) === -1
+                        )
+                          await onConnect(params);
+                      } else if (
+                        node.position.y - e.position.y >= 9 - 5 &&
+                        node.position.y - e.position.y <= 9 + 5
+                      ) {
+                        params.sourceHandle = "lr" + index1.id;
+                        if (
+                          edge.findIndex(
+                            (e) => e.targetHandle === "r3.t" + index1.id
+                          ) === -1
+                        )
+                          await onConnect(params);
+                      } else if (
+                        node.position.y - e.position.y >= 27 - 5 &&
+                        node.position.y - e.position.y <= 27 + 5
+                      ) {
+                        params.sourceHandle = "r2" + index1.id;
+                        if (
+                          edge.findIndex(
+                            (e) => e.targetHandle === "r2.t" + index1.id
+                          ) === -1
+                        )
+                          await onConnect(params);
+                      } else if (
+                        node.position.y - e.position.y >= 44 - 5 &&
+                        node.position.y - e.position.y <= 44 + 5
+                      ) {
+                        params.sourceHandle = "r1" + index1.id;
+                        if (
+                          edge.findIndex(
+                            (e) => e.targetHandle === "r1.t" + index1.id
+                          ) === -1
+                        )
+                          await onConnect(params);
+                      }
+                    }
+                  }
                 }
                 break;
               case "transistor":
@@ -3798,7 +3924,8 @@ const DnDFlow = (props) => {
                       );
                       if (
                         node.position.x - e.position.x >= 43 - 5 &&
-                        node.position.x - e.position.x <= 43 + 5
+                        node.position.x - e.position.x <= 43 + 5 &&
+                        node.data.specificElType != "tact"
                       ) {
                         if (
                           node.position.y - e.position.y >= -7 - 5 &&
@@ -3847,7 +3974,8 @@ const DnDFlow = (props) => {
                         }
                       } else if (
                         node.position.x - e.position.x >= 173 - 5 &&
-                        node.position.x - e.position.x <= 173 + 5
+                        node.position.x - e.position.x <= 173 + 5 &&
+                        node.data.specificElType != "tact"
                       ) {
                         if (
                           node.position.y - e.position.y >= -7 - 5 &&
@@ -3897,9 +4025,119 @@ const DnDFlow = (props) => {
                       } else if (
                         node.position.x - e.position.x >= -160 - 5 &&
                         node.position.x - e.position.x <= -160 + 5 &&
-                        props.type === "tact"
+                        node.data.specificElType === "tact"
                       ) {
-                      } //gsk end code today
+                        console.log(
+                          "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ conecting..........."
+                        );
+                        params = {
+                          source: `${node.id}`,
+                          sourceHandle: `r`,
+                          target: `${e.id}`,
+                          targetHandle: "l",
+                        };
+                        if (
+                          node.position.y - e.position.y >= -7 - 5 &&
+                          node.position.y - e.position.y <= -7 + 5
+                        ) {
+                          params.targetHandle = "l1.t" + index1.id;
+                          if (
+                            edge.findIndex(
+                              (e) => e.sourceHandle === "l1" + index1.id
+                            ) === -1
+                          )
+                            await onConnect(params);
+                        } else if (
+                          node.position.y - e.position.y >= 9 - 5 &&
+                          node.position.y - e.position.y <= 9 + 5
+                        ) {
+                          params.targetHandle = "l2.t" + index1.id;
+                          if (
+                            edge.findIndex(
+                              (e) => e.sourceHandle === "l2" + index1.id
+                            ) === -1
+                          )
+                            await onConnect(params);
+                        } else if (
+                          node.position.y - e.position.y >= 27 - 5 &&
+                          node.position.y - e.position.y <= 27 + 5
+                        ) {
+                          params.targetHandle = "l3.t" + index1.id;
+                          if (
+                            edge.findIndex(
+                              (e) => e.sourceHandle === "l3" + index1.id
+                            ) === -1
+                          )
+                            await onConnect(params);
+                        } else if (
+                          node.position.y - e.position.y >= 44 - 5 &&
+                          node.position.y - e.position.y <= 44 + 5
+                        ) {
+                          params.targetHandle = "l4.t" + index1.id;
+                          if (
+                            edge.findIndex(
+                              (e) => e.sourceHandle === "l4" + index1.id
+                            ) === -1
+                          )
+                            await onConnect(params);
+                        }
+                      } else if (
+                        node.position.x - e.position.x >= -30 - 5 &&
+                        node.position.x - e.position.x <= -30 + 5 &&
+                        node.data.specificElType === "tact"
+                      ) {
+                        params = {
+                          source: `${node.id}`,
+                          sourceHandle: `r`,
+                          target: `${e.id}`,
+                          targetHandle: "l",
+                        };
+                        if (
+                          node.position.y - e.position.y >= -7 - 5 &&
+                          node.position.y - e.position.y <= -7 + 5
+                        ) {
+                          params.targetHandle = "r1.t" + index1.id;
+                          if (
+                            edge.findIndex(
+                              (e) => e.sourceHandle === "r1" + index1.id
+                            ) === -1
+                          )
+                            await onConnect(params);
+                        } else if (
+                          node.position.y - e.position.y >= 9 - 5 &&
+                          node.position.y - e.position.y <= 9 + 5
+                        ) {
+                          params.targetHandle = "r2.t" + index1.id;
+                          if (
+                            edge.findIndex(
+                              (e) => e.sourceHandle === "r2" + index1.id
+                            ) === -1
+                          )
+                            await onConnect(params);
+                        } else if (
+                          node.position.y - e.position.y >= 27 - 5 &&
+                          node.position.y - e.position.y <= 27 + 5
+                        ) {
+                          params.targetHandle = "r3.t" + index1.id;
+                          if (
+                            edge.findIndex(
+                              (e) => e.sourceHandle === "r3" + index1.id
+                            ) === -1
+                          )
+                            await onConnect(params);
+                        } else if (
+                          node.position.y - e.position.y >= 44 - 5 &&
+                          node.position.y - e.position.y <= 44 + 5
+                        ) {
+                          params.targetHandle = "r4.t" + index1.id;
+                          if (
+                            edge.findIndex(
+                              (e) => e.sourceHandle === "r4" + index1.id
+                            ) === -1
+                          )
+                            await onConnect(params);
+                        }
+                      }
                       break;
                   }
                 else
@@ -4320,6 +4558,7 @@ const DnDFlow = (props) => {
       case "parallelCircuit":
         if ((await circuitClosed) === 1) {
           let nodeDetail2 = await getOutgoers(nodeDetail, nodes, edges);
+          nodeDetail2 = await getOutgoers(nodeDetail2[0], nodes, edges);
           let nodeDetail1 = nodeDetail2[0];
           nodeDetail2 = nodeDetail2[1];
           if (
@@ -4482,6 +4721,8 @@ const DnDFlow = (props) => {
           case "parallelCircuit":
             if ((await circuitClosed) === 1) {
               let nodeDetail2 = await getOutgoers(nodeDetail, nodes, edges);
+              nodeDetail2 = await getOutgoers(nodeDetail2[0], nodes, edges);
+              console.log(nodeDetail2, "nodeDetail2");
               let nodeDetail1 = nodeDetail2[0];
               nodeDetail2 = nodeDetail2[1];
               if (
@@ -4673,6 +4914,7 @@ const DnDFlow = (props) => {
         case "parallelCircuit":
           if ((await circuitClosed) === 1) {
             let nodeDetail2 = await getOutgoers(nodeDetail, nodes, edges);
+            nodeDetail2 = await getOutgoers(nodeDetail2[0], nodes, edges);
             let nodeDetail1 = nodeDetail2[0];
             nodeDetail2 = nodeDetail2[1];
             if (

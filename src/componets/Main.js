@@ -5585,8 +5585,8 @@ const DnDFlow = (props) => {
                               await onConnect(params);
                           }
                         } else if (
-                          node.position.x - e.position.x >= 172 - 5 + offsetX &&
-                          node.position.x - e.position.x <= 172 + 5 + offsetX &&
+                          node.position.x - e.position.x >= 42 - 5 + offsetX &&
+                          node.position.x - e.position.x <= 42 + 5 + offsetX &&
                           node.data.specificElType === "tact"
                         ) {
                           console.log(
@@ -5647,8 +5647,8 @@ const DnDFlow = (props) => {
                               await onConnect(params);
                           }
                         } else if (
-                          node.position.x - e.position.x >= 42 - 5 + offsetX &&
-                          node.position.x - e.position.x <= 42 + 5 + offsetX &&
+                          node.position.x - e.position.x >= 172 - 5 + offsetX &&
+                          node.position.x - e.position.x <= 172 + 5 + offsetX &&
                           node.data.specificElType === "tact"
                         ) {
                           params = {

@@ -65,8 +65,18 @@ export default (props) => {
 
         break;
       case "capacitorCircuit":
-        if (nodeType == "tact" || "beeper" || "capacitor100" || "capacitor1000")
+        if (nodeType === "junction" && junctionCount === 1) {
           if (ele.id === nodeType) ele.style.display = "none";
+          junctionCount = 0;
+        }
+        if (
+          nodeType == "tact" ||
+          nodeType == "beeper" ||
+          nodeType == "capacitor100" ||
+          nodeType == "capacitor1000"
+        ) {
+          if (ele.id === nodeType) ele.style.display = "none";
+        }
 
         break;
       case "voltageDividerCircuit":

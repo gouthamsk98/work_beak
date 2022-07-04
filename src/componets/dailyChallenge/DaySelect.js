@@ -33,6 +33,7 @@ class DaySelect extends Component {
             capacitor100={true}
             capacitor1000={true}
             tact={true}
+            junction={true}
             type={e}
           />
         );

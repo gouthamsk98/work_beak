@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, memo, useEffect } from "react";
 import { useDrag } from "react-dnd";
 import { getEmptyImage } from "react-dnd-html5-backend";
 let seriesCircuitLedCount = 0,
@@ -9,6 +9,21 @@ export default (props) => {
     event.dataTransfer.setData("application/reactflow", nodeType);
     event.dataTransfer.effectAllowed = "move";
   };
+  let title, left, top;
+  const [id, setId] = useState("nan");
+
+  const [{ isDragging }, drag, preview] = useDrag(
+    () => ({
+      type: "yellow",
+      item: { id, left, top, title },
+      canDrag: true,
+      collect: (monitor) => ({
+        isDragging: monitor,
+      }),
+    }),
+    [id, left, top, title]
+  );
+
   let send = {
     beeper: props.send.beeper,
     capacitor100: props.send.capacitor100,
@@ -27,7 +42,10 @@ export default (props) => {
     two_way_switch: props.send.two_way_switch,
   };
   const eles = document.querySelectorAll("[data-type]");
-
+  const onMouseEnter = async (event) => {
+    setId(await event.target.attributes[2].nodeValue);
+    console.log(id, "gskMouse");
+  };
   const onDrag = (event, nodeType) => {
     let ele;
     eles.forEach((e) => {
@@ -108,10 +126,12 @@ export default (props) => {
     if (nodeType === "beeper") seriesCircuitBeeperCount = 1;
     if (nodeType === "junction") junctionCount = 1;
   };
-
+  useEffect(() => {
+    preview(getEmptyImage(), { captureDraggingState: true });
+  }, []);
   return (
     <aside>
-      <div className="side">
+      <div className="side" ref={drag}>
         <div className="description">
           You can drag these nodes to the pane on the right.
         </div>
@@ -126,6 +146,7 @@ export default (props) => {
           onDragStart={(event) => onDragStart(event, "beeper")}
           onDrag={(event) => onDrag(event, "beeper")}
           onDragEnd={(event) => onDragEnd(event, "beeper")}
+          onMouseEnter={onMouseEnter}
         ></div>
         <div
           className={"dndnode_capacitor100" + send.capacitor100}
@@ -135,6 +156,7 @@ export default (props) => {
           style={{}}
           onDragStart={(event) => onDragStart(event, "capacitor100")}
           onDrag={(event) => onDrag(event, "capacitor100")}
+          onMouseEnter={onMouseEnter}
         ></div>
         <div
           style={{}}
@@ -144,6 +166,7 @@ export default (props) => {
           data-type="capacitor1000"
           id="capacitor1000"
           onDragStart={(event) => onDragStart(event, "capacitor1000")}
+          onMouseEnter={onMouseEnter}
         ></div>
         <div
           style={{}}
@@ -154,6 +177,7 @@ export default (props) => {
           id="junction"
           onDragStart={(event) => onDragStart(event, "junction")}
           onDragEnd={(event) => onDragEnd(event, "junction")}
+          onMouseEnter={onMouseEnter}
         ></div>
 
         <div
@@ -164,6 +188,7 @@ export default (props) => {
           data-type="diode"
           id="diode"
           onDragStart={(event) => onDragStart(event, "diode")}
+          onMouseEnter={onMouseEnter}
         ></div>
 
         <div
@@ -174,6 +199,7 @@ export default (props) => {
           data-type="ldr"
           id="ldr"
           onDragStart={(event) => onDragStart(event, "ldr")}
+          onMouseEnter={onMouseEnter}
         ></div>
         <div
           style={{}}
@@ -184,6 +210,7 @@ export default (props) => {
           data-type="led"
           id="led"
           onDragStart={(event) => onDragStart(event, "led")}
+          onMouseEnter={onMouseEnter}
         ></div>
 
         <div
@@ -194,6 +221,7 @@ export default (props) => {
           data-type="power"
           id="power"
           onDragStart={(event) => onDragStart(event, "power")}
+          onMouseEnter={onMouseEnter}
         ></div>
         <div
           style={{}}
@@ -203,6 +231,7 @@ export default (props) => {
           data-type="res_100"
           id="res_100"
           onDragStart={(event) => onDragStart(event, "res_100")}
+          onMouseEnter={onMouseEnter}
         ></div>
         <div
           style={{}}
@@ -212,6 +241,7 @@ export default (props) => {
           data-type="res_250"
           id="res_250"
           onDragStart={(event) => onDragStart(event, "res_250")}
+          onMouseEnter={onMouseEnter}
         ></div>
         <div
           style={{}}
@@ -221,6 +251,7 @@ export default (props) => {
           data-type="tact"
           id="tact"
           onDragStart={(event) => onDragStart(event, "tact")}
+          onMouseEnter={onMouseEnter}
         ></div>
         <div
           style={{}}
@@ -230,6 +261,7 @@ export default (props) => {
           data-type="timer_ic"
           id="timer_ic"
           onDragStart={(event) => onDragStart(event, "timer")}
+          onMouseEnter={onMouseEnter}
         ></div>
         <div
           style={{}}
@@ -239,6 +271,7 @@ export default (props) => {
           data-type="transistor"
           id="transistor"
           onDragStart={(event) => onDragStart(event, "transistor")}
+          onMouseEnter={onMouseEnter}
         ></div>
         <div
           style={{}}
@@ -248,6 +281,7 @@ export default (props) => {
           data-type="two_way_switch"
           id="two_way_switch"
           onDragStart={(event) => onDragStart(event, "two_way_switch")}
+          onMouseEnter={onMouseEnter}
         ></div>
         <div
           style={{}}
@@ -257,6 +291,7 @@ export default (props) => {
           data-type="pot"
           id="pot"
           onDragStart={(event) => onDragStart(event, "pot")}
+          onMouseEnter={onMouseEnter}
         ></div>
       </div>
     </aside>

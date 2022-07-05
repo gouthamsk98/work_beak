@@ -13,6 +13,8 @@ import renderImage from "./renderImage";
 import Sidebar from "./Sidebar";
 import { v4 } from "uuid";
 import "./dnd.css";
+import { CustomDragLayer } from "./CustomDragLayer.js";
+import { useDrop } from "react-dnd";
 //return image to drop
 
 let id = 1;
@@ -6827,7 +6829,22 @@ const DnDFlow = (props) => {
           break;
       }
   };
-
+  const [{}, drop] = useDrop(
+    () => ({
+      accept: "yellow",
+      drop(_item, monitor) {
+        console.log("GSKDND", monitor.isDragging);
+        onDrop(monitor.getItemType());
+        return undefined;
+      },
+      collect: (monitor) => ({
+        isOver: monitor.isOver(),
+        canDrop: monitor.canDrop(),
+        draggingColor: monitor.getItemType(),
+      }),
+    }),
+    [onDrop]
+  );
   // var slider = document.getElementById("myRange");
   // var output = document.getElementById("demo");
   // output.innerHTML = slider.value;
@@ -6857,6 +6874,7 @@ const DnDFlow = (props) => {
             onNodeMouseEnter={onNodeMouseEnter}
             onNodeDragStop={onNodeDragEnd}
             nodesDraggable={nodesDraggable}
+            ref={drop}
             // onElementClick={onElementClick}
           >
             <Controls />
@@ -6869,6 +6887,7 @@ const DnDFlow = (props) => {
           </ReactFlow>
         </div>
         <Sidebar send={props} />
+        <CustomDragLayer />
       </ReactFlowProvider>
     </div>
   );

@@ -1,5 +1,7 @@
 import React, { Component } from "react";
 import Main from "../../componets/Main";
+import { DndProvider } from "react-dnd";
+import { HTML5Backend } from "react-dnd-html5-backend";
 class DaySelect extends Component {
   constructor(props) {
     super(props);
@@ -110,7 +112,9 @@ class DaySelect extends Component {
             Freedom Circuit
           </button>
         </div>
-        {mainRender(this.state.value)}
+        <DndProvider backend={HTML5Backend}>
+          {mainRender(this.state.value)}
+        </DndProvider>
       </>
     );
   }

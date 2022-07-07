@@ -15,6 +15,7 @@ import { v4 } from "uuid";
 import "./dnd.css";
 import { CustomDragLayer } from "./CustomDragLayer.js";
 import { useDrop } from "react-dnd";
+import _ from "lodash";
 //return image to drop
 
 let id = 1;
@@ -28,6 +29,8 @@ let mouseDownChk = false,
   index2Count = 0,
   index3Count = 0;
 let eleLed1;
+sessionStorage.setItem("beak-nodes", null);
+sessionStorage.setItem("beak-edges", null);
 const DnDFlow = (props) => {
   const text = (type, _id) => {
     switch (props.type) {
@@ -1655,7 +1658,7 @@ const DnDFlow = (props) => {
   };
   const initialNodes = [
     {
-      id: " 0",
+      id: "dndnode_0",
 
       type: `output`,
       position: { x: 120, y: 120 },
@@ -1665,6 +1668,19 @@ const DnDFlow = (props) => {
       },
     },
   ];
+  let storeElements = _.cloneDeep(initialNodes);
+  for (let i = 0; i < storeElements.length; i++) {
+    if (storeElements[i].data != null && storeElements[i].data !== undefined) {
+      if (
+        storeElements[i].data.label != null &&
+        storeElements[i].data.label !== undefined
+      ) {
+        delete storeElements[i].data.label;
+      }
+    }
+  }
+  sessionStorage.setItem("beak-nodes", JSON.stringify(storeElements));
+
   const reactFlowWrapper = useRef(null);
   const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
   const [edges, setEdges, onEdgesChange] = useEdgesState([]);
@@ -1672,6 +1688,7 @@ const DnDFlow = (props) => {
   const [nodesDraggable, setNodesDraggable] = useState(true);
   const [rangeVal, setRangeVal] = useState(50);
   useEffect(() => {
+    sessionStorage.setItem("beak-edges", JSON.stringify(edges));
     console.log(edges, "edges use effect");
     edge = edges;
     console.log("range", Object.keys(edges).length);
@@ -1685,6 +1702,21 @@ const DnDFlow = (props) => {
   }, [edges]);
   useEffect(() => {
     node = nodes;
+    let storeElements = _.cloneDeep(nodes);
+    for (let i = 0; i < storeElements.length; i++) {
+      if (
+        storeElements[i].data != null &&
+        storeElements[i].data !== undefined
+      ) {
+        if (
+          storeElements[i].data.label != null &&
+          storeElements[i].data.label !== undefined
+        ) {
+          delete storeElements[i].data.label;
+        }
+      }
+    }
+    sessionStorage.setItem("beak-nodes", JSON.stringify(storeElements));
   }, [nodes]);
 
   useEffect(() => {
@@ -1711,7 +1743,8 @@ const DnDFlow = (props) => {
       }
     };
   }, [rangeVal]);
-  const onConnect = async (params) => {
+
+  const onConnect = async (params, event) => {
     console.log(params);
     var index1 = await edge.findIndex(
       (e) =>
@@ -1726,6 +1759,7 @@ const DnDFlow = (props) => {
         if (index1 != -1) return;
         if (index2 != -1) return;
         await setEdges((eds) => addEdge(params, eds));
+        event.preventDefault();
     }
 
     return;
@@ -1807,7 +1841,7 @@ const DnDFlow = (props) => {
   }, []);
 
   const onDrop = useCallback(
-    (event) => {
+    async (event) => {
       event.preventDefault();
 
       const reactFlowBounds = reactFlowWrapper.current.getBoundingClientRect();
@@ -1834,6 +1868,27 @@ const DnDFlow = (props) => {
       };
       console.log(newNode);
       setNodes((nds) => nds.concat(newNode));
+      const connect_line = JSON.parse(
+        sessionStorage.getItem("application/beak/connect")
+      );
+      if (connect_line.index != -1) {
+        let connect = {
+          source: connect_line.source,
+          sourceHandle: connect_line.sourceHandle,
+          target: `${newNode.id}`,
+          targetHandle: connect_line.targetHandle,
+        };
+        if (connect_line.revert) {
+          connect = {
+            source: `${newNode.id}`,
+            sourceHandle: connect_line.targetHandle,
+            target: connect_line.source,
+            targetHandle: connect_line.sourceHandle,
+          };
+        }
+        console.log("planegsk", connect_line, newNode.id, connect);
+        await onConnect(connect);
+      }
     },
     [reactFlowInstance]
   );
@@ -6877,13 +6932,13 @@ const DnDFlow = (props) => {
             ref={drop}
             // onElementClick={onElementClick}
           >
-            <Controls />
             <canvas
               id="myCanvas"
-              width="inherit"
-              height="884"
-              className="react-flow__edges"
+              width="1500"
+              height="800"
+              class="react-flow__edges"
             ></canvas>
+            <Controls />
           </ReactFlow>
         </div>
         <Sidebar send={props} />

@@ -1,5 +1,5 @@
 import { useDragLayer } from "react-dnd";
-import renderImage from "./renderImage";
+import renderImage from "./renderImageWithDots";
 const layerStyles = {
   position: "fixed",
   pointerEvents: "none",
@@ -13,10 +13,11 @@ const layerStyles = {
 function getItemStyles(initialOffset, currentOffset, xOffset, yOffset, type) {
   let Background;
   if (type == "beeper") Background = renderImage("beeper");
-  else if (type == "if") Background = renderImage("beeper");
-  else if (type == "output") Background = renderImage("beeper");
+  else if (type == "led") Background = renderImage("led");
+  else if (type == "tact") Background = renderImage("tact");
   else if (type == "loop") Background = renderImage("beeper");
   else if (type == "repeat") Background = renderImage("beeper");
+  else if (type == "junction") Background = renderImage("junction");
   if (!initialOffset || !currentOffset) {
     return {
       display: "none",
@@ -72,37 +73,33 @@ export const CustomDragLayer = (props) => {
             style={getItemStyles(
               initialOffset,
               currentOffset,
-              158,
-              35,
+              205,
+              65,
               "beeper"
             )}
-            id="if_dot"
           ></div>
         );
-      case "loop":
+      case "tact":
         return (
           <div
-            className="dndnode_loop_dot"
-            style={getItemStyles(initialOffset, currentOffset, 158, 35, "loop")}
+            style={getItemStyles(initialOffset, currentOffset, 205, 65, "tact")}
           ></div>
         );
-      case "wait":
+      case "led":
         return (
           <div
-            className="dndnode_wait_dot"
-            style={getItemStyles(initialOffset, currentOffset, 158, 35, "wait")}
+            style={getItemStyles(initialOffset, currentOffset, 205, 65, "led")}
           ></div>
         );
-      case "output":
+      case "junction":
         return (
           <div
-            className="dndnode_output_dot"
             style={getItemStyles(
               initialOffset,
               currentOffset,
-              158,
-              35,
-              "output"
+              205,
+              65,
+              "junction"
             )}
           ></div>
         );

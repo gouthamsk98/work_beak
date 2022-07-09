@@ -6,6 +6,7 @@ function App() {
     <div className="App">
       <h1>Beak</h1>
       {/* <Main /> */}
+
       <DaySelect />
     </div>
   );

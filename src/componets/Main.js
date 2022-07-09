@@ -1879,12 +1879,28 @@ const DnDFlow = (props) => {
           targetHandle: connect_line.targetHandle,
         };
         if (connect_line.revert) {
-          connect = {
-            source: `${newNode.id}`,
-            sourceHandle: connect_line.targetHandle,
-            target: connect_line.source,
-            targetHandle: connect_line.sourceHandle,
-          };
+          if (connect_line.targetHandle.includes(".t")) {
+            connect = {
+              source: `${newNode.id}`,
+              sourceHandle: connect_line.sourceHandle,
+              target: connect_line.source,
+              targetHandle: connect_line.targetHandle,
+            };
+          } else if (connect_line.sourceHandle.includes("dndnode")) {
+            connect = {
+              source: `${newNode.id}`,
+              sourceHandle: connect_line.sourceHandle,
+              target: connect_line.source,
+              targetHandle: connect_line.targetHandle,
+            };
+          } else {
+            connect = {
+              source: connect_line.source,
+              sourceHandle: connect_line.targetHandle,
+              target: `${newNode.id}`,
+              targetHandle: connect_line.sourceHandle,
+            };
+          }
         }
         console.log("planegsk", connect_line, newNode.id, connect);
         await onConnect(connect);

@@ -18,6 +18,12 @@ function getItemStyles(initialOffset, currentOffset, xOffset, yOffset, type) {
   else if (type == "loop") Background = renderImage("beeper");
   else if (type == "repeat") Background = renderImage("beeper");
   else if (type == "junction") Background = renderImage("junction");
+  else if (type == "pot") Background = renderImage("pot");
+  else if (type == "diode") Background = renderImage("diode");
+  else if (type == "ldr") Background = renderImage("ldr");
+  else if (type == "res_100") Background = renderImage("res_100");
+  else if (type == "res_250") Background = renderImage("res_250");
+  else if (type == "transistor") Background = renderImage("transistor");
   if (!initialOffset || !currentOffset) {
     return {
       display: "none",
@@ -103,16 +109,63 @@ export const CustomDragLayer = (props) => {
             )}
           ></div>
         );
-      case "end/repeat":
+      case "pot":
         return (
           <div
-            className="dndnode_end/repeat"
+            style={getItemStyles(initialOffset, currentOffset, 205, 65, "pot")}
+          ></div>
+        );
+      case "diode":
+        return (
+          <div
             style={getItemStyles(
               initialOffset,
               currentOffset,
-              158,
-              35,
-              "repeat"
+              205,
+              65,
+              "diode"
+            )}
+          ></div>
+        );
+      case "res_100":
+        return (
+          <div
+            style={getItemStyles(
+              initialOffset,
+              currentOffset,
+              205,
+              65,
+              "res_100"
+            )}
+          ></div>
+        );
+      case "res_250":
+        return (
+          <div
+            style={getItemStyles(
+              initialOffset,
+              currentOffset,
+              205,
+              65,
+              "res_250"
+            )}
+          ></div>
+        );
+      case "ldr":
+        return (
+          <div
+            style={getItemStyles(initialOffset, currentOffset, 205, 65, "ldr")}
+          ></div>
+        );
+      case "transistor":
+        return (
+          <div
+            style={getItemStyles(
+              initialOffset,
+              currentOffset,
+              205,
+              65,
+              "transistor"
             )}
           ></div>
         );

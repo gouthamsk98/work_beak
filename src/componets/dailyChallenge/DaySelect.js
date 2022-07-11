@@ -91,12 +91,7 @@ class DaySelect extends Component {
           <button onClick={(value) => onClick(value, "parallelCircuit")}>
             Parallel Circuit
           </button>
-          <button onClick={(value) => onClick(value, "resistorCircuit")}>
-            Resistor Circuit
-          </button>
-          <button onClick={(value) => onClick(value, "capacitorCircuit")}>
-            Capacitor Circuit
-          </button>
+
           <button onClick={(value) => onClick(value, "voltageDividerCircuit")}>
             Voltage Divider Circuit
           </button>
@@ -110,6 +105,12 @@ class DaySelect extends Component {
           </button>
           <button onClick={(value) => onClick(value, "freedomCircuit")}>
             Freedom Circuit
+          </button>
+          <button onClick={(value) => onClick(value, "resistorCircuit")}>
+            Resistor Circuit
+          </button>
+          <button onClick={(value) => onClick(value, "capacitorCircuit")}>
+            Capacitor Circuit
           </button>
         </div>
         <DndProvider backend={HTML5Backend}>

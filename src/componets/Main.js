@@ -1759,7 +1759,8 @@ const DnDFlow = (props) => {
         if (index1 != -1) return;
         if (index2 != -1) return;
         await setEdges((eds) => addEdge(params, eds));
-        event.preventDefault();
+        return;
+      //event.returnValue = false;
     }
 
     return;
@@ -1843,7 +1844,6 @@ const DnDFlow = (props) => {
   const onDrop = useCallback(
     async (event) => {
       event.preventDefault();
-
       const reactFlowBounds = reactFlowWrapper.current.getBoundingClientRect();
       const type = event.dataTransfer.getData("application/reactflow");
 
@@ -1901,6 +1901,14 @@ const DnDFlow = (props) => {
               targetHandle: connect_line.sourceHandle,
             };
           }
+        }
+        if (connect_line.flag == "pot") {
+          connect = {
+            source: `${newNode.id}`,
+            sourceHandle: connect_line.sourceHandle,
+            target: connect_line.source,
+            targetHandle: connect_line.targetHandle,
+          };
         }
         console.log("planegsk", connect_line, newNode.id, connect);
         await onConnect(connect);
@@ -6905,7 +6913,7 @@ const DnDFlow = (props) => {
       accept: "yellow",
       drop(_item, monitor) {
         console.log("GSKDND", monitor.isDragging);
-        onDrop(monitor.getItemType());
+        //onDrop(monitor.getItemType());
         return undefined;
       },
       collect: (monitor) => ({
@@ -6952,7 +6960,7 @@ const DnDFlow = (props) => {
               id="myCanvas"
               width="1500"
               height="800"
-              class="react-flow__edges"
+              className="react-flow__edges"
             ></canvas>
             <Controls />
           </ReactFlow>

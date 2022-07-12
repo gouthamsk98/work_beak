@@ -24,6 +24,9 @@ function getItemStyles(initialOffset, currentOffset, xOffset, yOffset, type) {
   else if (type == "res_100") Background = renderImage("res_100");
   else if (type == "res_250") Background = renderImage("res_250");
   else if (type == "transistor") Background = renderImage("transistor");
+  else if (type == "capacitor100") Background = renderImage("capacitor100");
+  else if (type == "capacitor1000") Background = renderImage("capacitor1000");
+
   if (!initialOffset || !currentOffset) {
     return {
       display: "none",
@@ -166,6 +169,30 @@ export const CustomDragLayer = (props) => {
               205,
               65,
               "transistor"
+            )}
+          ></div>
+        );
+      case "capacitor100":
+        return (
+          <div
+            style={getItemStyles(
+              initialOffset,
+              currentOffset,
+              205,
+              65,
+              "capacitor100"
+            )}
+          ></div>
+        );
+      case "capacitor1000":
+        return (
+          <div
+            style={getItemStyles(
+              initialOffset,
+              currentOffset,
+              205,
+              65,
+              "capacitor1000"
             )}
           ></div>
         );

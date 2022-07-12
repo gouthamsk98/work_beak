@@ -1,6 +1,6 @@
 import beeper from "../Assets/dots/Beeper.png";
-import capasitor100 from "../Assets/dots/Capacitor 1.png";
-import capasitor1000 from "../Assets/dots/Capacitor 2.png";
+import capasitor100 from "../Assets/dots/Capacitor_1.png";
+import capasitor1000 from "../Assets/dots/Capacitor_2.png";
 import diode from "../Assets/dots/Diode.png";
 import dip from "../Assets/dots/DIP.png";
 import junction from "../Assets/dots/Junction.png";
@@ -19,9 +19,9 @@ function renderImage(imageName) {
   switch (imageName) {
     case "beeper":
       return beeper;
-    case "capasitor100":
+    case "capacitor100":
       return capasitor100;
-    case "capasitor1000":
+    case "capacitor1000":
       return capasitor1000;
     case "diode":
       return diode;

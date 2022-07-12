@@ -106,9 +106,9 @@ class DaySelect extends Component {
           <button onClick={(value) => onClick(value, "freedomCircuit")}>
             Freedom Circuit
           </button>
-          <button onClick={(value) => onClick(value, "resistorCircuit")}>
+          {/* <button onClick={(value) => onClick(value, "resistorCircuit")}>
             Resistor Circuit
-          </button>
+          </button> */}
           <button onClick={(value) => onClick(value, "capacitorCircuit")}>
             Capacitor Circuit
           </button>

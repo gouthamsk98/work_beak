@@ -1738,7 +1738,7 @@ const DnDFlow = (props) => {
         if (nodeDetail2.data.specificElType === "led" && flag) {
           eleLed1 = document.getElementById(`led${nodeDetail2.id}`);
           eleLed1.classList.add("led-light");
-          eleLed1.style.opacity = `${rangeVal / 100 + 0.1}`;
+          eleLed1.style.transform = `scale(${rangeVal / 30} )`;
         }
       }
     };
@@ -1916,7 +1916,14 @@ const DnDFlow = (props) => {
     },
     [reactFlowInstance]
   );
-
+  const cap_reduce = (e, t, ele2) => {
+    setTimeout(() => {
+      if (t == 1500) {
+        ele2.classList.remove("beeper");
+      } else {
+      }
+    }, 1500);
+  };
   const onNodeDrag = async (event, node) => {
     switch (props.type) {
       case "voltageDividerCircuit":
@@ -1959,8 +1966,8 @@ const DnDFlow = (props) => {
 
             switch (props.type) {
               case "parallelCircuit":
-                let offsetX = 0,
-                  offsetY = 0;
+                offsetX = 0;
+                offsetY = 0;
                 if (e.data.specificElType === "beeper") {
                   offsetX = -34;
                   offsetY = -0;
@@ -2638,11 +2645,6 @@ const DnDFlow = (props) => {
                   case "seriesCircuit":
                     break;
                   case "parallelCircuit":
-                    console.log(
-                      node.position.x - e.position.x,
-                      node.position.y - e.position.y,
-                      "parallel"
-                    );
                     break;
                   case "resistorCircuit":
                     break;
@@ -3447,6 +3449,87 @@ const DnDFlow = (props) => {
                       }
                     }
                   }
+                } else if (props.type === "voltageDividerCircuit") {
+                  console.log(
+                    node.position.x - e.position.x,
+                    node.position.y - e.position.y,
+                    "parallel"
+                  );
+                  params = {
+                    source: `${e.id}`,
+                    sourceHandle: `r`,
+                    target: `${node.id}`,
+                    targetHandle: "r1",
+                  };
+                  if (
+                    node.position.x - e.position.x >= 159 - 5 &&
+                    node.position.x - e.position.x <= 159 + 5 &&
+                    e.data.specificElType === "led"
+                  ) {
+                    if (
+                      node.position.y - e.position.y >= 7 - 5 &&
+                      node.position.y - e.position.y <= 7 + 5
+                    ) {
+                      params.targetHandle = "l1.t";
+                      if (edge.findIndex((e) => e.sourceHandle === "l1") === -1)
+                        await onConnect(params);
+                    } else if (
+                      node.position.y - e.position.y >= -9 - 5 &&
+                      node.position.y - e.position.y <= -9 + 5
+                    ) {
+                      params.targetHandle = "l2.t";
+                      if (edge.findIndex((e) => e.sourceHandle === "l2") === -1)
+                        await onConnect(params);
+                    } else if (
+                      node.position.y - e.position.y >= -27 - 5 &&
+                      node.position.y - e.position.y <= -27 + 5
+                    ) {
+                      params.targetHandle = "l3.t";
+                      if (edge.findIndex((e) => e.sourceHandle === "l3") === -1)
+                        await onConnect(params);
+                    } else if (
+                      node.position.y - e.position.y >= -44 - 5 &&
+                      node.position.y - e.position.y <= -44 + 5
+                    ) {
+                      params.targetHandle = "l4.t";
+                      if (edge.findIndex((e) => e.sourceHandle === "l4") === -1)
+                        await onConnect(params);
+                    }
+                  } else if (
+                    node.position.x - e.position.x >= 30 - 5 &&
+                    node.position.x - e.position.x <= 30 + 5 &&
+                    e.data.specificElType === "led"
+                  ) {
+                    if (
+                      node.position.y - e.position.y >= 7 - 5 &&
+                      node.position.y - e.position.y <= 7 + 5
+                    ) {
+                      params.targetHandle = "r1.t";
+                      if (edge.findIndex((e) => e.sourceHandle === "r1") === -1)
+                        await onConnect(params);
+                    } else if (
+                      node.position.y - e.position.y >= -9 - 5 &&
+                      node.position.y - e.position.y <= -9 + 5
+                    ) {
+                      params.targetHandle = "r2.t";
+                      if (edge.findIndex((e) => e.sourceHandle === "r2") === -1)
+                        await onConnect(params);
+                    } else if (
+                      node.position.y - e.position.y >= -27 - 5 &&
+                      node.position.y - e.position.y <= -27 + 5
+                    ) {
+                      params.targetHandle = "r3.t";
+                      if (edge.findIndex((e) => e.sourceHandle === "r3") === -1)
+                        await onConnect(params);
+                    } else if (
+                      node.position.y - e.position.y >= -44 - 5 &&
+                      node.position.y - e.position.y <= -44 + 5
+                    ) {
+                      params.targetHandle = "r4.t";
+                      if (edge.findIndex((e) => e.sourceHandle === "r4") === -1)
+                        await onConnect(params);
+                    }
+                  }
                 }
 
                 break;
@@ -3546,6 +3629,45 @@ const DnDFlow = (props) => {
                     await onConnect(params);
                   }
                 } else if (e.data.specificElType === "power") {
+                }
+                break;
+              case "pot":
+                console.log(
+                  "pot^^^^^^^",
+                  node.position.x - e.position.x,
+                  node.position.y - e.position.y
+                );
+                if (
+                  node.position.x - e.position.x >= 9 - 5 &&
+                  node.position.x - e.position.x < 9 + 5 &&
+                  node.position.y - e.position.y >= -19 - 5 &&
+                  node.position.y - e.position.y < -19 + 5 &&
+                  props.type == "voltageDividerCircuit" &&
+                  e.data.specificElType === "led"
+                ) {
+                  params = {
+                    source: `${node.id}`,
+                    sourceHandle: `r`,
+                    target: `${e.id}`,
+                    targetHandle: "l",
+                  };
+                  await onConnect(params);
+                }
+                if (
+                  node.position.x - e.position.x >= -17 - 5 &&
+                  node.position.x - e.position.x < -17 + 5 &&
+                  node.position.y - e.position.y >= 9 - 5 &&
+                  node.position.y - e.position.y < 9 + 5 &&
+                  props.type == "voltageDividerCircuit" &&
+                  e.data.specificElType === "tact"
+                ) {
+                  params = {
+                    source: `${e.id}`,
+                    sourceHandle: `r`,
+                    target: `${node.id}`,
+                    targetHandle: "r1",
+                  };
+                  await onConnect(params);
                 }
                 break;
               default:
@@ -4503,22 +4625,26 @@ const DnDFlow = (props) => {
                   target: `${e.id}`,
                   targetHandle: "r1",
                 };
-                let index1 = edge.findIndex(
-                  (e) =>
-                    e.target === params.target && params.targetHandle == "r1"
-                );
+                // let index1 = edge.findIndex(
+                //   (e) =>
+                //     e.target === params.target && params.targetHandle == "r1"
+                // );
                 let y = node.position.y - e.position.y;
-
-                if (index1 != -1) {
-                  params.targetHandle = "r2";
-                }
+                console.log(
+                  "POT#####^^^^^^^^^^####",
+                  node.position.x - e.position.x,
+                  node.position.y - e.position.y
+                );
+                // if (index1 != -1) {
+                params.targetHandle = "r2";
+                //}
                 if (
                   node.position.x - e.position.x >= 176 - 5 &&
                   node.position.x - e.position.x <= 176 + 5
                 ) {
                   //l1.t or l1
                   if (y)
-                    if (y >= -3 - 5 && y <= -3 + 5) {
+                    if (y >= 54 - 5 && y <= 54 + 5) {
                       params.sourceHandle = "l1";
                       if (
                         edge.findIndex((e) => e.targetHandle === "l1.t") === -1
@@ -4526,7 +4652,7 @@ const DnDFlow = (props) => {
                         await onConnect(params);
                     }
                     //l2.t or l2
-                    else if (y >= -22 - 5 && y <= -22 + 5) {
+                    else if (y >= 37 - 5 && y <= 37 + 5) {
                       params.sourceHandle = "l2";
                       if (
                         edge.findIndex((e) => e.targetHandle === "l2.t") === -1
@@ -4534,7 +4660,7 @@ const DnDFlow = (props) => {
                         await onConnect(params);
                     }
                     //l3.t or l3
-                    else if (y >= -38 - 5 && y <= -38 + 5) {
+                    else if (y >= 21 - 5 && y <= 21 + 5) {
                       params.sourceHandle = "l3";
                       if (
                         edge.findIndex((e) => e.targetHandle === "l3.t") === -1
@@ -4542,7 +4668,7 @@ const DnDFlow = (props) => {
                         await onConnect(params);
                     }
                     //l4.t or l4
-                    else if (y >= -56 - 5 && y <= -56 + 5) {
+                    else if (y >= 2 - 5 && y <= 2 + 5) {
                       params.sourceHandle = "l4";
                       if (
                         edge.findIndex((e) => e.targetHandle === "l4.t") === -1
@@ -4554,25 +4680,25 @@ const DnDFlow = (props) => {
                   node.position.x - e.position.x <= 40 + 5
                 ) {
                   //r1.t or r1
-                  if (y >= -3 - 5 && y <= -3 + 5) {
+                  if (y >= 54 - 5 && y <= 54 + 5) {
                     params.sourceHandle = "r1";
                     if (edge.findIndex((e) => e.targetHandle === "r1.t") === -1)
                       await onConnect(params);
                   }
                   //r2.t or r2
-                  else if (y >= -22 - 5 && y <= -22 + 5) {
+                  else if (y >= 37 - 5 && y <= 37 + 5) {
                     params.sourceHandle = "r2";
                     if (edge.findIndex((e) => e.targetHandle === "r2.t") === -1)
                       await onConnect(params);
                   }
                   //r3.t or r3
-                  else if (y >= -38 - 5 && y <= -38 + 5) {
+                  else if (y >= 21 - 5 && y <= 21 + 5) {
                     params.sourceHandle = "r3";
                     if (edge.findIndex((e) => e.targetHandle === "r3.t") === -1)
                       await onConnect(params);
                   }
                   //r4.t or r4
-                  else if (y >= -56 - 5 && y <= -56 + 5) {
+                  else if (y >= 2 - 5 && y <= 2 + 5) {
                     params.sourceHandle = "r4";
                     if (edge.findIndex((e) => e.targetHandle === "r4.t") === -1)
                       await onConnect(params);
@@ -4581,11 +4707,6 @@ const DnDFlow = (props) => {
 
                 break;
               case "tact":
-                console.log(
-                  "tact#####^^^^^^^^^^####",
-                  node.position.x - e.position.x,
-                  node.position.y - e.position.y
-                );
                 params = {
                   source: `${node.id}`,
                   sourceHandle: `r`,
@@ -4736,23 +4857,18 @@ const DnDFlow = (props) => {
                       node.position.x - e.position.x,
                       node.position.y - e.position.y
                     );
-                    let index1 = edge.findIndex(
-                      (e) =>
-                        e.target === params.target &&
-                        params.targetHandle == "r1"
-                    );
+
                     let y = node.position.y - e.position.y;
 
-                    if (index1 != -1) {
-                      params.targetHandle = "r2";
-                    }
+                    params.targetHandle = "r2";
+
                     if (
                       node.position.x - e.position.x >= -176 - 5 &&
                       node.position.x - e.position.x <= -176 + 5
                     ) {
                       //l1.t or l1
                       if (y)
-                        if (y >= 3 - 5 && y <= 3 + 5) {
+                        if (y >= -54 - 5 && y <= -54 + 5) {
                           params.sourceHandle = "l1";
                           if (
                             edge.findIndex((e) => e.targetHandle === "l1.t") ===
@@ -4761,7 +4877,7 @@ const DnDFlow = (props) => {
                             await onConnect(params);
                         }
                         //l2.t or l2
-                        else if (y >= 22 - 5 && y <= 22 + 5) {
+                        else if (y >= -38 - 5 && y <= -38 + 5) {
                           params.sourceHandle = "l2";
                           if (
                             edge.findIndex((e) => e.targetHandle === "l2.t") ===
@@ -4770,7 +4886,7 @@ const DnDFlow = (props) => {
                             await onConnect(params);
                         }
                         //l3.t or l3
-                        else if (y >= 38 - 5 && y <= 38 + 5) {
+                        else if (y >= -19 - 5 && y <= -19 + 5) {
                           params.sourceHandle = "l3";
                           if (
                             edge.findIndex((e) => e.targetHandle === "l3.t") ===
@@ -4779,7 +4895,7 @@ const DnDFlow = (props) => {
                             await onConnect(params);
                         }
                         //l4.t or l4
-                        else if (y >= 56 - 5 && y <= 56 + 5) {
+                        else if (y >= 1 - 5 && y <= 1 + 5) {
                           params.sourceHandle = "l4";
                           if (
                             edge.findIndex((e) => e.targetHandle === "l4.t") ===
@@ -6373,90 +6489,204 @@ const DnDFlow = (props) => {
 
           if (nodeDetail1[0].data.specificElType === "junction") {
             nodeDetail2 = await getOutgoers(nodeDetail1[0], nodes, edges);
-          } else if (nodeDetail1[0].data.specificElType === "beeper") {
-            nodeDetail2 = nodeDetail1;
-          }
-          if (nodeDetail2.length === 2) {
-            if (nodeDetail2[0].data.specificElType === "beeper") {
-              if (nodeDetail2[1].data.specificElType === "capacitor100") {
-                const ele2 = document.getElementById(
-                  `beeper${nodeDetail2[0].id}`
-                );
-                ele2.classList.remove("beeper");
-              } else if (
-                nodeDetail2[1].data.specificElType === "capacitor1000"
-              ) {
-                const ele2 = document.getElementById(
-                  `beeper${nodeDetail2[0].id}`
-                );
-                ele2.classList.remove("beeper");
-              }
-            } else if (nodeDetail2[1].data.specificElType === "beeper") {
-              if (nodeDetail2[0].data.specificElType === "capacitor100") {
-                const ele2 = document.getElementById(
-                  `beeper${nodeDetail2[1].id}`
-                );
-                ele2.classList.remove("beeper");
-              } else if (
-                nodeDetail2[0].data.specificElType === "capacitor1000"
-              ) {
-                const ele2 = document.getElementById(
-                  `beeper${nodeDetail2[1].id}`
-                );
-                ele2.classList.remove("beeper");
-              }
-            }
-          } else if (nodeDetail2.length === 3) {
-            if (nodeDetail2[0].data.specificElType === "beeper") {
-              const ele = document.getElementById(`beeper${nodeDetail2[0].id}`);
-              ele.classList.remove("beeper");
-            } else if (nodeDetail2[1].data.specificElType === "beeper") {
-              const ele = document.getElementById(`beeper${nodeDetail2[1].id}`);
-              ele.classList.remove("beeper");
-            } else if (nodeDetail2[2].data.specificElType === "beeper") {
-              const ele = document.getElementById(`beeper${nodeDetail2[2].id}`);
-              ele.classList.remove("beeper");
-            }
-          } else if (nodeDetail2.length === 1) {
-            let nodeDetail3 = await getIncomers(nodeDetail, nodes, edges);
-
-            if (nodeDetail3[0].data.specificElType === "junction") {
-              nodeDetail3 = await getOutgoers(nodeDetail3[0], nodes, edges);
-
-              if (nodeDetail3.length === 2) {
-                if (nodeDetail3[0].data.specificElType === "capacitor100") {
+            if (nodeDetail2.length === 2) {
+              if (nodeDetail2[0].data.specificElType === "beeper") {
+                if (nodeDetail2[1].data.specificElType === "capacitor100") {
                   const ele2 = document.getElementById(
                     `beeper${nodeDetail2[0].id}`
                   );
+                  setTimeout(() => {
+                    ele2.style.opacity = `${0.7}`;
+                  }, 100);
 
-                  ele2.classList.remove("beeper");
+                  setTimeout(() => {
+                    ele2.style.opacity = `${0.5}`;
+                  }, 200);
+                  setTimeout(() => {
+                    ele2.style.opacity = `${0.3}`;
+                  }, 300);
+
+                  setTimeout(() => {
+                    ele2.classList.remove("beeper");
+                  }, 400);
                 } else if (
-                  nodeDetail3[0].data.specificElType === "capacitor1000"
+                  nodeDetail2[1].data.specificElType === "capacitor1000"
                 ) {
                   const ele2 = document.getElementById(
-                    `beeper${nodeDetail1[0].id}`
+                    `beeper${nodeDetail2[0].id}`
                   );
+                  setTimeout(() => {
+                    ele2.style.opacity = `${0.7}`;
+                  }, 100);
 
-                  ele2.classList.remove("beeper");
+                  setTimeout(() => {
+                    ele2.style.opacity = `${0.5}`;
+                  }, 300);
+                  setTimeout(() => {
+                    ele2.style.opacity = `${0.3}`;
+                  }, 500);
+
+                  setTimeout(() => {
+                    ele2.classList.remove("beeper");
+                  }, 700);
+                }
+              } else if (nodeDetail2[1].data.specificElType === "beeper") {
+                if (nodeDetail2[0].data.specificElType === "capacitor100") {
+                  const ele2 = document.getElementById(
+                    `beeper${nodeDetail2[1].id}`
+                  );
+                  setTimeout(() => {
+                    ele2.style.opacity = `${0.7}`;
+                  }, 100);
+
+                  setTimeout(() => {
+                    ele2.style.opacity = `${0.5}`;
+                  }, 200);
+                  setTimeout(() => {
+                    ele2.style.opacity = `${0.3}`;
+                  }, 300);
+
+                  setTimeout(() => {
+                    ele2.classList.remove("beeper");
+                  }, 400);
                 } else if (
-                  nodeDetail3[1].data.specificElType === "capacitor100"
+                  nodeDetail2[0].data.specificElType === "capacitor1000"
                 ) {
                   const ele2 = document.getElementById(
-                    `beeper${nodeDetail1[0].id}`
+                    `beeper${nodeDetail2[1].id}`
                   );
+                  setTimeout(() => {
+                    ele2.style.opacity = `${0.7}`;
+                  }, 100);
 
-                  ele2.classList.remove("beeper");
-                } else if (
-                  nodeDetail3[1].data.specificElType === "capacitor1000"
-                ) {
-                  const ele2 = document.getElementById(
-                    `beeper${nodeDetail1[0].id}`
-                  );
-                  console.log("gsk", nodeDetail3[1], ele2);
-                  ele2.classList.remove("beeper");
+                  setTimeout(() => {
+                    ele2.style.opacity = `${0.5}`;
+                  }, 300);
+                  setTimeout(() => {
+                    ele2.style.opacity = `${0.3}`;
+                  }, 500);
+
+                  setTimeout(() => {
+                    ele2.classList.remove("beeper");
+                  }, 700);
+                }
+              }
+            } else if (nodeDetail2.length === 3) {
+              if (nodeDetail2[0].data.specificElType === "beeper") {
+                const ele = document.getElementById(
+                  `beeper${nodeDetail2[0].id}`
+                );
+                setTimeout(() => {
+                  ele.style.opacity = `${0.7}`;
+                }, 100);
+                setTimeout(() => {
+                  ele.style.opacity = `${0.6}`;
+                }, 400);
+                setTimeout(() => {
+                  ele.style.opacity = `${0.5}`;
+                }, 700);
+                setTimeout(() => {
+                  ele.style.opacity = `${0.4}`;
+                }, 1000);
+                setTimeout(() => {
+                  ele.style.opacity = `${0.2}`;
+                }, 1300);
+
+                setTimeout(() => {
+                  ele.classList.remove("beeper");
+                }, 1300);
+              } else if (nodeDetail2[1].data.specificElType === "beeper") {
+                const ele = document.getElementById(
+                  `beeper${nodeDetail2[1].id}`
+                );
+                setTimeout(() => {
+                  ele.style.opacity = `${0.7}`;
+                }, 100);
+                setTimeout(() => {
+                  ele.style.opacity = `${0.6}`;
+                }, 400);
+                setTimeout(() => {
+                  ele.style.opacity = `${0.5}`;
+                }, 700);
+                setTimeout(() => {
+                  ele.style.opacity = `${0.4}`;
+                }, 1000);
+                setTimeout(() => {
+                  ele.style.opacity = `${0.2}`;
+                }, 1300);
+
+                setTimeout(() => {
+                  ele.classList.remove("beeper");
+                }, 1300);
+              } else if (nodeDetail2[2].data.specificElType === "beeper") {
+                const ele = document.getElementById(
+                  `beeper${nodeDetail2[2].id}`
+                );
+                setTimeout(() => {
+                  ele.style.opacity = `${0.7}`;
+                }, 100);
+                setTimeout(() => {
+                  ele.style.opacity = `${0.6}`;
+                }, 400);
+                setTimeout(() => {
+                  ele.style.opacity = `${0.5}`;
+                }, 700);
+                setTimeout(() => {
+                  ele.style.opacity = `${0.4}`;
+                }, 1000);
+                setTimeout(() => {
+                  ele.style.opacity = `${0.2}`;
+                }, 1300);
+
+                setTimeout(() => {
+                  ele.classList.remove("beeper");
+                }, 1300);
+              }
+            } else if (nodeDetail2.length === 1) {
+              let nodeDetail3 = await getIncomers(nodeDetail, nodes, edges);
+
+              if (nodeDetail3[0].data.specificElType === "junction") {
+                nodeDetail3 = await getOutgoers(nodeDetail3[0], nodes, edges);
+
+                if (nodeDetail3.length === 2) {
+                  if (nodeDetail3[0].data.specificElType === "capacitor100") {
+                    const ele2 = document.getElementById(
+                      `beeper${nodeDetail2[0].id}`
+                    );
+
+                    ele2.classList.remove("beeper");
+                  } else if (
+                    nodeDetail3[0].data.specificElType === "capacitor1000"
+                  ) {
+                    const ele2 = document.getElementById(
+                      `beeper${nodeDetail1[0].id}`
+                    );
+
+                    ele2.classList.remove("beeper");
+                  } else if (
+                    nodeDetail3[1].data.specificElType === "capacitor100"
+                  ) {
+                    const ele2 = document.getElementById(
+                      `beeper${nodeDetail1[0].id}`
+                    );
+
+                    ele2.classList.remove("beeper");
+                  } else if (
+                    nodeDetail3[1].data.specificElType === "capacitor1000"
+                  ) {
+                    const ele2 = document.getElementById(
+                      `beeper${nodeDetail1[0].id}`
+                    );
+                    console.log("gsk", nodeDetail3[1], ele2);
+                    ele2.classList.remove("beeper");
+                  }
                 }
               }
             }
+          } else if (nodeDetail1[0].data.specificElType === "beeper") {
+            nodeDetail2 = nodeDetail1;
+            const ele2 = document.getElementById(`beeper${nodeDetail2[0].id}`);
+            ele2.classList.remove("beeper");
           }
         }
         break;
@@ -6604,7 +6834,7 @@ const DnDFlow = (props) => {
                       `beeper${nodeDetail2[0].id}`
                     );
                     ele2.classList.add("beeper");
-                    ele2.style.opacity = ".4";
+                    ele2.style.opacity = ".7";
                   } else if (
                     nodeDetail2[1].data.specificElType === "capacitor1000"
                   ) {
@@ -6612,7 +6842,7 @@ const DnDFlow = (props) => {
                       `beeper${nodeDetail2[0].id}`
                     );
                     ele2.classList.add("beeper");
-                    ele2.style.opacity = ".65";
+                    ele2.style.opacity = ".7";
                   }
                 } else if (nodeDetail2[1].data.specificElType === "beeper") {
                   if (nodeDetail2[0].data.specificElType === "capacitor100") {
@@ -6620,7 +6850,7 @@ const DnDFlow = (props) => {
                       `beeper${nodeDetail2[1].id}`
                     );
                     ele2.classList.add("beeper");
-                    ele2.style.opacity = ".4";
+                    ele2.style.opacity = ".7";
                   } else if (
                     nodeDetail2[0].data.specificElType === "capacitor1000"
                   ) {
@@ -6628,7 +6858,7 @@ const DnDFlow = (props) => {
                       `beeper${nodeDetail2[1].id}`
                     );
                     ele2.classList.add("beeper");
-                    ele2.style.opacity = ".65";
+                    ele2.style.opacity = ".7";
                   }
                 }
               } else if (nodeDetail2.length === 3) {
@@ -6664,7 +6894,7 @@ const DnDFlow = (props) => {
                       );
 
                       ele2.classList.add("beeper");
-                      ele2.style.opacity = ".4";
+                      ele2.style.opacity = ".7";
                     } else if (
                       nodeDetail3[0].data.specificElType === "capacitor1000"
                     ) {
@@ -6673,7 +6903,7 @@ const DnDFlow = (props) => {
                       );
 
                       ele2.classList.add("beeper");
-                      ele2.style.opacity = ".65";
+                      ele2.style.opacity = ".7";
                     } else if (
                       nodeDetail3[1].data.specificElType === "capacitor100"
                     ) {
@@ -6682,7 +6912,7 @@ const DnDFlow = (props) => {
                       );
 
                       ele2.classList.add("beeper");
-                      ele2.style.opacity = ".4";
+                      ele2.style.opacity = ".7";
                     } else if (
                       nodeDetail3[1].data.specificElType === "capacitor1000"
                     ) {
@@ -6691,7 +6921,7 @@ const DnDFlow = (props) => {
                       );
                       console.log("gsk", nodeDetail3[1], ele2);
                       ele2.classList.add("beeper");
-                      ele2.style.opacity = ".65";
+                      ele2.style.opacity = ".7";
                     }
                   }
                 }
@@ -6715,7 +6945,8 @@ const DnDFlow = (props) => {
                 //   `myRange${nodeDetail1.id}`
                 // );
                 // console.log("traget@@", eleLed2);
-                eleLed1.style.opacity = `${rangeVal / 100 + 0.1}`;
+                eleLed1.style.transform = `scale(${rangeVal / 30} )`;
+                //eleLed1.style.opacity = `${rangeVal / 100 + 0.1}`;
               }
             }
             break;
@@ -6753,7 +6984,7 @@ const DnDFlow = (props) => {
               if (nodeDetail2.data.specificElType === "led") {
                 const eleLed1 = document.getElementById(`led${nodeDetail2.id}`);
                 eleLed1.classList.add("led-light");
-                if (flag) eleLed1.style.opacity = `${rangeVal / 100 + 0.1}`;
+                if (flag) eleLed1.style.transform = `scale(${rangeVal / 30} )`;
               }
             }
           }
@@ -6906,6 +7137,216 @@ const DnDFlow = (props) => {
             }
           }
           break;
+        case "capacitorCircuit":
+          if ((await circuitClosed) === 1) {
+            let nodeDetail1 = await getOutgoers(nodeDetail, nodes, edges),
+              nodeDetail2;
+
+            if (nodeDetail1[0].data.specificElType === "junction") {
+              nodeDetail2 = await getOutgoers(nodeDetail1[0], nodes, edges);
+              if (nodeDetail2.length === 2) {
+                if (nodeDetail2[0].data.specificElType === "beeper") {
+                  if (nodeDetail2[1].data.specificElType === "capacitor100") {
+                    const ele2 = document.getElementById(
+                      `beeper${nodeDetail2[0].id}`
+                    );
+                    setTimeout(() => {
+                      ele2.style.opacity = `${0.7}`;
+                    }, 100);
+
+                    setTimeout(() => {
+                      ele2.style.opacity = `${0.5}`;
+                    }, 200);
+                    setTimeout(() => {
+                      ele2.style.opacity = `${0.3}`;
+                    }, 300);
+
+                    setTimeout(() => {
+                      ele2.classList.remove("beeper");
+                    }, 400);
+                  } else if (
+                    nodeDetail2[1].data.specificElType === "capacitor1000"
+                  ) {
+                    const ele2 = document.getElementById(
+                      `beeper${nodeDetail2[0].id}`
+                    );
+                    setTimeout(() => {
+                      ele2.style.opacity = `${0.7}`;
+                    }, 100);
+
+                    setTimeout(() => {
+                      ele2.style.opacity = `${0.5}`;
+                    }, 300);
+                    setTimeout(() => {
+                      ele2.style.opacity = `${0.3}`;
+                    }, 500);
+
+                    setTimeout(() => {
+                      ele2.classList.remove("beeper");
+                    }, 700);
+                  }
+                } else if (nodeDetail2[1].data.specificElType === "beeper") {
+                  if (nodeDetail2[0].data.specificElType === "capacitor100") {
+                    const ele2 = document.getElementById(
+                      `beeper${nodeDetail2[1].id}`
+                    );
+                    setTimeout(() => {
+                      ele2.style.opacity = `${0.7}`;
+                    }, 100);
+
+                    setTimeout(() => {
+                      ele2.style.opacity = `${0.5}`;
+                    }, 200);
+                    setTimeout(() => {
+                      ele2.style.opacity = `${0.3}`;
+                    }, 300);
+
+                    setTimeout(() => {
+                      ele2.classList.remove("beeper");
+                    }, 400);
+                  } else if (
+                    nodeDetail2[0].data.specificElType === "capacitor1000"
+                  ) {
+                    const ele2 = document.getElementById(
+                      `beeper${nodeDetail2[1].id}`
+                    );
+                    setTimeout(() => {
+                      ele2.style.opacity = `${0.7}`;
+                    }, 100);
+
+                    setTimeout(() => {
+                      ele2.style.opacity = `${0.5}`;
+                    }, 300);
+                    setTimeout(() => {
+                      ele2.style.opacity = `${0.3}`;
+                    }, 500);
+
+                    setTimeout(() => {
+                      ele2.classList.remove("beeper");
+                    }, 700);
+                  }
+                }
+              } else if (nodeDetail2.length === 3) {
+                if (nodeDetail2[0].data.specificElType === "beeper") {
+                  const ele = document.getElementById(
+                    `beeper${nodeDetail2[0].id}`
+                  );
+                  setTimeout(() => {
+                    ele.style.opacity = `${0.7}`;
+                  }, 100);
+                  setTimeout(() => {
+                    ele.style.opacity = `${0.6}`;
+                  }, 400);
+                  setTimeout(() => {
+                    ele.style.opacity = `${0.5}`;
+                  }, 700);
+                  setTimeout(() => {
+                    ele.style.opacity = `${0.4}`;
+                  }, 1000);
+                  setTimeout(() => {
+                    ele.style.opacity = `${0.2}`;
+                  }, 1300);
+
+                  setTimeout(() => {
+                    ele.classList.remove("beeper");
+                  }, 1300);
+                } else if (nodeDetail2[1].data.specificElType === "beeper") {
+                  const ele = document.getElementById(
+                    `beeper${nodeDetail2[1].id}`
+                  );
+                  setTimeout(() => {
+                    ele.style.opacity = `${0.7}`;
+                  }, 100);
+                  setTimeout(() => {
+                    ele.style.opacity = `${0.6}`;
+                  }, 400);
+                  setTimeout(() => {
+                    ele.style.opacity = `${0.5}`;
+                  }, 700);
+                  setTimeout(() => {
+                    ele.style.opacity = `${0.4}`;
+                  }, 1000);
+                  setTimeout(() => {
+                    ele.style.opacity = `${0.2}`;
+                  }, 1300);
+
+                  setTimeout(() => {
+                    ele.classList.remove("beeper");
+                  }, 1300);
+                } else if (nodeDetail2[2].data.specificElType === "beeper") {
+                  const ele = document.getElementById(
+                    `beeper${nodeDetail2[2].id}`
+                  );
+                  setTimeout(() => {
+                    ele.style.opacity = `${0.7}`;
+                  }, 100);
+                  setTimeout(() => {
+                    ele.style.opacity = `${0.6}`;
+                  }, 400);
+                  setTimeout(() => {
+                    ele.style.opacity = `${0.5}`;
+                  }, 700);
+                  setTimeout(() => {
+                    ele.style.opacity = `${0.4}`;
+                  }, 1000);
+                  setTimeout(() => {
+                    ele.style.opacity = `${0.2}`;
+                  }, 1300);
+
+                  setTimeout(() => {
+                    ele.classList.remove("beeper");
+                  }, 1300);
+                }
+              } else if (nodeDetail2.length === 1) {
+                let nodeDetail3 = await getIncomers(nodeDetail, nodes, edges);
+
+                if (nodeDetail3[0].data.specificElType === "junction") {
+                  nodeDetail3 = await getOutgoers(nodeDetail3[0], nodes, edges);
+
+                  if (nodeDetail3.length === 2) {
+                    if (nodeDetail3[0].data.specificElType === "capacitor100") {
+                      const ele2 = document.getElementById(
+                        `beeper${nodeDetail2[0].id}`
+                      );
+
+                      ele2.classList.remove("beeper");
+                    } else if (
+                      nodeDetail3[0].data.specificElType === "capacitor1000"
+                    ) {
+                      const ele2 = document.getElementById(
+                        `beeper${nodeDetail1[0].id}`
+                      );
+
+                      ele2.classList.remove("beeper");
+                    } else if (
+                      nodeDetail3[1].data.specificElType === "capacitor100"
+                    ) {
+                      const ele2 = document.getElementById(
+                        `beeper${nodeDetail1[0].id}`
+                      );
+
+                      ele2.classList.remove("beeper");
+                    } else if (
+                      nodeDetail3[1].data.specificElType === "capacitor1000"
+                    ) {
+                      const ele2 = document.getElementById(
+                        `beeper${nodeDetail1[0].id}`
+                      );
+                      console.log("gsk", nodeDetail3[1], ele2);
+                      ele2.classList.remove("beeper");
+                    }
+                  }
+                }
+              }
+            } else if (nodeDetail1[0].data.specificElType === "beeper") {
+              nodeDetail2 = nodeDetail1;
+              const ele2 = document.getElementById(
+                `beeper${nodeDetail2[0].id}`
+              );
+              ele2.classList.remove("beeper");
+            }
+          }
+          break;
       }
   };
   const [{}, drop] = useDrop(
@@ -6954,6 +7395,7 @@ const DnDFlow = (props) => {
             onNodeDragStop={onNodeDragEnd}
             nodesDraggable={nodesDraggable}
             ref={drop}
+            zoomOnScroll={false}
             // onElementClick={onElementClick}
           >
             <canvas

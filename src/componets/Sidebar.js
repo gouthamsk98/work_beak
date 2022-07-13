@@ -129,7 +129,16 @@ export default (props) => {
         }
         break;
       case "resistorCircuit":
-        if (nodeType == "tact" || "led" || "res_100" || "res_250")
+        if (nodeType === "junction" && junctionCount === 1) {
+          if (ele.id === nodeType) ele.style.display = "none";
+          //junctionCount = 0;
+        }
+        if (
+          nodeType === "tact" ||
+          nodeType === "led" ||
+          nodeType === "res_100" ||
+          nodeType == "res_250"
+        )
           if (ele.id === nodeType) ele.style.display = "none";
 
         break;
@@ -10856,6 +10865,2651 @@ export default (props) => {
                       (ele) => ele.id === send.index
                     );
                   }
+                }
+              }
+              return;
+          }
+          break;
+        case "resistorCircuit":
+          switch (nodeType) {
+            case "junction":
+              //tact dropes junction dragged
+              if (e.data.specificElType === "tact" && junctionCount === 0) {
+                console.log(
+                  "posChkJunction",
+                  event.clientX - e.position.x,
+                  event.clientY - e.position.y
+                );
+                if (
+                  event.clientX - e.position.x >= 249 - 5 &&
+                  event.clientX - e.position.x < 249 + 5
+                ) {
+                  if (
+                    event.clientY - e.position.y >= 158 - 5 &&
+                    event.clientY - e.position.y < 158 + 5
+                  ) {
+                    let send = {
+                      index: `${e.id}`,
+                      sourceHandle: `r`,
+                      source: `${e.id}`,
+                      revert: false,
+                      targetHandle: `l1.tdndnode_${Object.keys(nodes).length}`,
+                      flag: true,
+                    };
+                    let index1 = edges.findIndex(
+                      (ele) =>
+                        ele.source === send.index &&
+                        ele.targetHandle === send.targetHandle
+                    );
+                    if (send.revert) {
+                      index1 = edges.findIndex(
+                        (ele) => ele.target === send.index
+                      );
+                    }
+                    if (index1 != -1) return;
+                    sessionStorage.setItem(
+                      "application/beak/connect",
+                      JSON.stringify(send)
+                    );
+                    flagI = await nodes.findIndex(
+                      (ele) => ele.id === send.index
+                    );
+                  } else if (
+                    event.clientY - e.position.y >= 141 - 5 &&
+                    event.clientY - e.position.y < 141 + 5
+                  ) {
+                    let send = {
+                      index: `${e.id}`,
+                      sourceHandle: `r`,
+                      source: `${e.id}`,
+                      revert: false,
+                      targetHandle: `l2.tdndnode_${Object.keys(nodes).length}`,
+                      flag: true,
+                    };
+                    let index1 = edges.findIndex(
+                      (ele) =>
+                        ele.source === send.index &&
+                        ele.targetHandle === send.targetHandle
+                    );
+                    if (send.revert) {
+                      index1 = edges.findIndex(
+                        (ele) => ele.target === send.index
+                      );
+                    }
+                    if (index1 != -1) return;
+                    sessionStorage.setItem(
+                      "application/beak/connect",
+                      JSON.stringify(send)
+                    );
+                    flagI = await nodes.findIndex(
+                      (ele) => ele.id === send.index
+                    );
+                  } else if (
+                    event.clientY - e.position.y >= 122 - 5 &&
+                    event.clientY - e.position.y < 141 + 5
+                  ) {
+                    let send = {
+                      index: `${e.id}`,
+                      sourceHandle: `r`,
+                      source: `${e.id}`,
+                      revert: false,
+                      targetHandle: `l3.tdndnode_${Object.keys(nodes).length}`,
+                      flag: true,
+                    };
+                    let index1 = edges.findIndex(
+                      (ele) =>
+                        ele.source === send.index &&
+                        ele.targetHandle === send.targetHandle
+                    );
+                    if (send.revert) {
+                      index1 = edges.findIndex(
+                        (ele) => ele.target === send.index
+                      );
+                    }
+                    if (index1 != -1) return;
+                    sessionStorage.setItem(
+                      "application/beak/connect",
+                      JSON.stringify(send)
+                    );
+                    flagI = await nodes.findIndex(
+                      (ele) => ele.id === send.index
+                    );
+                  } else if (
+                    event.clientY - e.position.y >= 105 - 5 &&
+                    event.clientY - e.position.y < 105 + 5
+                  ) {
+                    let send = {
+                      index: `${e.id}`,
+                      sourceHandle: `r`,
+                      source: `${e.id}`,
+                      revert: false,
+                      targetHandle: `l4.tdndnode_${Object.keys(nodes).length}`,
+                      flag: true,
+                    };
+                    let index1 = edges.findIndex(
+                      (ele) =>
+                        ele.source === send.index &&
+                        ele.targetHandle === send.targetHandle
+                    );
+                    if (send.revert) {
+                      index1 = edges.findIndex(
+                        (ele) => ele.target === send.index
+                      );
+                    }
+                    if (index1 != -1) return;
+                    sessionStorage.setItem(
+                      "application/beak/connect",
+                      JSON.stringify(send)
+                    );
+                    flagI = await nodes.findIndex(
+                      (ele) => ele.id === send.index
+                    );
+                  }
+                } else if (
+                  event.clientX - e.position.x >= 122 - 5 &&
+                  event.clientX - e.position.x < 122 + 5
+                ) {
+                  if (
+                    event.clientY - e.position.y >= 158 - 5 &&
+                    event.clientY - e.position.y < 158 + 5
+                  ) {
+                    let send = {
+                      index: `${e.id}`,
+                      sourceHandle: `r`,
+                      source: `${e.id}`,
+                      revert: false,
+                      targetHandle: `r1.tdndnode_${Object.keys(nodes).length}`,
+                      flag: true,
+                    };
+                    let index1 = edges.findIndex(
+                      (ele) =>
+                        ele.source === send.index &&
+                        ele.targetHandle === send.targetHandle
+                    );
+                    if (send.revert) {
+                      index1 = edges.findIndex(
+                        (ele) => ele.target === send.index
+                      );
+                    }
+                    if (index1 != -1) return;
+                    sessionStorage.setItem(
+                      "application/beak/connect",
+                      JSON.stringify(send)
+                    );
+                    flagI = await nodes.findIndex(
+                      (ele) => ele.id === send.index
+                    );
+                  } else if (
+                    event.clientY - e.position.y >= 141 - 5 &&
+                    event.clientY - e.position.y < 141 + 5
+                  ) {
+                    let send = {
+                      index: `${e.id}`,
+                      sourceHandle: `r`,
+                      source: `${e.id}`,
+                      revert: false,
+                      targetHandle: `r2.tdndnode_${Object.keys(nodes).length}`,
+                      flag: true,
+                    };
+                    let index1 = edges.findIndex(
+                      (ele) =>
+                        ele.source === send.index &&
+                        ele.targetHandle === send.targetHandle
+                    );
+                    if (send.revert) {
+                      index1 = edges.findIndex(
+                        (ele) => ele.target === send.index
+                      );
+                    }
+                    if (index1 != -1) return;
+                    sessionStorage.setItem(
+                      "application/beak/connect",
+                      JSON.stringify(send)
+                    );
+                    flagI = await nodes.findIndex(
+                      (ele) => ele.id === send.index
+                    );
+                  } else if (
+                    event.clientY - e.position.y >= 122 - 5 &&
+                    event.clientY - e.position.y < 141 + 5
+                  ) {
+                    let send = {
+                      index: `${e.id}`,
+                      sourceHandle: `r`,
+                      source: `${e.id}`,
+                      revert: false,
+                      targetHandle: `r3.tdndnode_${Object.keys(nodes).length}`,
+                      flag: true,
+                    };
+                    let index1 = edges.findIndex(
+                      (ele) =>
+                        ele.source === send.index &&
+                        ele.targetHandle === send.targetHandle
+                    );
+                    if (send.revert) {
+                      index1 = edges.findIndex(
+                        (ele) => ele.target === send.index
+                      );
+                    }
+                    if (index1 != -1) return;
+                    sessionStorage.setItem(
+                      "application/beak/connect",
+                      JSON.stringify(send)
+                    );
+                    flagI = await nodes.findIndex(
+                      (ele) => ele.id === send.index
+                    );
+                  } else if (
+                    event.clientY - e.position.y >= 105 - 5 &&
+                    event.clientY - e.position.y < 105 + 5
+                  ) {
+                    let send = {
+                      index: `${e.id}`,
+                      sourceHandle: `r`,
+                      source: `${e.id}`,
+                      revert: false,
+                      targetHandle: `r4.tdndnode_${Object.keys(nodes).length}`,
+                      flag: true,
+                    };
+                    let index1 = edges.findIndex(
+                      (ele) =>
+                        ele.source === send.index &&
+                        ele.targetHandle === send.targetHandle
+                    );
+                    if (send.revert) {
+                      index1 = edges.findIndex(
+                        (ele) => ele.target === send.index
+                      );
+                    }
+                    if (index1 != -1) return;
+                    sessionStorage.setItem(
+                      "application/beak/connect",
+                      JSON.stringify(send)
+                    );
+                    flagI = await nodes.findIndex(
+                      (ele) => ele.id === send.index
+                    );
+                  }
+                }
+              } else if (
+                (e.data.specificElType === "res_100" ||
+                  e.data.specificElType === "res_250") &&
+                junctionCount === 0
+              ) {
+                console.log(
+                  "posChkJunctionLed",
+                  event.clientX - e.position.x,
+                  event.clientY - e.position.y
+                );
+                if (
+                  event.clientX - e.position.x >= 65 - 5 &&
+                  event.clientX - e.position.x < 65 + 5
+                ) {
+                  if (
+                    event.clientY - e.position.y >= 158 - 5 &&
+                    event.clientY - e.position.y < 158 + 5
+                  ) {
+                    let send = {
+                      index: `${e.id}`,
+                      sourceHandle: `l1dndnode_${Object.keys(nodes).length}`,
+                      source: `${e.id}`,
+                      revert: true,
+                      targetHandle: `l`,
+                      flag: true,
+                    };
+                    let index1 = edges.findIndex(
+                      (ele) =>
+                        ele.source === send.index &&
+                        ele.targetHandle === send.targetHandle
+                    );
+                    if (send.revert) {
+                      index1 = edges.findIndex(
+                        (ele) => ele.target === send.index
+                      );
+                    }
+                    if (index1 != -1) return;
+                    sessionStorage.setItem(
+                      "application/beak/connect",
+                      JSON.stringify(send)
+                    );
+                    flagI = await nodes.findIndex(
+                      (ele) => ele.id === send.index
+                    );
+                  } else if (
+                    event.clientY - e.position.y >= 141 - 5 &&
+                    event.clientY - e.position.y < 141 + 5
+                  ) {
+                    let send = {
+                      index: `${e.id}`,
+                      sourceHandle: `l2dndnode_${Object.keys(nodes).length}`,
+                      source: `${e.id}`,
+                      revert: true,
+                      targetHandle: `l`,
+                      flag: true,
+                    };
+                    let index1 = edges.findIndex(
+                      (ele) =>
+                        ele.source === send.index &&
+                        ele.targetHandle === send.targetHandle
+                    );
+                    if (send.revert) {
+                      index1 = edges.findIndex(
+                        (ele) => ele.target === send.index
+                      );
+                    }
+                    if (index1 != -1) return;
+                    sessionStorage.setItem(
+                      "application/beak/connect",
+                      JSON.stringify(send)
+                    );
+                    flagI = await nodes.findIndex(
+                      (ele) => ele.id === send.index
+                    );
+                  } else if (
+                    event.clientY - e.position.y >= 122 - 5 &&
+                    event.clientY - e.position.y < 141 + 5
+                  ) {
+                    let send = {
+                      index: `${e.id}`,
+                      sourceHandle: `l3dndnode_${Object.keys(nodes).length}`,
+                      source: `${e.id}`,
+                      revert: true,
+                      targetHandle: `l`,
+                      flag: true,
+                    };
+                    let index1 = edges.findIndex(
+                      (ele) =>
+                        ele.source === send.index &&
+                        ele.targetHandle === send.targetHandle
+                    );
+                    if (send.revert) {
+                      index1 = edges.findIndex(
+                        (ele) => ele.target === send.index
+                      );
+                    }
+                    if (index1 != -1) return;
+                    sessionStorage.setItem(
+                      "application/beak/connect",
+                      JSON.stringify(send)
+                    );
+                    flagI = await nodes.findIndex(
+                      (ele) => ele.id === send.index
+                    );
+                  } else if (
+                    event.clientY - e.position.y >= 105 - 5 &&
+                    event.clientY - e.position.y < 105 + 5
+                  ) {
+                    let send = {
+                      index: `${e.id}`,
+                      sourceHandle: `l4dndnode_${Object.keys(nodes).length}`,
+                      source: `${e.id}`,
+                      revert: true,
+                      targetHandle: `l`,
+                      flag: true,
+                    };
+                    let index1 = edges.findIndex(
+                      (ele) =>
+                        ele.source === send.index &&
+                        ele.targetHandle === send.targetHandle
+                    );
+                    if (send.revert) {
+                      index1 = edges.findIndex(
+                        (ele) => ele.target === send.index
+                      );
+                    }
+                    if (index1 != -1) return;
+                    sessionStorage.setItem(
+                      "application/beak/connect",
+                      JSON.stringify(send)
+                    );
+                    flagI = await nodes.findIndex(
+                      (ele) => ele.id === send.index
+                    );
+                  }
+                } else if (
+                  event.clientX - e.position.x >= -65 - 5 &&
+                  event.clientX - e.position.x < -65 + 5
+                ) {
+                  if (
+                    event.clientY - e.position.y >= 158 - 5 &&
+                    event.clientY - e.position.y < 158 + 5
+                  ) {
+                    let send = {
+                      index: `${e.id}`,
+                      sourceHandle: `r1dndnode_${Object.keys(nodes).length}`,
+                      source: `${e.id}`,
+                      revert: true,
+                      targetHandle: `l`,
+                      flag: true,
+                    };
+                    let index1 = edges.findIndex(
+                      (ele) =>
+                        ele.source === send.index &&
+                        ele.targetHandle === send.targetHandle
+                    );
+                    if (send.revert) {
+                      index1 = edges.findIndex(
+                        (ele) => ele.target === send.index
+                      );
+                    }
+                    if (index1 != -1) return;
+                    sessionStorage.setItem(
+                      "application/beak/connect",
+                      JSON.stringify(send)
+                    );
+                    flagI = await nodes.findIndex(
+                      (ele) => ele.id === send.index
+                    );
+                  } else if (
+                    event.clientY - e.position.y >= 141 - 5 &&
+                    event.clientY - e.position.y < 141 + 5
+                  ) {
+                    let send = {
+                      index: `${e.id}`,
+                      sourceHandle: `r2dndnode_${Object.keys(nodes).length}`,
+                      source: `${e.id}`,
+                      revert: true,
+                      targetHandle: `l`,
+                      flag: true,
+                    };
+                    let index1 = edges.findIndex(
+                      (ele) =>
+                        ele.source === send.index &&
+                        ele.targetHandle === send.targetHandle
+                    );
+                    if (send.revert) {
+                      index1 = edges.findIndex(
+                        (ele) => ele.target === send.index
+                      );
+                    }
+                    if (index1 != -1) return;
+                    sessionStorage.setItem(
+                      "application/beak/connect",
+                      JSON.stringify(send)
+                    );
+                    flagI = await nodes.findIndex(
+                      (ele) => ele.id === send.index
+                    );
+                  } else if (
+                    event.clientY - e.position.y >= 122 - 5 &&
+                    event.clientY - e.position.y < 141 + 5
+                  ) {
+                    let send = {
+                      index: `${e.id}`,
+                      sourceHandle: `r3dndnode_${Object.keys(nodes).length}`,
+                      source: `${e.id}`,
+                      revert: true,
+                      targetHandle: `l`,
+                      flag: true,
+                    };
+                    let index1 = edges.findIndex(
+                      (ele) =>
+                        ele.source === send.index &&
+                        ele.targetHandle === send.targetHandle
+                    );
+                    if (send.revert) {
+                      index1 = edges.findIndex(
+                        (ele) => ele.target === send.index
+                      );
+                    }
+                    if (index1 != -1) return;
+                    sessionStorage.setItem(
+                      "application/beak/connect",
+                      JSON.stringify(send)
+                    );
+                    flagI = await nodes.findIndex(
+                      (ele) => ele.id === send.index
+                    );
+                  } else if (
+                    event.clientY - e.position.y >= 105 - 5 &&
+                    event.clientY - e.position.y < 105 + 5
+                  ) {
+                    let send = {
+                      index: `${e.id}`,
+                      sourceHandle: `r4dndnode_${Object.keys(nodes).length}`,
+                      source: `${e.id}`,
+                      revert: true,
+                      targetHandle: `l`,
+                      flag: true,
+                    };
+                    let index1 = edges.findIndex(
+                      (ele) =>
+                        ele.source === send.index &&
+                        ele.targetHandle === send.targetHandle
+                    );
+                    if (send.revert) {
+                      index1 = edges.findIndex(
+                        (ele) => ele.target === send.index
+                      );
+                    }
+                    if (index1 != -1) return;
+                    sessionStorage.setItem(
+                      "application/beak/connect",
+                      JSON.stringify(send)
+                    );
+                    flagI = await nodes.findIndex(
+                      (ele) => ele.id === send.index
+                    );
+                  }
+                }
+              } else if (
+                (e.data.specificElType === "res_100" ||
+                  e.data.specificElType === "res_250") &&
+                junctionCount === 1
+              ) {
+                {
+                  console.log(
+                    "posChkJunction",
+                    event.clientX - e.position.x,
+                    event.clientY - e.position.y
+                  );
+                  if (
+                    event.clientX - e.position.x >= 249 - 5 &&
+                    event.clientX - e.position.x < 249 + 5
+                  ) {
+                    if (
+                      event.clientY - e.position.y >= 158 - 5 &&
+                      event.clientY - e.position.y < 158 + 5
+                    ) {
+                      let send = {
+                        index: `${e.id}`,
+                        sourceHandle: `r`,
+                        source: `${e.id}`,
+                        revert: false,
+                        targetHandle: `l1.tdndnode_${
+                          Object.keys(nodes).length
+                        }`,
+                        flag: true,
+                      };
+                      let index1 = edges.findIndex(
+                        (ele) =>
+                          ele.source === send.index &&
+                          ele.targetHandle === send.targetHandle
+                      );
+                      if (send.revert) {
+                        index1 = edges.findIndex(
+                          (ele) => ele.target === send.index
+                        );
+                      }
+                      if (index1 != -1) return;
+                      sessionStorage.setItem(
+                        "application/beak/connect",
+                        JSON.stringify(send)
+                      );
+                      flagI = await nodes.findIndex(
+                        (ele) => ele.id === send.index
+                      );
+                    } else if (
+                      event.clientY - e.position.y >= 141 - 5 &&
+                      event.clientY - e.position.y < 141 + 5
+                    ) {
+                      let send = {
+                        index: `${e.id}`,
+                        sourceHandle: `r`,
+                        source: `${e.id}`,
+                        revert: false,
+                        targetHandle: `l2.tdndnode_${
+                          Object.keys(nodes).length
+                        }`,
+                        flag: true,
+                      };
+                      let index1 = edges.findIndex(
+                        (ele) =>
+                          ele.source === send.index &&
+                          ele.targetHandle === send.targetHandle
+                      );
+                      if (send.revert) {
+                        index1 = edges.findIndex(
+                          (ele) => ele.target === send.index
+                        );
+                      }
+                      if (index1 != -1) return;
+                      sessionStorage.setItem(
+                        "application/beak/connect",
+                        JSON.stringify(send)
+                      );
+                      flagI = await nodes.findIndex(
+                        (ele) => ele.id === send.index
+                      );
+                    } else if (
+                      event.clientY - e.position.y >= 122 - 5 &&
+                      event.clientY - e.position.y < 141 + 5
+                    ) {
+                      let send = {
+                        index: `${e.id}`,
+                        sourceHandle: `r`,
+                        source: `${e.id}`,
+                        revert: false,
+                        targetHandle: `l3.tdndnode_${
+                          Object.keys(nodes).length
+                        }`,
+                        flag: true,
+                      };
+                      let index1 = edges.findIndex(
+                        (ele) =>
+                          ele.source === send.index &&
+                          ele.targetHandle === send.targetHandle
+                      );
+                      if (send.revert) {
+                        index1 = edges.findIndex(
+                          (ele) => ele.target === send.index
+                        );
+                      }
+                      if (index1 != -1) return;
+                      sessionStorage.setItem(
+                        "application/beak/connect",
+                        JSON.stringify(send)
+                      );
+                      flagI = await nodes.findIndex(
+                        (ele) => ele.id === send.index
+                      );
+                    } else if (
+                      event.clientY - e.position.y >= 105 - 5 &&
+                      event.clientY - e.position.y < 105 + 5
+                    ) {
+                      let send = {
+                        index: `${e.id}`,
+                        sourceHandle: `r`,
+                        source: `${e.id}`,
+                        revert: false,
+                        targetHandle: `l4.tdndnode_${
+                          Object.keys(nodes).length
+                        }`,
+                        flag: true,
+                      };
+                      let index1 = edges.findIndex(
+                        (ele) =>
+                          ele.source === send.index &&
+                          ele.targetHandle === send.targetHandle
+                      );
+                      if (send.revert) {
+                        index1 = edges.findIndex(
+                          (ele) => ele.target === send.index
+                        );
+                      }
+                      if (index1 != -1) return;
+                      sessionStorage.setItem(
+                        "application/beak/connect",
+                        JSON.stringify(send)
+                      );
+                      flagI = await nodes.findIndex(
+                        (ele) => ele.id === send.index
+                      );
+                    }
+                  } else if (
+                    event.clientX - e.position.x >= 122 - 5 &&
+                    event.clientX - e.position.x < 122 + 5
+                  ) {
+                    if (
+                      event.clientY - e.position.y >= 158 - 5 &&
+                      event.clientY - e.position.y < 158 + 5
+                    ) {
+                      let send = {
+                        index: `${e.id}`,
+                        sourceHandle: `r`,
+                        source: `${e.id}`,
+                        revert: false,
+                        targetHandle: `r1.tdndnode_${
+                          Object.keys(nodes).length
+                        }`,
+                        flag: true,
+                      };
+                      let index1 = edges.findIndex(
+                        (ele) =>
+                          ele.source === send.index &&
+                          ele.targetHandle === send.targetHandle
+                      );
+                      if (send.revert) {
+                        index1 = edges.findIndex(
+                          (ele) => ele.target === send.index
+                        );
+                      }
+                      if (index1 != -1) return;
+                      sessionStorage.setItem(
+                        "application/beak/connect",
+                        JSON.stringify(send)
+                      );
+                      flagI = await nodes.findIndex(
+                        (ele) => ele.id === send.index
+                      );
+                    } else if (
+                      event.clientY - e.position.y >= 141 - 5 &&
+                      event.clientY - e.position.y < 141 + 5
+                    ) {
+                      let send = {
+                        index: `${e.id}`,
+                        sourceHandle: `r`,
+                        source: `${e.id}`,
+                        revert: false,
+                        targetHandle: `r2.tdndnode_${
+                          Object.keys(nodes).length
+                        }`,
+                        flag: true,
+                      };
+                      let index1 = edges.findIndex(
+                        (ele) =>
+                          ele.source === send.index &&
+                          ele.targetHandle === send.targetHandle
+                      );
+                      if (send.revert) {
+                        index1 = edges.findIndex(
+                          (ele) => ele.target === send.index
+                        );
+                      }
+                      if (index1 != -1) return;
+                      sessionStorage.setItem(
+                        "application/beak/connect",
+                        JSON.stringify(send)
+                      );
+                      flagI = await nodes.findIndex(
+                        (ele) => ele.id === send.index
+                      );
+                    } else if (
+                      event.clientY - e.position.y >= 122 - 5 &&
+                      event.clientY - e.position.y < 141 + 5
+                    ) {
+                      let send = {
+                        index: `${e.id}`,
+                        sourceHandle: `r`,
+                        source: `${e.id}`,
+                        revert: false,
+                        targetHandle: `r3.tdndnode_${
+                          Object.keys(nodes).length
+                        }`,
+                        flag: true,
+                      };
+                      let index1 = edges.findIndex(
+                        (ele) =>
+                          ele.source === send.index &&
+                          ele.targetHandle === send.targetHandle
+                      );
+                      if (send.revert) {
+                        index1 = edges.findIndex(
+                          (ele) => ele.target === send.index
+                        );
+                      }
+                      if (index1 != -1) return;
+                      sessionStorage.setItem(
+                        "application/beak/connect",
+                        JSON.stringify(send)
+                      );
+                      flagI = await nodes.findIndex(
+                        (ele) => ele.id === send.index
+                      );
+                    } else if (
+                      event.clientY - e.position.y >= 105 - 5 &&
+                      event.clientY - e.position.y < 105 + 5
+                    ) {
+                      let send = {
+                        index: `${e.id}`,
+                        sourceHandle: `r`,
+                        source: `${e.id}`,
+                        revert: false,
+                        targetHandle: `r4.tdndnode_${
+                          Object.keys(nodes).length
+                        }`,
+                        flag: true,
+                      };
+                      let index1 = edges.findIndex(
+                        (ele) =>
+                          ele.source === send.index &&
+                          ele.targetHandle === send.targetHandle
+                      );
+                      if (send.revert) {
+                        index1 = edges.findIndex(
+                          (ele) => ele.target === send.index
+                        );
+                      }
+                      if (index1 != -1) return;
+                      sessionStorage.setItem(
+                        "application/beak/connect",
+                        JSON.stringify(send)
+                      );
+                      flagI = await nodes.findIndex(
+                        (ele) => ele.id === send.index
+                      );
+                    }
+                  }
+                }
+              }
+              if (e.data.specificElType === "led" && junctionCount === 1) {
+                console.log(
+                  "posChkJunctionLed",
+                  event.clientX - e.position.x,
+                  event.clientY - e.position.y
+                );
+                if (
+                  event.clientX - e.position.x >= 65 - 5 &&
+                  event.clientX - e.position.x < 65 + 5
+                ) {
+                  if (
+                    event.clientY - e.position.y >= 158 - 5 &&
+                    event.clientY - e.position.y < 158 + 5
+                  ) {
+                    let send = {
+                      index: `${e.id}`,
+                      sourceHandle: `l1dndnode_${Object.keys(nodes).length}`,
+                      source: `${e.id}`,
+                      revert: true,
+                      targetHandle: `l`,
+                      flag: true,
+                    };
+                    let index1 = edges.findIndex(
+                      (ele) =>
+                        ele.source === send.index &&
+                        ele.targetHandle === send.targetHandle
+                    );
+                    if (send.revert) {
+                      index1 = edges.findIndex(
+                        (ele) => ele.target === send.index
+                      );
+                    }
+                    if (index1 != -1) return;
+                    sessionStorage.setItem(
+                      "application/beak/connect",
+                      JSON.stringify(send)
+                    );
+                    flagI = await nodes.findIndex(
+                      (ele) => ele.id === send.index
+                    );
+                  } else if (
+                    event.clientY - e.position.y >= 141 - 5 &&
+                    event.clientY - e.position.y < 141 + 5
+                  ) {
+                    let send = {
+                      index: `${e.id}`,
+                      sourceHandle: `l2dndnode_${Object.keys(nodes).length}`,
+                      source: `${e.id}`,
+                      revert: true,
+                      targetHandle: `l`,
+                      flag: true,
+                    };
+                    let index1 = edges.findIndex(
+                      (ele) =>
+                        ele.source === send.index &&
+                        ele.targetHandle === send.targetHandle
+                    );
+                    if (send.revert) {
+                      index1 = edges.findIndex(
+                        (ele) => ele.target === send.index
+                      );
+                    }
+                    if (index1 != -1) return;
+                    sessionStorage.setItem(
+                      "application/beak/connect",
+                      JSON.stringify(send)
+                    );
+                    flagI = await nodes.findIndex(
+                      (ele) => ele.id === send.index
+                    );
+                  } else if (
+                    event.clientY - e.position.y >= 122 - 5 &&
+                    event.clientY - e.position.y < 141 + 5
+                  ) {
+                    let send = {
+                      index: `${e.id}`,
+                      sourceHandle: `l3dndnode_${Object.keys(nodes).length}`,
+                      source: `${e.id}`,
+                      revert: true,
+                      targetHandle: `l`,
+                      flag: true,
+                    };
+                    let index1 = edges.findIndex(
+                      (ele) =>
+                        ele.source === send.index &&
+                        ele.targetHandle === send.targetHandle
+                    );
+                    if (send.revert) {
+                      index1 = edges.findIndex(
+                        (ele) => ele.target === send.index
+                      );
+                    }
+                    if (index1 != -1) return;
+                    sessionStorage.setItem(
+                      "application/beak/connect",
+                      JSON.stringify(send)
+                    );
+                    flagI = await nodes.findIndex(
+                      (ele) => ele.id === send.index
+                    );
+                  } else if (
+                    event.clientY - e.position.y >= 105 - 5 &&
+                    event.clientY - e.position.y < 105 + 5
+                  ) {
+                    let send = {
+                      index: `${e.id}`,
+                      sourceHandle: `l4dndnode_${Object.keys(nodes).length}`,
+                      source: `${e.id}`,
+                      revert: true,
+                      targetHandle: `l`,
+                      flag: true,
+                    };
+                    let index1 = edges.findIndex(
+                      (ele) =>
+                        ele.source === send.index &&
+                        ele.targetHandle === send.targetHandle
+                    );
+                    if (send.revert) {
+                      index1 = edges.findIndex(
+                        (ele) => ele.target === send.index
+                      );
+                    }
+                    if (index1 != -1) return;
+                    sessionStorage.setItem(
+                      "application/beak/connect",
+                      JSON.stringify(send)
+                    );
+                    flagI = await nodes.findIndex(
+                      (ele) => ele.id === send.index
+                    );
+                  }
+                } else if (
+                  event.clientX - e.position.x >= -65 - 5 &&
+                  event.clientX - e.position.x < -65 + 5
+                ) {
+                  if (
+                    event.clientY - e.position.y >= 158 - 5 &&
+                    event.clientY - e.position.y < 158 + 5
+                  ) {
+                    let send = {
+                      index: `${e.id}`,
+                      sourceHandle: `r1dndnode_${Object.keys(nodes).length}`,
+                      source: `${e.id}`,
+                      revert: true,
+                      targetHandle: `l`,
+                      flag: true,
+                    };
+                    let index1 = edges.findIndex(
+                      (ele) =>
+                        ele.source === send.index &&
+                        ele.targetHandle === send.targetHandle
+                    );
+                    if (send.revert) {
+                      index1 = edges.findIndex(
+                        (ele) => ele.target === send.index
+                      );
+                    }
+                    if (index1 != -1) return;
+                    sessionStorage.setItem(
+                      "application/beak/connect",
+                      JSON.stringify(send)
+                    );
+                    flagI = await nodes.findIndex(
+                      (ele) => ele.id === send.index
+                    );
+                  } else if (
+                    event.clientY - e.position.y >= 141 - 5 &&
+                    event.clientY - e.position.y < 141 + 5
+                  ) {
+                    let send = {
+                      index: `${e.id}`,
+                      sourceHandle: `r2dndnode_${Object.keys(nodes).length}`,
+                      source: `${e.id}`,
+                      revert: true,
+                      targetHandle: `l`,
+                      flag: true,
+                    };
+                    let index1 = edges.findIndex(
+                      (ele) =>
+                        ele.source === send.index &&
+                        ele.targetHandle === send.targetHandle
+                    );
+                    if (send.revert) {
+                      index1 = edges.findIndex(
+                        (ele) => ele.target === send.index
+                      );
+                    }
+                    if (index1 != -1) return;
+                    sessionStorage.setItem(
+                      "application/beak/connect",
+                      JSON.stringify(send)
+                    );
+                    flagI = await nodes.findIndex(
+                      (ele) => ele.id === send.index
+                    );
+                  } else if (
+                    event.clientY - e.position.y >= 122 - 5 &&
+                    event.clientY - e.position.y < 141 + 5
+                  ) {
+                    let send = {
+                      index: `${e.id}`,
+                      sourceHandle: `r3dndnode_${Object.keys(nodes).length}`,
+                      source: `${e.id}`,
+                      revert: true,
+                      targetHandle: `l`,
+                      flag: true,
+                    };
+                    let index1 = edges.findIndex(
+                      (ele) =>
+                        ele.source === send.index &&
+                        ele.targetHandle === send.targetHandle
+                    );
+                    if (send.revert) {
+                      index1 = edges.findIndex(
+                        (ele) => ele.target === send.index
+                      );
+                    }
+                    if (index1 != -1) return;
+                    sessionStorage.setItem(
+                      "application/beak/connect",
+                      JSON.stringify(send)
+                    );
+                    flagI = await nodes.findIndex(
+                      (ele) => ele.id === send.index
+                    );
+                  } else if (
+                    event.clientY - e.position.y >= 105 - 5 &&
+                    event.clientY - e.position.y < 105 + 5
+                  ) {
+                    let send = {
+                      index: `${e.id}`,
+                      sourceHandle: `r4dndnode_${Object.keys(nodes).length}`,
+                      source: `${e.id}`,
+                      revert: true,
+                      targetHandle: `l`,
+                      flag: true,
+                    };
+                    let index1 = edges.findIndex(
+                      (ele) =>
+                        ele.source === send.index &&
+                        ele.targetHandle === send.targetHandle
+                    );
+                    if (send.revert) {
+                      index1 = edges.findIndex(
+                        (ele) => ele.target === send.index
+                      );
+                    }
+                    if (index1 != -1) return;
+                    sessionStorage.setItem(
+                      "application/beak/connect",
+                      JSON.stringify(send)
+                    );
+                    flagI = await nodes.findIndex(
+                      (ele) => ele.id === send.index
+                    );
+                  }
+                }
+              }
+              return;
+            case "tact":
+              if (e.data.specificElType === "power") {
+                if (
+                  event.clientX - e.position.x >= 266 - 5 &&
+                  event.clientX - e.position.x < 266 + 5 &&
+                  event.clientY - e.position.y >= 154 - 5 &&
+                  event.clientY - e.position.y < 154 + 5
+                ) {
+                  let send = {
+                    index: `${e.id}`,
+                    sourceHandle: `r4`,
+                    source: `${e.id}`,
+                    revert: false,
+                    targetHandle: "l",
+                    flag: true,
+                  };
+                  sessionStorage.setItem(
+                    "application/beak/connect",
+                    JSON.stringify(send)
+                  );
+                  flagI = await nodes.findIndex((ele) => ele.id === send.index);
+                  console.log("pla", flagI);
+                }
+              }
+              //junction droped tact dragged
+              if (e.data.specificElType === "junction") {
+                let index1 = nodes.findIndex(
+                  (ele) => ele.data.specificElType === "junction"
+                );
+                if (nodes[index1].id != e.id) return;
+                console.log(
+                  "posChkJunction",
+                  event.clientX - e.position.x,
+                  event.clientY - e.position.y
+                );
+                if (
+                  event.clientX - e.position.x >= -43 - 5 &&
+                  event.clientX - e.position.x < -43 + 5
+                ) {
+                  if (
+                    event.clientY - e.position.y >= 158 - 5 &&
+                    event.clientY - e.position.y < 158 + 5
+                  ) {
+                    let send = {
+                      index: `${e.id}`,
+                      sourceHandle: `r`,
+                      source: `${e.id}`,
+                      revert: true,
+                      targetHandle: `l1.t${e.id}`,
+                      flag: true,
+                    };
+                    let index1 = edges.findIndex(
+                      (ele) =>
+                        ele.source === send.index &&
+                        ele.targetHandle === send.targetHandle
+                    );
+                    if (send.revert) {
+                      index1 = edges.findIndex(
+                        (ele) =>
+                          ele.target === send.index &&
+                          ele.sourceHandle === send.sourceHandle
+                      );
+                    }
+                    if (
+                      index1 != -1 ||
+                      edges.findIndex(
+                        (ele) => ele.sourceHandle === "l1" + e.id
+                      ) != -1
+                    )
+                      return;
+                    sessionStorage.setItem(
+                      "application/beak/connect",
+                      JSON.stringify(send)
+                    );
+                    flagI = await nodes.findIndex(
+                      (ele) => ele.id === send.index
+                    );
+                  } else if (
+                    event.clientY - e.position.y >= 174 - 5 &&
+                    event.clientY - e.position.y < 174 + 5
+                  ) {
+                    let send = {
+                      index: `${e.id}`,
+                      sourceHandle: `r`,
+                      source: `${e.id}`,
+                      revert: true,
+                      targetHandle: `l2.t${e.id}`,
+                      flag: true,
+                    };
+                    let index1 = edges.findIndex(
+                      (ele) =>
+                        ele.source === send.index &&
+                        ele.targetHandle === send.targetHandle
+                    );
+                    if (send.revert) {
+                      index1 = edges.findIndex(
+                        (ele) =>
+                          ele.target === send.index &&
+                          ele.sourceHandle === send.sourceHandle
+                      );
+                    }
+                    if (
+                      index1 != -1 ||
+                      edges.findIndex(
+                        (ele) => ele.sourceHandle === "l2" + e.id
+                      ) != -1
+                    )
+                      return;
+                    sessionStorage.setItem(
+                      "application/beak/connect",
+                      JSON.stringify(send)
+                    );
+                    flagI = await nodes.findIndex(
+                      (ele) => ele.id === send.index
+                    );
+                  } else if (
+                    event.clientY - e.position.y >= 193 - 5 &&
+                    event.clientY - e.position.y < 193 + 5
+                  ) {
+                    let send = {
+                      index: `${e.id}`,
+                      sourceHandle: `r`,
+                      source: `${e.id}`,
+                      revert: true,
+                      targetHandle: `l3.t${e.id}`,
+                      flag: true,
+                    };
+                    let index1 = edges.findIndex(
+                      (ele) =>
+                        ele.source === send.index &&
+                        ele.targetHandle === send.targetHandle
+                    );
+                    if (send.revert) {
+                      index1 = edges.findIndex(
+                        (ele) =>
+                          ele.target === send.index &&
+                          ele.sourceHandle === send.sourceHandle
+                      );
+                    }
+                    if (
+                      index1 != -1 ||
+                      edges.findIndex(
+                        (ele) => ele.sourceHandle === "l3" + e.id
+                      ) != -1
+                    )
+                      return;
+                    sessionStorage.setItem(
+                      "application/beak/connect",
+                      JSON.stringify(send)
+                    );
+                    flagI = await nodes.findIndex(
+                      (ele) => ele.id === send.index
+                    );
+                  } else if (
+                    event.clientY - e.position.y >= 208 - 5 &&
+                    event.clientY - e.position.y < 208 + 5
+                  ) {
+                    let send = {
+                      index: `${e.id}`,
+                      sourceHandle: `r`,
+                      source: `${e.id}`,
+                      revert: true,
+                      targetHandle: `l4.t${e.id}`,
+                      flag: true,
+                    };
+                    let index1 = edges.findIndex(
+                      (ele) =>
+                        ele.source === send.index &&
+                        ele.targetHandle === send.targetHandle
+                    );
+                    if (send.revert) {
+                      index1 = edges.findIndex(
+                        (ele) =>
+                          ele.target === send.index &&
+                          ele.sourceHandle === send.sourceHandle
+                      );
+                    }
+                    if (
+                      index1 != -1 ||
+                      edges.findIndex(
+                        (ele) => ele.sourceHandle === "l4" + e.id
+                      ) != -1
+                    )
+                      return;
+                    sessionStorage.setItem(
+                      "application/beak/connect",
+                      JSON.stringify(send)
+                    );
+                    flagI = await nodes.findIndex(
+                      (ele) => ele.id === send.index
+                    );
+                  }
+                } else if (
+                  event.clientX - e.position.x >= 90 - 5 &&
+                  event.clientX - e.position.x < 90 + 5
+                ) {
+                  if (
+                    event.clientY - e.position.y >= 158 - 5 &&
+                    event.clientY - e.position.y < 158 + 5
+                  ) {
+                    let send = {
+                      index: `${e.id}`,
+                      sourceHandle: `r`,
+                      source: `${e.id}`,
+                      revert: true,
+                      targetHandle: `r1.t${e.id}`,
+                      flag: true,
+                    };
+                    let index1 = edges.findIndex(
+                      (ele) =>
+                        ele.source === send.index &&
+                        ele.targetHandle === send.targetHandle
+                    );
+                    if (send.revert) {
+                      index1 = edges.findIndex(
+                        (ele) =>
+                          ele.target === send.index &&
+                          ele.sourceHandle === send.sourceHandle
+                      );
+                    }
+                    if (
+                      index1 != -1 ||
+                      edges.findIndex(
+                        (ele) => ele.sourceHandle === "r1" + e.id
+                      ) != -1
+                    )
+                      return;
+                    sessionStorage.setItem(
+                      "application/beak/connect",
+                      JSON.stringify(send)
+                    );
+                    flagI = await nodes.findIndex(
+                      (ele) => ele.id === send.index
+                    );
+                  } else if (
+                    event.clientY - e.position.y >= 174 - 5 &&
+                    event.clientY - e.position.y < 174 + 5
+                  ) {
+                    let send = {
+                      index: `${e.id}`,
+                      sourceHandle: `r`,
+                      source: `${e.id}`,
+                      revert: true,
+                      targetHandle: `r2.t${e.id}`,
+                      flag: true,
+                    };
+                    let index1 = edges.findIndex(
+                      (ele) =>
+                        ele.source === send.index &&
+                        ele.targetHandle === send.targetHandle
+                    );
+                    if (send.revert) {
+                      index1 = edges.findIndex(
+                        (ele) =>
+                          ele.target === send.index &&
+                          ele.sourceHandle === send.sourceHandle
+                      );
+                    }
+                    if (
+                      index1 != -1 ||
+                      edges.findIndex(
+                        (ele) => ele.sourceHandle === "r2" + e.id
+                      ) != -1
+                    )
+                      return;
+                    sessionStorage.setItem(
+                      "application/beak/connect",
+                      JSON.stringify(send)
+                    );
+                    flagI = await nodes.findIndex(
+                      (ele) => ele.id === send.index
+                    );
+                  } else if (
+                    event.clientY - e.position.y >= 193 - 5 &&
+                    event.clientY - e.position.y < 193 + 5
+                  ) {
+                    let send = {
+                      index: `${e.id}`,
+                      sourceHandle: `r`,
+                      source: `${e.id}`,
+                      revert: true,
+                      targetHandle: `r3.t${e.id}`,
+                      flag: true,
+                    };
+                    let index1 = edges.findIndex(
+                      (ele) =>
+                        ele.source === send.index &&
+                        ele.targetHandle === send.targetHandle
+                    );
+                    if (send.revert) {
+                      index1 = edges.findIndex(
+                        (ele) =>
+                          ele.target === send.index &&
+                          ele.sourceHandle === send.sourceHandle
+                      );
+                    }
+                    if (
+                      index1 != -1 ||
+                      edges.findIndex(
+                        (ele) => ele.sourceHandle === "r3" + e.id
+                      ) != -1
+                    )
+                      return;
+                    sessionStorage.setItem(
+                      "application/beak/connect",
+                      JSON.stringify(send)
+                    );
+                    flagI = await nodes.findIndex(
+                      (ele) => ele.id === send.index
+                    );
+                  } else if (
+                    event.clientY - e.position.y >= 208 - 5 &&
+                    event.clientY - e.position.y < 208 + 5
+                  ) {
+                    let send = {
+                      index: `${e.id}`,
+                      sourceHandle: `r`,
+                      source: `${e.id}`,
+                      revert: true,
+                      targetHandle: `r4.t${e.id}`,
+                      flag: true,
+                    };
+                    let index1 = edges.findIndex(
+                      (ele) =>
+                        ele.source === send.index &&
+                        ele.targetHandle === send.targetHandle
+                    );
+                    if (send.revert) {
+                      index1 = edges.findIndex(
+                        (ele) =>
+                          ele.target === send.index &&
+                          ele.sourceHandle === send.sourceHandle
+                      );
+                    }
+                    if (
+                      index1 != -1 ||
+                      edges.findIndex(
+                        (ele) => ele.sourceHandle === "r4" + e.id
+                      ) != -1
+                    )
+                      return;
+                    sessionStorage.setItem(
+                      "application/beak/connect",
+                      JSON.stringify(send)
+                    );
+                    flagI = await nodes.findIndex(
+                      (ele) => ele.id === send.index
+                    );
+                  }
+                }
+              }
+              if (
+                e.data.specificElType === "res_100" ||
+                e.data.specificElType === "res_250"
+              ) {
+                console.log(
+                  "posChKKKK",
+                  event.clientX - e.position.x,
+                  event.clientY - e.position.y
+                );
+                if (
+                  event.clientX - e.position.x >= 288 - 5 &&
+                  event.clientX - e.position.x < 288 + 5 &&
+                  event.clientY - e.position.y >= 156 - 5 &&
+                  event.clientY - e.position.y < 156 + 5
+                ) {
+                  let send = {
+                    index: `${e.id}`,
+                    sourceHandle: `r`,
+                    source: `${e.id}`,
+                    revert: false,
+                    targetHandle: "l",
+                    flag: true,
+                  };
+                  let index1 = edges.findIndex(
+                    (ele) => ele.source === send.index
+                  );
+                  if (send.revert) {
+                    index1 = edges.findIndex(
+                      (ele) => ele.target === send.index
+                    );
+                  }
+                  if (index1 != -1) return;
+                  sessionStorage.setItem(
+                    "application/beak/connect",
+                    JSON.stringify(send)
+                  );
+                  flagI = await nodes.findIndex((ele) => ele.id === send.index);
+                } else if (
+                  event.clientX - e.position.x >= -72 - 5 &&
+                  event.clientX - e.position.x < -72 + 5 &&
+                  event.clientY - e.position.y >= 156 - 5 &&
+                  event.clientY - e.position.y < 156 + 5
+                ) {
+                  let send = {
+                    index: `${e.id}`,
+                    source: `${e.id}`,
+                    revert: false,
+                    sourceHandle: `r`,
+
+                    targetHandle: "l",
+                    flag: "pot",
+                  };
+                  let index1 = edges.findIndex(
+                    (ele) => ele.target === send.index
+                  );
+                  if (send.revert) {
+                    index1 = edges.findIndex(
+                      (ele) => ele.target === send.index
+                    );
+                  }
+                  if (index1 != -1) return;
+                  sessionStorage.setItem(
+                    "application/beak/connect",
+                    JSON.stringify(send)
+                  );
+
+                  flagI = await nodes.findIndex((ele) => ele.id === send.index);
+                  console.log("pla", flagI);
+                }
+              }
+              return;
+            case "res_250":
+            case "res_100":
+              if (e.data.specificElType === "junction") {
+                let index1 = nodes.findIndex(
+                  (ele) => ele.data.specificElType === "junction"
+                );
+                let index2 = nodes.findIndex(
+                  (ele) =>
+                    ele.data.specificElType === "junction" &&
+                    nodes[index1].id != ele.id
+                );
+                console.log(
+                  "posChkJunctionLED!!!",
+                  event.clientX - e.position.x,
+                  event.clientY - e.position.y
+                );
+                if (nodes[index1].id === e.id) {
+                  if (
+                    event.clientX - e.position.x >= 142 - 5 &&
+                    event.clientX - e.position.x < 142 + 5
+                  ) {
+                    if (
+                      event.clientY - e.position.y >= 158 - 5 &&
+                      event.clientY - e.position.y < 158 + 5
+                    ) {
+                      let send = {
+                        index: `${e.id}`,
+                        sourceHandle: `l1${e.id}`,
+                        source: `${e.id}`,
+                        revert: false,
+                        targetHandle: `l`,
+                        flag: true,
+                      };
+                      let index1 = edges.findIndex(
+                        (ele) =>
+                          ele.source === send.index &&
+                          ele.sourceHandle === send.sourceHandle
+                      );
+                      if (send.revert) {
+                        index1 = edges.findIndex(
+                          (ele) =>
+                            ele.target === send.index &&
+                            ele.sourceHandle === send.sourceHandle
+                        );
+                      }
+
+                      console.log(
+                        edges.findIndex(
+                          (ele) => ele.targetHandle === "l1.t" + e.id
+                        ) !== -1,
+                        "index1Xhk"
+                      );
+                      if (
+                        index1 != -1 ||
+                        edges.findIndex(
+                          (ele) => ele.targetHandle === "l1.t" + e.id
+                        ) !== -1
+                      )
+                        return;
+
+                      sessionStorage.setItem(
+                        "application/beak/connect",
+                        JSON.stringify(send)
+                      );
+                      flagI = await nodes.findIndex(
+                        (ele) => ele.id === send.index
+                      );
+                    } else if (
+                      event.clientY - e.position.y >= 174 - 5 &&
+                      event.clientY - e.position.y < 174 + 5
+                    ) {
+                      let send = {
+                        index: `${e.id}`,
+                        sourceHandle: `l2${e.id}`,
+                        source: `${e.id}`,
+                        revert: false,
+                        targetHandle: `l`,
+                        flag: true,
+                      };
+                      let index1 = edges.findIndex(
+                        (ele) =>
+                          ele.source === send.index &&
+                          ele.sourceHandle === send.sourceHandle
+                      );
+                      if (send.revert) {
+                        index1 = edges.findIndex(
+                          (ele) =>
+                            ele.target === send.index &&
+                            ele.sourceHandle === send.sourceHandle
+                        );
+                      }
+                      if (
+                        index1 != -1 ||
+                        edges.findIndex(
+                          (ele) => ele.targetHandle === "l2.t" + e.id
+                        ) != -1
+                      )
+                        return;
+                      sessionStorage.setItem(
+                        "application/beak/connect",
+                        JSON.stringify(send)
+                      );
+                      flagI = await nodes.findIndex(
+                        (ele) => ele.id === send.index
+                      );
+                    } else if (
+                      event.clientY - e.position.y >= 193 - 5 &&
+                      event.clientY - e.position.y < 193 + 5
+                    ) {
+                      let send = {
+                        index: `${e.id}`,
+                        sourceHandle: `l3${e.id}`,
+                        source: `${e.id}`,
+                        revert: false,
+                        targetHandle: `l`,
+                        flag: true,
+                      };
+                      let index1 = edges.findIndex(
+                        (ele) =>
+                          ele.source === send.index &&
+                          ele.sourceHandle === send.sourceHandle
+                      );
+                      if (send.revert) {
+                        index1 = edges.findIndex(
+                          (ele) =>
+                            ele.target === send.index &&
+                            ele.sourceHandle === send.sourceHandle
+                        );
+                      }
+                      if (
+                        index1 != -1 ||
+                        edges.findIndex(
+                          (ele) => ele.targetHandle === "l3.t" + e.id
+                        ) != -1
+                      )
+                        return;
+                      sessionStorage.setItem(
+                        "application/beak/connect",
+                        JSON.stringify(send)
+                      );
+                      flagI = await nodes.findIndex(
+                        (ele) => ele.id === send.index
+                      );
+                    } else if (
+                      event.clientY - e.position.y >= 208 - 5 &&
+                      event.clientY - e.position.y < 208 + 5
+                    ) {
+                      let send = {
+                        index: `${e.id}`,
+                        sourceHandle: `l4${e.id}`,
+                        source: `${e.id}`,
+                        revert: false,
+                        targetHandle: `l`,
+                        flag: true,
+                      };
+                      let index1 = edges.findIndex(
+                        (ele) =>
+                          ele.source === send.index &&
+                          ele.sourceHandle === send.sourceHandle
+                      );
+                      if (send.revert) {
+                        index1 = edges.findIndex(
+                          (ele) =>
+                            ele.target === send.index &&
+                            ele.sourceHandle === send.sourceHandle
+                        );
+                      }
+                      if (
+                        index1 != -1 ||
+                        edges.findIndex(
+                          (ele) => ele.targetHandle === "l4.t" + e.id
+                        ) != -1
+                      )
+                        return;
+                      sessionStorage.setItem(
+                        "application/beak/connect",
+                        JSON.stringify(send)
+                      );
+                      flagI = await nodes.findIndex(
+                        (ele) => ele.id === send.index
+                      );
+                    }
+                  } else if (
+                    event.clientX - e.position.x >= 272 - 5 &&
+                    event.clientX - e.position.x < 272 + 5
+                  ) {
+                    if (
+                      event.clientY - e.position.y >= 158 - 5 &&
+                      event.clientY - e.position.y < 158 + 5
+                    ) {
+                      let send = {
+                        index: `${e.id}`,
+                        sourceHandle: `r1${e.id}`,
+                        source: `${e.id}`,
+                        revert: false,
+                        targetHandle: `l`,
+                        flag: true,
+                      };
+                      let index1 = edges.findIndex(
+                        (ele) =>
+                          ele.source === send.index &&
+                          ele.sourceHandle === send.sourceHandle
+                      );
+                      if (send.revert) {
+                        index1 = edges.findIndex(
+                          (ele) =>
+                            ele.target === send.index &&
+                            ele.sourceHandle === send.sourceHandle
+                        );
+                      }
+                      if (
+                        index1 != -1 ||
+                        edges.findIndex(
+                          (ele) => ele.targetHandle === "r1.t" + e.id
+                        ) != -1
+                      )
+                        return;
+                      sessionStorage.setItem(
+                        "application/beak/connect",
+                        JSON.stringify(send)
+                      );
+                      flagI = await nodes.findIndex(
+                        (ele) => ele.id === send.index
+                      );
+                    } else if (
+                      event.clientY - e.position.y >= 174 - 5 &&
+                      event.clientY - e.position.y < 174 + 5
+                    ) {
+                      let send = {
+                        index: `${e.id}`,
+                        sourceHandle: `r2${e.id}`,
+                        source: `${e.id}`,
+                        revert: false,
+                        targetHandle: `l`,
+                        flag: true,
+                      };
+                      let index1 = edges.findIndex(
+                        (ele) =>
+                          ele.source === send.index ||
+                          ele.sourceHandle === send.sourceHandle
+                      );
+                      if (send.revert) {
+                        index1 = edges.findIndex(
+                          (ele) =>
+                            ele.target === send.index &&
+                            ele.sourceHandle === send.sourceHandle
+                        );
+                      }
+                      if (
+                        index1 != -1 &&
+                        edges.findIndex(
+                          (ele) => ele.targetHandle === "r2.t" + e.id
+                        ) != -1
+                      )
+                        return;
+                      sessionStorage.setItem(
+                        "application/beak/connect",
+                        JSON.stringify(send)
+                      );
+                      flagI = await nodes.findIndex(
+                        (ele) => ele.id === send.index
+                      );
+                    } else if (
+                      event.clientY - e.position.y >= 193 - 5 &&
+                      event.clientY - e.position.y < 193 + 5
+                    ) {
+                      let send = {
+                        index: `${e.id}`,
+                        sourceHandle: `r3${e.id}`,
+                        source: `${e.id}`,
+                        revert: false,
+                        targetHandle: `l`,
+                        flag: true,
+                      };
+                      let index1 = edges.findIndex(
+                        (ele) =>
+                          ele.source === send.index ||
+                          ele.sourceHandle === send.sourceHandle
+                      );
+                      if (send.revert) {
+                        index1 = edges.findIndex(
+                          (ele) =>
+                            ele.target === send.index &&
+                            ele.sourceHandle === send.sourceHandle
+                        );
+                      }
+                      if (
+                        index1 != -1 &&
+                        edges.findIndex(
+                          (ele) => ele.targetHandle === "r3.t" + e.id
+                        ) != -1
+                      )
+                        return;
+                      sessionStorage.setItem(
+                        "application/beak/connect",
+                        JSON.stringify(send)
+                      );
+                      flagI = await nodes.findIndex(
+                        (ele) => ele.id === send.index
+                      );
+                    } else if (
+                      event.clientY - e.position.y >= 208 - 5 &&
+                      event.clientY - e.position.y < 208 + 5
+                    ) {
+                      let send = {
+                        index: `${e.id}`,
+                        sourceHandle: `r4${e.id}`,
+                        source: `${e.id}`,
+                        revert: false,
+                        targetHandle: `l`,
+                        flag: true,
+                      };
+                      let index1 = edges.findIndex(
+                        (ele) =>
+                          ele.source === send.index ||
+                          ele.sourceHandle === send.sourceHandle
+                      );
+                      if (send.revert) {
+                        index1 = edges.findIndex(
+                          (ele) =>
+                            ele.target === send.index &&
+                            ele.sourceHandle === send.sourceHandle
+                        );
+                      }
+                      if (
+                        index1 != -1 &&
+                        edges.findIndex(
+                          (ele) => ele.targetHandle === "r4.t" + e.id
+                        ) != -1
+                      )
+                        return;
+                      sessionStorage.setItem(
+                        "application/beak/connect",
+                        JSON.stringify(send)
+                      );
+                      flagI = await nodes.findIndex(
+                        (ele) => ele.id === send.index
+                      );
+                    }
+                  }
+                } else if (nodes[index2].id === e.id) {
+                  if (
+                    event.clientX - e.position.x >= -43 - 5 &&
+                    event.clientX - e.position.x < -43 + 5
+                  ) {
+                    if (
+                      event.clientY - e.position.y >= 158 - 5 &&
+                      event.clientY - e.position.y < 158 + 5
+                    ) {
+                      let send = {
+                        index: `${e.id}`,
+                        sourceHandle: `r`,
+                        source: `${e.id}`,
+                        revert: true,
+                        targetHandle: `l1.t${e.id}`,
+                        flag: true,
+                      };
+                      let index1 = edges.findIndex(
+                        (ele) =>
+                          ele.source === send.index &&
+                          ele.targetHandle === send.targetHandle
+                      );
+                      if (send.revert) {
+                        index1 = edges.findIndex(
+                          (ele) =>
+                            ele.target === send.index &&
+                            ele.targetHandle === send.targetHandle
+                        );
+                      }
+                      if (
+                        index1 != -1 ||
+                        edges.findIndex(
+                          (ele) => ele.sourceHandle === `l1${e.id}`
+                        ) !== -1
+                      )
+                        return;
+                      sessionStorage.setItem(
+                        "application/beak/connect",
+                        JSON.stringify(send)
+                      );
+                      flagI = await nodes.findIndex(
+                        (ele) => ele.id === send.index
+                      );
+                    } else if (
+                      event.clientY - e.position.y >= 174 - 5 &&
+                      event.clientY - e.position.y < 174 + 5
+                    ) {
+                      let send = {
+                        index: `${e.id}`,
+                        sourceHandle: `r`,
+                        source: `${e.id}`,
+                        revert: true,
+                        targetHandle: `l2.t${e.id}`,
+                        flag: true,
+                      };
+                      let index1 = edges.findIndex(
+                        (ele) =>
+                          ele.source === send.index &&
+                          ele.targetHandle === send.targetHandle
+                      );
+                      if (send.revert) {
+                        index1 = edges.findIndex(
+                          (ele) =>
+                            ele.target === send.index &&
+                            ele.targetHandle === send.targetHandle
+                        );
+                      }
+                      if (
+                        index1 != -1 ||
+                        edges.findIndex(
+                          (ele) => ele.sourceHandle === `l2${e.id}`
+                        ) !== -1
+                      )
+                        return;
+                      sessionStorage.setItem(
+                        "application/beak/connect",
+                        JSON.stringify(send)
+                      );
+                      flagI = await nodes.findIndex(
+                        (ele) => ele.id === send.index
+                      );
+                    } else if (
+                      event.clientY - e.position.y >= 193 - 5 &&
+                      event.clientY - e.position.y < 193 + 5
+                    ) {
+                      let send = {
+                        index: `${e.id}`,
+                        sourceHandle: `r`,
+                        source: `${e.id}`,
+                        revert: true,
+                        targetHandle: `l3.t${e.id}`,
+                        flag: true,
+                      };
+                      let index1 = edges.findIndex(
+                        (ele) =>
+                          ele.source === send.index &&
+                          ele.targetHandle === send.targetHandle
+                      );
+                      if (send.revert) {
+                        index1 = edges.findIndex(
+                          (ele) =>
+                            ele.target === send.index &&
+                            ele.targetHandle === send.targetHandle
+                        );
+                      }
+                      if (
+                        index1 != -1 ||
+                        edges.findIndex(
+                          (ele) => ele.sourceHandle === `l3${e.id}`
+                        ) !== -1
+                      )
+                        return;
+                      sessionStorage.setItem(
+                        "application/beak/connect",
+                        JSON.stringify(send)
+                      );
+                      flagI = await nodes.findIndex(
+                        (ele) => ele.id === send.index
+                      );
+                    } else if (
+                      event.clientY - e.position.y >= 208 - 5 &&
+                      event.clientY - e.position.y < 208 + 5
+                    ) {
+                      let send = {
+                        index: `${e.id}`,
+                        sourceHandle: `r`,
+                        source: `${e.id}`,
+                        revert: true,
+                        targetHandle: `l4.t${e.id}`,
+                        flag: true,
+                      };
+                      let index1 = edges.findIndex(
+                        (ele) =>
+                          ele.source === send.index &&
+                          ele.targetHandle === send.targetHandle
+                      );
+                      if (send.revert) {
+                        index1 = edges.findIndex(
+                          (ele) =>
+                            ele.target === send.index &&
+                            ele.targetHandle === send.targetHandle
+                        );
+                      }
+                      if (
+                        index1 != -1 ||
+                        edges.findIndex(
+                          (ele) => ele.sourceHandle === `l4${e.id}`
+                        ) !== -1
+                      )
+                        return;
+                      sessionStorage.setItem(
+                        "application/beak/connect",
+                        JSON.stringify(send)
+                      );
+                      flagI = await nodes.findIndex(
+                        (ele) => ele.id === send.index
+                      );
+                    }
+                  } else if (
+                    event.clientX - e.position.x >= 90 - 5 &&
+                    event.clientX - e.position.x < 90 + 5
+                  ) {
+                    if (
+                      event.clientY - e.position.y >= 158 - 5 &&
+                      event.clientY - e.position.y < 158 + 5
+                    ) {
+                      let send = {
+                        index: `${e.id}`,
+                        sourceHandle: `r`,
+                        source: `${e.id}`,
+                        revert: true,
+                        targetHandle: `r1.t${e.id}`,
+                        flag: true,
+                      };
+                      let index1 = edges.findIndex(
+                        (ele) =>
+                          ele.source === send.index &&
+                          ele.targetHandle === send.targetHandle
+                      );
+                      if (send.revert) {
+                        index1 = edges.findIndex(
+                          (ele) =>
+                            ele.target === send.index &&
+                            ele.targetHandle === send.targetHandle
+                        );
+                      }
+                      if (
+                        index1 != -1 ||
+                        edges.findIndex(
+                          (ele) => ele.sourceHandle === `r1${e.id}`
+                        ) !== -1
+                      )
+                        return;
+                      sessionStorage.setItem(
+                        "application/beak/connect",
+                        JSON.stringify(send)
+                      );
+                      flagI = await nodes.findIndex(
+                        (ele) => ele.id === send.index
+                      );
+                    } else if (
+                      event.clientY - e.position.y >= 174 - 5 &&
+                      event.clientY - e.position.y < 174 + 5
+                    ) {
+                      let send = {
+                        index: `${e.id}`,
+                        sourceHandle: `r`,
+                        source: `${e.id}`,
+                        revert: true,
+                        targetHandle: `r2.t${e.id}`,
+                        flag: true,
+                      };
+                      let index1 = edges.findIndex(
+                        (ele) =>
+                          ele.source === send.index &&
+                          ele.targetHandle === send.targetHandle
+                      );
+                      if (send.revert) {
+                        index1 = edges.findIndex(
+                          (ele) =>
+                            ele.target === send.index &&
+                            ele.targetHandle === send.targetHandle
+                        );
+                      }
+                      if (
+                        index1 != -1 ||
+                        edges.findIndex(
+                          (ele) => ele.sourceHandle === `r2${e.id}`
+                        ) !== -1
+                      )
+                        return;
+                      sessionStorage.setItem(
+                        "application/beak/connect",
+                        JSON.stringify(send)
+                      );
+                      flagI = await nodes.findIndex(
+                        (ele) => ele.id === send.index
+                      );
+                    } else if (
+                      event.clientY - e.position.y >= 193 - 5 &&
+                      event.clientY - e.position.y < 193 + 5
+                    ) {
+                      let send = {
+                        index: `${e.id}`,
+                        sourceHandle: `r`,
+                        source: `${e.id}`,
+                        revert: true,
+                        targetHandle: `r3.t${e.id}`,
+                        flag: true,
+                      };
+                      let index1 = edges.findIndex(
+                        (ele) =>
+                          ele.source === send.index &&
+                          ele.targetHandle === send.targetHandle
+                      );
+                      if (send.revert) {
+                        index1 = edges.findIndex(
+                          (ele) =>
+                            ele.target === send.index &&
+                            ele.targetHandle === send.targetHandle
+                        );
+                      }
+                      if (
+                        index1 != -1 ||
+                        edges.findIndex(
+                          (ele) => ele.sourceHandle === `r3${e.id}`
+                        ) !== -1
+                      )
+                        return;
+                      sessionStorage.setItem(
+                        "application/beak/connect",
+                        JSON.stringify(send)
+                      );
+                      flagI = await nodes.findIndex(
+                        (ele) => ele.id === send.index
+                      );
+                    } else if (
+                      event.clientY - e.position.y >= 208 - 5 &&
+                      event.clientY - e.position.y < 208 + 5
+                    ) {
+                      let send = {
+                        index: `${e.id}`,
+                        sourceHandle: `r`,
+                        source: `${e.id}`,
+                        revert: true,
+                        targetHandle: `r4.t${e.id}`,
+                        flag: true,
+                      };
+                      let index1 = edges.findIndex(
+                        (ele) =>
+                          ele.source === send.index &&
+                          ele.targetHandle === send.targetHandle
+                      );
+                      if (send.revert) {
+                        index1 = edges.findIndex(
+                          (ele) =>
+                            ele.target === send.index &&
+                            ele.targetHandle === send.targetHandle
+                        );
+                      }
+                      if (
+                        index1 != -1 ||
+                        edges.findIndex(
+                          (ele) => ele.sourceHandle === `r4${e.id}`
+                        ) !== -1
+                      )
+                        return;
+                      sessionStorage.setItem(
+                        "application/beak/connect",
+                        JSON.stringify(send)
+                      );
+                      flagI = await nodes.findIndex(
+                        (ele) => ele.id === send.index
+                      );
+                    }
+                  }
+                }
+              }
+              if (e.data.specificElType === "tact") {
+                if (
+                  event.clientX - e.position.x >= 302 - 5 &&
+                  event.clientX - e.position.x < 302 + 5 &&
+                  event.clientY - e.position.y >= 160 - 5 &&
+                  event.clientY - e.position.y < 160 + 5
+                ) {
+                  let send = {
+                    index: `${e.id}`,
+                    sourceHandle: `r`,
+                    source: `${e.id}`,
+                    revert: false,
+                    targetHandle: "l",
+                    flag: true,
+                  };
+                  let index1 = edges.findIndex(
+                    (ele) => ele.source === send.index
+                  );
+                  if (send.revert) {
+                    index1 = edges.findIndex(
+                      (ele) => ele.target === send.index
+                    );
+                  }
+                  if (index1 != -1) return;
+                  sessionStorage.setItem(
+                    "application/beak/connect",
+                    JSON.stringify(send)
+                  );
+                  flagI = await nodes.findIndex((ele) => ele.id === send.index);
+                }
+              }
+              if (
+                e.data.specificElType === "res_100" ||
+                e.data.specificElType === "res_250" ||
+                e.data.specificElType === "led"
+              ) {
+                console.log(
+                  "posChKKKK",
+                  event.clientX - e.position.x,
+                  event.clientY - e.position.y
+                );
+                if (
+                  event.clientX - e.position.x >= 288 - 5 &&
+                  event.clientX - e.position.x < 288 + 5 &&
+                  event.clientY - e.position.y >= 156 - 5 &&
+                  event.clientY - e.position.y < 156 + 5
+                ) {
+                  let send = {
+                    index: `${e.id}`,
+                    sourceHandle: `r`,
+                    source: `${e.id}`,
+                    revert: false,
+                    targetHandle: "l",
+                    flag: true,
+                  };
+                  let index1 = edges.findIndex(
+                    (ele) => ele.source === send.index
+                  );
+                  if (send.revert) {
+                    index1 = edges.findIndex(
+                      (ele) => ele.target === send.index
+                    );
+                  }
+                  if (index1 != -1) return;
+                  sessionStorage.setItem(
+                    "application/beak/connect",
+                    JSON.stringify(send)
+                  );
+                  flagI = await nodes.findIndex((ele) => ele.id === send.index);
+                } else if (
+                  event.clientX - e.position.x >= -72 - 5 &&
+                  event.clientX - e.position.x < -72 + 5 &&
+                  event.clientY - e.position.y >= 156 - 5 &&
+                  event.clientY - e.position.y < 156 + 5
+                ) {
+                  let send = {
+                    index: `${e.id}`,
+                    source: `${e.id}`,
+                    revert: false,
+                    sourceHandle: `r`,
+
+                    targetHandle: "l",
+                    flag: "pot",
+                  };
+                  let index1 = edges.findIndex(
+                    (ele) => ele.target === send.index
+                  );
+                  if (send.revert) {
+                    index1 = edges.findIndex(
+                      (ele) => ele.target === send.index
+                    );
+                  }
+                  if (index1 != -1) return;
+                  sessionStorage.setItem(
+                    "application/beak/connect",
+                    JSON.stringify(send)
+                  );
+
+                  flagI = await nodes.findIndex((ele) => ele.id === send.index);
+                  console.log("pla", flagI);
+                }
+              }
+              return;
+            case "led":
+              if (e.data.specificElType === "junction") {
+                let index1 = nodes.findIndex(
+                  (ele) => ele.data.specificElType === "junction"
+                );
+                let index2 = nodes.findIndex(
+                  (ele) =>
+                    ele.data.specificElType === "junction" &&
+                    nodes[index1].id != ele.id
+                );
+                if (index2 == -1) return;
+                if (nodes[index2].id !== e.id) return;
+                if (
+                  event.clientX - e.position.x >= 142 - 5 &&
+                  event.clientX - e.position.x < 142 + 5
+                ) {
+                  if (
+                    event.clientY - e.position.y >= 158 - 5 &&
+                    event.clientY - e.position.y < 158 + 5
+                  ) {
+                    let send = {
+                      index: `${e.id}`,
+                      sourceHandle: `l1${e.id}`,
+                      source: `${e.id}`,
+                      revert: false,
+                      targetHandle: `l`,
+                      flag: true,
+                    };
+                    let index1 = edges.findIndex(
+                      (ele) =>
+                        ele.source === send.index &&
+                        ele.sourceHandle === send.sourceHandle
+                    );
+                    if (send.revert) {
+                      index1 = edges.findIndex(
+                        (ele) =>
+                          ele.target === send.index &&
+                          ele.sourceHandle === send.sourceHandle
+                      );
+                    }
+
+                    if (
+                      index1 != -1 ||
+                      edges.findIndex(
+                        (ele) => ele.targetHandle === `l1.t${e.id}`
+                      ) !== -1
+                    )
+                      return;
+
+                    sessionStorage.setItem(
+                      "application/beak/connect",
+                      JSON.stringify(send)
+                    );
+                    flagI = await nodes.findIndex(
+                      (ele) => ele.id === send.index
+                    );
+                  } else if (
+                    event.clientY - e.position.y >= 174 - 5 &&
+                    event.clientY - e.position.y < 174 + 5
+                  ) {
+                    let send = {
+                      index: `${e.id}`,
+                      sourceHandle: `l2${e.id}`,
+                      source: `${e.id}`,
+                      revert: false,
+                      targetHandle: `l`,
+                      flag: true,
+                    };
+                    let index1 = edges.findIndex(
+                      (ele) =>
+                        ele.source === send.index &&
+                        ele.sourceHandle === send.sourceHandle
+                    );
+                    if (send.revert) {
+                      index1 = edges.findIndex(
+                        (ele) =>
+                          ele.target === send.index &&
+                          ele.sourceHandle === send.sourceHandle
+                      );
+                    }
+                    if (
+                      index1 != -1 ||
+                      edges.findIndex(
+                        (ele) => ele.targetHandle === "l2.t" + e.id
+                      ) != -1
+                    )
+                      return;
+                    sessionStorage.setItem(
+                      "application/beak/connect",
+                      JSON.stringify(send)
+                    );
+                    flagI = await nodes.findIndex(
+                      (ele) => ele.id === send.index
+                    );
+                  } else if (
+                    event.clientY - e.position.y >= 193 - 5 &&
+                    event.clientY - e.position.y < 193 + 5
+                  ) {
+                    let send = {
+                      index: `${e.id}`,
+                      sourceHandle: `l3${e.id}`,
+                      source: `${e.id}`,
+                      revert: false,
+                      targetHandle: `l`,
+                      flag: true,
+                    };
+                    let index1 = edges.findIndex(
+                      (ele) =>
+                        ele.source === send.index &&
+                        ele.sourceHandle === send.sourceHandle
+                    );
+                    if (send.revert) {
+                      index1 = edges.findIndex(
+                        (ele) =>
+                          ele.target === send.index &&
+                          ele.sourceHandle === send.sourceHandle
+                      );
+                    }
+                    if (
+                      index1 != -1 ||
+                      edges.findIndex(
+                        (ele) => ele.targetHandle === "l3.t" + e.id
+                      ) != -1
+                    )
+                      return;
+                    sessionStorage.setItem(
+                      "application/beak/connect",
+                      JSON.stringify(send)
+                    );
+                    flagI = await nodes.findIndex(
+                      (ele) => ele.id === send.index
+                    );
+                  } else if (
+                    event.clientY - e.position.y >= 208 - 5 &&
+                    event.clientY - e.position.y < 208 + 5
+                  ) {
+                    let send = {
+                      index: `${e.id}`,
+                      sourceHandle: `l4${e.id}`,
+                      source: `${e.id}`,
+                      revert: false,
+                      targetHandle: `l`,
+                      flag: true,
+                    };
+                    let index1 = edges.findIndex(
+                      (ele) =>
+                        ele.source === send.index &&
+                        ele.sourceHandle === send.sourceHandle
+                    );
+                    if (send.revert) {
+                      index1 = edges.findIndex(
+                        (ele) =>
+                          ele.target === send.index &&
+                          ele.sourceHandle === send.sourceHandle
+                      );
+                    }
+                    if (
+                      index1 != -1 ||
+                      edges.findIndex(
+                        (ele) => ele.targetHandle === "l4.t" + e.id
+                      ) != -1
+                    )
+                      return;
+                    sessionStorage.setItem(
+                      "application/beak/connect",
+                      JSON.stringify(send)
+                    );
+                    flagI = await nodes.findIndex(
+                      (ele) => ele.id === send.index
+                    );
+                  }
+                } else if (
+                  event.clientX - e.position.x >= 272 - 5 &&
+                  event.clientX - e.position.x < 272 + 5
+                ) {
+                  if (
+                    event.clientY - e.position.y >= 158 - 5 &&
+                    event.clientY - e.position.y < 158 + 5
+                  ) {
+                    let send = {
+                      index: `${e.id}`,
+                      sourceHandle: `r1${e.id}`,
+                      source: `${e.id}`,
+                      revert: false,
+                      targetHandle: `l`,
+                      flag: true,
+                    };
+                    let index1 = edges.findIndex(
+                      (ele) =>
+                        ele.source === send.index &&
+                        ele.sourceHandle === send.sourceHandle
+                    );
+                    if (send.revert) {
+                      index1 = edges.findIndex(
+                        (ele) =>
+                          ele.target === send.index &&
+                          ele.sourceHandle === send.sourceHandle
+                      );
+                    }
+                    if (
+                      index1 != -1 ||
+                      edges.findIndex(
+                        (ele) => ele.targetHandle === "r1.t" + e.id
+                      ) != -1
+                    )
+                      return;
+                    sessionStorage.setItem(
+                      "application/beak/connect",
+                      JSON.stringify(send)
+                    );
+                    flagI = await nodes.findIndex(
+                      (ele) => ele.id === send.index
+                    );
+                  } else if (
+                    event.clientY - e.position.y >= 174 - 5 &&
+                    event.clientY - e.position.y < 174 + 5
+                  ) {
+                    let send = {
+                      index: `${e.id}`,
+                      sourceHandle: `r2${e.id}`,
+                      source: `${e.id}`,
+                      revert: false,
+                      targetHandle: `l`,
+                      flag: true,
+                    };
+                    let index1 = edges.findIndex(
+                      (ele) =>
+                        ele.source === send.index ||
+                        ele.sourceHandle === send.sourceHandle
+                    );
+                    if (send.revert) {
+                      index1 = edges.findIndex(
+                        (ele) =>
+                          ele.target === send.index &&
+                          ele.sourceHandle === send.sourceHandle
+                      );
+                    }
+                    if (
+                      index1 != -1 &&
+                      edges.findIndex(
+                        (ele) => ele.targetHandle === "r2.t" + e.id
+                      ) != -1
+                    )
+                      return;
+                    sessionStorage.setItem(
+                      "application/beak/connect",
+                      JSON.stringify(send)
+                    );
+                    flagI = await nodes.findIndex(
+                      (ele) => ele.id === send.index
+                    );
+                  } else if (
+                    event.clientY - e.position.y >= 193 - 5 &&
+                    event.clientY - e.position.y < 193 + 5
+                  ) {
+                    let send = {
+                      index: `${e.id}`,
+                      sourceHandle: `r3${e.id}`,
+                      source: `${e.id}`,
+                      revert: false,
+                      targetHandle: `l`,
+                      flag: true,
+                    };
+                    let index1 = edges.findIndex(
+                      (ele) =>
+                        ele.source === send.index ||
+                        ele.sourceHandle === send.sourceHandle
+                    );
+                    if (send.revert) {
+                      index1 = edges.findIndex(
+                        (ele) =>
+                          ele.target === send.index &&
+                          ele.sourceHandle === send.sourceHandle
+                      );
+                    }
+                    if (
+                      index1 != -1 &&
+                      edges.findIndex(
+                        (ele) => ele.targetHandle === "r3.t" + e.id
+                      ) != -1
+                    )
+                      return;
+                    sessionStorage.setItem(
+                      "application/beak/connect",
+                      JSON.stringify(send)
+                    );
+                    flagI = await nodes.findIndex(
+                      (ele) => ele.id === send.index
+                    );
+                  } else if (
+                    event.clientY - e.position.y >= 208 - 5 &&
+                    event.clientY - e.position.y < 208 + 5
+                  ) {
+                    let send = {
+                      index: `${e.id}`,
+                      sourceHandle: `r4${e.id}`,
+                      source: `${e.id}`,
+                      revert: false,
+                      targetHandle: `l`,
+                      flag: true,
+                    };
+                    let index1 = edges.findIndex(
+                      (ele) =>
+                        ele.source === send.index ||
+                        ele.sourceHandle === send.sourceHandle
+                    );
+                    if (send.revert) {
+                      index1 = edges.findIndex(
+                        (ele) =>
+                          ele.target === send.index &&
+                          ele.sourceHandle === send.sourceHandle
+                      );
+                    }
+                    if (
+                      index1 != -1 &&
+                      edges.findIndex(
+                        (ele) => ele.targetHandle === "r4.t" + e.id
+                      ) != -1
+                    )
+                      return;
+                    sessionStorage.setItem(
+                      "application/beak/connect",
+                      JSON.stringify(send)
+                    );
+                    flagI = await nodes.findIndex(
+                      (ele) => ele.id === send.index
+                    );
+                  }
+                }
+              }
+              if (
+                e.data.specificElType === "res_250" ||
+                e.data.specificElType === "res_100"
+              ) {
+                if (
+                  event.clientX - e.position.x >= 302 - 5 &&
+                  event.clientX - e.position.x < 302 + 5 &&
+                  event.clientY - e.position.y >= 160 - 5 &&
+                  event.clientY - e.position.y < 160 + 5
+                ) {
+                  let send = {
+                    index: `${e.id}`,
+                    sourceHandle: `r`,
+                    source: `${e.id}`,
+                    revert: false,
+                    targetHandle: "l",
+                    flag: true,
+                  };
+                  let index1 = edges.findIndex(
+                    (ele) => ele.source === send.index
+                  );
+                  if (send.revert) {
+                    index1 = edges.findIndex(
+                      (ele) => ele.target === send.index
+                    );
+                  }
+                  if (index1 != -1) return;
+                  sessionStorage.setItem(
+                    "application/beak/connect",
+                    JSON.stringify(send)
+                  );
+                  flagI = await nodes.findIndex((ele) => ele.id === send.index);
+                }
+              }
+              if (e.data.specificElType === "power") {
+                if (
+                  event.clientX - e.position.x >= 69 - 5 &&
+                  event.clientX - e.position.x < 69 + 5 &&
+                  event.clientY - e.position.y >= 199 - 5 &&
+                  event.clientY - e.position.y < 199 + 5
+                ) {
+                  let send = {
+                    index: `${e.id}`,
+                    source: `${e.id}`,
+                    revert: false,
+                    sourceHandle: `l`,
+
+                    targetHandle: "r2",
+                    flag: "pot",
+                  };
+                  let index1 = edges.findIndex(
+                    (ele) => ele.target === send.index
+                  );
+                  if (send.revert) {
+                    index1 = edges.findIndex(
+                      (ele) => ele.target === send.index
+                    );
+                  }
+                  if (index1 != -1) return;
+                  sessionStorage.setItem(
+                    "application/beak/connect",
+                    JSON.stringify(send)
+                  );
+
+                  flagI = await nodes.findIndex((ele) => ele.id === send.index);
+                  console.log("pla", flagI);
                 }
               }
               return;

@@ -26,7 +26,14 @@ class DaySelect extends Component {
         );
       else if (e === "resistorCircuit")
         return (
-          <Main led={true} res_100={true} res_250={true} tact={true} type={e} />
+          <Main
+            led={true}
+            junction={true}
+            res_100={true}
+            res_250={true}
+            tact={true}
+            type={e}
+          />
         );
       else if (e === "capacitorCircuit")
         return (
@@ -106,9 +113,9 @@ class DaySelect extends Component {
           <button onClick={(value) => onClick(value, "freedomCircuit")}>
             Freedom Circuit
           </button>
-          {/* <button onClick={(value) => onClick(value, "resistorCircuit")}>
+          <button onClick={(value) => onClick(value, "resistorCircuit")}>
             Resistor Circuit
-          </button> */}
+          </button>
           <button onClick={(value) => onClick(value, "capacitorCircuit")}>
             Capacitor Circuit
           </button>

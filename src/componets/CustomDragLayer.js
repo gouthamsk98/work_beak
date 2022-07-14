@@ -1,5 +1,11 @@
 import { useDragLayer } from "react-dnd";
 import renderImage from "./renderImageWithDots";
+import ReactFlow, {
+State,
+  Controls,
+  Handle,
+
+} from "react-flow-renderer";
 const layerStyles = {
   position: "fixed",
   pointerEvents: "none",
@@ -77,7 +83,7 @@ export const CustomDragLayer = (props) => {
     console.log("GSKITEM", item.id, initialOffset, currentOffset);
     switch (item.id) {
       case "beeper":
-        return (
+        return (<>
           <div
             style={getItemStyles(
               initialOffset,
@@ -86,13 +92,40 @@ export const CustomDragLayer = (props) => {
               65,
               "beeper"
             )}
-          ></div>
+          >
+                <Handle
+          type="target"
+          position="left"
+          style={{ left: " -0.7vw", top: " 1.8vh" }}
+          id="l"
+        />
+        <Handle
+          type="source"
+          position="right"
+          style={{ left: "11.5vw", top: " 2.2vh" }}
+          id="r"
+        />
+          </div>
+          </>
         );
       case "tact":
         return (
+          <>
           <div
             style={getItemStyles(initialOffset, currentOffset, 205, 65, "tact")}
           ></div>
+          <Handle
+          type="target"
+          position="left"
+          style={{ left: " -0.7vw", top: " 1.8vh" }}
+          id="l"
+        />
+        <Handle
+          type="source"
+          position="right"
+          style={{ left: "11.5vw", top: " 2.2vh" }}
+          id="r"
+        /></>
         );
       case "led":
         return (

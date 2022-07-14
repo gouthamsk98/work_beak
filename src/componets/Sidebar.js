@@ -13534,7 +13534,8 @@ export default (props) => {
               return;
           }
           break;
-      }
+      case "freedomCircuit":break;
+        }
     });
     let screenOffsetX = 0,
       screenOffsetY = 0;

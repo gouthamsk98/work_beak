@@ -82,6 +82,7 @@ class DaySelect extends Component {
             timer_ic={true}
             transistor={true}
             two_way_switch={true}
+            power={true}
             type={e}
           />
         );

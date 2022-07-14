@@ -55,13 +55,13 @@ const DnDFlow = (props) => {
               <div id={"beeperdndnode_" + _id} style={{}}></div>
               <Handle
                 type="target"
-                position="bottom"
+                position="left"
                 style={{ left: " -0.7vw", top: " 1.8vh" }}
                 id="l"
               />
               <Handle
                 type="source"
-                position="left"
+                position="right"
                 style={{ left: "11.5vw", top: " 2.2vh" }}
                 id="r"
               />
@@ -81,14 +81,14 @@ const DnDFlow = (props) => {
                 key={v4()}
               ></div>
               <Handle
-                type="target"
-                position="bottom"
+                type="left"
+                position="left"
                 style={{ left: " 0.3vw", top: " 4.6vh" }}
                 id="l"
               />
               <Handle
                 type="source"
-                position="left"
+                position="right"
                 style={{ left: "10.5vw", top: " 5.2vh" }}
                 id="r"
               />
@@ -108,13 +108,13 @@ const DnDFlow = (props) => {
               ></div>
               <Handle
                 type="target"
-                position="bottom"
+                position="left"
                 style={{ left: " 0.3vw", top: " 4.6vh" }}
                 id="l"
               />
               <Handle
                 type="source"
-                position="left"
+                position="right"
                 style={{ left: "10.5vw", top: " 5.2vh" }}
                 id="r"
               />
@@ -134,25 +134,25 @@ const DnDFlow = (props) => {
               ></div>
               <Handle
                 type="target"
-                position="bottom"
+                position="left"
                 style={{ left: " 0.3vw", top: " 4.6vh" }}
                 id="l1"
               />
               <Handle
                 type="source"
-                position="left"
+                position="right"
                 style={{ left: "10.5vw", top: " 5.2vh" }}
                 id="r1"
               />
               <Handle
                 type="source"
-                position="bottom"
+                position="right"
                 style={{ left: " 0.3vw", top: " 4.6vh" }}
                 id="l2"
               />
               <Handle
                 type="target"
-                position="left"
+                position="right"
                 style={{ left: "10.5vw", top: " 5.2vh" }}
                 id="r2"
               />
@@ -198,97 +198,97 @@ const DnDFlow = (props) => {
               ></div>
               <Handle
                 type="source"
-                position="bottom"
+                position="left"
                 style={{ left: "2.5vw", top: " 3.99vh" }}
                 id={"l1" + "dndnode_" + _id}
               />
               <Handle
                 type="source"
-                position="bottom"
+                position="left"
                 style={{ left: "2.5vw", top: " 5.79vh" }}
                 id={"l2" + "dndnode_" + _id}
               />
               <Handle
                 type="source"
-                position="bottom"
+                position="left"
                 style={{ left: "2.5vw", top: " 7.5vh" }}
                 id={"l3" + "dndnode_" + _id}
               />
               <Handle
                 type="source"
-                position="bottom"
+                position="left"
                 style={{ left: "2.5vw", top: " 9.3vh" }}
                 id={"l4" + "dndnode_" + _id}
               />
               <Handle
                 type="target"
-                position="bottom"
+                position="left"
                 style={{ left: "2.5vw", top: " 3.99vh" }}
                 id={"l1.t" + "dndnode_" + _id}
               />
               <Handle
                 type="target"
-                position="bottom"
+                position="left"
                 style={{ left: "2.5vw", top: " 5.79vh" }}
                 id={"l2.t" + "dndnode_" + _id}
               />
               <Handle
                 type="target"
-                position="bottom"
+                position="left"
                 style={{ left: "2.5vw", top: " 7.5vh" }}
                 id={"l3.t" + "dndnode_" + _id}
               />
               <Handle
                 type="target"
-                position="bottom"
+                position="left"
                 style={{ left: "2.5vw", top: " 9.3vh" }}
                 id={"l4.t" + "dndnode_" + _id}
               />
               <Handle
                 type="source"
-                position="bottom"
+                position="right"
                 style={{ left: "9.28vw", top: " 3.99vh" }}
                 id={"r1" + "dndnode_" + _id}
               />
               <Handle
                 type="source"
-                position="bottom"
+                position="right"
                 style={{ left: "9.28vw", top: " 5.79vh" }}
                 id={"r2" + "dndnode_" + _id}
               />
               <Handle
                 type="source"
-                position="bottom"
+                position="right"
                 style={{ left: "9.28vw", top: " 7.5vh" }}
                 id={"r3" + "dndnode_" + _id}
               />{" "}
               <Handle
                 type="source"
-                position="bottom"
+                position="right"
                 style={{ left: "9.28vw", top: " 9.3vh" }}
                 id={"r4" + "dndnode_" + _id}
               />
               <Handle
                 type="target"
-                position="bottom"
+                position="right"
                 style={{ left: "9.28vw", top: " 3.99vh" }}
                 id={"r1.t" + "dndnode_" + _id}
               />
               <Handle
                 type="target"
-                position="bottom"
+                position="right"
                 style={{ left: "9.28vw", top: " 5.79vh" }}
                 id={"r2.t" + "dndnode_" + _id}
               />
               <Handle
                 type="target"
-                position="bottom"
+                position="right"
                 style={{ left: "9.28vw", top: " 7.5vh" }}
                 id={"r3.t" + "dndnode_" + _id}
               />{" "}
               <Handle
                 type="target"
-                position="bottom"
+                position="right"
                 style={{ left: "9.28vw", top: " 9.3vh" }}
                 id={"r4.t" + "dndnode_" + _id}
               />
@@ -332,13 +332,13 @@ const DnDFlow = (props) => {
               </div>
               <Handle
                 type="target"
-                position="bottom"
+                position="left"
                 style={{ left: " 0.3vw", top: " 4.6vh" }}
                 id="l"
               />
               <Handle
                 type="source"
-                position="left"
+                position="right"
                 style={{ left: "10.5vw", top: " 5.2vh" }}
                 id="r"
               />
@@ -359,13 +359,13 @@ const DnDFlow = (props) => {
               <div id={"leddndnode_" + _id} style={{}}></div>
               <Handle
                 type="target"
-                position="bottom"
+                position="left"
                 style={{ left: " 0.3vw", top: " 4.6vh" }}
                 id="l"
               />
               <Handle
                 type="source"
-                position="left"
+                position="right"
                 style={{ left: "10.5vw", top: " 5.2vh" }}
                 id="r"
               />
@@ -408,19 +408,19 @@ const DnDFlow = (props) => {
               </div>
               <Handle
                 type="source"
-                position="bottom"
+                position="left"
                 style={{ left: " -0.2vw", top: " 6.6vh" }}
                 id="l"
               />
               <Handle
                 type="target"
-                position="left"
+                position="right"
                 style={{ left: "11.3vw", top: " 4.1vh" }}
                 id="r1"
               />
               <Handle
                 type="target"
-                position="left"
+                position="right"
                 style={{ left: "11.3vw", top: " 9.9vh" }}
                 id="r2"
               />
@@ -440,25 +440,25 @@ const DnDFlow = (props) => {
               ></div>
               <Handle
                 type="source"
-                position="bottom"
+                position="right"
                 style={{ left: "8.7vw", top: " 5.5vh" }}
                 id="r1"
               />
               <Handle
                 type="target"
-                position="left"
+                position="right"
                 style={{ left: "8.5vw", top: " 8.9vh" }}
                 id="r2"
               />
               <Handle
                 type="target"
-                position="bottom"
+                position="right"
                 style={{ left: "8.7vw", top: " 10.4vh" }}
                 id="r3"
               />
               <Handle
                 type="source"
-                position="left"
+                position="right"
                 style={{ left: "8.5vw", top: " 4.2vh" }}
                 id="r4"
               />
@@ -478,13 +478,13 @@ const DnDFlow = (props) => {
               ></div>
               <Handle
                 type="target"
-                position="bottom"
+                position="left"
                 style={{ left: " 0.3vw", top: " 4.6vh" }}
                 id="l"
               />
               <Handle
                 type="source"
-                position="left"
+                position="right"
                 style={{ left: "10.5vw", top: " 5.2vh" }}
                 id="r"
               />
@@ -504,13 +504,13 @@ const DnDFlow = (props) => {
               ></div>
               <Handle
                 type="target"
-                position="bottom"
+                position="left"
                 style={{ left: " 0.3vw", top: " 4.6vh" }}
                 id="l"
               />
               <Handle
                 type="source"
-                position="left"
+                position="right"
                 style={{ left: "10.5vw", top: " 5.2vh" }}
                 id="r"
               />
@@ -530,13 +530,13 @@ const DnDFlow = (props) => {
               ></div>
               <Handle
                 type="target"
-                position="bottom"
+                position="left"
                 style={{ left: " 0.3vw", top: " 4.6vh" }}
                 id="l"
               />
               <Handle
                 type="source"
-                position="left"
+                position="right"
                 style={{ left: "10.5vw", top: " 5.2vh" }}
                 id="r"
               />
@@ -570,19 +570,19 @@ const DnDFlow = (props) => {
               ></div>
               <Handle
                 type="target"
-                position="bottom"
+                position="left"
                 style={{ left: " 0.4vw", top: " 6.7vh" }}
                 id="l"
               />
               <Handle
                 type="target"
-                position="left"
+                position="right"
                 style={{ left: "10.1vw", top: " 5.7vh" }}
                 id="r.t"
               />
               <Handle
                 type="source"
-                position="left"
+                position="right"
                 style={{ left: "10.1vw", top: " 8.5vh" }}
                 id="r"
               />
@@ -602,19 +602,19 @@ const DnDFlow = (props) => {
               ></div>
               <Handle
                 type="target"
-                position="bottom"
+                position="left"
                 style={{ left: " 0.4vw", top: " 7.2vh" }}
                 id="l"
               />
               <Handle
                 type="source"
-                position="left"
+                position="right"
                 style={{ left: "11.6vw", top: " 5.533vh" }}
                 id="r"
               />
               <Handle
                 type="source"
-                position="left"
+                position="right"
                 style={{ left: "11.6vw", top: " 9.9vh" }}
                 id="r"
               />
@@ -640,13 +640,13 @@ const DnDFlow = (props) => {
               <div id={"beeperdndnode_" + _id} style={{}}></div>
               <Handle
                 type="target"
-                position="bottom"
+                position="left"
                 style={{ left: " -0.7vw", top: " 1.8vh" }}
                 id="l"
               />
               <Handle
                 type="source"
-                position="left"
+                position="right"
                 style={{ left: "11.5vw", top: " 2.2vh" }}
                 id="r"
               />
@@ -667,13 +667,13 @@ const DnDFlow = (props) => {
               ></div>
               <Handle
                 type="target"
-                position="bottom"
+                position="left"
                 style={{ left: " 0.3vw", top: " 4.6vh" }}
                 id="l"
               />
               <Handle
                 type="source"
-                position="left"
+                position="right"
                 style={{ left: "10.5vw", top: " 5.2vh" }}
                 id="r"
               />
@@ -693,13 +693,13 @@ const DnDFlow = (props) => {
               ></div>
               <Handle
                 type="target"
-                position="bottom"
+                position="left"
                 style={{ left: " 0.3vw", top: " 4.6vh" }}
                 id="l"
               />
               <Handle
                 type="source"
-                position="left"
+                position="right"
                 style={{ left: "10.5vw", top: " 5.2vh" }}
                 id="r"
               />
@@ -719,25 +719,25 @@ const DnDFlow = (props) => {
               ></div>
               <Handle
                 type="target"
-                position="bottom"
+                position="left"
                 style={{ left: " 0.3vw", top: " 4.6vh" }}
                 id="l1"
               />
               <Handle
                 type="source"
-                position="left"
+                position="right"
                 style={{ left: "10.5vw", top: " 5.2vh" }}
                 id="r1"
               />
               <Handle
                 type="source"
-                position="bottom"
+                position="left"
                 style={{ left: " 0.3vw", top: " 4.6vh" }}
                 id="l2"
               />
               <Handle
                 type="target"
-                position="left"
+                position="right"
                 style={{ left: "10.5vw", top: " 5.2vh" }}
                 id="r2"
               />
@@ -783,97 +783,97 @@ const DnDFlow = (props) => {
               ></div>
               <Handle
                 type="source"
-                position="bottom"
+                position="left"
                 style={{ left: "2.5vw", top: " 3.99vh" }}
                 id="l1"
               />
               <Handle
                 type="source"
-                position="bottom"
+                position="left"
                 style={{ left: "2.5vw", top: " 5.79vh" }}
                 id="l2"
               />
               <Handle
                 type="source"
-                position="bottom"
+                position="left"
                 style={{ left: "2.5vw", top: " 7.5vh" }}
                 id="l3"
               />
               <Handle
                 type="source"
-                position="bottom"
+                position="left"
                 style={{ left: "2.5vw", top: " 9.3vh" }}
                 id="l4"
               />
               <Handle
                 type="target"
-                position="bottom"
+                position="left"
                 style={{ left: "2.5vw", top: " 3.99vh" }}
                 id="l1.t"
               />
               <Handle
                 type="target"
-                position="bottom"
+                position="left"
                 style={{ left: "2.5vw", top: " 5.79vh" }}
                 id="l2.t"
               />
               <Handle
                 type="target"
-                position="bottom"
+                position="left"
                 style={{ left: "2.5vw", top: " 7.5vh" }}
                 id="l3.t"
               />
               <Handle
                 type="target"
-                position="bottom"
+                position="left"
                 style={{ left: "2.5vw", top: " 9.3vh" }}
                 id="l4.t"
               />
               <Handle
                 type="source"
-                position="bottom"
+                position="right"
                 style={{ left: "9.28vw", top: " 3.99vh" }}
                 id="r1"
               />
               <Handle
                 type="source"
-                position="bottom"
+                position="right"
                 style={{ left: "9.28vw", top: " 5.79vh" }}
                 id="r2"
               />
               <Handle
                 type="source"
-                position="bottom"
+                position="right"
                 style={{ left: "9.28vw", top: " 7.5vh" }}
                 id="r3"
               />{" "}
               <Handle
                 type="source"
-                position="bottom"
+                position="right"
                 style={{ left: "9.28vw", top: " 9.3vh" }}
                 id="r4"
               />
               <Handle
                 type="target"
-                position="bottom"
+                position="right"
                 style={{ left: "9.28vw", top: " 3.99vh" }}
                 id="r1.t"
               />
               <Handle
                 type="target"
-                position="bottom"
+                position="right"
                 style={{ left: "9.28vw", top: " 5.79vh" }}
                 id="r2.t"
               />
               <Handle
                 type="target"
-                position="bottom"
+                position="right"
                 style={{ left: "9.28vw", top: " 7.5vh" }}
                 id="r3.t"
               />{" "}
               <Handle
                 type="target"
-                position="bottom"
+                position="right"
                 style={{ left: "9.28vw", top: " 9.3vh" }}
                 id="r4.t"
               />
@@ -917,13 +917,13 @@ const DnDFlow = (props) => {
               </div>
               <Handle
                 type="target"
-                position="bottom"
+                position="left"
                 style={{ left: " 0.3vw", top: " 4.6vh" }}
                 id="l"
               />
               <Handle
                 type="source"
-                position="left"
+                position="right"
                 style={{ left: "10.5vw", top: " 5.2vh" }}
                 id="r"
               />
@@ -944,13 +944,13 @@ const DnDFlow = (props) => {
               <div id={"leddndnode_" + _id} style={{}}></div>
               <Handle
                 type="target"
-                position="bottom"
+                position="left"
                 style={{ left: " 0.3vw", top: " 4.6vh" }}
                 id="l"
               />
               <Handle
                 type="source"
-                position="left"
+                position="right"
                 style={{ left: "10.5vw", top: " 5.2vh" }}
                 id="r"
               />
@@ -993,19 +993,19 @@ const DnDFlow = (props) => {
               </div>
               <Handle
                 type="source"
-                position="bottom"
+                position="left"
                 style={{ left: " -0.2vw", top: " 6.6vh" }}
                 id="l"
               />
               <Handle
                 type="target"
-                position="left"
+                position="right"
                 style={{ left: "11.3vw", top: " 4.1vh" }}
                 id="r1"
               />
               <Handle
                 type="target"
-                position="left"
+                position="right"
                 style={{ left: "11.3vw", top: " 9.9vh" }}
                 id="r2"
               />
@@ -1025,25 +1025,25 @@ const DnDFlow = (props) => {
               ></div>
               <Handle
                 type="source"
-                position="bottom"
+                position="right"
                 style={{ left: "8.7vw", top: " 5.5vh" }}
                 id="r1"
               />
               <Handle
                 type="target"
-                position="left"
+                position="right"
                 style={{ left: "8.5vw", top: " 8.9vh" }}
                 id="r2"
               />
               <Handle
                 type="target"
-                position="bottom"
+                position="right"
                 style={{ left: "8.7vw", top: " 10.4vh" }}
                 id="r3"
               />
               <Handle
                 type="source"
-                position="left"
+                position="right"
                 style={{ left: "8.5vw", top: " 4.2vh" }}
                 id="r4"
               />
@@ -1063,13 +1063,13 @@ const DnDFlow = (props) => {
               ></div>
               <Handle
                 type="target"
-                position="bottom"
+                position="left"
                 style={{ left: " 0.3vw", top: " 4.6vh" }}
                 id="l"
               />
               <Handle
                 type="source"
-                position="left"
+                position="right"
                 style={{ left: "10.5vw", top: " 5.2vh" }}
                 id="r"
               />
@@ -1089,13 +1089,13 @@ const DnDFlow = (props) => {
               ></div>
               <Handle
                 type="target"
-                position="bottom"
+                position="left"
                 style={{ left: " 0.3vw", top: " 4.6vh" }}
                 id="l"
               />
               <Handle
                 type="source"
-                position="left"
+                position="right"
                 style={{ left: "10.5vw", top: " 5.2vh" }}
                 id="r"
               />
@@ -1115,13 +1115,13 @@ const DnDFlow = (props) => {
               ></div>
               <Handle
                 type="target"
-                position="bottom"
+                position="left"
                 style={{ left: " 0.3vw", top: " 4.6vh" }}
                 id="l"
               />
               <Handle
                 type="source"
-                position="left"
+                position="right"
                 style={{ left: "10.5vw", top: " 5.2vh" }}
                 id="r"
               />
@@ -1155,19 +1155,19 @@ const DnDFlow = (props) => {
               ></div>
               <Handle
                 type="target"
-                position="bottom"
+                position="left"
                 style={{ left: " 0.4vw", top: " 6.7vh" }}
                 id="l"
               />
               <Handle
                 type="target"
-                position="left"
+                position="right"
                 style={{ left: "10.1vw", top: " 5.7vh" }}
                 id="r.t"
               />
               <Handle
                 type="source"
-                position="left"
+                position="right"
                 style={{ left: "10.1vw", top: " 8.5vh" }}
                 id="r"
               />
@@ -1187,19 +1187,19 @@ const DnDFlow = (props) => {
               ></div>
               <Handle
                 type="target"
-                position="bottom"
+                position="left"
                 style={{ left: " 0.4vw", top: " 7.2vh" }}
                 id="l"
               />
               <Handle
                 type="source"
-                position="left"
+                position="right"
                 style={{ left: "11.6vw", top: " 5.533vh" }}
                 id="r"
               />
               <Handle
                 type="source"
-                position="left"
+                position="right"
                 style={{ left: "11.6vw", top: " 9.9vh" }}
                 id="r"
               />
@@ -8067,6 +8067,7 @@ const DnDFlow = (props) => {
   return (
     <div className="dndflow">
       <ReactFlowProvider>
+        <Sidebar send={props} />
         <div className="reactflow-wrapper" ref={reactFlowWrapper}>
           <ReactFlow
             nodes={nodes}
@@ -8086,7 +8087,7 @@ const DnDFlow = (props) => {
             onNodeDragStop={onNodeDragEnd}
             nodesDraggable={nodesDraggable}
             ref={drop}
-            zoomOnScroll={false}
+            zoomOnScroll={true}
             // onElementClick={onElementClick}
           >
             <canvas
@@ -8097,7 +8098,7 @@ const DnDFlow = (props) => {
             ></canvas>
           </ReactFlow>
         </div>
-        <Sidebar send={props} />
+
         <CustomDragLayer />
       </ReactFlowProvider>
     </div>

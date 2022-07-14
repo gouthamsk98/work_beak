@@ -55,6 +55,16 @@ export default (props) => {
       }
       console.log(globalpass, "getCoords");
     } catch (e) {}
+    globalpass.map((e) => {
+      nodes.map((ele) => {
+        if (ele.id === e.id) {
+          ele.position.x = e.x + 405 - 265;
+          ele.position.y = e.y - 3;
+
+          return;
+        }
+      });
+    });
   };
   let title, left, top;
   const [id, setId] = useState("nan");
@@ -319,6 +329,15 @@ export default (props) => {
               return;
             case "tact":
               if (e.data.specificElType === "power") {
+                console.log(
+                  "get",
+                  event.clientX - e.position.x,
+                  event.clientY - e.position.y,
+                  "event=",
+                  event.clientX,
+                  "pos",
+                  e.position.x
+                );
                 if (
                   event.clientX - e.position.x >= 266 - 5 &&
                   event.clientX - e.position.x < 266 + 5 &&
@@ -13535,7 +13554,7 @@ export default (props) => {
       var ctx = c.getContext("2d");
 
       if (flagI != -1) {
-        let mx = 320,
+        let mx = -80,
           my = 30;
 
         ctx.beginPath();
@@ -13546,7 +13565,7 @@ export default (props) => {
 
         if (event.clientX == 0 || event.clientY == 0) return;
         let cx =
-          Math.abs(event.clientX - 124 - (globalpass[flagI].x + xOffset) + 60) /
+          Math.abs(event.clientX - 500 - (globalpass[flagI].x + xOffset) + 60) /
           2;
         let cy =
           Math.abs(
@@ -13564,11 +13583,11 @@ export default (props) => {
         ctx.quadraticCurveTo(
           cx,
           cy,
-          event.clientX - 95,
+          event.clientX - 410,
           event.clientY - 125 + 13 - screenOffsetY
         );
         ctx.lineWidth = 4;
-        ctx.strokeStyle = "green";
+        ctx.strokeStyle = " #09B8A7";
         ctx.clearRect(0, 0, 1775, 884);
         ctx.stroke();
       }

@@ -36,7 +36,7 @@ function getItemStyles(initialOffset, currentOffset, xOffset, yOffset, type) {
 
   if (zoom != 1) zoom = zoom.zoom;
   //now edit
-  zoom = 2;
+  zoom = 1;
   let height = 12,
     width = 11;
 

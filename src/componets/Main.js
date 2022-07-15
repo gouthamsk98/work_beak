@@ -142,7 +142,6 @@ const DnDFlow = (props) => {
                 style={{ left: "10.5vw", top: " 5.2vh" }}
                 id="r"
               />
-              
             </>
           );
         }
@@ -183,7 +182,7 @@ const DnDFlow = (props) => {
                 id="image-render"
                 key={v4()}
               ></div>
-              
+
               <Handle
                 type="target"
                 position="left"
@@ -232,7 +231,7 @@ const DnDFlow = (props) => {
                 style={{ left: "9.28vw", top: " 9.3vh" }}
                 id="r4"
               />
-                        </>
+            </>
           );
         }
         if (type === "ldr") {
@@ -560,8 +559,8 @@ const DnDFlow = (props) => {
               />
             </>
           );
-        }  
-      break;
+        }
+        break;
       case "capacitorCircuit":
       case "resistorCircuit":
       case "parallelCircuit":
@@ -1824,7 +1823,7 @@ const DnDFlow = (props) => {
   }, [rangeVal]);
 
   const onConnect = async (params, event) => {
-    console.log(params,event,"EVEEEEE");
+    console.log(params, event, "EVEEEEE");
     var index1 = await edge.findIndex(
       (e) =>
         e.source === params.source && e.sourceHandle === params.sourceHandle
@@ -1894,32 +1893,37 @@ const DnDFlow = (props) => {
   //get cordinate while zooming
   function getCoords(elem) {
     // crossbrowser version
-    let handle=[]
+    let handle = [];
     for (let i = 0; i < elem.childNodes.length; i++) {
-    if(elem.childNodes[i].className.includes("react-flow__handle")&&!elem.childNodes[i].className.includes("react-flow__handle-top")){
-      console.log("eve",elem.childNodes[i].dataset.handleid)
-      let handle_elem=elem.childNodes[i]
-      var box = handle_elem.getBoundingClientRect();
+      if (
+        elem.childNodes[i].className.includes("react-flow__handle") &&
+        !elem.childNodes[i].className.includes("react-flow__handle-top")
+      ) {
+        console.log("eve", elem.childNodes[i].dataset.handleid);
+        let handle_elem = elem.childNodes[i];
+        var box = handle_elem.getBoundingClientRect();
 
-      var body = document.body;
-      var docEl = document.documentElement;
-  
-      var scrollTop = window.pageYOffset || docEl.scrollTop || body.scrollTop;
-      var scrollLeft = window.pageXOffset || docEl.scrollLeft || body.scrollLeft;
-  
-      var clientTop = docEl.clientTop || body.clientTop || 0;
-      var clientLeft = docEl.clientLeft || body.clientLeft || 0;
-  
-      var top = box.top + scrollTop - clientTop;
-      var left = box.left + scrollLeft - clientLeft;  
-      let temp={id:handle_elem.dataset.handleid,
-        x: Math.round(left),
-        y: Math.round(top)
+        var body = document.body;
+        var docEl = document.documentElement;
+
+        var scrollTop = window.pageYOffset || docEl.scrollTop || body.scrollTop;
+        var scrollLeft =
+          window.pageXOffset || docEl.scrollLeft || body.scrollLeft;
+
+        var clientTop = docEl.clientTop || body.clientTop || 0;
+        var clientLeft = docEl.clientLeft || body.clientLeft || 0;
+
+        var top = box.top + scrollTop - clientTop;
+        var left = box.left + scrollLeft - clientLeft;
+        let temp = {
+          id: handle_elem.dataset.handleid,
+          x: Math.round(left),
+          y: Math.round(top),
+        };
+        handle.push(temp);
       }
-      handle.push(temp)
+      //if(ele.childNodes[i].class)
     }
-  //if(ele.childNodes[i].class)
-  }
     var box = elem.getBoundingClientRect();
 
     var body = document.body;
@@ -1938,10 +1942,10 @@ const DnDFlow = (props) => {
       x: Math.round(left) - 145,
       y: Math.round(top) - 96,
       id: elem.dataset.id,
-      handle:handle
+      handle: handle,
     };
   }
-  
+
   const onDragOver = useCallback((event) => {
     event.preventDefault();
     event.dataTransfer.dropEffect = "move";
@@ -1977,47 +1981,60 @@ const DnDFlow = (props) => {
       const connect_line = JSON.parse(
         sessionStorage.getItem("application/beak/connect")
       );
-      if (connect_line.index != -1) {
-        let connect = {
-          source: connect_line.source,
-          sourceHandle: connect_line.sourceHandle,
-          target: `${newNode.id}`,
-          targetHandle: connect_line.targetHandle,
-        };
-        if (connect_line.revert) {
-          if (connect_line.targetHandle.includes(".t")) {
-            connect = {
-              source: `${newNode.id}`,
-              sourceHandle: connect_line.sourceHandle,
-              target: connect_line.source,
-              targetHandle: connect_line.targetHandle,
-            };
-          } else if (connect_line.sourceHandle.includes("dndnode")) {
-            connect = {
-              source: `${newNode.id}`,
-              sourceHandle: connect_line.sourceHandle,
-              target: connect_line.source,
-              targetHandle: connect_line.targetHandle,
-            };
-          } else {
-            connect = {
-              source: connect_line.source,
-              sourceHandle: connect_line.targetHandle,
-              target: `${newNode.id}`,
-              targetHandle: connect_line.sourceHandle,
-            };
+      switch (props.type) {
+        case "freedomCircuit":
+          if (connect_line != null || connect_line != undefined) {
+            if (connect_line.source == null)
+              connect_line.source = `${newNode.id}`;
+            else if (connect_line.target == null)
+              connect_line.target = `${newNode.id}`;
+            await onConnect(connect_line);
           }
-        }
-        if (connect_line.flag == "pot") {
-          connect = {
-            source: `${newNode.id}`,
-            sourceHandle: connect_line.sourceHandle,
-            target: connect_line.source,
-            targetHandle: connect_line.targetHandle,
-          };
-        }
-        console.log("planegsk", connect_line, newNode.id, connect);
-        await onConnect(connect);
+
+          break;
+        default:
+          if (connect_line.index != -1) {
+            let connect = {
+              source: connect_line.source,
+              sourceHandle: connect_line.sourceHandle,
+              target: `${newNode.id}`,
+              targetHandle: connect_line.targetHandle,
+            };
+            if (connect_line.revert) {
+              if (connect_line.targetHandle.includes(".t")) {
+                connect = {
+                  source: `${newNode.id}`,
+                  sourceHandle: connect_line.sourceHandle,
+                  target: connect_line.source,
+                  targetHandle: connect_line.targetHandle,
+                };
+              } else if (connect_line.sourceHandle.includes("dndnode")) {
+                connect = {
+                  source: `${newNode.id}`,
+                  sourceHandle: connect_line.sourceHandle,
+                  target: connect_line.source,
+                  targetHandle: connect_line.targetHandle,
+                };
+              } else {
+                connect = {
+                  source: connect_line.source,
+                  sourceHandle: connect_line.targetHandle,
+                  target: `${newNode.id}`,
+                  targetHandle: connect_line.sourceHandle,
+                };
+              }
+            }
+            if (connect_line.flag == "pot") {
+              connect = {
+                source: `${newNode.id}`,
+                sourceHandle: connect_line.sourceHandle,
+                target: connect_line.source,
+                targetHandle: connect_line.targetHandle,
+              };
+            }
+            console.log("planegsk", connect_line, newNode.id, connect);
+            await onConnect(connect);
+          }
       }
     },
     [reactFlowInstance]
@@ -2030,3615 +2047,848 @@ const DnDFlow = (props) => {
       }
     }, 1500);
   };
-  let node_cor= []
-  const current_node_cord=(ele)=>{
+  let node_cor = [];
+  const current_node_cord = (ele) => {
     // console.log("eve",ele.path.length,ele.path[1])
-    let han
-for(let i =0;i<ele.path.length;i++){
-  let handle=[]
-  if(ele.path[i].className.includes("react-flow__node react-flow__node-output nopan selected selectable")){
-    han=ele.path[i].childNodes
-    //console.log("eve",han.length)
-    for(let j=0;j<han.length;j++){
-   
-      if(han[j].className.includes("react-flow__handle")&&!han[j].className.includes("react-flow__handle-top")){
-       
-        let handle_elem=han[j]
-        var box = handle_elem.getBoundingClientRect();
-  
-        var body = document.body;
-        var docEl = document.documentElement;
-    
-        var scrollTop = window.pageYOffset || docEl.scrollTop || body.scrollTop;
-        var scrollLeft = window.pageXOffset || docEl.scrollLeft || body.scrollLeft;
-    
-        var clientTop = docEl.clientTop || body.clientTop || 0;
-        var clientLeft = docEl.clientLeft || body.clientLeft || 0;
-    
-        var top = box.top + scrollTop - clientTop;
-        var left = box.left + scrollLeft - clientLeft;  
-        let temp={id:handle_elem.dataset.handleid,
-          x: Math.round(left),
-          y: Math.round(top)
+    let han;
+    for (let i = 0; i < ele.path.length; i++) {
+      let handle = [];
+      if (
+        ele.path[i].className.includes(
+          "react-flow__node react-flow__node-output nopan selected selectable"
+        )
+      ) {
+        han = ele.path[i].childNodes;
+        //console.log("eve",han.length)
+        for (let j = 0; j < han.length; j++) {
+          if (
+            han[j].className.includes("react-flow__handle") &&
+            !han[j].className.includes("react-flow__handle-top")
+          ) {
+            let handle_elem = han[j];
+            var box = handle_elem.getBoundingClientRect();
+
+            var body = document.body;
+            var docEl = document.documentElement;
+
+            var scrollTop =
+              window.pageYOffset || docEl.scrollTop || body.scrollTop;
+            var scrollLeft =
+              window.pageXOffset || docEl.scrollLeft || body.scrollLeft;
+
+            var clientTop = docEl.clientTop || body.clientTop || 0;
+            var clientLeft = docEl.clientLeft || body.clientLeft || 0;
+
+            var top = box.top + scrollTop - clientTop;
+            var left = box.left + scrollLeft - clientLeft;
+            let temp = {
+              id: handle_elem.dataset.handleid,
+              x: Math.round(left),
+              y: Math.round(top),
+            };
+            handle.push(temp);
+          }
         }
-        handle.push(temp)
-    }}
-    return handle
-  }
-}
-  }
+        return handle;
+      }
+    }
+  };
   const onNodeDrag = async (event, node) => {
     switch (props.type) {
       case "freedomCircuit":
-        
-       
-        node_cor.map(async(e)=>{
+        node_cor.map(async (e) => {
           //console.log("event XX",e.handle[3].x,event.path[1])
-       ///console.log("eve###################",node_cor[0].handle, current_node_cord(event))
-       let cur_cord= await current_node_cord(event)
-       if(e.id!=node.id){
-     
-        e.handle.map(cord=>{
-          
-          cur_cord.map(async(current)=>{
-            console.log("event cord XX",cord.x,current.x)
-          if(cord.x-current.x>=-10&&cord.x-current.x<=10
-          &&cord.y-current.y>=-10&&cord.y-current.y<=10){
-            console.log("eve%%%%%%%%","source=",cord.id,e.id,"target",current.id,node.id)
-            let params = {
-              source: e.id,
-              sourceHandle:cord.id ,
-              target: node.id,
-              targetHandle: current.id,
-            };
-            if(params.sourceHandle.includes("l")){
-              params = {
-                source: node.id,
-                sourceHandle: current.id,
-                target: e.id,
-                targetHandle:cord.id ,
-              };
-            }
-            await onConnect(params)
-            return
+          ///console.log("eve###################",node_cor[0].handle, current_node_cord(event))
+          let cur_cord = await current_node_cord(event);
+          if (e.id != node.id) {
+            e.handle.map((cord) => {
+              cur_cord.map(async (current) => {
+                console.log("event cord XX", cord.x, current.x);
+                if (
+                  cord.x - current.x >= -10 &&
+                  cord.x - current.x <= 10 &&
+                  cord.y - current.y >= -10 &&
+                  cord.y - current.y <= 10
+                ) {
+                  console.log(
+                    "eve%%%%%%%%",
+                    "source=",
+                    cord.id,
+                    e.id,
+                    "target",
+                    current.id,
+                    node.id
+                  );
+                  let params = {
+                    source: e.id,
+                    sourceHandle: cord.id,
+                    target: node.id,
+                    targetHandle: current.id,
+                  };
+                  if (params.sourceHandle.includes("l")) {
+                    params = {
+                      source: node.id,
+                      sourceHandle: current.id,
+                      target: e.id,
+                      targetHandle: cord.id,
+                    };
+                  }
+                  await onConnect(params);
+                  return;
+                }
+              });
+              //   console.log(cord.x-cur_cord.x,"ele")
+            });
           }
-          })
-        //   console.log(cord.x-cur_cord.x,"ele")
-     
-        }) 
-       }
-
-        })
+        });
         break;
-      default: nodes.map(async (e) => {
-        if (e.id !== node.id) {
-          let offsetX = 0,
-            offsetY = 0;
-          let params = {
-            source: "",
-            sourceHandle: "",
-            target: "dndnode_1",
-            targetHandle: "",
-          };
-  
-          switch (e.data.specificElType) {
-            case "beeper":
-              switch (node.data.specificElType) {
-                case "beeper":
-                  offsetX = 18;
-                  offsetY = 28;
-                  break;
-                case "capacitor100":
-                case "diode":
-                case "ldr":
-                case "led":
-                case "res_100":
-                case "res_250":
-                case "capacitor1000":
-                case "led":
-                  offsetX = 0;
-                  offsetY = 0;
-                  break;
-                case "transistor":
-                  offsetX = -3;
-                  offsetY = -21;
-                  break;
-              }
-  
-              switch (props.type) {
-                case "parallelCircuit":
-                  offsetX = 0;
-                  offsetY = 0;
-                  if (e.data.specificElType === "beeper") {
-                    offsetX = -34;
-                    offsetY = -0;
-                  } else {
+      default:
+        nodes.map(async (e) => {
+          if (e.id !== node.id) {
+            let offsetX = 0,
+              offsetY = 0;
+            let params = {
+              source: "",
+              sourceHandle: "",
+              target: "dndnode_1",
+              targetHandle: "",
+            };
+
+            switch (e.data.specificElType) {
+              case "beeper":
+                switch (node.data.specificElType) {
+                  case "beeper":
+                    offsetX = 18;
+                    offsetY = 28;
+                    break;
+                  case "capacitor100":
+                  case "diode":
+                  case "ldr":
+                  case "led":
+                  case "res_100":
+                  case "res_250":
+                  case "capacitor1000":
+                  case "led":
                     offsetX = 0;
                     offsetY = 0;
-                  }
-                  console.log(
-                    "paramsBeeper",
-                    node.position.x - e.position.x,
-                    node.position.y - e.position.y
-                  );
-                  let index3 = nodes.find(
-                    (n) => n.data.specificElType === "junction"
-                  );
-                  let index1 = nodes.find(
-                    (n) =>
-                      n.data.specificElType === "junction" && n.id != index3.id
-                  );
-                  if (index3.id == node.id) {
-                    console.log("paramsBeeper");
-                    params = {
-                      source: `${node.id}`,
-                      sourceHandle: `l`,
-                      target: `${e.id}`,
-                      targetHandle: "l",
-                    };
-  
-                    if (
-                      node.position.x - e.position.x >= -63 - 5 &&
-                      node.position.x - e.position.x <= -63 + 5
-                    ) {
-                      params = {
-                        source: `${node.id}`,
-                        sourceHandle: `l`,
-                        target: `${e.id}`,
-                        targetHandle: "l",
-                      };
-                      if (
-                        node.position.y - e.position.y >= -21 - 5 &&
-                        node.position.y - e.position.y <= -21 + 5
-                      ) {
-                        params.sourceHandle = "l1" + node.id;
-                        if (
-                          edge.findIndex(
-                            (e) => e.targetHandle === "l1.t" + node.id
-                          ) === -1
-                        )
-                          await onConnect(params);
-                      } else if (
-                        node.position.y - e.position.y >= -40 - 5 &&
-                        node.position.y - e.position.y <= -40 + 5
-                      ) {
-                        params.sourceHandle = "l2" + node.id;
-                        if (
-                          edge.findIndex(
-                            (e) => e.targetHandle === "l2.t" + node.id
-                          ) === -1
-                        )
-                          await onConnect(params);
-                      } else if (
-                        node.position.y - e.position.y >= -57 - 5 &&
-                        node.position.y - e.position.y <= -57 + 5
-                      ) {
-                        params.sourceHandle = "l3" + node.id;
-                        if (
-                          edge.findIndex(
-                            (e) => e.targetHandle === "l3.t" + node.id
-                          ) === -1
-                        )
-                          await onConnect(params);
-                      } else if (
-                        node.position.y - e.position.y >= -75 - 5 &&
-                        node.position.y - e.position.y <= -75 + 5
-                      ) {
-                        params.sourceHandle = "l4" + node.id;
-                        if (
-                          edge.findIndex(
-                            (e) => e.targetHandle === "l4.t" + node.id
-                          ) === -1
-                        )
-                          await onConnect(params);
-                      }
-                    } else if (
-                      node.position.x - e.position.x >= -193 - 5 &&
-                      node.position.x - e.position.x <= -193 + 5
-                    ) {
-                      params = {
-                        source: `${node.id}`,
-                        sourceHandle: `l`,
-                        target: `${e.id}`,
-                        targetHandle: "l",
-                      };
-                      if (
-                        node.position.y - e.position.y >= -21 - 5 &&
-                        node.position.y - e.position.y <= -21 + 5
-                      ) {
-                        params.sourceHandle = "r1" + node.id;
-                        if (
-                          edge.findIndex(
-                            (e) => e.targetHandle === "r1.t" + node.id
-                          ) === -1
-                        )
-                          await onConnect(params);
-                      } else if (
-                        node.position.y - e.position.y >= -40 - 5 &&
-                        node.position.y - e.position.y <= -40 + 5
-                      ) {
-                        params.sourceHandle = "r2" + node.id;
-                        if (
-                          edge.findIndex(
-                            (e) => e.targetHandle === "r2.t" + node.id
-                          ) === -1
-                        )
-                          await onConnect(params);
-                      } else if (
-                        node.position.y - e.position.y >= -57 - 5 &&
-                        node.position.y - e.position.y <= -57 + 5
-                      ) {
-                        params.sourceHandle = "r3" + node.id;
-                        if (
-                          edge.findIndex(
-                            (e) => e.targetHandle === "r3.t" + node.id
-                          ) === -1
-                        )
-                          await onConnect(params);
-                      } else if (
-                        node.position.y - e.position.y >= -75 - 5 &&
-                        node.position.y - e.position.y <= -75 + 5
-                      ) {
-                        params.sourceHandle = "r4" + node.id;
-                        if (
-                          edge.findIndex(
-                            (e) => e.targetHandle === "r4.t" + node.id
-                          ) === -1
-                        )
-                          await onConnect(params);
-                      }
+                    break;
+                  case "transistor":
+                    offsetX = -3;
+                    offsetY = -21;
+                    break;
+                }
+
+                switch (props.type) {
+                  case "parallelCircuit":
+                    offsetX = 0;
+                    offsetY = 0;
+                    if (e.data.specificElType === "beeper") {
+                      offsetX = -34;
+                      offsetY = -0;
+                    } else {
+                      offsetX = 0;
+                      offsetY = 0;
                     }
-                  } else {
-                    params = {
-                      source: `${e.id}`,
-                      sourceHandle: `r`,
-                      target: `${node.id}`,
-                      targetHandle: "l",
-                    };
-                    if (
-                      node.position.x - e.position.x >= 179 - 5 &&
-                      node.position.x - e.position.x <= 179 + 5
-                    ) {
-                      if (
-                        node.position.y - e.position.y >= -21 - 5 &&
-                        node.position.y - e.position.y <= -21 + 5
-                      ) {
-                        params.targetHandle = "l1.t" + node.id;
-                        if (
-                          edge.findIndex(
-                            (e) => e.sourceHandle === "l1" + node.id
-                          ) === -1
-                        )
-                          await onConnect(params);
-                      } else if (
-                        node.position.y - e.position.y >= -40 - 5 &&
-                        node.position.y - e.position.y <= -40 + 5
-                      ) {
-                        params.targetHandle = "l2.t" + node.id;
-                        if (
-                          edge.findIndex(
-                            (e) => e.sourceHandle === "l2" + node.id
-                          ) === -1
-                        )
-                          await onConnect(params);
-                      } else if (
-                        node.position.y - e.position.y >= -57 - 5 &&
-                        node.position.y - e.position.y <= -57 + 5
-                      ) {
-                        params.targetHandle = "l3.t" + node.id;
-                        if (
-                          edge.findIndex(
-                            (e) => e.sourceHandle === "l3" + node.id
-                          ) === -1
-                        )
-                          await onConnect(params);
-                      } else if (
-                        node.position.y - e.position.y >= -75 - 5 &&
-                        node.position.y - e.position.y <= -75 + 5
-                      ) {
-                        params.targetHandle = "l4.t" + node.id;
-                        if (
-                          edge.findIndex(
-                            (e) => e.sourceHandle === "l4" + node.id
-                          ) === -1
-                        )
-                          await onConnect(params);
-                      }
-                    } else if (
-                      node.position.x - e.position.x >= 48 - 5 &&
-                      node.position.x - e.position.x <= 48 + 5
-                    ) {
-                      if (
-                        node.position.y - e.position.y >= -21 - 5 &&
-                        node.position.y - e.position.y <= -21 + 5
-                      ) {
-                        params.targetHandle = "r1.t" + node.id;
-                        if (
-                          edge.findIndex(
-                            (e) => e.sourceHandle === "r1" + node.id
-                          ) === -1
-                        )
-                          await onConnect(params);
-                      } else if (
-                        node.position.y - e.position.y >= -40 - 5 &&
-                        node.position.y - e.position.y <= -40 + 5
-                      ) {
-                        params.targetHandle = "r2.t" + node.id;
-                        if (
-                          edge.findIndex(
-                            (e) => e.sourceHandle === "r2" + node.id
-                          ) === -1
-                        )
-                          await onConnect(params);
-                      } else if (
-                        node.position.y - e.position.y >= -57 - 5 &&
-                        node.position.y - e.position.y <= -57 + 5
-                      ) {
-                        params.targetHandle = "r3.t" + node.id;
-                        if (
-                          edge.findIndex(
-                            (e) => e.sourceHandle === "r3" + node.id
-                          ) === -1
-                        )
-                          await onConnect(params);
-                      } else if (
-                        node.position.y - e.position.y >= -75 - 5 &&
-                        node.position.y - e.position.y <= -75 + 5
-                      ) {
-                        params.targetHandle = "r4.t" + node.id;
-                        if (
-                          edge.findIndex(
-                            (e) => e.sourceHandle === "r4" + node.id
-                          ) === -1
-                        )
-                          await onConnect(params);
-                      }
-                    }
-                  }
-  
-                  break;
-                case "capacitorCircuit": {
-                  if (node.data.specificElType === "tact") {
                     console.log(
-                      "gsk",
+                      "paramsBeeper",
                       node.position.x - e.position.x,
                       node.position.y - e.position.y
                     );
+                    let index3 = nodes.find(
+                      (n) => n.data.specificElType === "junction"
+                    );
+                    let index1 = nodes.find(
+                      (n) =>
+                        n.data.specificElType === "junction" &&
+                        n.id != index3.id
+                    );
+                    if (index3.id == node.id) {
+                      console.log("paramsBeeper");
+                      params = {
+                        source: `${node.id}`,
+                        sourceHandle: `l`,
+                        target: `${e.id}`,
+                        targetHandle: "l",
+                      };
+
+                      if (
+                        node.position.x - e.position.x >= -63 - 5 &&
+                        node.position.x - e.position.x <= -63 + 5
+                      ) {
+                        params = {
+                          source: `${node.id}`,
+                          sourceHandle: `l`,
+                          target: `${e.id}`,
+                          targetHandle: "l",
+                        };
+                        if (
+                          node.position.y - e.position.y >= -21 - 5 &&
+                          node.position.y - e.position.y <= -21 + 5
+                        ) {
+                          params.sourceHandle = "l1" + node.id;
+                          if (
+                            edge.findIndex(
+                              (e) => e.targetHandle === "l1.t" + node.id
+                            ) === -1
+                          )
+                            await onConnect(params);
+                        } else if (
+                          node.position.y - e.position.y >= -40 - 5 &&
+                          node.position.y - e.position.y <= -40 + 5
+                        ) {
+                          params.sourceHandle = "l2" + node.id;
+                          if (
+                            edge.findIndex(
+                              (e) => e.targetHandle === "l2.t" + node.id
+                            ) === -1
+                          )
+                            await onConnect(params);
+                        } else if (
+                          node.position.y - e.position.y >= -57 - 5 &&
+                          node.position.y - e.position.y <= -57 + 5
+                        ) {
+                          params.sourceHandle = "l3" + node.id;
+                          if (
+                            edge.findIndex(
+                              (e) => e.targetHandle === "l3.t" + node.id
+                            ) === -1
+                          )
+                            await onConnect(params);
+                        } else if (
+                          node.position.y - e.position.y >= -75 - 5 &&
+                          node.position.y - e.position.y <= -75 + 5
+                        ) {
+                          params.sourceHandle = "l4" + node.id;
+                          if (
+                            edge.findIndex(
+                              (e) => e.targetHandle === "l4.t" + node.id
+                            ) === -1
+                          )
+                            await onConnect(params);
+                        }
+                      } else if (
+                        node.position.x - e.position.x >= -193 - 5 &&
+                        node.position.x - e.position.x <= -193 + 5
+                      ) {
+                        params = {
+                          source: `${node.id}`,
+                          sourceHandle: `l`,
+                          target: `${e.id}`,
+                          targetHandle: "l",
+                        };
+                        if (
+                          node.position.y - e.position.y >= -21 - 5 &&
+                          node.position.y - e.position.y <= -21 + 5
+                        ) {
+                          params.sourceHandle = "r1" + node.id;
+                          if (
+                            edge.findIndex(
+                              (e) => e.targetHandle === "r1.t" + node.id
+                            ) === -1
+                          )
+                            await onConnect(params);
+                        } else if (
+                          node.position.y - e.position.y >= -40 - 5 &&
+                          node.position.y - e.position.y <= -40 + 5
+                        ) {
+                          params.sourceHandle = "r2" + node.id;
+                          if (
+                            edge.findIndex(
+                              (e) => e.targetHandle === "r2.t" + node.id
+                            ) === -1
+                          )
+                            await onConnect(params);
+                        } else if (
+                          node.position.y - e.position.y >= -57 - 5 &&
+                          node.position.y - e.position.y <= -57 + 5
+                        ) {
+                          params.sourceHandle = "r3" + node.id;
+                          if (
+                            edge.findIndex(
+                              (e) => e.targetHandle === "r3.t" + node.id
+                            ) === -1
+                          )
+                            await onConnect(params);
+                        } else if (
+                          node.position.y - e.position.y >= -75 - 5 &&
+                          node.position.y - e.position.y <= -75 + 5
+                        ) {
+                          params.sourceHandle = "r4" + node.id;
+                          if (
+                            edge.findIndex(
+                              (e) => e.targetHandle === "r4.t" + node.id
+                            ) === -1
+                          )
+                            await onConnect(params);
+                        }
+                      }
+                    } else {
+                      params = {
+                        source: `${e.id}`,
+                        sourceHandle: `r`,
+                        target: `${node.id}`,
+                        targetHandle: "l",
+                      };
+                      if (
+                        node.position.x - e.position.x >= 179 - 5 &&
+                        node.position.x - e.position.x <= 179 + 5
+                      ) {
+                        if (
+                          node.position.y - e.position.y >= -21 - 5 &&
+                          node.position.y - e.position.y <= -21 + 5
+                        ) {
+                          params.targetHandle = "l1.t" + node.id;
+                          if (
+                            edge.findIndex(
+                              (e) => e.sourceHandle === "l1" + node.id
+                            ) === -1
+                          )
+                            await onConnect(params);
+                        } else if (
+                          node.position.y - e.position.y >= -40 - 5 &&
+                          node.position.y - e.position.y <= -40 + 5
+                        ) {
+                          params.targetHandle = "l2.t" + node.id;
+                          if (
+                            edge.findIndex(
+                              (e) => e.sourceHandle === "l2" + node.id
+                            ) === -1
+                          )
+                            await onConnect(params);
+                        } else if (
+                          node.position.y - e.position.y >= -57 - 5 &&
+                          node.position.y - e.position.y <= -57 + 5
+                        ) {
+                          params.targetHandle = "l3.t" + node.id;
+                          if (
+                            edge.findIndex(
+                              (e) => e.sourceHandle === "l3" + node.id
+                            ) === -1
+                          )
+                            await onConnect(params);
+                        } else if (
+                          node.position.y - e.position.y >= -75 - 5 &&
+                          node.position.y - e.position.y <= -75 + 5
+                        ) {
+                          params.targetHandle = "l4.t" + node.id;
+                          if (
+                            edge.findIndex(
+                              (e) => e.sourceHandle === "l4" + node.id
+                            ) === -1
+                          )
+                            await onConnect(params);
+                        }
+                      } else if (
+                        node.position.x - e.position.x >= 48 - 5 &&
+                        node.position.x - e.position.x <= 48 + 5
+                      ) {
+                        if (
+                          node.position.y - e.position.y >= -21 - 5 &&
+                          node.position.y - e.position.y <= -21 + 5
+                        ) {
+                          params.targetHandle = "r1.t" + node.id;
+                          if (
+                            edge.findIndex(
+                              (e) => e.sourceHandle === "r1" + node.id
+                            ) === -1
+                          )
+                            await onConnect(params);
+                        } else if (
+                          node.position.y - e.position.y >= -40 - 5 &&
+                          node.position.y - e.position.y <= -40 + 5
+                        ) {
+                          params.targetHandle = "r2.t" + node.id;
+                          if (
+                            edge.findIndex(
+                              (e) => e.sourceHandle === "r2" + node.id
+                            ) === -1
+                          )
+                            await onConnect(params);
+                        } else if (
+                          node.position.y - e.position.y >= -57 - 5 &&
+                          node.position.y - e.position.y <= -57 + 5
+                        ) {
+                          params.targetHandle = "r3.t" + node.id;
+                          if (
+                            edge.findIndex(
+                              (e) => e.sourceHandle === "r3" + node.id
+                            ) === -1
+                          )
+                            await onConnect(params);
+                        } else if (
+                          node.position.y - e.position.y >= -75 - 5 &&
+                          node.position.y - e.position.y <= -75 + 5
+                        ) {
+                          params.targetHandle = "r4.t" + node.id;
+                          if (
+                            edge.findIndex(
+                              (e) => e.sourceHandle === "r4" + node.id
+                            ) === -1
+                          )
+                            await onConnect(params);
+                        }
+                      }
+                    }
+
+                    break;
+                  case "capacitorCircuit": {
+                    if (node.data.specificElType === "tact") {
+                      console.log(
+                        "gsk",
+                        node.position.x - e.position.x,
+                        node.position.y - e.position.y
+                      );
+                      if (
+                        node.position.x - e.position.x >= -221 - 5 &&
+                        node.position.x - e.position.x < -221 + 5 &&
+                        node.position.y - e.position.y >= -30 - 5 &&
+                        node.position.y - e.position.y < -30 + 5
+                      ) {
+                      }
+                    }
                     if (
                       node.position.x - e.position.x >= -221 - 5 &&
                       node.position.x - e.position.x < -221 + 5 &&
                       node.position.y - e.position.y >= -30 - 5 &&
                       node.position.y - e.position.y < -30 + 5
                     ) {
+                      console.log("paramsBeeperENTERTTTTTTTt");
+                      params = {
+                        source: `${node.id}`,
+                        sourceHandle: `r`,
+                        target: `${e.id}`,
+                        targetHandle: "l",
+                      };
+                      if (
+                        node.data.specificElType === "capacitor100" ||
+                        (node.data.specificElType === "capacitor1000" &&
+                          e.data.specificElType === "beeper")
+                      )
+                        await onConnect(params);
+                      if (node.data.specificElType == "tact")
+                        await onConnect(params);
                     }
+                    let offsetX = 0,
+                      offsetY = 0;
+                    if (e.data.specificElType === "beeper") {
+                      offsetX = -34;
+                      offsetY = -0;
+                    } else {
+                      offsetX = 0;
+                      offsetY = 0;
+                    }
+
+                    let index3 = nodes.find(
+                      (n) => n.data.specificElType === "junction"
+                    );
+                    let index1 = nodes.find(
+                      (n) =>
+                        n.data.specificElType === "junction" &&
+                        n.id != index3.id
+                    );
+                    if (index3.id == node.id) {
+                      console.log("paramsBeeper");
+                      params = {
+                        source: `${node.id}`,
+                        sourceHandle: `l`,
+                        target: `${e.id}`,
+                        targetHandle: "l",
+                      };
+
+                      if (
+                        node.position.x - e.position.x >= -63 - 5 &&
+                        node.position.x - e.position.x <= -63 + 5
+                      ) {
+                        params = {
+                          source: `${node.id}`,
+                          sourceHandle: `l`,
+                          target: `${e.id}`,
+                          targetHandle: "l",
+                        };
+                        if (
+                          node.position.y - e.position.y >= -21 - 5 &&
+                          node.position.y - e.position.y <= -21 + 5
+                        ) {
+                          params.sourceHandle = "l1" + node.id;
+                          if (
+                            edge.findIndex(
+                              (e) => e.targetHandle === "l1.t" + node.id
+                            ) === -1
+                          )
+                            await onConnect(params);
+                        } else if (
+                          node.position.y - e.position.y >= -40 - 5 &&
+                          node.position.y - e.position.y <= -40 + 5
+                        ) {
+                          params.sourceHandle = "l2" + node.id;
+                          if (
+                            edge.findIndex(
+                              (e) => e.targetHandle === "l2.t" + node.id
+                            ) === -1
+                          )
+                            await onConnect(params);
+                        } else if (
+                          node.position.y - e.position.y >= -57 - 5 &&
+                          node.position.y - e.position.y <= -57 + 5
+                        ) {
+                          params.sourceHandle = "l3" + node.id;
+                          if (
+                            edge.findIndex(
+                              (e) => e.targetHandle === "l3.t" + node.id
+                            ) === -1
+                          )
+                            await onConnect(params);
+                        } else if (
+                          node.position.y - e.position.y >= -75 - 5 &&
+                          node.position.y - e.position.y <= -75 + 5
+                        ) {
+                          params.sourceHandle = "l4" + node.id;
+                          if (
+                            edge.findIndex(
+                              (e) => e.targetHandle === "l4.t" + node.id
+                            ) === -1
+                          )
+                            await onConnect(params);
+                        }
+                      } else if (
+                        node.position.x - e.position.x >= -193 - 5 &&
+                        node.position.x - e.position.x <= -193 + 5
+                      ) {
+                        params = {
+                          source: `${node.id}`,
+                          sourceHandle: `l`,
+                          target: `${e.id}`,
+                          targetHandle: "l",
+                        };
+                        if (
+                          node.position.y - e.position.y >= -21 - 5 &&
+                          node.position.y - e.position.y <= -21 + 5
+                        ) {
+                          params.sourceHandle = "r1" + node.id;
+                          if (
+                            edge.findIndex(
+                              (e) => e.targetHandle === "r1.t" + node.id
+                            ) === -1
+                          )
+                            await onConnect(params);
+                        } else if (
+                          node.position.y - e.position.y >= -40 - 5 &&
+                          node.position.y - e.position.y <= -40 + 5
+                        ) {
+                          params.sourceHandle = "r2" + node.id;
+                          if (
+                            edge.findIndex(
+                              (e) => e.targetHandle === "r2.t" + node.id
+                            ) === -1
+                          )
+                            await onConnect(params);
+                        } else if (
+                          node.position.y - e.position.y >= -57 - 5 &&
+                          node.position.y - e.position.y <= -57 + 5
+                        ) {
+                          params.sourceHandle = "r3" + node.id;
+                          if (
+                            edge.findIndex(
+                              (e) => e.targetHandle === "r3.t" + node.id
+                            ) === -1
+                          )
+                            await onConnect(params);
+                        } else if (
+                          node.position.y - e.position.y >= -75 - 5 &&
+                          node.position.y - e.position.y <= -75 + 5
+                        ) {
+                          params.sourceHandle = "r4" + node.id;
+                          if (
+                            edge.findIndex(
+                              (e) => e.targetHandle === "r4.t" + node.id
+                            ) === -1
+                          )
+                            await onConnect(params);
+                        }
+                      }
+                    } else {
+                      params = {
+                        source: `${e.id}`,
+                        sourceHandle: `r`,
+                        target: `${node.id}`,
+                        targetHandle: "l",
+                      };
+                      if (
+                        node.position.x - e.position.x >= 179 - 5 &&
+                        node.position.x - e.position.x <= 179 + 5
+                      ) {
+                        if (
+                          node.position.y - e.position.y >= -21 - 5 &&
+                          node.position.y - e.position.y <= -21 + 5
+                        ) {
+                          params.targetHandle = "l1.t" + node.id;
+                          if (
+                            edge.findIndex(
+                              (e) => e.sourceHandle === "l1" + node.id
+                            ) === -1
+                          )
+                            await onConnect(params);
+                        } else if (
+                          node.position.y - e.position.y >= -40 - 5 &&
+                          node.position.y - e.position.y <= -40 + 5
+                        ) {
+                          params.targetHandle = "l2.t" + node.id;
+                          if (
+                            edge.findIndex(
+                              (e) => e.sourceHandle === "l2" + node.id
+                            ) === -1
+                          )
+                            await onConnect(params);
+                        } else if (
+                          node.position.y - e.position.y >= -57 - 5 &&
+                          node.position.y - e.position.y <= -57 + 5
+                        ) {
+                          params.targetHandle = "l3.t" + node.id;
+                          if (
+                            edge.findIndex(
+                              (e) => e.sourceHandle === "l3" + node.id
+                            ) === -1
+                          )
+                            await onConnect(params);
+                        } else if (
+                          node.position.y - e.position.y >= -75 - 5 &&
+                          node.position.y - e.position.y <= -75 + 5
+                        ) {
+                          params.targetHandle = "l4.t" + node.id;
+                          if (
+                            edge.findIndex(
+                              (e) => e.sourceHandle === "l4" + node.id
+                            ) === -1
+                          )
+                            await onConnect(params);
+                        }
+                      } else if (
+                        node.position.x - e.position.x >= 48 - 5 &&
+                        node.position.x - e.position.x <= 48 + 5
+                      ) {
+                        if (
+                          node.position.y - e.position.y >= -21 - 5 &&
+                          node.position.y - e.position.y <= -21 + 5
+                        ) {
+                          params.targetHandle = "r1.t" + node.id;
+                          if (
+                            edge.findIndex(
+                              (e) => e.sourceHandle === "r1" + node.id
+                            ) === -1
+                          )
+                            await onConnect(params);
+                        } else if (
+                          node.position.y - e.position.y >= -40 - 5 &&
+                          node.position.y - e.position.y <= -40 + 5
+                        ) {
+                          params.targetHandle = "r2.t" + node.id;
+                          if (
+                            edge.findIndex(
+                              (e) => e.sourceHandle === "r2" + node.id
+                            ) === -1
+                          )
+                            await onConnect(params);
+                        } else if (
+                          node.position.y - e.position.y >= -57 - 5 &&
+                          node.position.y - e.position.y <= -57 + 5
+                        ) {
+                          params.targetHandle = "r3.t" + node.id;
+                          if (
+                            edge.findIndex(
+                              (e) => e.sourceHandle === "r3" + node.id
+                            ) === -1
+                          )
+                            await onConnect(params);
+                        } else if (
+                          node.position.y - e.position.y >= -75 - 5 &&
+                          node.position.y - e.position.y <= -75 + 5
+                        ) {
+                          params.targetHandle = "r4.t" + node.id;
+                          if (
+                            edge.findIndex(
+                              (e) => e.sourceHandle === "r4" + node.id
+                            ) === -1
+                          )
+                            await onConnect(params);
+                        }
+                      }
+                    }
+
+                    break;
                   }
-                  if (
-                    node.position.x - e.position.x >= -221 - 5 &&
-                    node.position.x - e.position.x < -221 + 5 &&
-                    node.position.y - e.position.y >= -30 - 5 &&
-                    node.position.y - e.position.y < -30 + 5
-                  ) {
-                    console.log("paramsBeeperENTERTTTTTTTt");
-                    params = {
-                      source: `${node.id}`,
-                      sourceHandle: `r`,
-                      target: `${e.id}`,
-                      targetHandle: "l",
-                    };
+                  default:
                     if (
-                      node.data.specificElType === "capacitor100" ||
-                      (node.data.specificElType === "capacitor1000" &&
-                        e.data.specificElType === "beeper")
-                    )
-                      await onConnect(params);
-                    if (node.data.specificElType == "tact")
-                      await onConnect(params);
-                  }
-                  let offsetX = 0,
-                    offsetY = 0;
-                  if (e.data.specificElType === "beeper") {
-                    offsetX = -34;
-                    offsetY = -0;
-                  } else {
+                      node.position.x - e.position.x >= 221 - 5 + offsetX &&
+                      node.position.x - e.position.x < 221 + 5 + offsetX &&
+                      node.position.y - e.position.y >= -28 - 5 + offsetY &&
+                      node.position.y - e.position.y < -28 + 5 + offsetY
+                    ) {
+                      params = {
+                        source: `${e.id}`,
+                        sourceHandle: `r`,
+                        target: `${node.id}`,
+                        targetHandle: "l",
+                      };
+                      switch (props.type) {
+                        case "simpleCircuit":
+                          if (node.data.specificElType === "power")
+                            await onConnect(params);
+                        case "seriesCircuit":
+                          if (
+                            e.data.specificElType === "tact" &&
+                            node.data.specificElType == "beeper"
+                          )
+                            await onConnect(params);
+                          if (
+                            e.data.specificElType === "beeper" &&
+                            node.data.specificElType == "beeper"
+                          )
+                            await onConnect(params);
+                      }
+
+                      return;
+                    } else if (
+                      node.position.x - e.position.x >= -221 - 5 + offsetX &&
+                      node.position.x - e.position.x < -221 + 5 + offsetX &&
+                      node.position.y - e.position.y >= -28 - 5 + offsetY &&
+                      node.position.y - e.position.y < -28 + 5 + offsetY
+                    ) {
+                      switch (props.type) {
+                        case "simpleCircuit":
+                          params = {
+                            source: `${node.id}`,
+                            sourceHandle: `r`,
+                            target: `${e.id}`,
+                            targetHandle: "l",
+                          };
+                          if (node.data.specificElType === "tact")
+                            await onConnect(params);
+                          break;
+                        case "seriesCircuit":
+                          params = {
+                            source: `${node.id}`,
+                            sourceHandle: `r`,
+                            target: `${e.id}`,
+                            targetHandle: "l",
+                          };
+                          if (
+                            (node.data.specificElType === "tact" &&
+                              e.data.specificElType === "beeper") ||
+                            (node.data.specificElType === "beeper" &&
+                              e.data.specificElType === "beeper")
+                          )
+                            await onConnect(params);
+                          break;
+                      }
+                    } else if (
+                      node.position.x - e.position.x >= -258 - 5 + offsetX &&
+                      node.position.x - e.position.x < -258 + 5 + offsetX &&
+                      node.position.y - e.position.y >= -28 - 5 + offsetY &&
+                      node.position.y - e.position.y < -28 + 5 + offsetY
+                    ) {
+                      switch (props.type) {
+                        case "seriesCircuit":
+                          params = {
+                            source: `${node.id}`,
+                            sourceHandle: `r`,
+                            target: `${e.id}`,
+                            targetHandle: "l",
+                          };
+                          if (
+                            node.data.specificElType === "beeper" &&
+                            e.data.specificElType === "beeper"
+                          )
+                            await onConnect(params);
+                          break;
+                      }
+                    }
+                }
+
+                break;
+              case "led":
+              case "ldr":
+              case "res_100":
+              case "res_250":
+              case "tact":
+              case "capacitor100":
+              case "capacitor1000":
+                switch (node.data.specificElType) {
+                  case "beeper":
                     offsetX = 0;
                     offsetY = 0;
-                  }
-  
-                  let index3 = nodes.find(
-                    (n) => n.data.specificElType === "junction"
-                  );
-                  let index1 = nodes.find(
-                    (n) =>
-                      n.data.specificElType === "junction" && n.id != index3.id
-                  );
-                  if (index3.id == node.id) {
-                    console.log("paramsBeeper");
-                    params = {
-                      source: `${node.id}`,
-                      sourceHandle: `l`,
-                      target: `${e.id}`,
-                      targetHandle: "l",
-                    };
-  
-                    if (
-                      node.position.x - e.position.x >= -63 - 5 &&
-                      node.position.x - e.position.x <= -63 + 5
-                    ) {
-                      params = {
-                        source: `${node.id}`,
-                        sourceHandle: `l`,
-                        target: `${e.id}`,
-                        targetHandle: "l",
-                      };
-                      if (
-                        node.position.y - e.position.y >= -21 - 5 &&
-                        node.position.y - e.position.y <= -21 + 5
-                      ) {
-                        params.sourceHandle = "l1" + node.id;
-                        if (
-                          edge.findIndex(
-                            (e) => e.targetHandle === "l1.t" + node.id
-                          ) === -1
-                        )
-                          await onConnect(params);
-                      } else if (
-                        node.position.y - e.position.y >= -40 - 5 &&
-                        node.position.y - e.position.y <= -40 + 5
-                      ) {
-                        params.sourceHandle = "l2" + node.id;
-                        if (
-                          edge.findIndex(
-                            (e) => e.targetHandle === "l2.t" + node.id
-                          ) === -1
-                        )
-                          await onConnect(params);
-                      } else if (
-                        node.position.y - e.position.y >= -57 - 5 &&
-                        node.position.y - e.position.y <= -57 + 5
-                      ) {
-                        params.sourceHandle = "l3" + node.id;
-                        if (
-                          edge.findIndex(
-                            (e) => e.targetHandle === "l3.t" + node.id
-                          ) === -1
-                        )
-                          await onConnect(params);
-                      } else if (
-                        node.position.y - e.position.y >= -75 - 5 &&
-                        node.position.y - e.position.y <= -75 + 5
-                      ) {
-                        params.sourceHandle = "l4" + node.id;
-                        if (
-                          edge.findIndex(
-                            (e) => e.targetHandle === "l4.t" + node.id
-                          ) === -1
-                        )
-                          await onConnect(params);
-                      }
-                    } else if (
-                      node.position.x - e.position.x >= -193 - 5 &&
-                      node.position.x - e.position.x <= -193 + 5
-                    ) {
-                      params = {
-                        source: `${node.id}`,
-                        sourceHandle: `l`,
-                        target: `${e.id}`,
-                        targetHandle: "l",
-                      };
-                      if (
-                        node.position.y - e.position.y >= -21 - 5 &&
-                        node.position.y - e.position.y <= -21 + 5
-                      ) {
-                        params.sourceHandle = "r1" + node.id;
-                        if (
-                          edge.findIndex(
-                            (e) => e.targetHandle === "r1.t" + node.id
-                          ) === -1
-                        )
-                          await onConnect(params);
-                      } else if (
-                        node.position.y - e.position.y >= -40 - 5 &&
-                        node.position.y - e.position.y <= -40 + 5
-                      ) {
-                        params.sourceHandle = "r2" + node.id;
-                        if (
-                          edge.findIndex(
-                            (e) => e.targetHandle === "r2.t" + node.id
-                          ) === -1
-                        )
-                          await onConnect(params);
-                      } else if (
-                        node.position.y - e.position.y >= -57 - 5 &&
-                        node.position.y - e.position.y <= -57 + 5
-                      ) {
-                        params.sourceHandle = "r3" + node.id;
-                        if (
-                          edge.findIndex(
-                            (e) => e.targetHandle === "r3.t" + node.id
-                          ) === -1
-                        )
-                          await onConnect(params);
-                      } else if (
-                        node.position.y - e.position.y >= -75 - 5 &&
-                        node.position.y - e.position.y <= -75 + 5
-                      ) {
-                        params.sourceHandle = "r4" + node.id;
-                        if (
-                          edge.findIndex(
-                            (e) => e.targetHandle === "r4.t" + node.id
-                          ) === -1
-                        )
-                          await onConnect(params);
-                      }
-                    }
-                  } else {
-                    params = {
-                      source: `${e.id}`,
-                      sourceHandle: `r`,
-                      target: `${node.id}`,
-                      targetHandle: "l",
-                    };
-                    if (
-                      node.position.x - e.position.x >= 179 - 5 &&
-                      node.position.x - e.position.x <= 179 + 5
-                    ) {
-                      if (
-                        node.position.y - e.position.y >= -21 - 5 &&
-                        node.position.y - e.position.y <= -21 + 5
-                      ) {
-                        params.targetHandle = "l1.t" + node.id;
-                        if (
-                          edge.findIndex(
-                            (e) => e.sourceHandle === "l1" + node.id
-                          ) === -1
-                        )
-                          await onConnect(params);
-                      } else if (
-                        node.position.y - e.position.y >= -40 - 5 &&
-                        node.position.y - e.position.y <= -40 + 5
-                      ) {
-                        params.targetHandle = "l2.t" + node.id;
-                        if (
-                          edge.findIndex(
-                            (e) => e.sourceHandle === "l2" + node.id
-                          ) === -1
-                        )
-                          await onConnect(params);
-                      } else if (
-                        node.position.y - e.position.y >= -57 - 5 &&
-                        node.position.y - e.position.y <= -57 + 5
-                      ) {
-                        params.targetHandle = "l3.t" + node.id;
-                        if (
-                          edge.findIndex(
-                            (e) => e.sourceHandle === "l3" + node.id
-                          ) === -1
-                        )
-                          await onConnect(params);
-                      } else if (
-                        node.position.y - e.position.y >= -75 - 5 &&
-                        node.position.y - e.position.y <= -75 + 5
-                      ) {
-                        params.targetHandle = "l4.t" + node.id;
-                        if (
-                          edge.findIndex(
-                            (e) => e.sourceHandle === "l4" + node.id
-                          ) === -1
-                        )
-                          await onConnect(params);
-                      }
-                    } else if (
-                      node.position.x - e.position.x >= 48 - 5 &&
-                      node.position.x - e.position.x <= 48 + 5
-                    ) {
-                      if (
-                        node.position.y - e.position.y >= -21 - 5 &&
-                        node.position.y - e.position.y <= -21 + 5
-                      ) {
-                        params.targetHandle = "r1.t" + node.id;
-                        if (
-                          edge.findIndex(
-                            (e) => e.sourceHandle === "r1" + node.id
-                          ) === -1
-                        )
-                          await onConnect(params);
-                      } else if (
-                        node.position.y - e.position.y >= -40 - 5 &&
-                        node.position.y - e.position.y <= -40 + 5
-                      ) {
-                        params.targetHandle = "r2.t" + node.id;
-                        if (
-                          edge.findIndex(
-                            (e) => e.sourceHandle === "r2" + node.id
-                          ) === -1
-                        )
-                          await onConnect(params);
-                      } else if (
-                        node.position.y - e.position.y >= -57 - 5 &&
-                        node.position.y - e.position.y <= -57 + 5
-                      ) {
-                        params.targetHandle = "r3.t" + node.id;
-                        if (
-                          edge.findIndex(
-                            (e) => e.sourceHandle === "r3" + node.id
-                          ) === -1
-                        )
-                          await onConnect(params);
-                      } else if (
-                        node.position.y - e.position.y >= -75 - 5 &&
-                        node.position.y - e.position.y <= -75 + 5
-                      ) {
-                        params.targetHandle = "r4.t" + node.id;
-                        if (
-                          edge.findIndex(
-                            (e) => e.sourceHandle === "r4" + node.id
-                          ) === -1
-                        )
-                          await onConnect(params);
-                      }
-                    }
-                  }
-  
-                  break;
+                    break;
+                  case "capacitor100":
+                  case "diode":
+                  case "ldr":
+                  case "led":
+                  case "res_100":
+                  case "res_250":
+                  case "tact":
+                  case "capacitor1000":
+                    offsetX = -20;
+                    offsetY = -30;
+                    break;
+                  case "transistor":
+                    offsetX = -21;
+                    offsetY = -48;
+                    break;
+                  case "two_way_switch":
+                    offsetX = 0;
+                    offsetY = 0;
+                    break;
+                  case "pot":
+                    offsetX = -238;
+                    offsetY = -21;
+                    break;
+
+                  default:
+                    offsetX = 0;
+                    offsetY = 0;
+                    break;
                 }
-                default:
-                  if (
-                    node.position.x - e.position.x >= 221 - 5 + offsetX &&
-                    node.position.x - e.position.x < 221 + 5 + offsetX &&
-                    node.position.y - e.position.y >= -28 - 5 + offsetY &&
-                    node.position.y - e.position.y < -28 + 5 + offsetY
-                  ) {
-                    params = {
-                      source: `${e.id}`,
-                      sourceHandle: `r`,
-                      target: `${node.id}`,
-                      targetHandle: "l",
-                    };
-                    switch (props.type) {
-                      case "simpleCircuit":
-                        if (node.data.specificElType === "power")
-                          await onConnect(params);
-                      case "seriesCircuit":
-                        if (
-                          e.data.specificElType === "tact" &&
-                          node.data.specificElType == "beeper"
-                        )
-                          await onConnect(params);
-                        if (
-                          e.data.specificElType === "beeper" &&
-                          node.data.specificElType == "beeper"
-                        )
-                          await onConnect(params);
-                    }
-  
-                    return;
-                  } else if (
-                    node.position.x - e.position.x >= -221 - 5 + offsetX &&
-                    node.position.x - e.position.x < -221 + 5 + offsetX &&
-                    node.position.y - e.position.y >= -28 - 5 + offsetY &&
-                    node.position.y - e.position.y < -28 + 5 + offsetY
-                  ) {
-                    switch (props.type) {
-                      case "simpleCircuit":
-                        params = {
-                          source: `${node.id}`,
-                          sourceHandle: `r`,
-                          target: `${e.id}`,
-                          targetHandle: "l",
-                        };
-                        if (node.data.specificElType === "tact")
-                          await onConnect(params);
-                        break;
-                      case "seriesCircuit":
-                        params = {
-                          source: `${node.id}`,
-                          sourceHandle: `r`,
-                          target: `${e.id}`,
-                          targetHandle: "l",
-                        };
-                        if (
-                          (node.data.specificElType === "tact" &&
-                            e.data.specificElType === "beeper") ||
-                          (node.data.specificElType === "beeper" &&
-                            e.data.specificElType === "beeper")
-                        )
-                          await onConnect(params);
-                        break;
-                    }
-                  } else if (
-                    node.position.x - e.position.x >= -258 - 5 + offsetX &&
-                    node.position.x - e.position.x < -258 + 5 + offsetX &&
-                    node.position.y - e.position.y >= -28 - 5 + offsetY &&
-                    node.position.y - e.position.y < -28 + 5 + offsetY
-                  ) {
-                    switch (props.type) {
-                      case "seriesCircuit":
-                        params = {
-                          source: `${node.id}`,
-                          sourceHandle: `r`,
-                          target: `${e.id}`,
-                          targetHandle: "l",
-                        };
-                        if (
-                          node.data.specificElType === "beeper" &&
-                          e.data.specificElType === "beeper"
-                        )
-                          await onConnect(params);
-                        break;
-                    }
-                  }
-              }
-  
-              break;
-            case "led":
-            case "ldr":
-            case "res_100":
-            case "res_250":
-            case "tact":
-            case "capacitor100":
-            case "capacitor1000":
-              switch (node.data.specificElType) {
-                case "beeper":
-                  offsetX = 0;
-                  offsetY = 0;
-                  break;
-                case "capacitor100":
-                case "diode":
-                case "ldr":
-                case "led":
-                case "res_100":
-                case "res_250":
-                case "tact":
-                case "capacitor1000":
-                  offsetX = -20;
-                  offsetY = -30;
-                  break;
-                case "transistor":
-                  offsetX = -21;
-                  offsetY = -48;
-                  break;
-                case "two_way_switch":
-                  offsetX = 0;
-                  offsetY = 0;
-                  break;
-                case "pot":
-                  offsetX = -238;
-                  offsetY = -21;
-                  break;
-  
-                default:
-                  offsetX = 0;
-                  offsetY = 0;
-                  break;
-              }
-  
-              switch (node.data.specificElType) {
-                case "junction":
-                  params = {
-                    source: `${e.id}`,
-                    sourceHandle: `r`,
-                    target: `${node.id}`,
-                    targetHandle: "r1",
-                  };
-                  switch (props.type) {
-                    case "simpleCircuit":
-                      break;
-                    case "seriesCircuit":
-                      break;
-                    case "parallelCircuit":
-                      break;
-                    case "resistorCircuit":
-                      break;
-                    case "capacitorCircuit":
-                      break;
-                    case "voltageDividerCircuit":
-                      if (
-                        e.data.specificElType === "tact" &&
-                        node.data.specificElType === "junction"
-                      )
-                        return;
-                      break;
-                  }
-                  if (props.type === "transistorCircuit") {
-                    params = {
-                      source: `${node.id}`,
-                      sourceHandle: `r`,
-                      target: `${e.id}`,
-                      targetHandle: "l",
-                    };
-  
-                    if (
-                      node.position.x - e.position.x >= -40 - 5 &&
-                      node.position.x - e.position.x <= -40 + 5
-                    ) {
-                      if (
-                        node.position.y - e.position.y >= 7 - 5 &&
-                        node.position.y - e.position.y <= 7 + 5
-                      ) {
-                        params.sourceHandle = "l1";
-                        if (
-                          edge.findIndex((e) => e.targetHandle === "l1.t") === -1
-                        )
-                          await onConnect(params);
-                      } else if (
-                        node.position.y - e.position.y >= -9 - 5 &&
-                        node.position.y - e.position.y <= -9 + 5
-                      ) {
-                        params.sourceHandle = "l2";
-                        if (
-                          edge.findIndex((e) => e.targetHandle === "l2.t") === -1
-                        )
-                          await onConnect(params);
-                      } else if (
-                        node.position.y - e.position.y >= -27 - 5 &&
-                        node.position.y - e.position.y <= -27 + 5
-                      ) {
-                        params.sourceHandle = "l3";
-                        if (
-                          edge.findIndex((e) => e.targetHandle === "l3.t") === -1
-                        )
-                          await onConnect(params);
-                      } else if (
-                        node.position.y - e.position.y >= -44 - 5 &&
-                        node.position.y - e.position.y <= -44 + 5
-                      ) {
-                        params.sourceHandle = "l4";
-                        if (
-                          edge.findIndex((e) => e.targetHandle === "l4.t") === -1
-                        )
-                          await onConnect(params);
-                      }
-                    } else if (
-                      node.position.x - e.position.x >= -177 - 5 &&
-                      node.position.x - e.position.x <= -177 + 5
-                    ) {
-                      if (
-                        node.position.y - e.position.y >= 7 - 5 &&
-                        node.position.y - e.position.y <= 7 + 5
-                      ) {
-                        params.sourceHandle = "r1";
-                        if (
-                          edge.findIndex((e) => e.targetHandle === "r1.t") === -1
-                        )
-                          await onConnect(params);
-                      } else if (
-                        node.position.y - e.position.y >= -9 - 5 &&
-                        node.position.y - e.position.y <= -9 + 5
-                      ) {
-                        params.sourceHandle = "r2";
-                        if (
-                          edge.findIndex((e) => e.targetHandle === "r2.t") === -1
-                        )
-                          await onConnect(params);
-                      } else if (
-                        node.position.y - e.position.y >= -27 - 5 &&
-                        node.position.y - e.position.y <= -27 + 5
-                      ) {
-                        params.sourceHandle = "r3";
-                        if (
-                          edge.findIndex((e) => e.targetHandle === "r3.t") === -1
-                        )
-                          await onConnect(params);
-                      } else if (
-                        node.position.y - e.position.y >= -44 - 5 &&
-                        node.position.y - e.position.y <= -44 + 5
-                      ) {
-                        params.sourceHandle = "r4";
-                        if (edge.findIndex((e) => e.targetHandle === "r4") === -1)
-                          await onConnect(params);
-                      }
-                    }
-                  } else if (props.type === "parallelCircuit") {
-                    let index1 = nodes.find(
-                      (n) => n.data.specificElType === "junction"
-                    );
-                    if (index1.id === node.id) {
-                      params = {
-                        source: `${e.id}`,
-                        sourceHandle: `r`,
-                        target: `${node.id}`,
-                        targetHandle: "r1",
-                      };
-                      console.log(
-                        "paramsBeeper@",
-                        node.position.x - e.position.x,
-                        node.position.y - e.position.y
-                      );
-                      let offsetX = 0,
-                        offsetY = 0;
-                      if (e.data.specificElType === "beeper") {
-                        offsetX = -34;
-                        offsetY = -0;
-                      } else {
-                        offsetX = 0;
-                        offsetY = 0;
-                      }
-                      if (
-                        node.position.x - e.position.x >= 159 - 5 &&
-                        node.position.x - e.position.x <= 159 + 5 &&
-                        e.data.specificElType === "tact"
-                      ) {
-                        if (
-                          node.position.y - e.position.y >= 7 - 5 &&
-                          node.position.y - e.position.y <= 7 + 5
-                        ) {
-                          params.targetHandle = "l1.t" + node.id;
-                          if (
-                            edge.findIndex(
-                              (e) => e.sourceHandle === "l1" + node.id
-                            ) === -1
-                          )
-                            await onConnect(params);
-                        } else if (
-                          node.position.y - e.position.y >= -9 - 5 &&
-                          node.position.y - e.position.y <= -9 + 5
-                        ) {
-                          params.targetHandle = "l2.t" + node.id;
-                          if (
-                            edge.findIndex(
-                              (e) => e.sourceHandle === "l2" + node.id
-                            ) === -1
-                          )
-                            await onConnect(params);
-                        } else if (
-                          node.position.y - e.position.y >= -27 - 5 &&
-                          node.position.y - e.position.y <= -27 + 5
-                        ) {
-                          params.targetHandle = "l3.t" + node.id;
-                          if (
-                            edge.findIndex(
-                              (e) => e.sourceHandle === "l3" + node.id
-                            ) === -1
-                          )
-                            await onConnect(params);
-                        } else if (
-                          node.position.y - e.position.y >= -44 - 5 &&
-                          node.position.y - e.position.y <= -44 + 5
-                        ) {
-                          params.targetHandle = "l4.t" + node.id;
-                          if (
-                            edge.findIndex(
-                              (e) => e.sourceHandle === "l4" + node.id
-                            ) === -1
-                          )
-                            await onConnect(params);
-                        }
-                      } else if (
-                        node.position.x - e.position.x >= 30 - 5 &&
-                        node.position.x - e.position.x <= 30 + 5 &&
-                        e.data.specificElType === "tact"
-                      ) {
-                        if (
-                          node.position.y - e.position.y >= 7 - 5 &&
-                          node.position.y - e.position.y <= 7 + 5
-                        ) {
-                          params.targetHandle = "r1.t" + node.id;
-                          if (
-                            edge.findIndex(
-                              (e) => e.sourceHandle === "r1" + node.id
-                            ) === -1
-                          )
-                            await onConnect(params);
-                        } else if (
-                          node.position.y - e.position.y >= -9 - 5 &&
-                          node.position.y - e.position.y <= -9 + 5
-                        ) {
-                          params.targetHandle = "r2.t" + node.id;
-                          if (
-                            edge.findIndex(
-                              (e) => e.sourceHandle === "r2" + node.id
-                            ) === -1
-                          )
-                            await onConnect(params);
-                        } else if (
-                          node.position.y - e.position.y >= -27 - 5 &&
-                          node.position.y - e.position.y <= -27 + 5
-                        ) {
-                          params.targetHandle = "r3.t" + node.id;
-                          if (
-                            edge.findIndex(
-                              (e) => e.sourceHandle === "r3" + node.id
-                            ) === -1
-                          )
-                            await onConnect(params);
-                        } else if (
-                          node.position.y - e.position.y >= -44 - 5 &&
-                          node.position.y - e.position.y <= -44 + 5
-                        ) {
-                          params.targetHandle = "r4.t" + node.id;
-                          if (
-                            edge.findIndex(
-                              (e) => e.sourceHandle === "r4" + node.id
-                            ) === -1
-                          )
-                            await onConnect(params);
-                        }
-                      } else if (
-                        (node.position.x - e.position.x >= -43 - 5 + offsetX &&
-                          node.position.x - e.position.x <= -43 + 5 + offsetX &&
-                          e.data.specificElType === "led") ||
-                        e.data.specificElType === "beeper"
-                      ) {
-                        params = {
-                          source: `${node.id}`,
-                          sourceHandle: `l`,
-                          target: `${e.id}`,
-                          targetHandle: "l",
-                        };
-                        if (
-                          node.position.y - e.position.y >= 7 - 5 &&
-                          node.position.y - e.position.y <= 7 + 5
-                        ) {
-                          params.sourceHandle = "l1" + node.id;
-                          if (
-                            edge.findIndex(
-                              (e) => e.targetHandle === "l1.t" + node.id
-                            ) === -1
-                          )
-                            await onConnect(params);
-                        } else if (
-                          node.position.y - e.position.y >= -9 - 5 &&
-                          node.position.y - e.position.y <= -9 + 5
-                        ) {
-                          params.sourceHandle = "l2" + node.id;
-                          if (
-                            edge.findIndex(
-                              (e) => e.targetHandle === "l2.t" + node.id
-                            ) === -1
-                          )
-                            await onConnect(params);
-                        } else if (
-                          node.position.y - e.position.y >= -27 - 5 &&
-                          node.position.y - e.position.y <= -27 + 5
-                        ) {
-                          params.sourceHandle = "l3" + node.id;
-                          if (
-                            edge.findIndex(
-                              (e) => e.targetHandle === "l3.t" + node.id
-                            ) === -1
-                          )
-                            await onConnect(params);
-                        } else if (
-                          node.position.y - e.position.y >= -44 - 5 &&
-                          node.position.y - e.position.y <= -44 + 5
-                        ) {
-                          params.sourceHandle = "l4" + node.id;
-                          if (
-                            edge.findIndex(
-                              (e) => e.targetHandle === "l4.t" + node.id
-                            ) === -1
-                          )
-                            await onConnect(params);
-                        }
-                      } else if (
-                        (node.position.x - e.position.x >= -174 - 5 + offsetX &&
-                          node.position.x - e.position.x <= -174 + 5 + offsetX &&
-                          e.data.specificElType === "led") ||
-                        e.data.specificElType === "beeper"
-                      ) {
-                        console.log("paramsBeeper@Enter");
-                        params = {
-                          source: `${node.id}`,
-                          sourceHandle: `l`,
-                          target: `${e.id}`,
-                          targetHandle: "l",
-                        };
-                        if (
-                          node.position.y - e.position.y >= 7 - 5 &&
-                          node.position.y - e.position.y <= 7 + 5
-                        ) {
-                          params.sourceHandle = "r1" + node.id;
-                          if (
-                            edge.findIndex(
-                              (e) => e.targetHandle === "r1.t" + node.id
-                            ) === -1
-                          )
-                            await onConnect(params);
-                        } else if (
-                          node.position.y - e.position.y >= -9 - 5 &&
-                          node.position.y - e.position.y <= -9 + 5
-                        ) {
-                          params.sourceHandle = "r2" + node.id;
-                          if (
-                            edge.findIndex(
-                              (e) => e.targetHandle === "r2.t" + node.id
-                            ) === -1
-                          )
-                            await onConnect(params);
-                        } else if (
-                          node.position.y - e.position.y >= -27 - 5 &&
-                          node.position.y - e.position.y <= -27 + 5
-                        ) {
-                          params.sourceHandle = "r3" + node.id;
-                          if (
-                            edge.findIndex(
-                              (e) => e.targetHandle === "r3.t" + node.id
-                            ) === -1
-                          )
-                            await onConnect(params);
-                        } else if (
-                          node.position.y - e.position.y >= -44 - 5 &&
-                          node.position.y - e.position.y <= -44 + 5
-                        ) {
-                          params.sourceHandle = "r4" + node.id;
-                          if (
-                            edge.findIndex(
-                              (e) => e.targetHandle === "r4.t" + node.id
-                            ) === -1
-                          )
-                            await onConnect(params);
-                        }
-                      }
-                    } else {
-                      params = {
-                        source: `${e.id}`,
-                        sourceHandle: `r`,
-                        target: `${node.id}`,
-                        targetHandle: "r1",
-                      };
-                      if (
-                        node.position.x - e.position.x >= 159 - 5 &&
-                        node.position.x - e.position.x <= 159 + 5 &&
-                        e.data.specificElType === "led"
-                      ) {
-                        if (
-                          node.position.y - e.position.y >= 7 - 5 &&
-                          node.position.y - e.position.y <= 7 + 5
-                        ) {
-                          params.targetHandle = "l1.t" + node.id;
-                          if (
-                            edge.findIndex(
-                              (e) => e.sourceHandle === "l1" + node.id
-                            ) === -1
-                          )
-                            await onConnect(params);
-                        } else if (
-                          node.position.y - e.position.y >= -9 - 5 &&
-                          node.position.y - e.position.y <= -9 + 5
-                        ) {
-                          params.targetHandle = "l2.t" + node.id;
-                          if (
-                            edge.findIndex(
-                              (e) => e.sourceHandle === "l2" + node.id
-                            ) === -1
-                          )
-                            await onConnect(params);
-                        } else if (
-                          node.position.y - e.position.y >= -27 - 5 &&
-                          node.position.y - e.position.y <= -27 + 5
-                        ) {
-                          params.targetHandle = "l3.t" + node.id;
-                          if (
-                            edge.findIndex(
-                              (e) => e.sourceHandle === "l3" + node.id
-                            ) === -1
-                          )
-                            await onConnect(params);
-                        } else if (
-                          node.position.y - e.position.y >= -44 - 5 &&
-                          node.position.y - e.position.y <= -44 + 5
-                        ) {
-                          params.targetHandle = "l4.t" + node.id;
-                          if (
-                            edge.findIndex(
-                              (e) => e.sourceHandle === "l4" + node.id
-                            ) === -1
-                          )
-                            await onConnect(params);
-                        }
-                      } else if (
-                        node.position.x - e.position.x >= 30 - 5 &&
-                        node.position.x - e.position.x <= 30 + 5 &&
-                        e.data.specificElType === "led"
-                      ) {
-                        if (
-                          node.position.y - e.position.y >= 7 - 5 &&
-                          node.position.y - e.position.y <= 7 + 5
-                        ) {
-                          params.targetHandle = "r1.t" + node.id;
-                          if (
-                            edge.findIndex(
-                              (e) => e.sourceHandle === "r1" + node.id
-                            ) === -1
-                          )
-                            await onConnect(params);
-                        } else if (
-                          node.position.y - e.position.y >= -9 - 5 &&
-                          node.position.y - e.position.y <= -9 + 5
-                        ) {
-                          params.targetHandle = "r2.t" + node.id;
-                          if (
-                            edge.findIndex(
-                              (e) => e.sourceHandle === "r2" + node.id
-                            ) === -1
-                          )
-                            await onConnect(params);
-                        } else if (
-                          node.position.y - e.position.y >= -27 - 5 &&
-                          node.position.y - e.position.y <= -27 + 5
-                        ) {
-                          params.targetHandle = "r3.t" + node.id;
-                          if (
-                            edge.findIndex(
-                              (e) => e.sourceHandle === "r3" + node.id
-                            ) === -1
-                          )
-                            await onConnect(params);
-                        } else if (
-                          node.position.y - e.position.y >= -44 - 5 &&
-                          node.position.y - e.position.y <= -44 + 5
-                        ) {
-                          params.targetHandle = "r4.t" + node.id;
-                          if (
-                            edge.findIndex(
-                              (e) => e.sourceHandle === "r4" + node.id
-                            ) === -1
-                          )
-                            await onConnect(params);
-                        }
-                      }
-                    }
-                  } else if (props.type == "capacitorCircuit") {
-                    let index1 = nodes.find(
-                      (n) => n.data.specificElType === "junction"
-                    );
-                    if (index1.id === node.id) {
-                      params = {
-                        source: `${e.id}`,
-                        sourceHandle: `r`,
-                        target: `${node.id}`,
-                        targetHandle: "r1",
-                      };
-                      console.log(
-                        "paramscap@",
-                        node.position.x - e.position.x,
-                        node.position.y - e.position.y
-                      );
-                      let offsetX = 0,
-                        offsetY = 0;
-                      if (e.data.specificElType === "beeper") {
-                        offsetX = -34;
-                        offsetY = -0;
-                      } else {
-                        offsetX = 0;
-                        offsetY = 0;
-                      }
-                      if (
-                        node.position.x - e.position.x >= 159 - 5 &&
-                        node.position.x - e.position.x <= 159 + 5 &&
-                        e.data.specificElType === "tact"
-                      ) {
-                        if (
-                          node.position.y - e.position.y >= 7 - 5 &&
-                          node.position.y - e.position.y <= 7 + 5
-                        ) {
-                          params.targetHandle = "l1.t" + node.id;
-                          if (
-                            edge.findIndex(
-                              (e) => e.sourceHandle === "l1" + node.id
-                            ) === -1
-                          )
-                            await onConnect(params);
-                        } else if (
-                          node.position.y - e.position.y >= -9 - 5 &&
-                          node.position.y - e.position.y <= -9 + 5
-                        ) {
-                          params.targetHandle = "l2.t" + node.id;
-                          if (
-                            edge.findIndex(
-                              (e) => e.sourceHandle === "l2" + node.id
-                            ) === -1
-                          )
-                            await onConnect(params);
-                        } else if (
-                          node.position.y - e.position.y >= -27 - 5 &&
-                          node.position.y - e.position.y <= -27 + 5
-                        ) {
-                          params.targetHandle = "l3.t" + node.id;
-                          if (
-                            edge.findIndex(
-                              (e) => e.sourceHandle === "l3" + node.id
-                            ) === -1
-                          )
-                            await onConnect(params);
-                        } else if (
-                          node.position.y - e.position.y >= -44 - 5 &&
-                          node.position.y - e.position.y <= -44 + 5
-                        ) {
-                          params.targetHandle = "l4.t" + node.id;
-                          if (
-                            edge.findIndex(
-                              (e) => e.sourceHandle === "l4" + node.id
-                            ) === -1
-                          )
-                            await onConnect(params);
-                        }
-                      } else if (
-                        node.position.x - e.position.x >= 30 - 5 &&
-                        node.position.x - e.position.x <= 30 + 5 &&
-                        e.data.specificElType === "tact"
-                      ) {
-                        if (
-                          node.position.y - e.position.y >= 7 - 5 &&
-                          node.position.y - e.position.y <= 7 + 5
-                        ) {
-                          params.targetHandle = "r1.t" + node.id;
-                          if (
-                            edge.findIndex(
-                              (e) => e.sourceHandle === "r1" + node.id
-                            ) === -1
-                          )
-                            await onConnect(params);
-                        } else if (
-                          node.position.y - e.position.y >= -9 - 5 &&
-                          node.position.y - e.position.y <= -9 + 5
-                        ) {
-                          params.targetHandle = "r2.t" + node.id;
-                          if (
-                            edge.findIndex(
-                              (e) => e.sourceHandle === "r2" + node.id
-                            ) === -1
-                          )
-                            await onConnect(params);
-                        } else if (
-                          node.position.y - e.position.y >= -27 - 5 &&
-                          node.position.y - e.position.y <= -27 + 5
-                        ) {
-                          params.targetHandle = "r3.t" + node.id;
-                          if (
-                            edge.findIndex(
-                              (e) => e.sourceHandle === "r3" + node.id
-                            ) === -1
-                          )
-                            await onConnect(params);
-                        } else if (
-                          node.position.y - e.position.y >= -44 - 5 &&
-                          node.position.y - e.position.y <= -44 + 5
-                        ) {
-                          params.targetHandle = "r4.t" + node.id;
-                          if (
-                            edge.findIndex(
-                              (e) => e.sourceHandle === "r4" + node.id
-                            ) === -1
-                          )
-                            await onConnect(params);
-                        }
-                      } else if (
-                        node.position.x - e.position.x >= -43 - 5 + offsetX &&
-                        node.position.x - e.position.x <= -43 + 5 + offsetX &&
-                        (e.data.specificElType === "capacitor100" ||
-                          e.data.specificElType === "capacitor1000")
-                      ) {
-                        params = {
-                          source: `${node.id}`,
-                          sourceHandle: `l`,
-                          target: `${e.id}`,
-                          targetHandle: "l",
-                        };
-                        if (
-                          node.position.y - e.position.y >= 7 - 5 &&
-                          node.position.y - e.position.y <= 7 + 5
-                        ) {
-                          params.sourceHandle = "l1" + node.id;
-                          if (
-                            edge.findIndex(
-                              (e) => e.targetHandle === "l1.t" + node.id
-                            ) === -1
-                          )
-                            await onConnect(params);
-                        } else if (
-                          node.position.y - e.position.y >= -9 - 5 &&
-                          node.position.y - e.position.y <= -9 + 5
-                        ) {
-                          params.sourceHandle = "l2" + node.id;
-                          if (
-                            edge.findIndex(
-                              (e) => e.targetHandle === "l2.t" + node.id
-                            ) === -1
-                          )
-                            await onConnect(params);
-                        } else if (
-                          node.position.y - e.position.y >= -27 - 5 &&
-                          node.position.y - e.position.y <= -27 + 5
-                        ) {
-                          params.sourceHandle = "l3" + node.id;
-                          if (
-                            edge.findIndex(
-                              (e) => e.targetHandle === "l3.t" + node.id
-                            ) === -1
-                          )
-                            await onConnect(params);
-                        } else if (
-                          node.position.y - e.position.y >= -44 - 5 &&
-                          node.position.y - e.position.y <= -44 + 5
-                        ) {
-                          params.sourceHandle = "l4" + node.id;
-                          if (
-                            edge.findIndex(
-                              (e) => e.targetHandle === "l4.t" + node.id
-                            ) === -1
-                          )
-                            await onConnect(params);
-                        }
-                      } else if (
-                        node.position.x - e.position.x >= -174 - 5 + offsetX &&
-                        node.position.x - e.position.x <= -174 + 5 + offsetX &&
-                        (e.data.specificElType === "capacitor100" ||
-                          e.data.specificElType === "capacitor1000")
-                      ) {
-                        console.log("paramsBeeper@Enter");
-                        params = {
-                          source: `${node.id}`,
-                          sourceHandle: `l`,
-                          target: `${e.id}`,
-                          targetHandle: "l",
-                        };
-                        if (
-                          node.position.y - e.position.y >= 7 - 5 &&
-                          node.position.y - e.position.y <= 7 + 5
-                        ) {
-                          params.sourceHandle = "r1" + node.id;
-                          if (
-                            edge.findIndex(
-                              (e) => e.targetHandle === "r1.t" + node.id
-                            ) === -1
-                          )
-                            await onConnect(params);
-                        } else if (
-                          node.position.y - e.position.y >= -9 - 5 &&
-                          node.position.y - e.position.y <= -9 + 5
-                        ) {
-                          params.sourceHandle = "r2" + node.id;
-                          if (
-                            edge.findIndex(
-                              (e) => e.targetHandle === "r2.t" + node.id
-                            ) === -1
-                          )
-                            await onConnect(params);
-                        } else if (
-                          node.position.y - e.position.y >= -27 - 5 &&
-                          node.position.y - e.position.y <= -27 + 5
-                        ) {
-                          params.sourceHandle = "r3" + node.id;
-                          if (
-                            edge.findIndex(
-                              (e) => e.targetHandle === "r3.t" + node.id
-                            ) === -1
-                          )
-                            await onConnect(params);
-                        } else if (
-                          node.position.y - e.position.y >= -44 - 5 &&
-                          node.position.y - e.position.y <= -44 + 5
-                        ) {
-                          params.sourceHandle = "r4" + node.id;
-                          if (
-                            edge.findIndex(
-                              (e) => e.targetHandle === "r4.t" + node.id
-                            ) === -1
-                          )
-                            await onConnect(params);
-                        }
-                      }
-                    } else {
-                      params = {
-                        source: `${e.id}`,
-                        sourceHandle: `r`,
-                        target: `${node.id}`,
-                        targetHandle: "r1",
-                      };
-                      if (
-                        node.position.x - e.position.x >= 159 - 5 &&
-                        node.position.x - e.position.x <= 159 + 5 &&
-                        (e.data.specificElType === "capacitor100" ||
-                          e.data.specificElType === "capacitor1000")
-                      ) {
-                        if (
-                          node.position.y - e.position.y >= 7 - 5 &&
-                          node.position.y - e.position.y <= 7 + 5
-                        ) {
-                          params.targetHandle = "l1.t" + node.id;
-                          if (
-                            edge.findIndex(
-                              (e) => e.sourceHandle === "l1" + node.id
-                            ) === -1
-                          )
-                            await onConnect(params);
-                        } else if (
-                          node.position.y - e.position.y >= -9 - 5 &&
-                          node.position.y - e.position.y <= -9 + 5
-                        ) {
-                          params.targetHandle = "l2.t" + node.id;
-                          if (
-                            edge.findIndex(
-                              (e) => e.sourceHandle === "l2" + node.id
-                            ) === -1
-                          )
-                            await onConnect(params);
-                        } else if (
-                          node.position.y - e.position.y >= -27 - 5 &&
-                          node.position.y - e.position.y <= -27 + 5
-                        ) {
-                          params.targetHandle = "l3.t" + node.id;
-                          if (
-                            edge.findIndex(
-                              (e) => e.sourceHandle === "l3" + node.id
-                            ) === -1
-                          )
-                            await onConnect(params);
-                        } else if (
-                          node.position.y - e.position.y >= -44 - 5 &&
-                          node.position.y - e.position.y <= -44 + 5
-                        ) {
-                          params.targetHandle = "l4.t" + node.id;
-                          if (
-                            edge.findIndex(
-                              (e) => e.sourceHandle === "l4" + node.id
-                            ) === -1
-                          )
-                            await onConnect(params);
-                        }
-                      } else if (
-                        node.position.x - e.position.x >= 30 - 5 &&
-                        node.position.x - e.position.x <= 30 + 5 &&
-                        (e.data.specificElType === "capacitor100" ||
-                          e.data.specificElType === "capacitor1000")
-                      ) {
-                        if (
-                          node.position.y - e.position.y >= 7 - 5 &&
-                          node.position.y - e.position.y <= 7 + 5
-                        ) {
-                          params.targetHandle = "r1.t" + node.id;
-                          if (
-                            edge.findIndex(
-                              (e) => e.sourceHandle === "r1" + node.id
-                            ) === -1
-                          )
-                            await onConnect(params);
-                        } else if (
-                          node.position.y - e.position.y >= -9 - 5 &&
-                          node.position.y - e.position.y <= -9 + 5
-                        ) {
-                          params.targetHandle = "r2.t" + node.id;
-                          if (
-                            edge.findIndex(
-                              (e) => e.sourceHandle === "r2" + node.id
-                            ) === -1
-                          )
-                            await onConnect(params);
-                        } else if (
-                          node.position.y - e.position.y >= -27 - 5 &&
-                          node.position.y - e.position.y <= -27 + 5
-                        ) {
-                          params.targetHandle = "r3.t" + node.id;
-                          if (
-                            edge.findIndex(
-                              (e) => e.sourceHandle === "r3" + node.id
-                            ) === -1
-                          )
-                            await onConnect(params);
-                        } else if (
-                          node.position.y - e.position.y >= -44 - 5 &&
-                          node.position.y - e.position.y <= -44 + 5
-                        ) {
-                          params.targetHandle = "r4.t" + node.id;
-                          if (
-                            edge.findIndex(
-                              (e) => e.sourceHandle === "r4" + node.id
-                            ) === -1
-                          )
-                            await onConnect(params);
-                        }
-                      }
-                    }
-                  } else if (props.type === "voltageDividerCircuit") {
-                    console.log(
-                      node.position.x - e.position.x,
-                      node.position.y - e.position.y,
-                      "parallel"
-                    );
+
+                switch (node.data.specificElType) {
+                  case "junction":
                     params = {
                       source: `${e.id}`,
                       sourceHandle: `r`,
                       target: `${node.id}`,
                       targetHandle: "r1",
                     };
-                    if (
-                      node.position.x - e.position.x >= 159 - 5 &&
-                      node.position.x - e.position.x <= 159 + 5 &&
-                      e.data.specificElType === "led"
-                    ) {
-                      if (
-                        node.position.y - e.position.y >= 7 - 5 &&
-                        node.position.y - e.position.y <= 7 + 5
-                      ) {
-                        params.targetHandle = "l1.t";
-                        if (edge.findIndex((e) => e.sourceHandle === "l1") === -1)
-                          await onConnect(params);
-                      } else if (
-                        node.position.y - e.position.y >= -9 - 5 &&
-                        node.position.y - e.position.y <= -9 + 5
-                      ) {
-                        params.targetHandle = "l2.t";
-                        if (edge.findIndex((e) => e.sourceHandle === "l2") === -1)
-                          await onConnect(params);
-                      } else if (
-                        node.position.y - e.position.y >= -27 - 5 &&
-                        node.position.y - e.position.y <= -27 + 5
-                      ) {
-                        params.targetHandle = "l3.t";
-                        if (edge.findIndex((e) => e.sourceHandle === "l3") === -1)
-                          await onConnect(params);
-                      } else if (
-                        node.position.y - e.position.y >= -44 - 5 &&
-                        node.position.y - e.position.y <= -44 + 5
-                      ) {
-                        params.targetHandle = "l4.t";
-                        if (edge.findIndex((e) => e.sourceHandle === "l4") === -1)
-                          await onConnect(params);
-                      }
-                    } else if (
-                      node.position.x - e.position.x >= 30 - 5 &&
-                      node.position.x - e.position.x <= 30 + 5 &&
-                      e.data.specificElType === "led"
-                    ) {
-                      if (
-                        node.position.y - e.position.y >= 7 - 5 &&
-                        node.position.y - e.position.y <= 7 + 5
-                      ) {
-                        params.targetHandle = "r1.t";
-                        if (edge.findIndex((e) => e.sourceHandle === "r1") === -1)
-                          await onConnect(params);
-                      } else if (
-                        node.position.y - e.position.y >= -9 - 5 &&
-                        node.position.y - e.position.y <= -9 + 5
-                      ) {
-                        params.targetHandle = "r2.t";
-                        if (edge.findIndex((e) => e.sourceHandle === "r2") === -1)
-                          await onConnect(params);
-                      } else if (
-                        node.position.y - e.position.y >= -27 - 5 &&
-                        node.position.y - e.position.y <= -27 + 5
-                      ) {
-                        params.targetHandle = "r3.t";
-                        if (edge.findIndex((e) => e.sourceHandle === "r3") === -1)
-                          await onConnect(params);
-                      } else if (
-                        node.position.y - e.position.y >= -44 - 5 &&
-                        node.position.y - e.position.y <= -44 + 5
-                      ) {
-                        params.targetHandle = "r4.t";
-                        if (edge.findIndex((e) => e.sourceHandle === "r4") === -1)
-                          await onConnect(params);
-                      }
+                    switch (props.type) {
+                      case "simpleCircuit":
+                        break;
+                      case "seriesCircuit":
+                        break;
+                      case "parallelCircuit":
+                        break;
+                      case "resistorCircuit":
+                        break;
+                      case "capacitorCircuit":
+                        break;
+                      case "voltageDividerCircuit":
+                        if (
+                          e.data.specificElType === "tact" &&
+                          node.data.specificElType === "junction"
+                        )
+                          return;
+                        break;
                     }
-                  } else if (props.type === "resistorCircuit") {
-                    let index1 = nodes.find(
-                      (n) => n.data.specificElType === "junction"
-                    );
-                    if (index1.id === node.id) {
-                      params = {
-                        source: `${e.id}`,
-                        sourceHandle: `r`,
-                        target: `${node.id}`,
-                        targetHandle: "r1",
-                      };
-                      console.log(
-                        "paramscap@",
-                        node.position.x - e.position.x,
-                        node.position.y - e.position.y
-                      );
-                      let offsetX = 0,
-                        offsetY = 0;
-                      if (e.data.specificElType === "beeper") {
-                        offsetX = -34;
-                        offsetY = -0;
-                      } else {
-                        offsetX = 0;
-                        offsetY = 0;
-                      }
-                      if (
-                        node.position.x - e.position.x >= 159 - 5 &&
-                        node.position.x - e.position.x <= 159 + 5 &&
-                        e.data.specificElType === "tact"
-                      ) {
-                        if (
-                          node.position.y - e.position.y >= 7 - 5 &&
-                          node.position.y - e.position.y <= 7 + 5
-                        ) {
-                          params.targetHandle = "l1.t" + node.id;
-                          if (
-                            edge.findIndex(
-                              (e) => e.sourceHandle === "l1" + node.id
-                            ) === -1
-                          )
-                            await onConnect(params);
-                        } else if (
-                          node.position.y - e.position.y >= -9 - 5 &&
-                          node.position.y - e.position.y <= -9 + 5
-                        ) {
-                          params.targetHandle = "l2.t" + node.id;
-                          if (
-                            edge.findIndex(
-                              (e) => e.sourceHandle === "l2" + node.id
-                            ) === -1
-                          )
-                            await onConnect(params);
-                        } else if (
-                          node.position.y - e.position.y >= -27 - 5 &&
-                          node.position.y - e.position.y <= -27 + 5
-                        ) {
-                          params.targetHandle = "l3.t" + node.id;
-                          if (
-                            edge.findIndex(
-                              (e) => e.sourceHandle === "l3" + node.id
-                            ) === -1
-                          )
-                            await onConnect(params);
-                        } else if (
-                          node.position.y - e.position.y >= -44 - 5 &&
-                          node.position.y - e.position.y <= -44 + 5
-                        ) {
-                          params.targetHandle = "l4.t" + node.id;
-                          if (
-                            edge.findIndex(
-                              (e) => e.sourceHandle === "l4" + node.id
-                            ) === -1
-                          )
-                            await onConnect(params);
-                        }
-                      } else if (
-                        node.position.x - e.position.x >= 30 - 5 &&
-                        node.position.x - e.position.x <= 30 + 5 &&
-                        e.data.specificElType === "tact"
-                      ) {
-                        if (
-                          node.position.y - e.position.y >= 7 - 5 &&
-                          node.position.y - e.position.y <= 7 + 5
-                        ) {
-                          params.targetHandle = "r1.t" + node.id;
-                          if (
-                            edge.findIndex(
-                              (e) => e.sourceHandle === "r1" + node.id
-                            ) === -1
-                          )
-                            await onConnect(params);
-                        } else if (
-                          node.position.y - e.position.y >= -9 - 5 &&
-                          node.position.y - e.position.y <= -9 + 5
-                        ) {
-                          params.targetHandle = "r2.t" + node.id;
-                          if (
-                            edge.findIndex(
-                              (e) => e.sourceHandle === "r2" + node.id
-                            ) === -1
-                          )
-                            await onConnect(params);
-                        } else if (
-                          node.position.y - e.position.y >= -27 - 5 &&
-                          node.position.y - e.position.y <= -27 + 5
-                        ) {
-                          params.targetHandle = "r3.t" + node.id;
-                          if (
-                            edge.findIndex(
-                              (e) => e.sourceHandle === "r3" + node.id
-                            ) === -1
-                          )
-                            await onConnect(params);
-                        } else if (
-                          node.position.y - e.position.y >= -44 - 5 &&
-                          node.position.y - e.position.y <= -44 + 5
-                        ) {
-                          params.targetHandle = "r4.t" + node.id;
-                          if (
-                            edge.findIndex(
-                              (e) => e.sourceHandle === "r4" + node.id
-                            ) === -1
-                          )
-                            await onConnect(params);
-                        }
-                      } else if (
-                        node.position.x - e.position.x >= -43 - 5 + offsetX &&
-                        node.position.x - e.position.x <= -43 + 5 + offsetX &&
-                        (e.data.specificElType === "res_100" ||
-                          e.data.specificElType === "res_250")
-                      ) {
-                        params = {
-                          source: `${node.id}`,
-                          sourceHandle: `l`,
-                          target: `${e.id}`,
-                          targetHandle: "l",
-                        };
-                        if (
-                          node.position.y - e.position.y >= 7 - 5 &&
-                          node.position.y - e.position.y <= 7 + 5
-                        ) {
-                          params.sourceHandle = "l1" + node.id;
-                          if (
-                            edge.findIndex(
-                              (e) => e.targetHandle === "l1.t" + node.id
-                            ) === -1
-                          )
-                            await onConnect(params);
-                        } else if (
-                          node.position.y - e.position.y >= -9 - 5 &&
-                          node.position.y - e.position.y <= -9 + 5
-                        ) {
-                          params.sourceHandle = "l2" + node.id;
-                          if (
-                            edge.findIndex(
-                              (e) => e.targetHandle === "l2.t" + node.id
-                            ) === -1
-                          )
-                            await onConnect(params);
-                        } else if (
-                          node.position.y - e.position.y >= -27 - 5 &&
-                          node.position.y - e.position.y <= -27 + 5
-                        ) {
-                          params.sourceHandle = "l3" + node.id;
-                          if (
-                            edge.findIndex(
-                              (e) => e.targetHandle === "l3.t" + node.id
-                            ) === -1
-                          )
-                            await onConnect(params);
-                        } else if (
-                          node.position.y - e.position.y >= -44 - 5 &&
-                          node.position.y - e.position.y <= -44 + 5
-                        ) {
-                          params.sourceHandle = "l4" + node.id;
-                          if (
-                            edge.findIndex(
-                              (e) => e.targetHandle === "l4.t" + node.id
-                            ) === -1
-                          )
-                            await onConnect(params);
-                        }
-                      } else if (
-                        node.position.x - e.position.x >= -174 - 5 + offsetX &&
-                        node.position.x - e.position.x <= -174 + 5 + offsetX &&
-                        (e.data.specificElType === "res_100" ||
-                          e.data.specificElType === "res_250")
-                      ) {
-                        console.log("paramsBeeper@Enter");
-                        params = {
-                          source: `${node.id}`,
-                          sourceHandle: `l`,
-                          target: `${e.id}`,
-                          targetHandle: "l",
-                        };
-                        if (
-                          node.position.y - e.position.y >= 7 - 5 &&
-                          node.position.y - e.position.y <= 7 + 5
-                        ) {
-                          params.sourceHandle = "r1" + node.id;
-                          if (
-                            edge.findIndex(
-                              (e) => e.targetHandle === "r1.t" + node.id
-                            ) === -1
-                          )
-                            await onConnect(params);
-                        } else if (
-                          node.position.y - e.position.y >= -9 - 5 &&
-                          node.position.y - e.position.y <= -9 + 5
-                        ) {
-                          params.sourceHandle = "r2" + node.id;
-                          if (
-                            edge.findIndex(
-                              (e) => e.targetHandle === "r2.t" + node.id
-                            ) === -1
-                          )
-                            await onConnect(params);
-                        } else if (
-                          node.position.y - e.position.y >= -27 - 5 &&
-                          node.position.y - e.position.y <= -27 + 5
-                        ) {
-                          params.sourceHandle = "r3" + node.id;
-                          if (
-                            edge.findIndex(
-                              (e) => e.targetHandle === "r3.t" + node.id
-                            ) === -1
-                          )
-                            await onConnect(params);
-                        } else if (
-                          node.position.y - e.position.y >= -44 - 5 &&
-                          node.position.y - e.position.y <= -44 + 5
-                        ) {
-                          params.sourceHandle = "r4" + node.id;
-                          if (
-                            edge.findIndex(
-                              (e) => e.targetHandle === "r4.t" + node.id
-                            ) === -1
-                          )
-                            await onConnect(params);
-                        }
-                      }
-                    } else {
-                      params = {
-                        source: `${e.id}`,
-                        sourceHandle: `r`,
-                        target: `${node.id}`,
-                        targetHandle: "r1",
-                      };
-                      if (
-                        node.position.x - e.position.x >= 159 - 5 &&
-                        node.position.x - e.position.x <= 159 + 5 &&
-                        (e.data.specificElType === "res_100" ||
-                          e.data.specificElType === "res_250")
-                      ) {
-                        if (
-                          node.position.y - e.position.y >= 7 - 5 &&
-                          node.position.y - e.position.y <= 7 + 5
-                        ) {
-                          params.targetHandle = "l1.t" + node.id;
-                          if (
-                            edge.findIndex(
-                              (e) => e.sourceHandle === "l1" + node.id
-                            ) === -1
-                          )
-                            await onConnect(params);
-                        } else if (
-                          node.position.y - e.position.y >= -9 - 5 &&
-                          node.position.y - e.position.y <= -9 + 5
-                        ) {
-                          params.targetHandle = "l2.t" + node.id;
-                          if (
-                            edge.findIndex(
-                              (e) => e.sourceHandle === "l2" + node.id
-                            ) === -1
-                          )
-                            await onConnect(params);
-                        } else if (
-                          node.position.y - e.position.y >= -27 - 5 &&
-                          node.position.y - e.position.y <= -27 + 5
-                        ) {
-                          params.targetHandle = "l3.t" + node.id;
-                          if (
-                            edge.findIndex(
-                              (e) => e.sourceHandle === "l3" + node.id
-                            ) === -1
-                          )
-                            await onConnect(params);
-                        } else if (
-                          node.position.y - e.position.y >= -44 - 5 &&
-                          node.position.y - e.position.y <= -44 + 5
-                        ) {
-                          params.targetHandle = "l4.t" + node.id;
-                          if (
-                            edge.findIndex(
-                              (e) => e.sourceHandle === "l4" + node.id
-                            ) === -1
-                          )
-                            await onConnect(params);
-                        }
-                      } else if (
-                        node.position.x - e.position.x >= 30 - 5 &&
-                        node.position.x - e.position.x <= 30 + 5 &&
-                        (e.data.specificElType === "res_100" ||
-                          e.data.specificElType === "res_250")
-                      ) {
-                        if (
-                          node.position.y - e.position.y >= 7 - 5 &&
-                          node.position.y - e.position.y <= 7 + 5
-                        ) {
-                          params.targetHandle = "r1.t" + node.id;
-                          if (
-                            edge.findIndex(
-                              (e) => e.sourceHandle === "r1" + node.id
-                            ) === -1
-                          )
-                            await onConnect(params);
-                        } else if (
-                          node.position.y - e.position.y >= -9 - 5 &&
-                          node.position.y - e.position.y <= -9 + 5
-                        ) {
-                          params.targetHandle = "r2.t" + node.id;
-                          if (
-                            edge.findIndex(
-                              (e) => e.sourceHandle === "r2" + node.id
-                            ) === -1
-                          )
-                            await onConnect(params);
-                        } else if (
-                          node.position.y - e.position.y >= -27 - 5 &&
-                          node.position.y - e.position.y <= -27 + 5
-                        ) {
-                          params.targetHandle = "r3.t" + node.id;
-                          if (
-                            edge.findIndex(
-                              (e) => e.sourceHandle === "r3" + node.id
-                            ) === -1
-                          )
-                            await onConnect(params);
-                        } else if (
-                          node.position.y - e.position.y >= -44 - 5 &&
-                          node.position.y - e.position.y <= -44 + 5
-                        ) {
-                          params.targetHandle = "r4.t" + node.id;
-                          if (
-                            edge.findIndex(
-                              (e) => e.sourceHandle === "r4" + node.id
-                            ) === -1
-                          )
-                            await onConnect(params);
-                        }
-                      } else if (
-                        node.position.x - e.position.x >= -43 - 5 &&
-                        node.position.x - e.position.x <= -43 + 5 &&
-                        e.data.specificElType === "led"
-                      ) {
-                        params = {
-                          source: `${node.id}`,
-                          sourceHandle: `l`,
-                          target: `${e.id}`,
-                          targetHandle: "l",
-                        };
-                        if (
-                          node.position.y - e.position.y >= 7 - 5 &&
-                          node.position.y - e.position.y <= 7 + 5
-                        ) {
-                          params.sourceHandle = "l1" + node.id;
-                          if (
-                            edge.findIndex(
-                              (e) => e.targetHandle === "l1.t" + node.id
-                            ) === -1
-                          )
-                            await onConnect(params);
-                        } else if (
-                          node.position.y - e.position.y >= -9 - 5 &&
-                          node.position.y - e.position.y <= -9 + 5
-                        ) {
-                          params.sourceHandle = "l2" + node.id;
-                          if (
-                            edge.findIndex(
-                              (e) => e.targetHandle === "l2.t" + node.id
-                            ) === -1
-                          )
-                            await onConnect(params);
-                        } else if (
-                          node.position.y - e.position.y >= -27 - 5 &&
-                          node.position.y - e.position.y <= -27 + 5
-                        ) {
-                          params.sourceHandle = "l3" + node.id;
-                          if (
-                            edge.findIndex(
-                              (e) => e.targetHandle === "l3.t" + node.id
-                            ) === -1
-                          )
-                            await onConnect(params);
-                        } else if (
-                          node.position.y - e.position.y >= -44 - 5 &&
-                          node.position.y - e.position.y <= -44 + 5
-                        ) {
-                          params.sourceHandle = "l4" + node.id;
-                          if (
-                            edge.findIndex(
-                              (e) => e.targetHandle === "l4.t" + node.id
-                            ) === -1
-                          )
-                            await onConnect(params);
-                        }
-                      }
-                      if (
-                        node.position.x - e.position.x >= -174 - 5 &&
-                        node.position.x - e.position.x <= -174 + 5 &&
-                        e.data.specificElType === "led"
-                      ) {
-                        console.log("paramsBeeper@Enter");
-                        params = {
-                          source: `${node.id}`,
-                          sourceHandle: `l`,
-                          target: `${e.id}`,
-                          targetHandle: "l",
-                        };
-                        if (
-                          node.position.y - e.position.y >= 7 - 5 &&
-                          node.position.y - e.position.y <= 7 + 5
-                        ) {
-                          params.sourceHandle = "r1" + node.id;
-                          if (
-                            edge.findIndex(
-                              (e) => e.targetHandle === "r1.t" + node.id
-                            ) === -1
-                          )
-                            await onConnect(params);
-                        } else if (
-                          node.position.y - e.position.y >= -9 - 5 &&
-                          node.position.y - e.position.y <= -9 + 5
-                        ) {
-                          params.sourceHandle = "r2" + node.id;
-                          if (
-                            edge.findIndex(
-                              (e) => e.targetHandle === "r2.t" + node.id
-                            ) === -1
-                          )
-                            await onConnect(params);
-                        } else if (
-                          node.position.y - e.position.y >= -27 - 5 &&
-                          node.position.y - e.position.y <= -27 + 5
-                        ) {
-                          params.sourceHandle = "r3" + node.id;
-                          if (
-                            edge.findIndex(
-                              (e) => e.targetHandle === "r3.t" + node.id
-                            ) === -1
-                          )
-                            await onConnect(params);
-                        } else if (
-                          node.position.y - e.position.y >= -44 - 5 &&
-                          node.position.y - e.position.y <= -44 + 5
-                        ) {
-                          params.sourceHandle = "r4" + node.id;
-                          if (
-                            edge.findIndex(
-                              (e) => e.targetHandle === "r4.t" + node.id
-                            ) === -1
-                          )
-                            await onConnect(params);
-                        }
-                      }
-                    }
-                  }
-  
-                  break;
-                case "diode":
-                  console.log(
-                    "diode665674675________",
-                    node.position.x - e.position.x,
-                    node.position.y - e.position.y
-                  );
-                  params = {
-                    source: `${e.id}`,
-                    sourceHandle: `r`,
-                    target: `${node.id}`,
-                    targetHandle: "l1",
-                  };
-                  if (
-                    node.position.x - e.position.x >= 202 - 5 &&
-                    node.position.x - e.position.x <= 202 + 5 &&
-                    node.position.y - e.position.y >= 2 - 5 &&
-                    node.position.y - e.position.y <= 2 + 5 &&
-                    e.data.specificElType !== "led"
-                  ) {
-                    let index1 = edge.findIndex((e) => e.sourceHandle === "l2");
-  
-                    if (index1 == -1) await onConnect(params);
-                  } else if (
-                    node.position.x - e.position.x >= -1 - 5 &&
-                    node.position.x - e.position.x <= -1 + 5 &&
-                    node.position.y - e.position.y >= 1 - 5 &&
-                    node.position.y - e.position.y <= 1 + 5
-                  ) {
-                    params.targetHandle = "r2";
-                    let index1 = edge.findIndex((e) => e.sourceHandle === "r1");
-  
-                    if (e.data.specificElType !== "led" && index1 == -1)
-                      await onConnect(params);
-                    else if (e.data.specificElType === "led") {
+                    if (props.type === "transistorCircuit") {
                       params = {
                         source: `${node.id}`,
-                        sourceHandle: `l2`,
+                        sourceHandle: `r`,
                         target: `${e.id}`,
                         targetHandle: "l",
                       };
-                      let index1 = edge.findIndex((e) => e.targetHandle === "l1");
-                      if (index1 == -1) await onConnect(params);
-                    }
-                  } else if (
-                    node.position.x - e.position.x >= -202 - 5 &&
-                    node.position.x - e.position.x <= -202 + 5 &&
-                    node.position.y - e.position.y >= -2 - 5 &&
-                    node.position.y - e.position.y <= -2 + 5 &&
-                    e.data.specificElType === "led"
-                  ) {
-                    params = {
-                      source: `${node.id}`,
-                      sourceHandle: `r1`,
-                      target: `${e.id}`,
-                      targetHandle: "l",
-                    };
-                    let index1 = edge.findIndex((e) => e.targetHandle === "r2");
-  
-                    if (index1 === -1) await onConnect(params);
-                  }
-                  break;
-                case "transistor":
-                  if (
-                    e.data.specificElType === "tact" ||
-                    e.data.specificElType === "ldr"
-                  ) {
-                    params = {
-                      source: `${e.id}`,
-                      sourceHandle: `r`,
-                      target: `${node.id}`,
-                      targetHandle: "l",
-                    };
-                    if (
-                      node.position.x - e.position.x >= 200 - 5 &&
-                      node.position.x - e.position.x <= 200 + 5 &&
-                      node.position.y - e.position.y >= -20 - 5 &&
-                      node.position.y - e.position.y <= -20 + 5
-                    ) {
-                      await onConnect(params);
-                    }
-                  } else if (e.data.specificElType === "led") {
-                    if (
-                      node.position.x - e.position.x >= 9 - 5 &&
-                      node.position.x - e.position.x <= 9 + 5 &&
-                      node.position.y - e.position.y >= -5 - 5 &&
-                      node.position.y - e.position.y <= -5 + 5
-                    ) {
-                      params = {
-                        source: `${e.id}`,
-                        sourceHandle: `r`,
-                        target: `${node.id}`,
-                        targetHandle: "r.t",
-                      };
-                      await onConnect(params);
-                    }
-                  } else if (e.data.specificElType === "power") {
-                  }
-                  break;
-                case "pot":
-                  console.log(
-                    "pot^^^^^^^",
-                    node.position.x - e.position.x,
-                    node.position.y - e.position.y
-                  );
-                  if (
-                    node.position.x - e.position.x >= 9 - 5 &&
-                    node.position.x - e.position.x < 9 + 5 &&
-                    node.position.y - e.position.y >= -19 - 5 &&
-                    node.position.y - e.position.y < -19 + 5 &&
-                    props.type == "voltageDividerCircuit" &&
-                    e.data.specificElType === "led"
-                  ) {
-                    params = {
-                      source: `${node.id}`,
-                      sourceHandle: `r`,
-                      target: `${e.id}`,
-                      targetHandle: "l",
-                    };
-                    await onConnect(params);
-                  }
-                  if (
-                    node.position.x - e.position.x >= -17 - 5 &&
-                    node.position.x - e.position.x < -17 + 5 &&
-                    node.position.y - e.position.y >= 9 - 5 &&
-                    node.position.y - e.position.y < 9 + 5 &&
-                    props.type == "voltageDividerCircuit" &&
-                    e.data.specificElType === "tact"
-                  ) {
-                    params = {
-                      source: `${e.id}`,
-                      sourceHandle: `r`,
-                      target: `${node.id}`,
-                      targetHandle: "r1",
-                    };
-                    await onConnect(params);
-                  }
-                  break;
-                default:
-                  if (
-                    node.position.x - e.position.x >= 221 - 5 + offsetX &&
-                    node.position.x - e.position.x < 221 + 5 + offsetX &&
-                    node.position.y - e.position.y >= 31 - 5 + offsetY &&
-                    node.position.y - e.position.y < 31 + 5 + offsetY
-                  ) {
-                    params = {
-                      source: `${e.id}`,
-                      sourceHandle: `r`,
-                      target: `${node.id}`,
-                      targetHandle: "l",
-                    };
-                    switch (props.type) {
-                      case "simpleCircuit":
-                        if (
-                          e.data.specificElType === "tact" &&
-                          (node.data.specificElType == "beeper" ||
-                            node.data.specificElType == "led")
-                        )
-                          await onConnect(params);
-                        else if (node.data.specificElType === "tact") {
-                          console.log("en$$$$$$$$$tered@@@@55658");
-                          // params = {
-                          //   source: `${node.id}`,
-                          //   sourceHandle: `r`,
-                          //   target: `${e.id}`,
-                          //   targetHandle: "l",
-                          // };
-                          // await onConnect(params);
-                        }
-                        break;
-                      case "seriesCircuit":
-                        if (
-                          e.data.specificElType === "tact" &&
-                          (node.data.specificElType == "beeper" ||
-                            node.data.specificElType == "led")
-                        )
-                          await onConnect(params);
-                        if (
-                          e.data.specificElType === "led" &&
-                          node.data.specificElType == "led"
-                        )
-                          await onConnect(params);
-                        break;
-  
-                      case "resistorCircuit":
-                        if (
-                          e.data.specificElType == "tact" &&
-                          (node.data.specificElType === "res_100" ||
-                            node.data.specificElType === "res_250")
-                        ) {
-                          params.sourceHandle = "r";
-  
-                          await onConnect(params);
-                        } else if (
-                          (e.data.specificElType === "res_100" ||
-                            e.data.specificElType === "res_250") &&
-                          node.data.specificElType === "led"
-                        ) {
-                          params.targetHandle = "l";
-  
-                          await onConnect(params);
-                        } else if (
-                          (e.data.specificElType === "res_100" ||
-                            e.data.specificElType === "res_250") &&
-                          (node.data.specificElType === "res_100" ||
-                            node.data.specificElType === "res_250")
-                        ) {
-                          await onConnect(params);
-                        }
-                        break;
-                      case "capacitorCircuit":
-                        if (
-                          e.data.specificElType === "tact" &&
-                          (node.data.specificElType === "capacitor100" ||
-                            node.data.specificElType === "capacitor1000")
-                        ) {
-                          await onConnect(params);
-                        } else if (
-                          e.data.specificElType === "capacitor100" ||
-                          (e.data.specificElType === "capacitor1000" &&
-                            (node.data.specificElType === "capacitor100" ||
-                              node.data.specificElType === "capacitor1000"))
-                        ) {
-                          await onConnect(params);
-                        } else if (
-                          e.data.specificElType === "capacitor100" ||
-                          (e.data.specificElType === "capacitor1000" &&
-                            node.data.specificElType === "beeper")
-                        ) {
-                          params = {
-                            source: `${e.id}`,
-                            sourceHandle: `r`,
-                            target: `${node.id}`,
-                            targetHandle: "l",
-                          };
-                          console.log("entered@@@@55658GSKKKKKKKKKK", params);
-                          await onConnect(params);
-                        } else if (
-                          node.data.specificElType === "beeper" &&
-                          e.data.specificElType === "tact"
-                        ) {
-                          params = {
-                            source: `${e.id}`,
-                            sourceHandle: `r`,
-                            target: `${node.id}`,
-                            targetHandle: "l",
-                          };
-                          console.log("entered@@@@55658GSKKKKKKKKKK", params);
-                          await onConnect(params);
-                        }
-                        break;
-                      case "voltageDividerCircuit":
-                        if (
-                          e.data.specificElType === "tact" &&
-                          node.data.specificElType === "pot"
-                        ) {
-                          params.targetHandle = "r1";
-                          await onConnect(params);
-                        }
-                        break;
-                      case "transistorCircuit":
-                        if (
-                          e.data.specificElType === "res_100" &&
-                          node.data.specificElType === "tact"
-                        )
-                          await onConnect(params);
-  
-                        break;
-                    }
-                    return;
-                  } else if (
-                    node.position.x - e.position.x >= -189 - 5 + offsetX &&
-                    node.position.x - e.position.x < -189 + 5 + offsetX &&
-                    node.position.y - e.position.y >= 31 - 5 + offsetY &&
-                    node.position.y - e.position.y < 31 + 5 + offsetY
-                  ) {
-                    switch (props.type) {
-                      case "simpleCircuit":
-                        if (
-                          (node.data.specificElType === "tact" &&
-                            e.data.specificElType === "beeper") ||
-                          e.data.specificElType === "led"
-                        ) {
-                          params = {
-                            source: `${node.id}`,
-                            sourceHandle: `r`,
-                            target: `${e.id}`,
-                            targetHandle: "l",
-                          };
-                          await onConnect(params);
-                        }
-                        break;
-                      case "seriesCircuit":
-                        params = {
-                          source: `${node.id}`,
-                          sourceHandle: `r`,
-                          target: `${e.id}`,
-                          targetHandle: "l",
-                        };
-                        if (
-                          (node.data.specificElType === "tact" &&
-                            e.data.specificElType === "led") ||
-                          (node.data.specificElType === "led" &&
-                            e.data.specificElType === "led")
-                        )
-                          await onConnect(params);
-                        break;
-                      case "capacitorCircuit":
-                        params = {
-                          source: `${node.id}`,
-                          sourceHandle: `r`,
-                          target: `${e.id}`,
-                          targetHandle: "l",
-                        };
-                        if (
-                          (node.data.specificElType === "tact" &&
-                            e.data.specificElType === "capacitor100") ||
-                          e.data.specificElType === "capacitor1000"
-                        )
-                          await onConnect(params);
-                        else if (
-                          node.data.specificElType === "capacitor100" ||
-                          (node.data.specificElType === "capacitor1000" &&
-                            e.data.specificElType === "capacitor100") ||
-                          e.data.specificElType === "capacitor1000"
-                        )
-                          await onConnect(params);
-                        break;
-                      case "resistorCircuit":
-                        if (
-                          (e.data.specificElType === "res_100" ||
-                            e.data.specificElType === "res_250") &&
-                          node.data.specificElType === "tact"
-                        ) {
-                          params = {
-                            source: `${node.id}`,
-                            sourceHandle: `r`,
-                            target: `${e.id}`,
-                            targetHandle: "l",
-                          };
-                          await onConnect(params);
-                        }
-                        if (
-                          (e.data.specificElType === "res_100" ||
-                            e.data.specificElType === "res_250" ||
-                            e.data.specificElType === "led") &&
-                          (node.data.specificElType === "res_100" ||
-                            node.data.specificElType === "res_250")
-                        ) {
-                          params = {
-                            source: `${node.id}`,
-                            sourceHandle: `r`,
-                            target: `${e.id}`,
-                            targetHandle: "l",
-                          };
-                          await onConnect(params);
-                        }
-                        break;
-                    }
-                  }
-              }
-  
-              break;
-            case "power":
-              switch (node.data.specificElType) {
-                case "beeper":
-                  offsetX = 0;
-                  offsetY = 0;
-                  break;
-                case "capacitor100":
-                case "diode":
-                case "ldr":
-                case "led":
-                case "res_100":
-                case "res_250":
-                case "capacitor1000":
-                case "tact":
-                  offsetX = -20;
-                  offsetY = -27;
-                  break;
-                case "transistor":
-                  offsetX = -21;
-                  offsetY = -48;
-                  break;
-                case "two_way_switch":
-                  offsetX = 0;
-                  offsetY = 0;
-                  break;
-                default:
-                  offsetX = 0;
-                  offsetY = 0;
-                  break;
-              }
-  
-              switch (node.data.specificElType) {
-                case "junction":
-                  if (props.type === "voltageDividerCircuit") {
-                    params = {
-                      source: `${node.id}`,
-                      sourceHandle: `r`,
-                      target: `${e.id}`,
-                      targetHandle: "r2",
-                    };
-                    if (
-                      node.position.x - e.position.x >= 120 - 5 &&
-                      node.position.x - e.position.x <= 120 + 5
-                    ) {
+
                       if (
-                        node.position.y - e.position.y >= 45 - 5 &&
-                        node.position.y - e.position.y <= 45 + 5
-                      ) {
-                        params.sourceHandle = "l1";
-                        if (
-                          edge.findIndex((e) => e.tragetHandle === "l1.t") === -1
-                        )
-                          await onConnect(params);
-                      } else if (
-                        node.position.y - e.position.y >= 28 - 5 &&
-                        node.position.y - e.position.y <= 28 + 5
-                      ) {
-                        params.sourceHandle = "l2";
-                        if (
-                          edge.findIndex((e) => e.targetHandle === "l2.t") === -1
-                        )
-                          await onConnect(params);
-                      } else if (
-                        node.position.y - e.position.y >= 10 - 5 &&
-                        node.position.y - e.position.y <= 10 + 5
-                      ) {
-                        params.sourceHandle = "l3";
-                        if (
-                          edge.findIndex((e) => e.targetHandle === "l3.t") === -1
-                        )
-                          await onConnect(params);
-                      } else if (
-                        node.position.y - e.position.y >= -6 - 5 &&
-                        node.position.y - e.position.y <= -6 + 5
-                      ) {
-                        params.sourceHandle = "l4";
-                        if (
-                          edge.findIndex((e) => e.targetHandle === "l4.t") === -1
-                        )
-                          await onConnect(params);
-                      }
-                    } else if (
-                      node.position.x - e.position.x >= -13 - 5 &&
-                      node.position.x - e.position.x <= -13 + 5
-                    ) {
-                      if (
-                        node.position.y - e.position.y >= 45 - 5 &&
-                        node.position.y - e.position.y <= 45 + 5
-                      ) {
-                        params.sourceHandle = "r1";
-                        if (
-                          edge.findIndex((e) => e.targetHandle === "r1.t") === -1
-                        )
-                          await onConnect(params);
-                      } else if (
-                        node.position.y - e.position.y >= 28 - 5 &&
-                        node.position.y - e.position.y <= 28 + 5
-                      ) {
-                        params.sourceHandle = "r2";
-                        if (
-                          edge.findIndex((e) => e.targetHandle === "r2.t") === -1
-                        )
-                          await onConnect(params);
-                      } else if (
-                        node.position.y - e.position.y >= 10 - 5 &&
-                        node.position.y - e.position.y <= 10 + 5
-                      ) {
-                        params.sourceHandle = "r3";
-                        if (
-                          edge.findIndex((e) => e.targetHandle === "r3.t") === -1
-                        )
-                          await onConnect(params);
-                      } else if (
-                        node.position.y - e.position.y >= -6 - 5 &&
-                        node.position.y - e.position.y <= -6 + 5
-                      ) {
-                        params.sourceHandle = "r4";
-                        if (
-                          edge.findIndex((e) => e.targetHandle === "r4.t") === -1
-                        )
-                          await onConnect(params);
-                      }
-                    }
-                  } else if (props.type === "transistorCircuit") {
-                    params = {
-                      source: `${e.id}`,
-                      sourceHandle: `r4`,
-                      target: `${node.id}`,
-                      targetHandle: "r3",
-                    };
-                    if (
-                      node.position.x - e.position.x >= 120 - 5 &&
-                      node.position.x - e.position.x <= 120 + 5
-                    ) {
-                      if (
-                        node.position.y - e.position.y >= 1 - 5 &&
-                        node.position.y - e.position.y <= 1 + 5
-                      ) {
-                        params.targetHandle = "l1.t";
-                        if (edge.findIndex((e) => e.sourceHandle === "l1") === -1)
-                          await onConnect(params);
-                      } else if (
-                        node.position.y - e.position.y >= 16 - 5 &&
-                        node.position.y - e.position.y <= 16 + 5
-                      ) {
-                        params.targetHandle = "l2.t";
-                        if (edge.findIndex((e) => e.sourceHandle === "l2") === -1)
-                          await onConnect(params);
-                      } else if (
-                        node.position.y - e.position.y >= 44 - 5 &&
-                        node.position.y - e.position.y <= 44 + 5
-                      ) {
-                        params.targetHandle = "l3.t";
-                        if (edge.findIndex((e) => e.sourceHandle === "l3") === -1)
-                          await onConnect(params);
-                      } else if (
-                        node.position.y - e.position.y >= 64 - 5 &&
-                        node.position.y - e.position.y <= 64 + 5
-                      ) {
-                        params.targetHandle = "l4.t";
-                        if (edge.findIndex((e) => e.sourceHandle === "l4") === -1)
-                          await onConnect(params);
-                      }
-                    } else if (
-                      node.position.x - e.position.x >= -13 - 5 &&
-                      node.position.x - e.position.x <= -13 + 5
-                    ) {
-                      if (
-                        node.position.y - e.position.y >= -1 - 5 &&
-                        node.position.y - e.position.y <= -1 + 5
-                      ) {
-                        params.targetHandle = "r1.t";
-                        if (edge.findIndex((e) => e.sourceHandle === "r1") === -1)
-                          await onConnect(params);
-                      } else if (
-                        node.position.y - e.position.y >= -16 - 5 &&
-                        node.position.y - e.position.y <= -16 + 5
-                      ) {
-                        params.targetHandle = "r2.t";
-                        if (edge.findIndex((e) => e.sourceHandle === "r2") === -1)
-                          await onConnect(params);
-                      } else if (
-                        node.position.y - e.position.y >= -44 - 5 &&
-                        node.position.y - e.position.y <= -44 + 5
-                      ) {
-                        params.targetHandle = "r3.t";
-                        if (edge.findIndex((e) => e.sourceHandle === "r3") === -1)
-                          await onConnect(params);
-                      } else if (
-                        node.position.y - e.position.y >= -64 - 5 &&
-                        node.position.y - e.position.y <= -64 + 5
-                      ) {
-                        params.targetHandle = "r4.t";
-                        if (edge.findIndex((e) => e.sourceHandle === "r4") === -1)
-                          await onConnect(params);
-                      }
-                    }
-                  } else if (props.type === "parallelCircuit") {
-                    let index3 = nodes.find(
-                      (n) => n.data.specificElType === "junction"
-                    );
-                    let index1 = nodes.find(
-                      (n) =>
-                        n.data.specificElType === "junction" && n.id != index3.id
-                    );
-                    console.log(
-                      "junction end",
-                      node.position.x - e.position.x,
-                      node.position.y - e.position.y
-                    );
-                    if (index1.id === node.id) {
-                      if (
-                        node.position.x - e.position.x >= 122 - 5 &&
-                        node.position.x - e.position.x <= 122 + 5
-                      ) {
-                        params = {
-                          source: `${node.id}`,
-                          sourceHandle: `r`,
-                          target: `${e.id}`,
-                          targetHandle: "r2",
-                        };
-                        if (
-                          node.position.y - e.position.y >= -7 - 5 &&
-                          node.position.y - e.position.y <= -7 + 5
-                        ) {
-                          params.sourceHandle = "l4" + index1.id;
-                          if (
-                            edge.findIndex(
-                              (e) => e.targetHandle === "l4.t" + index1.id
-                            ) === -1
-                          )
-                            await onConnect(params);
-                        } else if (
-                          node.position.y - e.position.y >= 9 - 5 &&
-                          node.position.y - e.position.y <= 9 + 5
-                        ) {
-                          params.sourceHandle = "l3" + index1.id;
-                          if (
-                            edge.findIndex(
-                              (e) => e.targetHandle === "l3.t" + index1.id
-                            ) === -1
-                          )
-                            await onConnect(params);
-                        } else if (
-                          node.position.y - e.position.y >= 27 - 5 &&
-                          node.position.y - e.position.y <= 27 + 5
-                        ) {
-                          params.sourceHandle = "l2" + index1.id;
-                          if (
-                            edge.findIndex(
-                              (e) => e.targetHandle === "l2.t" + index1.id
-                            ) === -1
-                          )
-                            await onConnect(params);
-                        } else if (
-                          node.position.y - e.position.y >= 44 - 5 &&
-                          node.position.y - e.position.y <= 44 + 5
-                        ) {
-                          params.sourceHandle = "l1" + index1.id;
-                          if (
-                            edge.findIndex(
-                              (e) => e.targetHandle === "l1.t" + index1.id
-                            ) === -1
-                          )
-                            await onConnect(params);
-                        }
-                      } else if (
-                        node.position.x - e.position.x >= -14 - 5 &&
-                        node.position.x - e.position.x <= -14 + 5
-                      ) {
-                        params = {
-                          source: `${node.id}`,
-                          sourceHandle: `r`,
-                          target: `${e.id}`,
-                          targetHandle: "r2",
-                        };
-                        if (
-                          node.position.y - e.position.y >= -7 - 5 &&
-                          node.position.y - e.position.y <= -7 + 5
-                        ) {
-                          params.sourceHandle = "r4" + index1.id;
-                          if (
-                            edge.findIndex(
-                              (e) => e.targetHandle === "r4.t" + index1.id
-                            ) === -1
-                          )
-                            await onConnect(params);
-                        } else if (
-                          node.position.y - e.position.y >= 9 - 5 &&
-                          node.position.y - e.position.y <= 9 + 5
-                        ) {
-                          params.sourceHandle = "lr" + index1.id;
-                          if (
-                            edge.findIndex(
-                              (e) => e.targetHandle === "r3.t" + index1.id
-                            ) === -1
-                          )
-                            await onConnect(params);
-                        } else if (
-                          node.position.y - e.position.y >= 27 - 5 &&
-                          node.position.y - e.position.y <= 27 + 5
-                        ) {
-                          params.sourceHandle = "r2" + index1.id;
-                          if (
-                            edge.findIndex(
-                              (e) => e.targetHandle === "r2.t" + index1.id
-                            ) === -1
-                          )
-                            await onConnect(params);
-                        } else if (
-                          node.position.y - e.position.y >= 44 - 5 &&
-                          node.position.y - e.position.y <= 44 + 5
-                        ) {
-                          params.sourceHandle = "r1" + index1.id;
-                          if (
-                            edge.findIndex(
-                              (e) => e.targetHandle === "r1.t" + index1.id
-                            ) === -1
-                          )
-                            await onConnect(params);
-                        }
-                      }
-                    }
-                  } else if (props.type === "capacitorCircuit") {
-                    let index3 = nodes.find(
-                      (n) => n.data.specificElType === "junction"
-                    );
-                    let index1 = nodes.find(
-                      (n) =>
-                        n.data.specificElType === "junction" && n.id != index3.id
-                    );
-                    if (index1 == undefined) {
-                      index1 = { id: null };
-                    }
-                    console.log(
-                      "junction end",
-                      node.position.x - e.position.x,
-                      node.position.y - e.position.y
-                    );
-  
-                    if (index1.id === node.id) {
-                      if (
-                        node.position.x - e.position.x >= 122 - 5 &&
-                        node.position.x - e.position.x <= 122 + 5
-                      ) {
-                        params = {
-                          source: `${node.id}`,
-                          sourceHandle: `r`,
-                          target: `${e.id}`,
-                          targetHandle: "r2",
-                        };
-                        if (
-                          node.position.y - e.position.y >= -7 - 5 &&
-                          node.position.y - e.position.y <= -7 + 5
-                        ) {
-                          params.sourceHandle = "l4" + index1.id;
-                          if (
-                            edge.findIndex(
-                              (e) => e.targetHandle === "l4.t" + index1.id
-                            ) === -1
-                          )
-                            await onConnect(params);
-                        } else if (
-                          node.position.y - e.position.y >= 9 - 5 &&
-                          node.position.y - e.position.y <= 9 + 5
-                        ) {
-                          params.sourceHandle = "l3" + index1.id;
-                          if (
-                            edge.findIndex(
-                              (e) => e.targetHandle === "l3.t" + index1.id
-                            ) === -1
-                          )
-                            await onConnect(params);
-                        } else if (
-                          node.position.y - e.position.y >= 27 - 5 &&
-                          node.position.y - e.position.y <= 27 + 5
-                        ) {
-                          params.sourceHandle = "l2" + index1.id;
-                          if (
-                            edge.findIndex(
-                              (e) => e.targetHandle === "l2.t" + index1.id
-                            ) === -1
-                          )
-                            await onConnect(params);
-                        } else if (
-                          node.position.y - e.position.y >= 44 - 5 &&
-                          node.position.y - e.position.y <= 44 + 5
-                        ) {
-                          params.sourceHandle = "l1" + index1.id;
-                          if (
-                            edge.findIndex(
-                              (e) => e.targetHandle === "l1.t" + index1.id
-                            ) === -1
-                          )
-                            await onConnect(params);
-                        }
-                      } else if (
-                        node.position.x - e.position.x >= -14 - 5 &&
-                        node.position.x - e.position.x <= -14 + 5
-                      ) {
-                        params = {
-                          source: `${node.id}`,
-                          sourceHandle: `r`,
-                          target: `${e.id}`,
-                          targetHandle: "r2",
-                        };
-                        if (
-                          node.position.y - e.position.y >= -7 - 5 &&
-                          node.position.y - e.position.y <= -7 + 5
-                        ) {
-                          params.sourceHandle = "r4" + index1.id;
-                          if (
-                            edge.findIndex(
-                              (e) => e.targetHandle === "r4.t" + index1.id
-                            ) === -1
-                          )
-                            await onConnect(params);
-                        } else if (
-                          node.position.y - e.position.y >= 9 - 5 &&
-                          node.position.y - e.position.y <= 9 + 5
-                        ) {
-                          params.sourceHandle = "lr" + index1.id;
-                          if (
-                            edge.findIndex(
-                              (e) => e.targetHandle === "r3.t" + index1.id
-                            ) === -1
-                          )
-                            await onConnect(params);
-                        } else if (
-                          node.position.y - e.position.y >= 27 - 5 &&
-                          node.position.y - e.position.y <= 27 + 5
-                        ) {
-                          params.sourceHandle = "r2" + index1.id;
-                          if (
-                            edge.findIndex(
-                              (e) => e.targetHandle === "r2.t" + index1.id
-                            ) === -1
-                          )
-                            await onConnect(params);
-                        } else if (
-                          node.position.y - e.position.y >= 44 - 5 &&
-                          node.position.y - e.position.y <= 44 + 5
-                        ) {
-                          params.sourceHandle = "r1" + index1.id;
-                          if (
-                            edge.findIndex(
-                              (e) => e.targetHandle === "r1.t" + index1.id
-                            ) === -1
-                          )
-                            await onConnect(params);
-                        }
-                      }
-                    } else {
-                      if (
-                        node.position.x - e.position.x >= 122 - 5 &&
-                        node.position.x - e.position.x <= 122 + 5
-                      ) {
-                        // console.log("junction end Enter enter enter enter enter");
-                        params = {
-                          source: `${e.id}`,
-                          sourceHandle: `r4`,
-                          target: `${node.id}`,
-                          targetHandle: "r2",
-                        };
-                        if (
-                          node.position.y - e.position.y >= -54 - 5 &&
-                          node.position.y - e.position.y <= -54 + 5
-                        ) {
-                          params.targetHandle = "l4.t" + index3.id;
-                          if (
-                            edge.findIndex(
-                              (e) => e.sourceHandle === "l4" + index3.id
-                            ) === -1
-                          )
-                            await onConnect(params);
-                        } else if (
-                          node.position.y - e.position.y >= -35 - 5 &&
-                          node.position.y - e.position.y <= -35 + 5
-                        ) {
-                          params.targetHandle = "l3.t" + index3.id;
-                          if (
-                            edge.findIndex(
-                              (e) => e.sourceHandle === "l3" + index3.id
-                            ) === -1
-                          )
-                            await onConnect(params);
-                        } else if (
-                          node.position.y - e.position.y >= -19 - 5 &&
-                          node.position.y - e.position.y <= -19 + 5
-                        ) {
-                          params.targetHandle = "l2.t" + index3.id;
-                          if (
-                            edge.findIndex(
-                              (e) => e.sourceHandle === "l2" + index3.id
-                            ) === -1
-                          )
-                            await onConnect(params);
-                        } else if (
-                          node.position.y - e.position.y >= -1 - 5 &&
-                          node.position.y - e.position.y <= -1 + 5
-                        ) {
-                          params.targetHandle = "l1.t" + node.id;
-                          console.log(
-                            "junction end Enter enter enter enter enter",
-                            params
-                          );
-                          if (
-                            edge.findIndex(
-                              (e) => e.sourceHandle === "l1" + node.id
-                            ) === -1
-                          )
-                            await onConnect(params);
-                        }
-                      } else if (
-                        node.position.x - e.position.x >= -14 - 5 &&
-                        node.position.x - e.position.x <= -14 + 5
-                      ) {
-                        params = {
-                          source: `${e.id}`,
-                          sourceHandle: `r4`,
-                          target: `${node.id}`,
-                          targetHandle: "r2",
-                        };
-                        if (
-                          node.position.y - e.position.y >= -54 - 5 &&
-                          node.position.y - e.position.y <= -54 + 5
-                        ) {
-                          params.targetHandle = "r4.t" + index3.id;
-                          if (
-                            edge.findIndex(
-                              (e) => e.sourceHandle === "r4" + index3.id
-                            ) === -1
-                          )
-                            await onConnect(params);
-                        } else if (
-                          node.position.y - e.position.y >= -35 - 5 &&
-                          node.position.y - e.position.y <= -35 + 5
-                        ) {
-                          params.targetHandle = "r3.t" + index3.id;
-                          if (
-                            edge.findIndex(
-                              (e) => e.sourceHandle === "r3" + index3.id
-                            ) === -1
-                          )
-                            await onConnect(params);
-                        } else if (
-                          node.position.y - e.position.y >= -19 - 5 &&
-                          node.position.y - e.position.y <= -19 + 5
-                        ) {
-                          params.targetHandle = "r2.t" + index3.id;
-                          if (
-                            edge.findIndex(
-                              (e) => e.sourceHandle === "r2" + index3.id
-                            ) === -1
-                          )
-                            await onConnect(params);
-                        } else if (
-                          node.position.y - e.position.y >= -1 - 5 &&
-                          node.position.y - e.position.y <= -1 + 5
-                        ) {
-                          params.targetHandle = "r1.t" + index3.id;
-                          if (
-                            edge.findIndex(
-                              (e) => e.sourceHandle === "r1" + index3.id
-                            ) === -1
-                          )
-                            await onConnect(params);
-                        }
-                      }
-                    }
-                  }
-                  break;
-                case "transistor":
-                  console.log(
-                    "trans^^^^^^^",
-                    node.position.x - e.position.x,
-                    node.position.y - e.position.y
-                  );
-                  if (
-                    node.position.x - e.position.x >= -35 - 5 &&
-                    node.position.x - e.position.x <= -35 + 5 &&
-                    node.position.y - e.position.y >= 4 - 5 &&
-                    node.position.y - e.position.y < 4 + 5
-                  ) {
-                    params = {
-                      source: `${node.id}`,
-                      sourceHandle: `r`,
-                      target: `${e.id}`,
-                      targetHandle: "r2",
-                    };
-                    await onConnect(params);
-                  } else if (
-                    node.position.x - e.position.x >= -35 - 5 &&
-                    node.position.x - e.position.x <= -35 + 5 &&
-                    node.position.y - e.position.y >= 20 - 5 &&
-                    node.position.y - e.position.y < 20 + 5
-                  ) {
-                    params = {
-                      source: `${node.id}`,
-                      sourceHandle: `r`,
-                      target: `${e.id}`,
-                      targetHandle: "r3",
-                    };
-                    await onConnect(params);
-                  }
-                  break;
-                default:
-                  if (
-                    node.position.x - e.position.x >= 181 - 5 + offsetX &&
-                    node.position.x - e.position.x < 181 + 5 + offsetX &&
-                    node.position.y - e.position.y >= 20 - 5 + offsetY &&
-                    node.position.y - e.position.y < 20 + 5 + offsetY
-                  ) {
-                    params = {
-                      source: `${e.id}`,
-                      sourceHandle: `r4`,
-                      target: `${node.id}`,
-                      targetHandle: "l",
-                    };
-                    console.log(
-                      "props@@@@@",
-                      props.type,
-                      node.data.specificElType
-                    );
-                    switch (props.type) {
-                      case "simpleCircuit":
-                      case "seriesCircuit":
-                      case "parallelCircuit":
-                      case "resistorCircuit":
-                      case "capacitorCircuit":
-                      case "voltageDividerCircuit":
-                      case "semi-conductorDiodeCircuit":
-                        if (node.data.specificElType === "tact")
-                          await onConnect(params);
-                    }
-  
-                    return;
-                  } else if (
-                    node.position.x - e.position.x >= 181 - 5 + offsetX &&
-                    node.position.x - e.position.x < 181 + 5 + offsetX &&
-                    node.position.y - e.position.y >= 38 - 5 + offsetY &&
-                    node.position.y - e.position.y < 38 + 5 + offsetY
-                  ) {
-                    params = {
-                      source: `${e.id}`,
-                      sourceHandle: `r1`,
-                      target: `${node.id}`,
-                      targetHandle: "l",
-                    };
-  
-                    switch (props.type) {
-                      case "simpleCircuit":
-                      case "seriesCircuit":
-                      case "parallelCircuit":
-                      case "resistorCircuit":
-                      case "capacitorCircuit":
-                      case "semi-conductorDiodeCircuit":
-                        if (node.data.specificElType === "tact")
-                          await onConnect(params);
-                    }
-                  } else if (
-                    node.position.x - e.position.x >= -59 - 5 - offsetX &&
-                    node.position.x - e.position.x < -59 + 5 - offsetX &&
-                    node.position.y - e.position.y >= 67 - 5 + offsetY &&
-                    node.position.y - e.position.y < 67 + 5 + offsetY
-                  ) {
-                    params = {
-                      source: `${node.id}`,
-                      sourceHandle: `r`,
-                      target: `${e.id}`,
-                      targetHandle: "r2",
-                    };
-                    switch (props.type) {
-                      case "simpleCircuit":
-                      case "seriesCircuit":
-                      case "resistorCircuit":
-                      case "semi-conductorDiodeCircuit":
-                        if (
-                          node.data.specificElType === "led" ||
-                          node.data.specificElType === "beeper"
-                        )
-                          await onConnect(params);
-                        break;
-                      case "parallelCircuit":
-                        if (
-                          node.data.specificElType === "led" ||
-                          node.data.specificElType === "beeper"
-                        )
-                          if (index2Count === 0) params.targetHandle = "r2.0";
-                          else if (index2Count === 1)
-                            params.targetHandle = "r2.1";
-                        await onConnect(params);
-                        index2Count = 1;
-                        break;
-                      case "capacitorCircuit":
-                        if (node.data.specificElType === "beeper") {
-                          await onConnect(params);
-                        }
-                        break;
-                    }
-                    return;
-                  } else if (
-                    node.position.x - e.position.x >= -59 - 5 - offsetX &&
-                    node.position.x - e.position.x < -59 + 5 - offsetX &&
-                    node.position.y - e.position.y >= 86 - 5 + offsetY &&
-                    node.position.y - e.position.y < 86 + 5 + offsetY
-                  ) {
-                    params = {
-                      source: `${node.id}`,
-                      sourceHandle: `r`,
-                      target: `${e.id}`,
-                      targetHandle: "r3",
-                    };
-                    switch (props.type) {
-                      case "simpleCircuit":
-                      case "seriesCircuit":
-                      case "resistorCircuit":
-                      case "semi-conductorDiodeCircuit":
-                        if (
-                          node.data.specificElType === "led" ||
-                          node.data.specificElType === "beeper"
-                        )
-                          await onConnect(params);
-                        break;
-                      case "parallelCircuit":
-                        if (
-                          node.data.specificElType === "led" ||
-                          node.data.specificElType === "beeper"
-                        )
-                          if (index2Count === 0) params.targetHandle = "r3.0";
-                          else if (index2Count === 1)
-                            params.targetHandle = "r3.1";
-                        await onConnect(params);
-                        index2Count = 1;
-  
-                        break;
-                      case "capacitorCircuit":
-                        if (node.data.specificElType === "beeper") {
-                          await onConnect(params);
-                        }
-                        break;
-                    }
-                    return;
-                  }
-              }
-  
-              break;
-            case "pot":
-              switch (node.data.specificElType) {
-                case "junction":
-                  params = {
-                    source: `${node.id}`,
-                    sourceHandle: `l1`,
-                    target: `${e.id}`,
-                    targetHandle: "r1",
-                  };
-                  // let index1 = edge.findIndex(
-                  //   (e) =>
-                  //     e.target === params.target && params.targetHandle == "r1"
-                  // );
-                  let y = node.position.y - e.position.y;
-                  console.log(
-                    "POT#####^^^^^^^^^^####",
-                    node.position.x - e.position.x,
-                    node.position.y - e.position.y
-                  );
-                  // if (index1 != -1) {
-                  params.targetHandle = "r2";
-                  //}
-                  if (
-                    node.position.x - e.position.x >= 176 - 5 &&
-                    node.position.x - e.position.x <= 176 + 5
-                  ) {
-                    //l1.t or l1
-                    if (y)
-                      if (y >= 54 - 5 && y <= 54 + 5) {
-                        params.sourceHandle = "l1";
-                        if (
-                          edge.findIndex((e) => e.targetHandle === "l1.t") === -1
-                        )
-                          await onConnect(params);
-                      }
-                      //l2.t or l2
-                      else if (y >= 37 - 5 && y <= 37 + 5) {
-                        params.sourceHandle = "l2";
-                        if (
-                          edge.findIndex((e) => e.targetHandle === "l2.t") === -1
-                        )
-                          await onConnect(params);
-                      }
-                      //l3.t or l3
-                      else if (y >= 21 - 5 && y <= 21 + 5) {
-                        params.sourceHandle = "l3";
-                        if (
-                          edge.findIndex((e) => e.targetHandle === "l3.t") === -1
-                        )
-                          await onConnect(params);
-                      }
-                      //l4.t or l4
-                      else if (y >= 2 - 5 && y <= 2 + 5) {
-                        params.sourceHandle = "l4";
-                        if (
-                          edge.findIndex((e) => e.targetHandle === "l4.t") === -1
-                        )
-                          await onConnect(params);
-                      }
-                  } else if (
-                    node.position.x - e.position.x >= 40 - 5 &&
-                    node.position.x - e.position.x <= 40 + 5
-                  ) {
-                    //r1.t or r1
-                    if (y >= 54 - 5 && y <= 54 + 5) {
-                      params.sourceHandle = "r1";
-                      if (edge.findIndex((e) => e.targetHandle === "r1.t") === -1)
-                        await onConnect(params);
-                    }
-                    //r2.t or r2
-                    else if (y >= 37 - 5 && y <= 37 + 5) {
-                      params.sourceHandle = "r2";
-                      if (edge.findIndex((e) => e.targetHandle === "r2.t") === -1)
-                        await onConnect(params);
-                    }
-                    //r3.t or r3
-                    else if (y >= 21 - 5 && y <= 21 + 5) {
-                      params.sourceHandle = "r3";
-                      if (edge.findIndex((e) => e.targetHandle === "r3.t") === -1)
-                        await onConnect(params);
-                    }
-                    //r4.t or r4
-                    else if (y >= 2 - 5 && y <= 2 + 5) {
-                      params.sourceHandle = "r4";
-                      if (edge.findIndex((e) => e.targetHandle === "r4.t") === -1)
-                        await onConnect(params);
-                    }
-                  }
-  
-                  break;
-                case "tact":
-                  params = {
-                    source: `${node.id}`,
-                    sourceHandle: `r`,
-                    target: `${e.id}`,
-                    targetHandle: "r1",
-                  };
-                  if (
-                    node.position.x - e.position.x >= 14 - 5 &&
-                    node.position.x - e.position.x <= 14 + 5 &&
-                    node.position.y - e.position.y >= -10 - 5 &&
-                    node.position.y - e.position.y <= -10 + 5
-                  ) {
-                    params.targetHandle = "r1";
-                    await onConnect(params);
-                  } else if (
-                    node.position.x - e.position.x >= 14 - 5 &&
-                    node.position.x - e.position.x <= 14 + 5 &&
-                    node.position.y - e.position.y >= 47 - 5 &&
-                    node.position.y - e.position.y <= 47 + 5
-                  ) {
-                    params.targetHandle = "r2";
-                    await onConnect(params);
-                  }
-                  break;
-  
-                case "led":
-                  params = {
-                    source: `${e.id}`,
-                    sourceHandle: `l`,
-                    target: `${node.id}`,
-                    targetHandle: "l",
-                  };
-                  if (
-                    node.position.x - e.position.x >= -9 - 5 &&
-                    node.position.x - e.position.x <= -9 + 5 &&
-                    node.position.y - e.position.y >= 21 - 5 &&
-                    node.position.y - e.position.y <= 21 + 5
-                  ) {
-                    await onConnect(params);
-                  }
-                  break;
-              }
-              break;
-            case "junction":
-              params = {
-                source: `${node.id}`,
-                sourceHandle: `r`,
-                target: `${e.id}`,
-                targetHandle: "r1",
-              };
-              switch (props.type) {
-                case "voltageDividerCircuit":
-                  switch (node.data.specificElType) {
-                    case "led":
-                      if (
-                        node.position.x - e.position.x >= -159 - 5 &&
-                        node.position.x - e.position.x <= -159 + 5
-                      ) {
-                        if (
-                          node.position.y - e.position.y >= -7 - 5 &&
-                          node.position.y - e.position.y <= -7 + 5
-                        ) {
-                          params.targetHandle = "l1.t";
-                          if (
-                            edge.findIndex((e) => e.sourceHandle === "l1") === -1
-                          )
-                            await onConnect(params);
-                        } else if (
-                          node.position.y - e.position.y >= 9 - 5 &&
-                          node.position.y - e.position.y <= 9 + 5
-                        ) {
-                          params.targetHandle = "l2.t";
-                          if (
-                            edge.findIndex((e) => e.sourceHandle === "l2") === -1
-                          )
-                            await onConnect(params);
-                        } else if (
-                          node.position.y - e.position.y >= 27 - 5 &&
-                          node.position.y - e.position.y <= 27 + 5
-                        ) {
-                          params.targetHandle = "l3.t";
-                          if (
-                            edge.findIndex((e) => e.sourceHandle === "l3") === -1
-                          )
-                            await onConnect(params);
-                        } else if (
-                          node.position.y - e.position.y >= 44 - 5 &&
-                          node.position.y - e.position.y <= 44 + 5
-                        ) {
-                          params.targetHandle = "l4.t";
-                          if (
-                            edge.findIndex((e) => e.sourceHandle === "l4") === -1
-                          )
-                            await onConnect(params);
-                        }
-                      } else if (
-                        node.position.x - e.position.x >= -30 - 5 &&
-                        node.position.x - e.position.x <= -30 + 5
-                      ) {
-                        if (
-                          node.position.y - e.position.y >= -7 - 5 &&
-                          node.position.y - e.position.y <= -7 + 5
-                        ) {
-                          params.targetHandle = "r1.t";
-                          if (
-                            edge.findIndex((e) => e.sourceHandle === "r1") === -1
-                          )
-                            await onConnect(params);
-                        } else if (
-                          node.position.y - e.position.y >= 9 - 5 &&
-                          node.position.y - e.position.y <= 9 + 5
-                        ) {
-                          params.targetHandle = "r2.t";
-                          if (
-                            edge.findIndex((e) => e.sourceHandle === "r2") === -1
-                          )
-                            await onConnect(params);
-                        } else if (
-                          node.position.y - e.position.y >= 27 - 5 &&
-                          node.position.y - e.position.y <= 27 + 5
-                        ) {
-                          params.targetHandle = "r3.t";
-                          if (
-                            edge.findIndex((e) => e.sourceHandle === "r3") === -1
-                          )
-                            await onConnect(params);
-                        } else if (
-                          node.position.y - e.position.y >= 44 - 5 &&
-                          node.position.y - e.position.y <= 44 + 5
-                        ) {
-                          params.targetHandle = "r4.t";
-                          if (
-                            edge.findIndex((e) => e.sourceHandle === "r4") === -1
-                          )
-                            await onConnect(params);
-                        }
-                      }
-                      break;
-                    case "pot":
-                      params = {
-                        source: `${e.id}`,
-                        sourceHandle: `l1`,
-                        target: `${node.id}`,
-                        targetHandle: "r1",
-                      };
-                      console.log(
-                        "potttTTTTTTTTTTTT",
-                        node.position.x - e.position.x,
-                        node.position.y - e.position.y
-                      );
-  
-                      let y = node.position.y - e.position.y;
-  
-                      params.targetHandle = "r2";
-  
-                      if (
-                        node.position.x - e.position.x >= -176 - 5 &&
-                        node.position.x - e.position.x <= -176 + 5
-                      ) {
-                        //l1.t or l1
-                        if (y)
-                          if (y >= -54 - 5 && y <= -54 + 5) {
-                            params.sourceHandle = "l1";
-                            if (
-                              edge.findIndex((e) => e.targetHandle === "l1.t") ===
-                              -1
-                            )
-                              await onConnect(params);
-                          }
-                          //l2.t or l2
-                          else if (y >= -38 - 5 && y <= -38 + 5) {
-                            params.sourceHandle = "l2";
-                            if (
-                              edge.findIndex((e) => e.targetHandle === "l2.t") ===
-                              -1
-                            )
-                              await onConnect(params);
-                          }
-                          //l3.t or l3
-                          else if (y >= -19 - 5 && y <= -19 + 5) {
-                            params.sourceHandle = "l3";
-                            if (
-                              edge.findIndex((e) => e.targetHandle === "l3.t") ===
-                              -1
-                            )
-                              await onConnect(params);
-                          }
-                          //l4.t or l4
-                          else if (y >= 1 - 5 && y <= 1 + 5) {
-                            params.sourceHandle = "l4";
-                            if (
-                              edge.findIndex((e) => e.targetHandle === "l4.t") ===
-                              -1
-                            )
-                              await onConnect(params);
-                          }
-                      } else if (
                         node.position.x - e.position.x >= -40 - 5 &&
                         node.position.x - e.position.x <= -40 + 5
                       ) {
-                        //r1.t or r1
-                        if (y >= 3 - 5 && y <= 3 + 5) {
-                          params.sourceHandle = "r1";
-                          if (
-                            edge.findIndex((e) => e.targetHandle === "r1.t") ===
-                            -1
-                          )
-                            await onConnect(params);
-                        }
-                        //r2.t or r2
-                        else if (y >= 22 - 5 && y <= 22 + 5) {
-                          params.sourceHandle = "r2";
-                          if (
-                            edge.findIndex((e) => e.targetHandle === "r2.t") ===
-                            -1
-                          )
-                            await onConnect(params);
-                        }
-                        //r3.t or r3
-                        else if (y >= 38 - 5 && y <= 38 + 5) {
-                          params.sourceHandle = "r3";
-                          if (
-                            edge.findIndex((e) => e.targetHandle === "r3.t") ===
-                            -1
-                          )
-                            await onConnect(params);
-                        }
-                        //r4.t or r4
-                        else if (y >= 56 - 5 && y <= 56 + 5) {
-                          params.sourceHandle = "r4";
-                          if (
-                            edge.findIndex((e) => e.targetHandle === "r4.t") ===
-                            -1
-                          )
-                            await onConnect(params);
-                        }
-                      }
-  
-                      break;
-                  }
-                  break;
-                case "transistorCircuit":
-                  switch (node.data.specificElType) {
-                    case "led":
-                    case "res_100":
-                    case "ldr":
-                      params = {
-                        source: `${e.id}`,
-                        sourceHandle: `r`,
-                        target: `${node.id}`,
-                        targetHandle: "l",
-                      };
-                      if (
-                        node.position.x - e.position.x >= 43 - 5 &&
-                        node.position.x - e.position.x <= 43 + 5
-                      ) {
                         if (
-                          node.position.y - e.position.y >= -7 - 5 &&
-                          node.position.y - e.position.y <= -7 + 5
+                          node.position.y - e.position.y >= 7 - 5 &&
+                          node.position.y - e.position.y <= 7 + 5
                         ) {
                           params.sourceHandle = "l1";
                           if (
@@ -5647,8 +2897,8 @@ for(let i =0;i<ele.path.length;i++){
                           )
                             await onConnect(params);
                         } else if (
-                          node.position.y - e.position.y >= 9 - 5 &&
-                          node.position.y - e.position.y <= 9 + 5
+                          node.position.y - e.position.y >= -9 - 5 &&
+                          node.position.y - e.position.y <= -9 + 5
                         ) {
                           params.sourceHandle = "l2";
                           if (
@@ -5657,8 +2907,8 @@ for(let i =0;i<ele.path.length;i++){
                           )
                             await onConnect(params);
                         } else if (
-                          node.position.y - e.position.y >= 27 - 5 &&
-                          node.position.y - e.position.y <= 27 + 5
+                          node.position.y - e.position.y >= -27 - 5 &&
+                          node.position.y - e.position.y <= -27 + 5
                         ) {
                           params.sourceHandle = "l3";
                           if (
@@ -5667,8 +2917,8 @@ for(let i =0;i<ele.path.length;i++){
                           )
                             await onConnect(params);
                         } else if (
-                          node.position.y - e.position.y >= 44 - 5 &&
-                          node.position.y - e.position.y <= 44 + 5
+                          node.position.y - e.position.y >= -44 - 5 &&
+                          node.position.y - e.position.y <= -44 + 5
                         ) {
                           params.sourceHandle = "l4";
                           if (
@@ -5678,12 +2928,12 @@ for(let i =0;i<ele.path.length;i++){
                             await onConnect(params);
                         }
                       } else if (
-                        node.position.x - e.position.x >= 173 - 5 &&
-                        node.position.x - e.position.x <= 173 + 5
+                        node.position.x - e.position.x >= -177 - 5 &&
+                        node.position.x - e.position.x <= -177 + 5
                       ) {
                         if (
-                          node.position.y - e.position.y >= -7 - 5 &&
-                          node.position.y - e.position.y <= -7 + 5
+                          node.position.y - e.position.y >= 7 - 5 &&
+                          node.position.y - e.position.y <= 7 + 5
                         ) {
                           params.sourceHandle = "r1";
                           if (
@@ -5692,8 +2942,8 @@ for(let i =0;i<ele.path.length;i++){
                           )
                             await onConnect(params);
                         } else if (
-                          node.position.y - e.position.y >= 9 - 5 &&
-                          node.position.y - e.position.y <= 9 + 5
+                          node.position.y - e.position.y >= -9 - 5 &&
+                          node.position.y - e.position.y <= -9 + 5
                         ) {
                           params.sourceHandle = "r2";
                           if (
@@ -5702,8 +2952,8 @@ for(let i =0;i<ele.path.length;i++){
                           )
                             await onConnect(params);
                         } else if (
-                          node.position.y - e.position.y >= 27 - 5 &&
-                          node.position.y - e.position.y <= 27 + 5
+                          node.position.y - e.position.y >= -27 - 5 &&
+                          node.position.y - e.position.y <= -27 + 5
                         ) {
                           params.sourceHandle = "r3";
                           if (
@@ -5712,8 +2962,1793 @@ for(let i =0;i<ele.path.length;i++){
                           )
                             await onConnect(params);
                         } else if (
-                          node.position.y - e.position.y >= 44 - 5 &&
-                          node.position.y - e.position.y <= 44 + 5
+                          node.position.y - e.position.y >= -44 - 5 &&
+                          node.position.y - e.position.y <= -44 + 5
+                        ) {
+                          params.sourceHandle = "r4";
+                          if (
+                            edge.findIndex((e) => e.targetHandle === "r4") ===
+                            -1
+                          )
+                            await onConnect(params);
+                        }
+                      }
+                    } else if (props.type === "parallelCircuit") {
+                      let index1 = nodes.find(
+                        (n) => n.data.specificElType === "junction"
+                      );
+                      if (index1.id === node.id) {
+                        params = {
+                          source: `${e.id}`,
+                          sourceHandle: `r`,
+                          target: `${node.id}`,
+                          targetHandle: "r1",
+                        };
+                        console.log(
+                          "paramsBeeper@",
+                          node.position.x - e.position.x,
+                          node.position.y - e.position.y
+                        );
+                        let offsetX = 0,
+                          offsetY = 0;
+                        if (e.data.specificElType === "beeper") {
+                          offsetX = -34;
+                          offsetY = -0;
+                        } else {
+                          offsetX = 0;
+                          offsetY = 0;
+                        }
+                        if (
+                          node.position.x - e.position.x >= 159 - 5 &&
+                          node.position.x - e.position.x <= 159 + 5 &&
+                          e.data.specificElType === "tact"
+                        ) {
+                          if (
+                            node.position.y - e.position.y >= 7 - 5 &&
+                            node.position.y - e.position.y <= 7 + 5
+                          ) {
+                            params.targetHandle = "l1.t" + node.id;
+                            if (
+                              edge.findIndex(
+                                (e) => e.sourceHandle === "l1" + node.id
+                              ) === -1
+                            )
+                              await onConnect(params);
+                          } else if (
+                            node.position.y - e.position.y >= -9 - 5 &&
+                            node.position.y - e.position.y <= -9 + 5
+                          ) {
+                            params.targetHandle = "l2.t" + node.id;
+                            if (
+                              edge.findIndex(
+                                (e) => e.sourceHandle === "l2" + node.id
+                              ) === -1
+                            )
+                              await onConnect(params);
+                          } else if (
+                            node.position.y - e.position.y >= -27 - 5 &&
+                            node.position.y - e.position.y <= -27 + 5
+                          ) {
+                            params.targetHandle = "l3.t" + node.id;
+                            if (
+                              edge.findIndex(
+                                (e) => e.sourceHandle === "l3" + node.id
+                              ) === -1
+                            )
+                              await onConnect(params);
+                          } else if (
+                            node.position.y - e.position.y >= -44 - 5 &&
+                            node.position.y - e.position.y <= -44 + 5
+                          ) {
+                            params.targetHandle = "l4.t" + node.id;
+                            if (
+                              edge.findIndex(
+                                (e) => e.sourceHandle === "l4" + node.id
+                              ) === -1
+                            )
+                              await onConnect(params);
+                          }
+                        } else if (
+                          node.position.x - e.position.x >= 30 - 5 &&
+                          node.position.x - e.position.x <= 30 + 5 &&
+                          e.data.specificElType === "tact"
+                        ) {
+                          if (
+                            node.position.y - e.position.y >= 7 - 5 &&
+                            node.position.y - e.position.y <= 7 + 5
+                          ) {
+                            params.targetHandle = "r1.t" + node.id;
+                            if (
+                              edge.findIndex(
+                                (e) => e.sourceHandle === "r1" + node.id
+                              ) === -1
+                            )
+                              await onConnect(params);
+                          } else if (
+                            node.position.y - e.position.y >= -9 - 5 &&
+                            node.position.y - e.position.y <= -9 + 5
+                          ) {
+                            params.targetHandle = "r2.t" + node.id;
+                            if (
+                              edge.findIndex(
+                                (e) => e.sourceHandle === "r2" + node.id
+                              ) === -1
+                            )
+                              await onConnect(params);
+                          } else if (
+                            node.position.y - e.position.y >= -27 - 5 &&
+                            node.position.y - e.position.y <= -27 + 5
+                          ) {
+                            params.targetHandle = "r3.t" + node.id;
+                            if (
+                              edge.findIndex(
+                                (e) => e.sourceHandle === "r3" + node.id
+                              ) === -1
+                            )
+                              await onConnect(params);
+                          } else if (
+                            node.position.y - e.position.y >= -44 - 5 &&
+                            node.position.y - e.position.y <= -44 + 5
+                          ) {
+                            params.targetHandle = "r4.t" + node.id;
+                            if (
+                              edge.findIndex(
+                                (e) => e.sourceHandle === "r4" + node.id
+                              ) === -1
+                            )
+                              await onConnect(params);
+                          }
+                        } else if (
+                          (node.position.x - e.position.x >=
+                            -43 - 5 + offsetX &&
+                            node.position.x - e.position.x <=
+                              -43 + 5 + offsetX &&
+                            e.data.specificElType === "led") ||
+                          e.data.specificElType === "beeper"
+                        ) {
+                          params = {
+                            source: `${node.id}`,
+                            sourceHandle: `l`,
+                            target: `${e.id}`,
+                            targetHandle: "l",
+                          };
+                          if (
+                            node.position.y - e.position.y >= 7 - 5 &&
+                            node.position.y - e.position.y <= 7 + 5
+                          ) {
+                            params.sourceHandle = "l1" + node.id;
+                            if (
+                              edge.findIndex(
+                                (e) => e.targetHandle === "l1.t" + node.id
+                              ) === -1
+                            )
+                              await onConnect(params);
+                          } else if (
+                            node.position.y - e.position.y >= -9 - 5 &&
+                            node.position.y - e.position.y <= -9 + 5
+                          ) {
+                            params.sourceHandle = "l2" + node.id;
+                            if (
+                              edge.findIndex(
+                                (e) => e.targetHandle === "l2.t" + node.id
+                              ) === -1
+                            )
+                              await onConnect(params);
+                          } else if (
+                            node.position.y - e.position.y >= -27 - 5 &&
+                            node.position.y - e.position.y <= -27 + 5
+                          ) {
+                            params.sourceHandle = "l3" + node.id;
+                            if (
+                              edge.findIndex(
+                                (e) => e.targetHandle === "l3.t" + node.id
+                              ) === -1
+                            )
+                              await onConnect(params);
+                          } else if (
+                            node.position.y - e.position.y >= -44 - 5 &&
+                            node.position.y - e.position.y <= -44 + 5
+                          ) {
+                            params.sourceHandle = "l4" + node.id;
+                            if (
+                              edge.findIndex(
+                                (e) => e.targetHandle === "l4.t" + node.id
+                              ) === -1
+                            )
+                              await onConnect(params);
+                          }
+                        } else if (
+                          (node.position.x - e.position.x >=
+                            -174 - 5 + offsetX &&
+                            node.position.x - e.position.x <=
+                              -174 + 5 + offsetX &&
+                            e.data.specificElType === "led") ||
+                          e.data.specificElType === "beeper"
+                        ) {
+                          console.log("paramsBeeper@Enter");
+                          params = {
+                            source: `${node.id}`,
+                            sourceHandle: `l`,
+                            target: `${e.id}`,
+                            targetHandle: "l",
+                          };
+                          if (
+                            node.position.y - e.position.y >= 7 - 5 &&
+                            node.position.y - e.position.y <= 7 + 5
+                          ) {
+                            params.sourceHandle = "r1" + node.id;
+                            if (
+                              edge.findIndex(
+                                (e) => e.targetHandle === "r1.t" + node.id
+                              ) === -1
+                            )
+                              await onConnect(params);
+                          } else if (
+                            node.position.y - e.position.y >= -9 - 5 &&
+                            node.position.y - e.position.y <= -9 + 5
+                          ) {
+                            params.sourceHandle = "r2" + node.id;
+                            if (
+                              edge.findIndex(
+                                (e) => e.targetHandle === "r2.t" + node.id
+                              ) === -1
+                            )
+                              await onConnect(params);
+                          } else if (
+                            node.position.y - e.position.y >= -27 - 5 &&
+                            node.position.y - e.position.y <= -27 + 5
+                          ) {
+                            params.sourceHandle = "r3" + node.id;
+                            if (
+                              edge.findIndex(
+                                (e) => e.targetHandle === "r3.t" + node.id
+                              ) === -1
+                            )
+                              await onConnect(params);
+                          } else if (
+                            node.position.y - e.position.y >= -44 - 5 &&
+                            node.position.y - e.position.y <= -44 + 5
+                          ) {
+                            params.sourceHandle = "r4" + node.id;
+                            if (
+                              edge.findIndex(
+                                (e) => e.targetHandle === "r4.t" + node.id
+                              ) === -1
+                            )
+                              await onConnect(params);
+                          }
+                        }
+                      } else {
+                        params = {
+                          source: `${e.id}`,
+                          sourceHandle: `r`,
+                          target: `${node.id}`,
+                          targetHandle: "r1",
+                        };
+                        if (
+                          node.position.x - e.position.x >= 159 - 5 &&
+                          node.position.x - e.position.x <= 159 + 5 &&
+                          e.data.specificElType === "led"
+                        ) {
+                          if (
+                            node.position.y - e.position.y >= 7 - 5 &&
+                            node.position.y - e.position.y <= 7 + 5
+                          ) {
+                            params.targetHandle = "l1.t" + node.id;
+                            if (
+                              edge.findIndex(
+                                (e) => e.sourceHandle === "l1" + node.id
+                              ) === -1
+                            )
+                              await onConnect(params);
+                          } else if (
+                            node.position.y - e.position.y >= -9 - 5 &&
+                            node.position.y - e.position.y <= -9 + 5
+                          ) {
+                            params.targetHandle = "l2.t" + node.id;
+                            if (
+                              edge.findIndex(
+                                (e) => e.sourceHandle === "l2" + node.id
+                              ) === -1
+                            )
+                              await onConnect(params);
+                          } else if (
+                            node.position.y - e.position.y >= -27 - 5 &&
+                            node.position.y - e.position.y <= -27 + 5
+                          ) {
+                            params.targetHandle = "l3.t" + node.id;
+                            if (
+                              edge.findIndex(
+                                (e) => e.sourceHandle === "l3" + node.id
+                              ) === -1
+                            )
+                              await onConnect(params);
+                          } else if (
+                            node.position.y - e.position.y >= -44 - 5 &&
+                            node.position.y - e.position.y <= -44 + 5
+                          ) {
+                            params.targetHandle = "l4.t" + node.id;
+                            if (
+                              edge.findIndex(
+                                (e) => e.sourceHandle === "l4" + node.id
+                              ) === -1
+                            )
+                              await onConnect(params);
+                          }
+                        } else if (
+                          node.position.x - e.position.x >= 30 - 5 &&
+                          node.position.x - e.position.x <= 30 + 5 &&
+                          e.data.specificElType === "led"
+                        ) {
+                          if (
+                            node.position.y - e.position.y >= 7 - 5 &&
+                            node.position.y - e.position.y <= 7 + 5
+                          ) {
+                            params.targetHandle = "r1.t" + node.id;
+                            if (
+                              edge.findIndex(
+                                (e) => e.sourceHandle === "r1" + node.id
+                              ) === -1
+                            )
+                              await onConnect(params);
+                          } else if (
+                            node.position.y - e.position.y >= -9 - 5 &&
+                            node.position.y - e.position.y <= -9 + 5
+                          ) {
+                            params.targetHandle = "r2.t" + node.id;
+                            if (
+                              edge.findIndex(
+                                (e) => e.sourceHandle === "r2" + node.id
+                              ) === -1
+                            )
+                              await onConnect(params);
+                          } else if (
+                            node.position.y - e.position.y >= -27 - 5 &&
+                            node.position.y - e.position.y <= -27 + 5
+                          ) {
+                            params.targetHandle = "r3.t" + node.id;
+                            if (
+                              edge.findIndex(
+                                (e) => e.sourceHandle === "r3" + node.id
+                              ) === -1
+                            )
+                              await onConnect(params);
+                          } else if (
+                            node.position.y - e.position.y >= -44 - 5 &&
+                            node.position.y - e.position.y <= -44 + 5
+                          ) {
+                            params.targetHandle = "r4.t" + node.id;
+                            if (
+                              edge.findIndex(
+                                (e) => e.sourceHandle === "r4" + node.id
+                              ) === -1
+                            )
+                              await onConnect(params);
+                          }
+                        }
+                      }
+                    } else if (props.type == "capacitorCircuit") {
+                      let index1 = nodes.find(
+                        (n) => n.data.specificElType === "junction"
+                      );
+                      if (index1.id === node.id) {
+                        params = {
+                          source: `${e.id}`,
+                          sourceHandle: `r`,
+                          target: `${node.id}`,
+                          targetHandle: "r1",
+                        };
+                        console.log(
+                          "paramscap@",
+                          node.position.x - e.position.x,
+                          node.position.y - e.position.y
+                        );
+                        let offsetX = 0,
+                          offsetY = 0;
+                        if (e.data.specificElType === "beeper") {
+                          offsetX = -34;
+                          offsetY = -0;
+                        } else {
+                          offsetX = 0;
+                          offsetY = 0;
+                        }
+                        if (
+                          node.position.x - e.position.x >= 159 - 5 &&
+                          node.position.x - e.position.x <= 159 + 5 &&
+                          e.data.specificElType === "tact"
+                        ) {
+                          if (
+                            node.position.y - e.position.y >= 7 - 5 &&
+                            node.position.y - e.position.y <= 7 + 5
+                          ) {
+                            params.targetHandle = "l1.t" + node.id;
+                            if (
+                              edge.findIndex(
+                                (e) => e.sourceHandle === "l1" + node.id
+                              ) === -1
+                            )
+                              await onConnect(params);
+                          } else if (
+                            node.position.y - e.position.y >= -9 - 5 &&
+                            node.position.y - e.position.y <= -9 + 5
+                          ) {
+                            params.targetHandle = "l2.t" + node.id;
+                            if (
+                              edge.findIndex(
+                                (e) => e.sourceHandle === "l2" + node.id
+                              ) === -1
+                            )
+                              await onConnect(params);
+                          } else if (
+                            node.position.y - e.position.y >= -27 - 5 &&
+                            node.position.y - e.position.y <= -27 + 5
+                          ) {
+                            params.targetHandle = "l3.t" + node.id;
+                            if (
+                              edge.findIndex(
+                                (e) => e.sourceHandle === "l3" + node.id
+                              ) === -1
+                            )
+                              await onConnect(params);
+                          } else if (
+                            node.position.y - e.position.y >= -44 - 5 &&
+                            node.position.y - e.position.y <= -44 + 5
+                          ) {
+                            params.targetHandle = "l4.t" + node.id;
+                            if (
+                              edge.findIndex(
+                                (e) => e.sourceHandle === "l4" + node.id
+                              ) === -1
+                            )
+                              await onConnect(params);
+                          }
+                        } else if (
+                          node.position.x - e.position.x >= 30 - 5 &&
+                          node.position.x - e.position.x <= 30 + 5 &&
+                          e.data.specificElType === "tact"
+                        ) {
+                          if (
+                            node.position.y - e.position.y >= 7 - 5 &&
+                            node.position.y - e.position.y <= 7 + 5
+                          ) {
+                            params.targetHandle = "r1.t" + node.id;
+                            if (
+                              edge.findIndex(
+                                (e) => e.sourceHandle === "r1" + node.id
+                              ) === -1
+                            )
+                              await onConnect(params);
+                          } else if (
+                            node.position.y - e.position.y >= -9 - 5 &&
+                            node.position.y - e.position.y <= -9 + 5
+                          ) {
+                            params.targetHandle = "r2.t" + node.id;
+                            if (
+                              edge.findIndex(
+                                (e) => e.sourceHandle === "r2" + node.id
+                              ) === -1
+                            )
+                              await onConnect(params);
+                          } else if (
+                            node.position.y - e.position.y >= -27 - 5 &&
+                            node.position.y - e.position.y <= -27 + 5
+                          ) {
+                            params.targetHandle = "r3.t" + node.id;
+                            if (
+                              edge.findIndex(
+                                (e) => e.sourceHandle === "r3" + node.id
+                              ) === -1
+                            )
+                              await onConnect(params);
+                          } else if (
+                            node.position.y - e.position.y >= -44 - 5 &&
+                            node.position.y - e.position.y <= -44 + 5
+                          ) {
+                            params.targetHandle = "r4.t" + node.id;
+                            if (
+                              edge.findIndex(
+                                (e) => e.sourceHandle === "r4" + node.id
+                              ) === -1
+                            )
+                              await onConnect(params);
+                          }
+                        } else if (
+                          node.position.x - e.position.x >= -43 - 5 + offsetX &&
+                          node.position.x - e.position.x <= -43 + 5 + offsetX &&
+                          (e.data.specificElType === "capacitor100" ||
+                            e.data.specificElType === "capacitor1000")
+                        ) {
+                          params = {
+                            source: `${node.id}`,
+                            sourceHandle: `l`,
+                            target: `${e.id}`,
+                            targetHandle: "l",
+                          };
+                          if (
+                            node.position.y - e.position.y >= 7 - 5 &&
+                            node.position.y - e.position.y <= 7 + 5
+                          ) {
+                            params.sourceHandle = "l1" + node.id;
+                            if (
+                              edge.findIndex(
+                                (e) => e.targetHandle === "l1.t" + node.id
+                              ) === -1
+                            )
+                              await onConnect(params);
+                          } else if (
+                            node.position.y - e.position.y >= -9 - 5 &&
+                            node.position.y - e.position.y <= -9 + 5
+                          ) {
+                            params.sourceHandle = "l2" + node.id;
+                            if (
+                              edge.findIndex(
+                                (e) => e.targetHandle === "l2.t" + node.id
+                              ) === -1
+                            )
+                              await onConnect(params);
+                          } else if (
+                            node.position.y - e.position.y >= -27 - 5 &&
+                            node.position.y - e.position.y <= -27 + 5
+                          ) {
+                            params.sourceHandle = "l3" + node.id;
+                            if (
+                              edge.findIndex(
+                                (e) => e.targetHandle === "l3.t" + node.id
+                              ) === -1
+                            )
+                              await onConnect(params);
+                          } else if (
+                            node.position.y - e.position.y >= -44 - 5 &&
+                            node.position.y - e.position.y <= -44 + 5
+                          ) {
+                            params.sourceHandle = "l4" + node.id;
+                            if (
+                              edge.findIndex(
+                                (e) => e.targetHandle === "l4.t" + node.id
+                              ) === -1
+                            )
+                              await onConnect(params);
+                          }
+                        } else if (
+                          node.position.x - e.position.x >=
+                            -174 - 5 + offsetX &&
+                          node.position.x - e.position.x <=
+                            -174 + 5 + offsetX &&
+                          (e.data.specificElType === "capacitor100" ||
+                            e.data.specificElType === "capacitor1000")
+                        ) {
+                          console.log("paramsBeeper@Enter");
+                          params = {
+                            source: `${node.id}`,
+                            sourceHandle: `l`,
+                            target: `${e.id}`,
+                            targetHandle: "l",
+                          };
+                          if (
+                            node.position.y - e.position.y >= 7 - 5 &&
+                            node.position.y - e.position.y <= 7 + 5
+                          ) {
+                            params.sourceHandle = "r1" + node.id;
+                            if (
+                              edge.findIndex(
+                                (e) => e.targetHandle === "r1.t" + node.id
+                              ) === -1
+                            )
+                              await onConnect(params);
+                          } else if (
+                            node.position.y - e.position.y >= -9 - 5 &&
+                            node.position.y - e.position.y <= -9 + 5
+                          ) {
+                            params.sourceHandle = "r2" + node.id;
+                            if (
+                              edge.findIndex(
+                                (e) => e.targetHandle === "r2.t" + node.id
+                              ) === -1
+                            )
+                              await onConnect(params);
+                          } else if (
+                            node.position.y - e.position.y >= -27 - 5 &&
+                            node.position.y - e.position.y <= -27 + 5
+                          ) {
+                            params.sourceHandle = "r3" + node.id;
+                            if (
+                              edge.findIndex(
+                                (e) => e.targetHandle === "r3.t" + node.id
+                              ) === -1
+                            )
+                              await onConnect(params);
+                          } else if (
+                            node.position.y - e.position.y >= -44 - 5 &&
+                            node.position.y - e.position.y <= -44 + 5
+                          ) {
+                            params.sourceHandle = "r4" + node.id;
+                            if (
+                              edge.findIndex(
+                                (e) => e.targetHandle === "r4.t" + node.id
+                              ) === -1
+                            )
+                              await onConnect(params);
+                          }
+                        }
+                      } else {
+                        params = {
+                          source: `${e.id}`,
+                          sourceHandle: `r`,
+                          target: `${node.id}`,
+                          targetHandle: "r1",
+                        };
+                        if (
+                          node.position.x - e.position.x >= 159 - 5 &&
+                          node.position.x - e.position.x <= 159 + 5 &&
+                          (e.data.specificElType === "capacitor100" ||
+                            e.data.specificElType === "capacitor1000")
+                        ) {
+                          if (
+                            node.position.y - e.position.y >= 7 - 5 &&
+                            node.position.y - e.position.y <= 7 + 5
+                          ) {
+                            params.targetHandle = "l1.t" + node.id;
+                            if (
+                              edge.findIndex(
+                                (e) => e.sourceHandle === "l1" + node.id
+                              ) === -1
+                            )
+                              await onConnect(params);
+                          } else if (
+                            node.position.y - e.position.y >= -9 - 5 &&
+                            node.position.y - e.position.y <= -9 + 5
+                          ) {
+                            params.targetHandle = "l2.t" + node.id;
+                            if (
+                              edge.findIndex(
+                                (e) => e.sourceHandle === "l2" + node.id
+                              ) === -1
+                            )
+                              await onConnect(params);
+                          } else if (
+                            node.position.y - e.position.y >= -27 - 5 &&
+                            node.position.y - e.position.y <= -27 + 5
+                          ) {
+                            params.targetHandle = "l3.t" + node.id;
+                            if (
+                              edge.findIndex(
+                                (e) => e.sourceHandle === "l3" + node.id
+                              ) === -1
+                            )
+                              await onConnect(params);
+                          } else if (
+                            node.position.y - e.position.y >= -44 - 5 &&
+                            node.position.y - e.position.y <= -44 + 5
+                          ) {
+                            params.targetHandle = "l4.t" + node.id;
+                            if (
+                              edge.findIndex(
+                                (e) => e.sourceHandle === "l4" + node.id
+                              ) === -1
+                            )
+                              await onConnect(params);
+                          }
+                        } else if (
+                          node.position.x - e.position.x >= 30 - 5 &&
+                          node.position.x - e.position.x <= 30 + 5 &&
+                          (e.data.specificElType === "capacitor100" ||
+                            e.data.specificElType === "capacitor1000")
+                        ) {
+                          if (
+                            node.position.y - e.position.y >= 7 - 5 &&
+                            node.position.y - e.position.y <= 7 + 5
+                          ) {
+                            params.targetHandle = "r1.t" + node.id;
+                            if (
+                              edge.findIndex(
+                                (e) => e.sourceHandle === "r1" + node.id
+                              ) === -1
+                            )
+                              await onConnect(params);
+                          } else if (
+                            node.position.y - e.position.y >= -9 - 5 &&
+                            node.position.y - e.position.y <= -9 + 5
+                          ) {
+                            params.targetHandle = "r2.t" + node.id;
+                            if (
+                              edge.findIndex(
+                                (e) => e.sourceHandle === "r2" + node.id
+                              ) === -1
+                            )
+                              await onConnect(params);
+                          } else if (
+                            node.position.y - e.position.y >= -27 - 5 &&
+                            node.position.y - e.position.y <= -27 + 5
+                          ) {
+                            params.targetHandle = "r3.t" + node.id;
+                            if (
+                              edge.findIndex(
+                                (e) => e.sourceHandle === "r3" + node.id
+                              ) === -1
+                            )
+                              await onConnect(params);
+                          } else if (
+                            node.position.y - e.position.y >= -44 - 5 &&
+                            node.position.y - e.position.y <= -44 + 5
+                          ) {
+                            params.targetHandle = "r4.t" + node.id;
+                            if (
+                              edge.findIndex(
+                                (e) => e.sourceHandle === "r4" + node.id
+                              ) === -1
+                            )
+                              await onConnect(params);
+                          }
+                        }
+                      }
+                    } else if (props.type === "voltageDividerCircuit") {
+                      console.log(
+                        node.position.x - e.position.x,
+                        node.position.y - e.position.y,
+                        "parallel"
+                      );
+                      params = {
+                        source: `${e.id}`,
+                        sourceHandle: `r`,
+                        target: `${node.id}`,
+                        targetHandle: "r1",
+                      };
+                      if (
+                        node.position.x - e.position.x >= 159 - 5 &&
+                        node.position.x - e.position.x <= 159 + 5 &&
+                        e.data.specificElType === "led"
+                      ) {
+                        if (
+                          node.position.y - e.position.y >= 7 - 5 &&
+                          node.position.y - e.position.y <= 7 + 5
+                        ) {
+                          params.targetHandle = "l1.t";
+                          if (
+                            edge.findIndex((e) => e.sourceHandle === "l1") ===
+                            -1
+                          )
+                            await onConnect(params);
+                        } else if (
+                          node.position.y - e.position.y >= -9 - 5 &&
+                          node.position.y - e.position.y <= -9 + 5
+                        ) {
+                          params.targetHandle = "l2.t";
+                          if (
+                            edge.findIndex((e) => e.sourceHandle === "l2") ===
+                            -1
+                          )
+                            await onConnect(params);
+                        } else if (
+                          node.position.y - e.position.y >= -27 - 5 &&
+                          node.position.y - e.position.y <= -27 + 5
+                        ) {
+                          params.targetHandle = "l3.t";
+                          if (
+                            edge.findIndex((e) => e.sourceHandle === "l3") ===
+                            -1
+                          )
+                            await onConnect(params);
+                        } else if (
+                          node.position.y - e.position.y >= -44 - 5 &&
+                          node.position.y - e.position.y <= -44 + 5
+                        ) {
+                          params.targetHandle = "l4.t";
+                          if (
+                            edge.findIndex((e) => e.sourceHandle === "l4") ===
+                            -1
+                          )
+                            await onConnect(params);
+                        }
+                      } else if (
+                        node.position.x - e.position.x >= 30 - 5 &&
+                        node.position.x - e.position.x <= 30 + 5 &&
+                        e.data.specificElType === "led"
+                      ) {
+                        if (
+                          node.position.y - e.position.y >= 7 - 5 &&
+                          node.position.y - e.position.y <= 7 + 5
+                        ) {
+                          params.targetHandle = "r1.t";
+                          if (
+                            edge.findIndex((e) => e.sourceHandle === "r1") ===
+                            -1
+                          )
+                            await onConnect(params);
+                        } else if (
+                          node.position.y - e.position.y >= -9 - 5 &&
+                          node.position.y - e.position.y <= -9 + 5
+                        ) {
+                          params.targetHandle = "r2.t";
+                          if (
+                            edge.findIndex((e) => e.sourceHandle === "r2") ===
+                            -1
+                          )
+                            await onConnect(params);
+                        } else if (
+                          node.position.y - e.position.y >= -27 - 5 &&
+                          node.position.y - e.position.y <= -27 + 5
+                        ) {
+                          params.targetHandle = "r3.t";
+                          if (
+                            edge.findIndex((e) => e.sourceHandle === "r3") ===
+                            -1
+                          )
+                            await onConnect(params);
+                        } else if (
+                          node.position.y - e.position.y >= -44 - 5 &&
+                          node.position.y - e.position.y <= -44 + 5
+                        ) {
+                          params.targetHandle = "r4.t";
+                          if (
+                            edge.findIndex((e) => e.sourceHandle === "r4") ===
+                            -1
+                          )
+                            await onConnect(params);
+                        }
+                      }
+                    } else if (props.type === "resistorCircuit") {
+                      let index1 = nodes.find(
+                        (n) => n.data.specificElType === "junction"
+                      );
+                      if (index1.id === node.id) {
+                        params = {
+                          source: `${e.id}`,
+                          sourceHandle: `r`,
+                          target: `${node.id}`,
+                          targetHandle: "r1",
+                        };
+                        console.log(
+                          "paramscap@",
+                          node.position.x - e.position.x,
+                          node.position.y - e.position.y
+                        );
+                        let offsetX = 0,
+                          offsetY = 0;
+                        if (e.data.specificElType === "beeper") {
+                          offsetX = -34;
+                          offsetY = -0;
+                        } else {
+                          offsetX = 0;
+                          offsetY = 0;
+                        }
+                        if (
+                          node.position.x - e.position.x >= 159 - 5 &&
+                          node.position.x - e.position.x <= 159 + 5 &&
+                          e.data.specificElType === "tact"
+                        ) {
+                          if (
+                            node.position.y - e.position.y >= 7 - 5 &&
+                            node.position.y - e.position.y <= 7 + 5
+                          ) {
+                            params.targetHandle = "l1.t" + node.id;
+                            if (
+                              edge.findIndex(
+                                (e) => e.sourceHandle === "l1" + node.id
+                              ) === -1
+                            )
+                              await onConnect(params);
+                          } else if (
+                            node.position.y - e.position.y >= -9 - 5 &&
+                            node.position.y - e.position.y <= -9 + 5
+                          ) {
+                            params.targetHandle = "l2.t" + node.id;
+                            if (
+                              edge.findIndex(
+                                (e) => e.sourceHandle === "l2" + node.id
+                              ) === -1
+                            )
+                              await onConnect(params);
+                          } else if (
+                            node.position.y - e.position.y >= -27 - 5 &&
+                            node.position.y - e.position.y <= -27 + 5
+                          ) {
+                            params.targetHandle = "l3.t" + node.id;
+                            if (
+                              edge.findIndex(
+                                (e) => e.sourceHandle === "l3" + node.id
+                              ) === -1
+                            )
+                              await onConnect(params);
+                          } else if (
+                            node.position.y - e.position.y >= -44 - 5 &&
+                            node.position.y - e.position.y <= -44 + 5
+                          ) {
+                            params.targetHandle = "l4.t" + node.id;
+                            if (
+                              edge.findIndex(
+                                (e) => e.sourceHandle === "l4" + node.id
+                              ) === -1
+                            )
+                              await onConnect(params);
+                          }
+                        } else if (
+                          node.position.x - e.position.x >= 30 - 5 &&
+                          node.position.x - e.position.x <= 30 + 5 &&
+                          e.data.specificElType === "tact"
+                        ) {
+                          if (
+                            node.position.y - e.position.y >= 7 - 5 &&
+                            node.position.y - e.position.y <= 7 + 5
+                          ) {
+                            params.targetHandle = "r1.t" + node.id;
+                            if (
+                              edge.findIndex(
+                                (e) => e.sourceHandle === "r1" + node.id
+                              ) === -1
+                            )
+                              await onConnect(params);
+                          } else if (
+                            node.position.y - e.position.y >= -9 - 5 &&
+                            node.position.y - e.position.y <= -9 + 5
+                          ) {
+                            params.targetHandle = "r2.t" + node.id;
+                            if (
+                              edge.findIndex(
+                                (e) => e.sourceHandle === "r2" + node.id
+                              ) === -1
+                            )
+                              await onConnect(params);
+                          } else if (
+                            node.position.y - e.position.y >= -27 - 5 &&
+                            node.position.y - e.position.y <= -27 + 5
+                          ) {
+                            params.targetHandle = "r3.t" + node.id;
+                            if (
+                              edge.findIndex(
+                                (e) => e.sourceHandle === "r3" + node.id
+                              ) === -1
+                            )
+                              await onConnect(params);
+                          } else if (
+                            node.position.y - e.position.y >= -44 - 5 &&
+                            node.position.y - e.position.y <= -44 + 5
+                          ) {
+                            params.targetHandle = "r4.t" + node.id;
+                            if (
+                              edge.findIndex(
+                                (e) => e.sourceHandle === "r4" + node.id
+                              ) === -1
+                            )
+                              await onConnect(params);
+                          }
+                        } else if (
+                          node.position.x - e.position.x >= -43 - 5 + offsetX &&
+                          node.position.x - e.position.x <= -43 + 5 + offsetX &&
+                          (e.data.specificElType === "res_100" ||
+                            e.data.specificElType === "res_250")
+                        ) {
+                          params = {
+                            source: `${node.id}`,
+                            sourceHandle: `l`,
+                            target: `${e.id}`,
+                            targetHandle: "l",
+                          };
+                          if (
+                            node.position.y - e.position.y >= 7 - 5 &&
+                            node.position.y - e.position.y <= 7 + 5
+                          ) {
+                            params.sourceHandle = "l1" + node.id;
+                            if (
+                              edge.findIndex(
+                                (e) => e.targetHandle === "l1.t" + node.id
+                              ) === -1
+                            )
+                              await onConnect(params);
+                          } else if (
+                            node.position.y - e.position.y >= -9 - 5 &&
+                            node.position.y - e.position.y <= -9 + 5
+                          ) {
+                            params.sourceHandle = "l2" + node.id;
+                            if (
+                              edge.findIndex(
+                                (e) => e.targetHandle === "l2.t" + node.id
+                              ) === -1
+                            )
+                              await onConnect(params);
+                          } else if (
+                            node.position.y - e.position.y >= -27 - 5 &&
+                            node.position.y - e.position.y <= -27 + 5
+                          ) {
+                            params.sourceHandle = "l3" + node.id;
+                            if (
+                              edge.findIndex(
+                                (e) => e.targetHandle === "l3.t" + node.id
+                              ) === -1
+                            )
+                              await onConnect(params);
+                          } else if (
+                            node.position.y - e.position.y >= -44 - 5 &&
+                            node.position.y - e.position.y <= -44 + 5
+                          ) {
+                            params.sourceHandle = "l4" + node.id;
+                            if (
+                              edge.findIndex(
+                                (e) => e.targetHandle === "l4.t" + node.id
+                              ) === -1
+                            )
+                              await onConnect(params);
+                          }
+                        } else if (
+                          node.position.x - e.position.x >=
+                            -174 - 5 + offsetX &&
+                          node.position.x - e.position.x <=
+                            -174 + 5 + offsetX &&
+                          (e.data.specificElType === "res_100" ||
+                            e.data.specificElType === "res_250")
+                        ) {
+                          console.log("paramsBeeper@Enter");
+                          params = {
+                            source: `${node.id}`,
+                            sourceHandle: `l`,
+                            target: `${e.id}`,
+                            targetHandle: "l",
+                          };
+                          if (
+                            node.position.y - e.position.y >= 7 - 5 &&
+                            node.position.y - e.position.y <= 7 + 5
+                          ) {
+                            params.sourceHandle = "r1" + node.id;
+                            if (
+                              edge.findIndex(
+                                (e) => e.targetHandle === "r1.t" + node.id
+                              ) === -1
+                            )
+                              await onConnect(params);
+                          } else if (
+                            node.position.y - e.position.y >= -9 - 5 &&
+                            node.position.y - e.position.y <= -9 + 5
+                          ) {
+                            params.sourceHandle = "r2" + node.id;
+                            if (
+                              edge.findIndex(
+                                (e) => e.targetHandle === "r2.t" + node.id
+                              ) === -1
+                            )
+                              await onConnect(params);
+                          } else if (
+                            node.position.y - e.position.y >= -27 - 5 &&
+                            node.position.y - e.position.y <= -27 + 5
+                          ) {
+                            params.sourceHandle = "r3" + node.id;
+                            if (
+                              edge.findIndex(
+                                (e) => e.targetHandle === "r3.t" + node.id
+                              ) === -1
+                            )
+                              await onConnect(params);
+                          } else if (
+                            node.position.y - e.position.y >= -44 - 5 &&
+                            node.position.y - e.position.y <= -44 + 5
+                          ) {
+                            params.sourceHandle = "r4" + node.id;
+                            if (
+                              edge.findIndex(
+                                (e) => e.targetHandle === "r4.t" + node.id
+                              ) === -1
+                            )
+                              await onConnect(params);
+                          }
+                        }
+                      } else {
+                        params = {
+                          source: `${e.id}`,
+                          sourceHandle: `r`,
+                          target: `${node.id}`,
+                          targetHandle: "r1",
+                        };
+                        if (
+                          node.position.x - e.position.x >= 159 - 5 &&
+                          node.position.x - e.position.x <= 159 + 5 &&
+                          (e.data.specificElType === "res_100" ||
+                            e.data.specificElType === "res_250")
+                        ) {
+                          if (
+                            node.position.y - e.position.y >= 7 - 5 &&
+                            node.position.y - e.position.y <= 7 + 5
+                          ) {
+                            params.targetHandle = "l1.t" + node.id;
+                            if (
+                              edge.findIndex(
+                                (e) => e.sourceHandle === "l1" + node.id
+                              ) === -1
+                            )
+                              await onConnect(params);
+                          } else if (
+                            node.position.y - e.position.y >= -9 - 5 &&
+                            node.position.y - e.position.y <= -9 + 5
+                          ) {
+                            params.targetHandle = "l2.t" + node.id;
+                            if (
+                              edge.findIndex(
+                                (e) => e.sourceHandle === "l2" + node.id
+                              ) === -1
+                            )
+                              await onConnect(params);
+                          } else if (
+                            node.position.y - e.position.y >= -27 - 5 &&
+                            node.position.y - e.position.y <= -27 + 5
+                          ) {
+                            params.targetHandle = "l3.t" + node.id;
+                            if (
+                              edge.findIndex(
+                                (e) => e.sourceHandle === "l3" + node.id
+                              ) === -1
+                            )
+                              await onConnect(params);
+                          } else if (
+                            node.position.y - e.position.y >= -44 - 5 &&
+                            node.position.y - e.position.y <= -44 + 5
+                          ) {
+                            params.targetHandle = "l4.t" + node.id;
+                            if (
+                              edge.findIndex(
+                                (e) => e.sourceHandle === "l4" + node.id
+                              ) === -1
+                            )
+                              await onConnect(params);
+                          }
+                        } else if (
+                          node.position.x - e.position.x >= 30 - 5 &&
+                          node.position.x - e.position.x <= 30 + 5 &&
+                          (e.data.specificElType === "res_100" ||
+                            e.data.specificElType === "res_250")
+                        ) {
+                          if (
+                            node.position.y - e.position.y >= 7 - 5 &&
+                            node.position.y - e.position.y <= 7 + 5
+                          ) {
+                            params.targetHandle = "r1.t" + node.id;
+                            if (
+                              edge.findIndex(
+                                (e) => e.sourceHandle === "r1" + node.id
+                              ) === -1
+                            )
+                              await onConnect(params);
+                          } else if (
+                            node.position.y - e.position.y >= -9 - 5 &&
+                            node.position.y - e.position.y <= -9 + 5
+                          ) {
+                            params.targetHandle = "r2.t" + node.id;
+                            if (
+                              edge.findIndex(
+                                (e) => e.sourceHandle === "r2" + node.id
+                              ) === -1
+                            )
+                              await onConnect(params);
+                          } else if (
+                            node.position.y - e.position.y >= -27 - 5 &&
+                            node.position.y - e.position.y <= -27 + 5
+                          ) {
+                            params.targetHandle = "r3.t" + node.id;
+                            if (
+                              edge.findIndex(
+                                (e) => e.sourceHandle === "r3" + node.id
+                              ) === -1
+                            )
+                              await onConnect(params);
+                          } else if (
+                            node.position.y - e.position.y >= -44 - 5 &&
+                            node.position.y - e.position.y <= -44 + 5
+                          ) {
+                            params.targetHandle = "r4.t" + node.id;
+                            if (
+                              edge.findIndex(
+                                (e) => e.sourceHandle === "r4" + node.id
+                              ) === -1
+                            )
+                              await onConnect(params);
+                          }
+                        } else if (
+                          node.position.x - e.position.x >= -43 - 5 &&
+                          node.position.x - e.position.x <= -43 + 5 &&
+                          e.data.specificElType === "led"
+                        ) {
+                          params = {
+                            source: `${node.id}`,
+                            sourceHandle: `l`,
+                            target: `${e.id}`,
+                            targetHandle: "l",
+                          };
+                          if (
+                            node.position.y - e.position.y >= 7 - 5 &&
+                            node.position.y - e.position.y <= 7 + 5
+                          ) {
+                            params.sourceHandle = "l1" + node.id;
+                            if (
+                              edge.findIndex(
+                                (e) => e.targetHandle === "l1.t" + node.id
+                              ) === -1
+                            )
+                              await onConnect(params);
+                          } else if (
+                            node.position.y - e.position.y >= -9 - 5 &&
+                            node.position.y - e.position.y <= -9 + 5
+                          ) {
+                            params.sourceHandle = "l2" + node.id;
+                            if (
+                              edge.findIndex(
+                                (e) => e.targetHandle === "l2.t" + node.id
+                              ) === -1
+                            )
+                              await onConnect(params);
+                          } else if (
+                            node.position.y - e.position.y >= -27 - 5 &&
+                            node.position.y - e.position.y <= -27 + 5
+                          ) {
+                            params.sourceHandle = "l3" + node.id;
+                            if (
+                              edge.findIndex(
+                                (e) => e.targetHandle === "l3.t" + node.id
+                              ) === -1
+                            )
+                              await onConnect(params);
+                          } else if (
+                            node.position.y - e.position.y >= -44 - 5 &&
+                            node.position.y - e.position.y <= -44 + 5
+                          ) {
+                            params.sourceHandle = "l4" + node.id;
+                            if (
+                              edge.findIndex(
+                                (e) => e.targetHandle === "l4.t" + node.id
+                              ) === -1
+                            )
+                              await onConnect(params);
+                          }
+                        }
+                        if (
+                          node.position.x - e.position.x >= -174 - 5 &&
+                          node.position.x - e.position.x <= -174 + 5 &&
+                          e.data.specificElType === "led"
+                        ) {
+                          console.log("paramsBeeper@Enter");
+                          params = {
+                            source: `${node.id}`,
+                            sourceHandle: `l`,
+                            target: `${e.id}`,
+                            targetHandle: "l",
+                          };
+                          if (
+                            node.position.y - e.position.y >= 7 - 5 &&
+                            node.position.y - e.position.y <= 7 + 5
+                          ) {
+                            params.sourceHandle = "r1" + node.id;
+                            if (
+                              edge.findIndex(
+                                (e) => e.targetHandle === "r1.t" + node.id
+                              ) === -1
+                            )
+                              await onConnect(params);
+                          } else if (
+                            node.position.y - e.position.y >= -9 - 5 &&
+                            node.position.y - e.position.y <= -9 + 5
+                          ) {
+                            params.sourceHandle = "r2" + node.id;
+                            if (
+                              edge.findIndex(
+                                (e) => e.targetHandle === "r2.t" + node.id
+                              ) === -1
+                            )
+                              await onConnect(params);
+                          } else if (
+                            node.position.y - e.position.y >= -27 - 5 &&
+                            node.position.y - e.position.y <= -27 + 5
+                          ) {
+                            params.sourceHandle = "r3" + node.id;
+                            if (
+                              edge.findIndex(
+                                (e) => e.targetHandle === "r3.t" + node.id
+                              ) === -1
+                            )
+                              await onConnect(params);
+                          } else if (
+                            node.position.y - e.position.y >= -44 - 5 &&
+                            node.position.y - e.position.y <= -44 + 5
+                          ) {
+                            params.sourceHandle = "r4" + node.id;
+                            if (
+                              edge.findIndex(
+                                (e) => e.targetHandle === "r4.t" + node.id
+                              ) === -1
+                            )
+                              await onConnect(params);
+                          }
+                        }
+                      }
+                    }
+
+                    break;
+                  case "diode":
+                    console.log(
+                      "diode665674675________",
+                      node.position.x - e.position.x,
+                      node.position.y - e.position.y
+                    );
+                    params = {
+                      source: `${e.id}`,
+                      sourceHandle: `r`,
+                      target: `${node.id}`,
+                      targetHandle: "l1",
+                    };
+                    if (
+                      node.position.x - e.position.x >= 202 - 5 &&
+                      node.position.x - e.position.x <= 202 + 5 &&
+                      node.position.y - e.position.y >= 2 - 5 &&
+                      node.position.y - e.position.y <= 2 + 5 &&
+                      e.data.specificElType !== "led"
+                    ) {
+                      let index1 = edge.findIndex(
+                        (e) => e.sourceHandle === "l2"
+                      );
+
+                      if (index1 == -1) await onConnect(params);
+                    } else if (
+                      node.position.x - e.position.x >= -1 - 5 &&
+                      node.position.x - e.position.x <= -1 + 5 &&
+                      node.position.y - e.position.y >= 1 - 5 &&
+                      node.position.y - e.position.y <= 1 + 5
+                    ) {
+                      params.targetHandle = "r2";
+                      let index1 = edge.findIndex(
+                        (e) => e.sourceHandle === "r1"
+                      );
+
+                      if (e.data.specificElType !== "led" && index1 == -1)
+                        await onConnect(params);
+                      else if (e.data.specificElType === "led") {
+                        params = {
+                          source: `${node.id}`,
+                          sourceHandle: `l2`,
+                          target: `${e.id}`,
+                          targetHandle: "l",
+                        };
+                        let index1 = edge.findIndex(
+                          (e) => e.targetHandle === "l1"
+                        );
+                        if (index1 == -1) await onConnect(params);
+                      }
+                    } else if (
+                      node.position.x - e.position.x >= -202 - 5 &&
+                      node.position.x - e.position.x <= -202 + 5 &&
+                      node.position.y - e.position.y >= -2 - 5 &&
+                      node.position.y - e.position.y <= -2 + 5 &&
+                      e.data.specificElType === "led"
+                    ) {
+                      params = {
+                        source: `${node.id}`,
+                        sourceHandle: `r1`,
+                        target: `${e.id}`,
+                        targetHandle: "l",
+                      };
+                      let index1 = edge.findIndex(
+                        (e) => e.targetHandle === "r2"
+                      );
+
+                      if (index1 === -1) await onConnect(params);
+                    }
+                    break;
+                  case "transistor":
+                    if (
+                      e.data.specificElType === "tact" ||
+                      e.data.specificElType === "ldr"
+                    ) {
+                      params = {
+                        source: `${e.id}`,
+                        sourceHandle: `r`,
+                        target: `${node.id}`,
+                        targetHandle: "l",
+                      };
+                      if (
+                        node.position.x - e.position.x >= 200 - 5 &&
+                        node.position.x - e.position.x <= 200 + 5 &&
+                        node.position.y - e.position.y >= -20 - 5 &&
+                        node.position.y - e.position.y <= -20 + 5
+                      ) {
+                        await onConnect(params);
+                      }
+                    } else if (e.data.specificElType === "led") {
+                      if (
+                        node.position.x - e.position.x >= 9 - 5 &&
+                        node.position.x - e.position.x <= 9 + 5 &&
+                        node.position.y - e.position.y >= -5 - 5 &&
+                        node.position.y - e.position.y <= -5 + 5
+                      ) {
+                        params = {
+                          source: `${e.id}`,
+                          sourceHandle: `r`,
+                          target: `${node.id}`,
+                          targetHandle: "r.t",
+                        };
+                        await onConnect(params);
+                      }
+                    } else if (e.data.specificElType === "power") {
+                    }
+                    break;
+                  case "pot":
+                    console.log(
+                      "pot^^^^^^^",
+                      node.position.x - e.position.x,
+                      node.position.y - e.position.y
+                    );
+                    if (
+                      node.position.x - e.position.x >= 9 - 5 &&
+                      node.position.x - e.position.x < 9 + 5 &&
+                      node.position.y - e.position.y >= -19 - 5 &&
+                      node.position.y - e.position.y < -19 + 5 &&
+                      props.type == "voltageDividerCircuit" &&
+                      e.data.specificElType === "led"
+                    ) {
+                      params = {
+                        source: `${node.id}`,
+                        sourceHandle: `r`,
+                        target: `${e.id}`,
+                        targetHandle: "l",
+                      };
+                      await onConnect(params);
+                    }
+                    if (
+                      node.position.x - e.position.x >= -17 - 5 &&
+                      node.position.x - e.position.x < -17 + 5 &&
+                      node.position.y - e.position.y >= 9 - 5 &&
+                      node.position.y - e.position.y < 9 + 5 &&
+                      props.type == "voltageDividerCircuit" &&
+                      e.data.specificElType === "tact"
+                    ) {
+                      params = {
+                        source: `${e.id}`,
+                        sourceHandle: `r`,
+                        target: `${node.id}`,
+                        targetHandle: "r1",
+                      };
+                      await onConnect(params);
+                    }
+                    break;
+                  default:
+                    if (
+                      node.position.x - e.position.x >= 221 - 5 + offsetX &&
+                      node.position.x - e.position.x < 221 + 5 + offsetX &&
+                      node.position.y - e.position.y >= 31 - 5 + offsetY &&
+                      node.position.y - e.position.y < 31 + 5 + offsetY
+                    ) {
+                      params = {
+                        source: `${e.id}`,
+                        sourceHandle: `r`,
+                        target: `${node.id}`,
+                        targetHandle: "l",
+                      };
+                      switch (props.type) {
+                        case "simpleCircuit":
+                          if (
+                            e.data.specificElType === "tact" &&
+                            (node.data.specificElType == "beeper" ||
+                              node.data.specificElType == "led")
+                          )
+                            await onConnect(params);
+                          else if (node.data.specificElType === "tact") {
+                            console.log("en$$$$$$$$$tered@@@@55658");
+                            // params = {
+                            //   source: `${node.id}`,
+                            //   sourceHandle: `r`,
+                            //   target: `${e.id}`,
+                            //   targetHandle: "l",
+                            // };
+                            // await onConnect(params);
+                          }
+                          break;
+                        case "seriesCircuit":
+                          if (
+                            e.data.specificElType === "tact" &&
+                            (node.data.specificElType == "beeper" ||
+                              node.data.specificElType == "led")
+                          )
+                            await onConnect(params);
+                          if (
+                            e.data.specificElType === "led" &&
+                            node.data.specificElType == "led"
+                          )
+                            await onConnect(params);
+                          break;
+
+                        case "resistorCircuit":
+                          if (
+                            e.data.specificElType == "tact" &&
+                            (node.data.specificElType === "res_100" ||
+                              node.data.specificElType === "res_250")
+                          ) {
+                            params.sourceHandle = "r";
+
+                            await onConnect(params);
+                          } else if (
+                            (e.data.specificElType === "res_100" ||
+                              e.data.specificElType === "res_250") &&
+                            node.data.specificElType === "led"
+                          ) {
+                            params.targetHandle = "l";
+
+                            await onConnect(params);
+                          } else if (
+                            (e.data.specificElType === "res_100" ||
+                              e.data.specificElType === "res_250") &&
+                            (node.data.specificElType === "res_100" ||
+                              node.data.specificElType === "res_250")
+                          ) {
+                            await onConnect(params);
+                          }
+                          break;
+                        case "capacitorCircuit":
+                          if (
+                            e.data.specificElType === "tact" &&
+                            (node.data.specificElType === "capacitor100" ||
+                              node.data.specificElType === "capacitor1000")
+                          ) {
+                            await onConnect(params);
+                          } else if (
+                            e.data.specificElType === "capacitor100" ||
+                            (e.data.specificElType === "capacitor1000" &&
+                              (node.data.specificElType === "capacitor100" ||
+                                node.data.specificElType === "capacitor1000"))
+                          ) {
+                            await onConnect(params);
+                          } else if (
+                            e.data.specificElType === "capacitor100" ||
+                            (e.data.specificElType === "capacitor1000" &&
+                              node.data.specificElType === "beeper")
+                          ) {
+                            params = {
+                              source: `${e.id}`,
+                              sourceHandle: `r`,
+                              target: `${node.id}`,
+                              targetHandle: "l",
+                            };
+                            console.log("entered@@@@55658GSKKKKKKKKKK", params);
+                            await onConnect(params);
+                          } else if (
+                            node.data.specificElType === "beeper" &&
+                            e.data.specificElType === "tact"
+                          ) {
+                            params = {
+                              source: `${e.id}`,
+                              sourceHandle: `r`,
+                              target: `${node.id}`,
+                              targetHandle: "l",
+                            };
+                            console.log("entered@@@@55658GSKKKKKKKKKK", params);
+                            await onConnect(params);
+                          }
+                          break;
+                        case "voltageDividerCircuit":
+                          if (
+                            e.data.specificElType === "tact" &&
+                            node.data.specificElType === "pot"
+                          ) {
+                            params.targetHandle = "r1";
+                            await onConnect(params);
+                          }
+                          break;
+                        case "transistorCircuit":
+                          if (
+                            e.data.specificElType === "res_100" &&
+                            node.data.specificElType === "tact"
+                          )
+                            await onConnect(params);
+
+                          break;
+                      }
+                      return;
+                    } else if (
+                      node.position.x - e.position.x >= -189 - 5 + offsetX &&
+                      node.position.x - e.position.x < -189 + 5 + offsetX &&
+                      node.position.y - e.position.y >= 31 - 5 + offsetY &&
+                      node.position.y - e.position.y < 31 + 5 + offsetY
+                    ) {
+                      switch (props.type) {
+                        case "simpleCircuit":
+                          if (
+                            (node.data.specificElType === "tact" &&
+                              e.data.specificElType === "beeper") ||
+                            e.data.specificElType === "led"
+                          ) {
+                            params = {
+                              source: `${node.id}`,
+                              sourceHandle: `r`,
+                              target: `${e.id}`,
+                              targetHandle: "l",
+                            };
+                            await onConnect(params);
+                          }
+                          break;
+                        case "seriesCircuit":
+                          params = {
+                            source: `${node.id}`,
+                            sourceHandle: `r`,
+                            target: `${e.id}`,
+                            targetHandle: "l",
+                          };
+                          if (
+                            (node.data.specificElType === "tact" &&
+                              e.data.specificElType === "led") ||
+                            (node.data.specificElType === "led" &&
+                              e.data.specificElType === "led")
+                          )
+                            await onConnect(params);
+                          break;
+                        case "capacitorCircuit":
+                          params = {
+                            source: `${node.id}`,
+                            sourceHandle: `r`,
+                            target: `${e.id}`,
+                            targetHandle: "l",
+                          };
+                          if (
+                            (node.data.specificElType === "tact" &&
+                              e.data.specificElType === "capacitor100") ||
+                            e.data.specificElType === "capacitor1000"
+                          )
+                            await onConnect(params);
+                          else if (
+                            node.data.specificElType === "capacitor100" ||
+                            (node.data.specificElType === "capacitor1000" &&
+                              e.data.specificElType === "capacitor100") ||
+                            e.data.specificElType === "capacitor1000"
+                          )
+                            await onConnect(params);
+                          break;
+                        case "resistorCircuit":
+                          if (
+                            (e.data.specificElType === "res_100" ||
+                              e.data.specificElType === "res_250") &&
+                            node.data.specificElType === "tact"
+                          ) {
+                            params = {
+                              source: `${node.id}`,
+                              sourceHandle: `r`,
+                              target: `${e.id}`,
+                              targetHandle: "l",
+                            };
+                            await onConnect(params);
+                          }
+                          if (
+                            (e.data.specificElType === "res_100" ||
+                              e.data.specificElType === "res_250" ||
+                              e.data.specificElType === "led") &&
+                            (node.data.specificElType === "res_100" ||
+                              node.data.specificElType === "res_250")
+                          ) {
+                            params = {
+                              source: `${node.id}`,
+                              sourceHandle: `r`,
+                              target: `${e.id}`,
+                              targetHandle: "l",
+                            };
+                            await onConnect(params);
+                          }
+                          break;
+                      }
+                    }
+                }
+
+                break;
+              case "power":
+                switch (node.data.specificElType) {
+                  case "beeper":
+                    offsetX = 0;
+                    offsetY = 0;
+                    break;
+                  case "capacitor100":
+                  case "diode":
+                  case "ldr":
+                  case "led":
+                  case "res_100":
+                  case "res_250":
+                  case "capacitor1000":
+                  case "tact":
+                    offsetX = -20;
+                    offsetY = -27;
+                    break;
+                  case "transistor":
+                    offsetX = -21;
+                    offsetY = -48;
+                    break;
+                  case "two_way_switch":
+                    offsetX = 0;
+                    offsetY = 0;
+                    break;
+                  default:
+                    offsetX = 0;
+                    offsetY = 0;
+                    break;
+                }
+
+                switch (node.data.specificElType) {
+                  case "junction":
+                    if (props.type === "voltageDividerCircuit") {
+                      params = {
+                        source: `${node.id}`,
+                        sourceHandle: `r`,
+                        target: `${e.id}`,
+                        targetHandle: "r2",
+                      };
+                      if (
+                        node.position.x - e.position.x >= 120 - 5 &&
+                        node.position.x - e.position.x <= 120 + 5
+                      ) {
+                        if (
+                          node.position.y - e.position.y >= 45 - 5 &&
+                          node.position.y - e.position.y <= 45 + 5
+                        ) {
+                          params.sourceHandle = "l1";
+                          if (
+                            edge.findIndex((e) => e.tragetHandle === "l1.t") ===
+                            -1
+                          )
+                            await onConnect(params);
+                        } else if (
+                          node.position.y - e.position.y >= 28 - 5 &&
+                          node.position.y - e.position.y <= 28 + 5
+                        ) {
+                          params.sourceHandle = "l2";
+                          if (
+                            edge.findIndex((e) => e.targetHandle === "l2.t") ===
+                            -1
+                          )
+                            await onConnect(params);
+                        } else if (
+                          node.position.y - e.position.y >= 10 - 5 &&
+                          node.position.y - e.position.y <= 10 + 5
+                        ) {
+                          params.sourceHandle = "l3";
+                          if (
+                            edge.findIndex((e) => e.targetHandle === "l3.t") ===
+                            -1
+                          )
+                            await onConnect(params);
+                        } else if (
+                          node.position.y - e.position.y >= -6 - 5 &&
+                          node.position.y - e.position.y <= -6 + 5
+                        ) {
+                          params.sourceHandle = "l4";
+                          if (
+                            edge.findIndex((e) => e.targetHandle === "l4.t") ===
+                            -1
+                          )
+                            await onConnect(params);
+                        }
+                      } else if (
+                        node.position.x - e.position.x >= -13 - 5 &&
+                        node.position.x - e.position.x <= -13 + 5
+                      ) {
+                        if (
+                          node.position.y - e.position.y >= 45 - 5 &&
+                          node.position.y - e.position.y <= 45 + 5
+                        ) {
+                          params.sourceHandle = "r1";
+                          if (
+                            edge.findIndex((e) => e.targetHandle === "r1.t") ===
+                            -1
+                          )
+                            await onConnect(params);
+                        } else if (
+                          node.position.y - e.position.y >= 28 - 5 &&
+                          node.position.y - e.position.y <= 28 + 5
+                        ) {
+                          params.sourceHandle = "r2";
+                          if (
+                            edge.findIndex((e) => e.targetHandle === "r2.t") ===
+                            -1
+                          )
+                            await onConnect(params);
+                        } else if (
+                          node.position.y - e.position.y >= 10 - 5 &&
+                          node.position.y - e.position.y <= 10 + 5
+                        ) {
+                          params.sourceHandle = "r3";
+                          if (
+                            edge.findIndex((e) => e.targetHandle === "r3.t") ===
+                            -1
+                          )
+                            await onConnect(params);
+                        } else if (
+                          node.position.y - e.position.y >= -6 - 5 &&
+                          node.position.y - e.position.y <= -6 + 5
                         ) {
                           params.sourceHandle = "r4";
                           if (
@@ -5723,67 +4758,143 @@ for(let i =0;i<ele.path.length;i++){
                             await onConnect(params);
                         }
                       }
-                      break;
-                  }
-                  break;
-                case "parallelCircuit":
-                  let index1 = nodes.find(
-                    (n) => n.data.specificElType === "junction"
-                  );
-                  let offsetx = 0,
-                    offsetY = 0;
-                  if (index1.id === e.id)
-                    switch (node.data.specificElType) {
-                      //add offset for beeper
-  
-                      case "tact":
-                      case "led":
-                      case "beeper":
-                        params = {
-                          source: `${e.id}`,
-                          sourceHandle: `r`,
-                          target: `${node.id}`,
-                          targetHandle: "l",
-                        };
-  
-                        if (node.data.specificElType === "beeper") {
-                          offsetX = 20;
-                          offsetY = 30;
-                        } else {
-                          offsetX = 0;
-                          offsetY = 0;
-                        }
-  
+                    } else if (props.type === "transistorCircuit") {
+                      params = {
+                        source: `${e.id}`,
+                        sourceHandle: `r4`,
+                        target: `${node.id}`,
+                        targetHandle: "r3",
+                      };
+                      if (
+                        node.position.x - e.position.x >= 120 - 5 &&
+                        node.position.x - e.position.x <= 120 + 5
+                      ) {
                         if (
-                          node.position.x - e.position.x >= 43 - 5 + offsetX &&
-                          node.position.x - e.position.x <= 43 + 5 + offsetX &&
-                          node.data.specificElType != "tact"
+                          node.position.y - e.position.y >= 1 - 5 &&
+                          node.position.y - e.position.y <= 1 + 5
                         ) {
+                          params.targetHandle = "l1.t";
                           if (
-                            node.position.y - e.position.y >= -7 - 5 + offsetY &&
-                            node.position.y - e.position.y <= -7 + 5 + offsetY
+                            edge.findIndex((e) => e.sourceHandle === "l1") ===
+                            -1
+                          )
+                            await onConnect(params);
+                        } else if (
+                          node.position.y - e.position.y >= 16 - 5 &&
+                          node.position.y - e.position.y <= 16 + 5
+                        ) {
+                          params.targetHandle = "l2.t";
+                          if (
+                            edge.findIndex((e) => e.sourceHandle === "l2") ===
+                            -1
+                          )
+                            await onConnect(params);
+                        } else if (
+                          node.position.y - e.position.y >= 44 - 5 &&
+                          node.position.y - e.position.y <= 44 + 5
+                        ) {
+                          params.targetHandle = "l3.t";
+                          if (
+                            edge.findIndex((e) => e.sourceHandle === "l3") ===
+                            -1
+                          )
+                            await onConnect(params);
+                        } else if (
+                          node.position.y - e.position.y >= 64 - 5 &&
+                          node.position.y - e.position.y <= 64 + 5
+                        ) {
+                          params.targetHandle = "l4.t";
+                          if (
+                            edge.findIndex((e) => e.sourceHandle === "l4") ===
+                            -1
+                          )
+                            await onConnect(params);
+                        }
+                      } else if (
+                        node.position.x - e.position.x >= -13 - 5 &&
+                        node.position.x - e.position.x <= -13 + 5
+                      ) {
+                        if (
+                          node.position.y - e.position.y >= -1 - 5 &&
+                          node.position.y - e.position.y <= -1 + 5
+                        ) {
+                          params.targetHandle = "r1.t";
+                          if (
+                            edge.findIndex((e) => e.sourceHandle === "r1") ===
+                            -1
+                          )
+                            await onConnect(params);
+                        } else if (
+                          node.position.y - e.position.y >= -16 - 5 &&
+                          node.position.y - e.position.y <= -16 + 5
+                        ) {
+                          params.targetHandle = "r2.t";
+                          if (
+                            edge.findIndex((e) => e.sourceHandle === "r2") ===
+                            -1
+                          )
+                            await onConnect(params);
+                        } else if (
+                          node.position.y - e.position.y >= -44 - 5 &&
+                          node.position.y - e.position.y <= -44 + 5
+                        ) {
+                          params.targetHandle = "r3.t";
+                          if (
+                            edge.findIndex((e) => e.sourceHandle === "r3") ===
+                            -1
+                          )
+                            await onConnect(params);
+                        } else if (
+                          node.position.y - e.position.y >= -64 - 5 &&
+                          node.position.y - e.position.y <= -64 + 5
+                        ) {
+                          params.targetHandle = "r4.t";
+                          if (
+                            edge.findIndex((e) => e.sourceHandle === "r4") ===
+                            -1
+                          )
+                            await onConnect(params);
+                        }
+                      }
+                    } else if (props.type === "parallelCircuit") {
+                      let index3 = nodes.find(
+                        (n) => n.data.specificElType === "junction"
+                      );
+                      let index1 = nodes.find(
+                        (n) =>
+                          n.data.specificElType === "junction" &&
+                          n.id != index3.id
+                      );
+                      console.log(
+                        "junction end",
+                        node.position.x - e.position.x,
+                        node.position.y - e.position.y
+                      );
+                      if (index1.id === node.id) {
+                        if (
+                          node.position.x - e.position.x >= 122 - 5 &&
+                          node.position.x - e.position.x <= 122 + 5
+                        ) {
+                          params = {
+                            source: `${node.id}`,
+                            sourceHandle: `r`,
+                            target: `${e.id}`,
+                            targetHandle: "r2",
+                          };
+                          if (
+                            node.position.y - e.position.y >= -7 - 5 &&
+                            node.position.y - e.position.y <= -7 + 5
                           ) {
-                            params.sourceHandle = "l1" + index1.id;
+                            params.sourceHandle = "l4" + index1.id;
                             if (
                               edge.findIndex(
-                                (e) => e.targetHandle === "l1.t" + index1.id
+                                (e) => e.targetHandle === "l4.t" + index1.id
                               ) === -1
                             )
                               await onConnect(params);
                           } else if (
-                            node.position.y - e.position.y >= 9 - 5 + offsetY &&
-                            node.position.y - e.position.y <= 9 + 5 + offsetY
-                          ) {
-                            params.sourceHandle = "l2" + index1.id;
-                            if (
-                              edge.findIndex(
-                                (e) => e.targetHandle === "l2.t" + index1.id
-                              ) === -1
-                            )
-                              await onConnect(params);
-                          } else if (
-                            node.position.y - e.position.y >= 27 - 5 + offsetY &&
-                            node.position.y - e.position.y <= 27 + 5 + offsetY
+                            node.position.y - e.position.y >= 9 - 5 &&
+                            node.position.y - e.position.y <= 9 + 5
                           ) {
                             params.sourceHandle = "l3" + index1.id;
                             if (
@@ -5793,36 +4904,63 @@ for(let i =0;i<ele.path.length;i++){
                             )
                               await onConnect(params);
                           } else if (
-                            node.position.y - e.position.y >= 44 - 5 + offsetY &&
-                            node.position.y - e.position.y <= 44 + 5 + offsetY
+                            node.position.y - e.position.y >= 27 - 5 &&
+                            node.position.y - e.position.y <= 27 + 5
                           ) {
-                            params.sourceHandle = "l4" + index1.id;
+                            params.sourceHandle = "l2" + index1.id;
                             if (
                               edge.findIndex(
-                                (e) => e.targetHandle === "l4.t" + index1.id
+                                (e) => e.targetHandle === "l2.t" + index1.id
+                              ) === -1
+                            )
+                              await onConnect(params);
+                          } else if (
+                            node.position.y - e.position.y >= 44 - 5 &&
+                            node.position.y - e.position.y <= 44 + 5
+                          ) {
+                            params.sourceHandle = "l1" + index1.id;
+                            if (
+                              edge.findIndex(
+                                (e) => e.targetHandle === "l1.t" + index1.id
                               ) === -1
                             )
                               await onConnect(params);
                           }
                         } else if (
-                          node.position.x - e.position.x >= 173 - 5 + offsetX &&
-                          node.position.x - e.position.x <= 173 + 5 + offsetX &&
-                          node.data.specificElType != "tact"
+                          node.position.x - e.position.x >= -14 - 5 &&
+                          node.position.x - e.position.x <= -14 + 5
                         ) {
+                          params = {
+                            source: `${node.id}`,
+                            sourceHandle: `r`,
+                            target: `${e.id}`,
+                            targetHandle: "r2",
+                          };
                           if (
-                            node.position.y - e.position.y >= -7 - 5 + offsetY &&
-                            node.position.y - e.position.y <= -7 + 5 + offsetY
+                            node.position.y - e.position.y >= -7 - 5 &&
+                            node.position.y - e.position.y <= -7 + 5
                           ) {
-                            params.sourceHandle = "r1" + index1.id;
+                            params.sourceHandle = "r4" + index1.id;
                             if (
                               edge.findIndex(
-                                (e) => e.targetHandle === "r1.t" + index1.id
+                                (e) => e.targetHandle === "r4.t" + index1.id
                               ) === -1
                             )
                               await onConnect(params);
                           } else if (
-                            node.position.y - e.position.y >= 9 - 5 + offsetY &&
-                            node.position.y - e.position.y <= 9 + 5 + offsetY
+                            node.position.y - e.position.y >= 9 - 5 &&
+                            node.position.y - e.position.y <= 9 + 5
+                          ) {
+                            params.sourceHandle = "lr" + index1.id;
+                            if (
+                              edge.findIndex(
+                                (e) => e.targetHandle === "r3.t" + index1.id
+                              ) === -1
+                            )
+                              await onConnect(params);
+                          } else if (
+                            node.position.y - e.position.y >= 27 - 5 &&
+                            node.position.y - e.position.y <= 27 + 5
                           ) {
                             params.sourceHandle = "r2" + index1.id;
                             if (
@@ -5832,19 +4970,106 @@ for(let i =0;i<ele.path.length;i++){
                             )
                               await onConnect(params);
                           } else if (
-                            node.position.y - e.position.y >= 27 - 5 + offsetY &&
-                            node.position.y - e.position.y <= 27 + 5 + offsetY
+                            node.position.y - e.position.y >= 44 - 5 &&
+                            node.position.y - e.position.y <= 44 + 5
                           ) {
-                            params.sourceHandle = "r3" + index1.id;
+                            params.sourceHandle = "r1" + index1.id;
                             if (
                               edge.findIndex(
-                                (e) => e.targetHandle === "r3.t" + index1.id
+                                (e) => e.targetHandle === "r1.t" + index1.id
+                              ) === -1
+                            )
+                              await onConnect(params);
+                          }
+                        }
+                      }
+                    } else if (props.type === "capacitorCircuit") {
+                      let index3 = nodes.find(
+                        (n) => n.data.specificElType === "junction"
+                      );
+                      let index1 = nodes.find(
+                        (n) =>
+                          n.data.specificElType === "junction" &&
+                          n.id != index3.id
+                      );
+                      if (index1 == undefined) {
+                        index1 = { id: null };
+                      }
+                      console.log(
+                        "junction end",
+                        node.position.x - e.position.x,
+                        node.position.y - e.position.y
+                      );
+
+                      if (index1.id === node.id) {
+                        if (
+                          node.position.x - e.position.x >= 122 - 5 &&
+                          node.position.x - e.position.x <= 122 + 5
+                        ) {
+                          params = {
+                            source: `${node.id}`,
+                            sourceHandle: `r`,
+                            target: `${e.id}`,
+                            targetHandle: "r2",
+                          };
+                          if (
+                            node.position.y - e.position.y >= -7 - 5 &&
+                            node.position.y - e.position.y <= -7 + 5
+                          ) {
+                            params.sourceHandle = "l4" + index1.id;
+                            if (
+                              edge.findIndex(
+                                (e) => e.targetHandle === "l4.t" + index1.id
                               ) === -1
                             )
                               await onConnect(params);
                           } else if (
-                            node.position.y - e.position.y >= 44 - 5 + offsetY &&
-                            node.position.y - e.position.y <= 44 + 5 + offsetY
+                            node.position.y - e.position.y >= 9 - 5 &&
+                            node.position.y - e.position.y <= 9 + 5
+                          ) {
+                            params.sourceHandle = "l3" + index1.id;
+                            if (
+                              edge.findIndex(
+                                (e) => e.targetHandle === "l3.t" + index1.id
+                              ) === -1
+                            )
+                              await onConnect(params);
+                          } else if (
+                            node.position.y - e.position.y >= 27 - 5 &&
+                            node.position.y - e.position.y <= 27 + 5
+                          ) {
+                            params.sourceHandle = "l2" + index1.id;
+                            if (
+                              edge.findIndex(
+                                (e) => e.targetHandle === "l2.t" + index1.id
+                              ) === -1
+                            )
+                              await onConnect(params);
+                          } else if (
+                            node.position.y - e.position.y >= 44 - 5 &&
+                            node.position.y - e.position.y <= 44 + 5
+                          ) {
+                            params.sourceHandle = "l1" + index1.id;
+                            if (
+                              edge.findIndex(
+                                (e) => e.targetHandle === "l1.t" + index1.id
+                              ) === -1
+                            )
+                              await onConnect(params);
+                          }
+                        } else if (
+                          node.position.x - e.position.x >= -14 - 5 &&
+                          node.position.x - e.position.x <= -14 + 5
+                        ) {
+                          params = {
+                            source: `${node.id}`,
+                            sourceHandle: `r`,
+                            target: `${e.id}`,
+                            targetHandle: "r2",
+                          };
+                          if (
+                            node.position.y - e.position.y >= -7 - 5 &&
+                            node.position.y - e.position.y <= -7 + 5
                           ) {
                             params.sourceHandle = "r4" + index1.id;
                             if (
@@ -5853,248 +5078,584 @@ for(let i =0;i<ele.path.length;i++){
                               ) === -1
                             )
                               await onConnect(params);
-                          }
-                        } else if (
-                          node.position.x - e.position.x >= -160 - 5 + offsetX &&
-                          node.position.x - e.position.x <= -160 + 5 + offsetX &&
-                          node.data.specificElType === "tact"
-                        ) {
-                          console.log(
-                            "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ conecting..........."
-                          );
-                          params = {
-                            source: `${node.id}`,
-                            sourceHandle: `r`,
-                            target: `${e.id}`,
-                            targetHandle: "l",
-                          };
-                          if (
-                            node.position.y - e.position.y >= -7 - 5 + offsetY &&
-                            node.position.y - e.position.y <= -7 + 5 + offsetY
+                          } else if (
+                            node.position.y - e.position.y >= 9 - 5 &&
+                            node.position.y - e.position.y <= 9 + 5
                           ) {
-                            params.targetHandle = "l1.t" + index1.id;
+                            params.sourceHandle = "lr" + index1.id;
                             if (
                               edge.findIndex(
-                                (e) => e.sourceHandle === "l1" + index1.id
+                                (e) => e.targetHandle === "r3.t" + index1.id
                               ) === -1
                             )
                               await onConnect(params);
                           } else if (
-                            node.position.y - e.position.y >= 9 - 5 + offsetY &&
-                            node.position.y - e.position.y <= 9 + 5 + offsetY
+                            node.position.y - e.position.y >= 27 - 5 &&
+                            node.position.y - e.position.y <= 27 + 5
                           ) {
-                            params.targetHandle = "l2.t" + index1.id;
+                            params.sourceHandle = "r2" + index1.id;
                             if (
                               edge.findIndex(
-                                (e) => e.sourceHandle === "l2" + index1.id
+                                (e) => e.targetHandle === "r2.t" + index1.id
                               ) === -1
                             )
                               await onConnect(params);
                           } else if (
-                            node.position.y - e.position.y >= 27 - 5 + offsetY &&
-                            node.position.y - e.position.y <= 27 + 5 + offsetY
+                            node.position.y - e.position.y >= 44 - 5 &&
+                            node.position.y - e.position.y <= 44 + 5
                           ) {
-                            params.targetHandle = "l3.t" + index1.id;
+                            params.sourceHandle = "r1" + index1.id;
                             if (
                               edge.findIndex(
-                                (e) => e.sourceHandle === "l3" + index1.id
-                              ) === -1
-                            )
-                              await onConnect(params);
-                          } else if (
-                            node.position.y - e.position.y >= 44 - 5 + offsetY &&
-                            node.position.y - e.position.y <= 44 + 5 + offsetY
-                          ) {
-                            params.targetHandle = "l4.t" + index1.id;
-                            if (
-                              edge.findIndex(
-                                (e) => e.sourceHandle === "l4" + index1.id
-                              ) === -1
-                            )
-                              await onConnect(params);
-                          }
-                        } else if (
-                          node.position.x - e.position.x >= -30 - 5 + offsetX &&
-                          node.position.x - e.position.x <= -30 + 5 + offsetX &&
-                          node.data.specificElType === "tact"
-                        ) {
-                          params = {
-                            source: `${node.id}`,
-                            sourceHandle: `r`,
-                            target: `${e.id}`,
-                            targetHandle: "l",
-                          };
-                          if (
-                            node.position.y - e.position.y >= -7 - 5 + offsetY &&
-                            node.position.y - e.position.y <= -7 + 5 + offsetY
-                          ) {
-                            params.targetHandle = "r1.t" + index1.id;
-                            if (
-                              edge.findIndex(
-                                (e) => e.sourceHandle === "r1" + index1.id
-                              ) === -1
-                            )
-                              await onConnect(params);
-                          } else if (
-                            node.position.y - e.position.y >= 9 - 5 + offsetY &&
-                            node.position.y - e.position.y <= 9 + 5 + offsetY
-                          ) {
-                            params.targetHandle = "r2.t" + index1.id;
-                            if (
-                              edge.findIndex(
-                                (e) => e.sourceHandle === "r2" + index1.id
-                              ) === -1
-                            )
-                              await onConnect(params);
-                          } else if (
-                            node.position.y - e.position.y >= 27 - 5 + offsetY &&
-                            node.position.y - e.position.y <= 27 + 5 + offsetY
-                          ) {
-                            params.targetHandle = "r3.t" + index1.id;
-                            if (
-                              edge.findIndex(
-                                (e) => e.sourceHandle === "r3" + index1.id
-                              ) === -1
-                            )
-                              await onConnect(params);
-                          } else if (
-                            node.position.y - e.position.y >= 44 - 5 + offsetY &&
-                            node.position.y - e.position.y <= 44 + 5 + offsetY
-                          ) {
-                            params.targetHandle = "r4.t" + index1.id;
-                            if (
-                              edge.findIndex(
-                                (e) => e.sourceHandle === "r4" + index1.id
+                                (e) => e.targetHandle === "r1.t" + index1.id
                               ) === -1
                             )
                               await onConnect(params);
                           }
                         }
-                        break;
+                      } else {
+                        if (
+                          node.position.x - e.position.x >= 122 - 5 &&
+                          node.position.x - e.position.x <= 122 + 5
+                        ) {
+                          // console.log("junction end Enter enter enter enter enter");
+                          params = {
+                            source: `${e.id}`,
+                            sourceHandle: `r4`,
+                            target: `${node.id}`,
+                            targetHandle: "r2",
+                          };
+                          if (
+                            node.position.y - e.position.y >= -54 - 5 &&
+                            node.position.y - e.position.y <= -54 + 5
+                          ) {
+                            params.targetHandle = "l4.t" + index3.id;
+                            if (
+                              edge.findIndex(
+                                (e) => e.sourceHandle === "l4" + index3.id
+                              ) === -1
+                            )
+                              await onConnect(params);
+                          } else if (
+                            node.position.y - e.position.y >= -35 - 5 &&
+                            node.position.y - e.position.y <= -35 + 5
+                          ) {
+                            params.targetHandle = "l3.t" + index3.id;
+                            if (
+                              edge.findIndex(
+                                (e) => e.sourceHandle === "l3" + index3.id
+                              ) === -1
+                            )
+                              await onConnect(params);
+                          } else if (
+                            node.position.y - e.position.y >= -19 - 5 &&
+                            node.position.y - e.position.y <= -19 + 5
+                          ) {
+                            params.targetHandle = "l2.t" + index3.id;
+                            if (
+                              edge.findIndex(
+                                (e) => e.sourceHandle === "l2" + index3.id
+                              ) === -1
+                            )
+                              await onConnect(params);
+                          } else if (
+                            node.position.y - e.position.y >= -1 - 5 &&
+                            node.position.y - e.position.y <= -1 + 5
+                          ) {
+                            params.targetHandle = "l1.t" + node.id;
+                            console.log(
+                              "junction end Enter enter enter enter enter",
+                              params
+                            );
+                            if (
+                              edge.findIndex(
+                                (e) => e.sourceHandle === "l1" + node.id
+                              ) === -1
+                            )
+                              await onConnect(params);
+                          }
+                        } else if (
+                          node.position.x - e.position.x >= -14 - 5 &&
+                          node.position.x - e.position.x <= -14 + 5
+                        ) {
+                          params = {
+                            source: `${e.id}`,
+                            sourceHandle: `r4`,
+                            target: `${node.id}`,
+                            targetHandle: "r2",
+                          };
+                          if (
+                            node.position.y - e.position.y >= -54 - 5 &&
+                            node.position.y - e.position.y <= -54 + 5
+                          ) {
+                            params.targetHandle = "r4.t" + index3.id;
+                            if (
+                              edge.findIndex(
+                                (e) => e.sourceHandle === "r4" + index3.id
+                              ) === -1
+                            )
+                              await onConnect(params);
+                          } else if (
+                            node.position.y - e.position.y >= -35 - 5 &&
+                            node.position.y - e.position.y <= -35 + 5
+                          ) {
+                            params.targetHandle = "r3.t" + index3.id;
+                            if (
+                              edge.findIndex(
+                                (e) => e.sourceHandle === "r3" + index3.id
+                              ) === -1
+                            )
+                              await onConnect(params);
+                          } else if (
+                            node.position.y - e.position.y >= -19 - 5 &&
+                            node.position.y - e.position.y <= -19 + 5
+                          ) {
+                            params.targetHandle = "r2.t" + index3.id;
+                            if (
+                              edge.findIndex(
+                                (e) => e.sourceHandle === "r2" + index3.id
+                              ) === -1
+                            )
+                              await onConnect(params);
+                          } else if (
+                            node.position.y - e.position.y >= -1 - 5 &&
+                            node.position.y - e.position.y <= -1 + 5
+                          ) {
+                            params.targetHandle = "r1.t" + index3.id;
+                            if (
+                              edge.findIndex(
+                                (e) => e.sourceHandle === "r1" + index3.id
+                              ) === -1
+                            )
+                              await onConnect(params);
+                          }
+                        }
+                      }
                     }
-                  else
+                    break;
+                  case "transistor":
+                    console.log(
+                      "trans^^^^^^^",
+                      node.position.x - e.position.x,
+                      node.position.y - e.position.y
+                    );
+                    if (
+                      node.position.x - e.position.x >= -35 - 5 &&
+                      node.position.x - e.position.x <= -35 + 5 &&
+                      node.position.y - e.position.y >= 4 - 5 &&
+                      node.position.y - e.position.y < 4 + 5
+                    ) {
+                      params = {
+                        source: `${node.id}`,
+                        sourceHandle: `r`,
+                        target: `${e.id}`,
+                        targetHandle: "r2",
+                      };
+                      await onConnect(params);
+                    } else if (
+                      node.position.x - e.position.x >= -35 - 5 &&
+                      node.position.x - e.position.x <= -35 + 5 &&
+                      node.position.y - e.position.y >= 20 - 5 &&
+                      node.position.y - e.position.y < 20 + 5
+                    ) {
+                      params = {
+                        source: `${node.id}`,
+                        sourceHandle: `r`,
+                        target: `${e.id}`,
+                        targetHandle: "r3",
+                      };
+                      await onConnect(params);
+                    }
+                    break;
+                  default:
+                    if (
+                      node.position.x - e.position.x >= 181 - 5 + offsetX &&
+                      node.position.x - e.position.x < 181 + 5 + offsetX &&
+                      node.position.y - e.position.y >= 20 - 5 + offsetY &&
+                      node.position.y - e.position.y < 20 + 5 + offsetY
+                    ) {
+                      params = {
+                        source: `${e.id}`,
+                        sourceHandle: `r4`,
+                        target: `${node.id}`,
+                        targetHandle: "l",
+                      };
+                      console.log(
+                        "props@@@@@",
+                        props.type,
+                        node.data.specificElType
+                      );
+                      switch (props.type) {
+                        case "simpleCircuit":
+                        case "seriesCircuit":
+                        case "parallelCircuit":
+                        case "resistorCircuit":
+                        case "capacitorCircuit":
+                        case "voltageDividerCircuit":
+                        case "semi-conductorDiodeCircuit":
+                          if (node.data.specificElType === "tact")
+                            await onConnect(params);
+                      }
+
+                      return;
+                    } else if (
+                      node.position.x - e.position.x >= 181 - 5 + offsetX &&
+                      node.position.x - e.position.x < 181 + 5 + offsetX &&
+                      node.position.y - e.position.y >= 38 - 5 + offsetY &&
+                      node.position.y - e.position.y < 38 + 5 + offsetY
+                    ) {
+                      params = {
+                        source: `${e.id}`,
+                        sourceHandle: `r1`,
+                        target: `${node.id}`,
+                        targetHandle: "l",
+                      };
+
+                      switch (props.type) {
+                        case "simpleCircuit":
+                        case "seriesCircuit":
+                        case "parallelCircuit":
+                        case "resistorCircuit":
+                        case "capacitorCircuit":
+                        case "semi-conductorDiodeCircuit":
+                          if (node.data.specificElType === "tact")
+                            await onConnect(params);
+                      }
+                    } else if (
+                      node.position.x - e.position.x >= -59 - 5 - offsetX &&
+                      node.position.x - e.position.x < -59 + 5 - offsetX &&
+                      node.position.y - e.position.y >= 67 - 5 + offsetY &&
+                      node.position.y - e.position.y < 67 + 5 + offsetY
+                    ) {
+                      params = {
+                        source: `${node.id}`,
+                        sourceHandle: `r`,
+                        target: `${e.id}`,
+                        targetHandle: "r2",
+                      };
+                      switch (props.type) {
+                        case "simpleCircuit":
+                        case "seriesCircuit":
+                        case "resistorCircuit":
+                        case "semi-conductorDiodeCircuit":
+                          if (
+                            node.data.specificElType === "led" ||
+                            node.data.specificElType === "beeper"
+                          )
+                            await onConnect(params);
+                          break;
+                        case "parallelCircuit":
+                          if (
+                            node.data.specificElType === "led" ||
+                            node.data.specificElType === "beeper"
+                          )
+                            if (index2Count === 0) params.targetHandle = "r2.0";
+                            else if (index2Count === 1)
+                              params.targetHandle = "r2.1";
+                          await onConnect(params);
+                          index2Count = 1;
+                          break;
+                        case "capacitorCircuit":
+                          if (node.data.specificElType === "beeper") {
+                            await onConnect(params);
+                          }
+                          break;
+                      }
+                      return;
+                    } else if (
+                      node.position.x - e.position.x >= -59 - 5 - offsetX &&
+                      node.position.x - e.position.x < -59 + 5 - offsetX &&
+                      node.position.y - e.position.y >= 86 - 5 + offsetY &&
+                      node.position.y - e.position.y < 86 + 5 + offsetY
+                    ) {
+                      params = {
+                        source: `${node.id}`,
+                        sourceHandle: `r`,
+                        target: `${e.id}`,
+                        targetHandle: "r3",
+                      };
+                      switch (props.type) {
+                        case "simpleCircuit":
+                        case "seriesCircuit":
+                        case "resistorCircuit":
+                        case "semi-conductorDiodeCircuit":
+                          if (
+                            node.data.specificElType === "led" ||
+                            node.data.specificElType === "beeper"
+                          )
+                            await onConnect(params);
+                          break;
+                        case "parallelCircuit":
+                          if (
+                            node.data.specificElType === "led" ||
+                            node.data.specificElType === "beeper"
+                          )
+                            if (index2Count === 0) params.targetHandle = "r3.0";
+                            else if (index2Count === 1)
+                              params.targetHandle = "r3.1";
+                          await onConnect(params);
+                          index2Count = 1;
+
+                          break;
+                        case "capacitorCircuit":
+                          if (node.data.specificElType === "beeper") {
+                            await onConnect(params);
+                          }
+                          break;
+                      }
+                      return;
+                    }
+                }
+
+                break;
+              case "pot":
+                switch (node.data.specificElType) {
+                  case "junction":
+                    params = {
+                      source: `${node.id}`,
+                      sourceHandle: `l1`,
+                      target: `${e.id}`,
+                      targetHandle: "r1",
+                    };
+                    // let index1 = edge.findIndex(
+                    //   (e) =>
+                    //     e.target === params.target && params.targetHandle == "r1"
+                    // );
+                    let y = node.position.y - e.position.y;
+                    console.log(
+                      "POT#####^^^^^^^^^^####",
+                      node.position.x - e.position.x,
+                      node.position.y - e.position.y
+                    );
+                    // if (index1 != -1) {
+                    params.targetHandle = "r2";
+                    //}
+                    if (
+                      node.position.x - e.position.x >= 176 - 5 &&
+                      node.position.x - e.position.x <= 176 + 5
+                    ) {
+                      //l1.t or l1
+                      if (y)
+                        if (y >= 54 - 5 && y <= 54 + 5) {
+                          params.sourceHandle = "l1";
+                          if (
+                            edge.findIndex((e) => e.targetHandle === "l1.t") ===
+                            -1
+                          )
+                            await onConnect(params);
+                        }
+                        //l2.t or l2
+                        else if (y >= 37 - 5 && y <= 37 + 5) {
+                          params.sourceHandle = "l2";
+                          if (
+                            edge.findIndex((e) => e.targetHandle === "l2.t") ===
+                            -1
+                          )
+                            await onConnect(params);
+                        }
+                        //l3.t or l3
+                        else if (y >= 21 - 5 && y <= 21 + 5) {
+                          params.sourceHandle = "l3";
+                          if (
+                            edge.findIndex((e) => e.targetHandle === "l3.t") ===
+                            -1
+                          )
+                            await onConnect(params);
+                        }
+                        //l4.t or l4
+                        else if (y >= 2 - 5 && y <= 2 + 5) {
+                          params.sourceHandle = "l4";
+                          if (
+                            edge.findIndex((e) => e.targetHandle === "l4.t") ===
+                            -1
+                          )
+                            await onConnect(params);
+                        }
+                    } else if (
+                      node.position.x - e.position.x >= 40 - 5 &&
+                      node.position.x - e.position.x <= 40 + 5
+                    ) {
+                      //r1.t or r1
+                      if (y >= 54 - 5 && y <= 54 + 5) {
+                        params.sourceHandle = "r1";
+                        if (
+                          edge.findIndex((e) => e.targetHandle === "r1.t") ===
+                          -1
+                        )
+                          await onConnect(params);
+                      }
+                      //r2.t or r2
+                      else if (y >= 37 - 5 && y <= 37 + 5) {
+                        params.sourceHandle = "r2";
+                        if (
+                          edge.findIndex((e) => e.targetHandle === "r2.t") ===
+                          -1
+                        )
+                          await onConnect(params);
+                      }
+                      //r3.t or r3
+                      else if (y >= 21 - 5 && y <= 21 + 5) {
+                        params.sourceHandle = "r3";
+                        if (
+                          edge.findIndex((e) => e.targetHandle === "r3.t") ===
+                          -1
+                        )
+                          await onConnect(params);
+                      }
+                      //r4.t or r4
+                      else if (y >= 2 - 5 && y <= 2 + 5) {
+                        params.sourceHandle = "r4";
+                        if (
+                          edge.findIndex((e) => e.targetHandle === "r4.t") ===
+                          -1
+                        )
+                          await onConnect(params);
+                      }
+                    }
+
+                    break;
+                  case "tact":
+                    params = {
+                      source: `${node.id}`,
+                      sourceHandle: `r`,
+                      target: `${e.id}`,
+                      targetHandle: "r1",
+                    };
+                    if (
+                      node.position.x - e.position.x >= 14 - 5 &&
+                      node.position.x - e.position.x <= 14 + 5 &&
+                      node.position.y - e.position.y >= -10 - 5 &&
+                      node.position.y - e.position.y <= -10 + 5
+                    ) {
+                      params.targetHandle = "r1";
+                      await onConnect(params);
+                    } else if (
+                      node.position.x - e.position.x >= 14 - 5 &&
+                      node.position.x - e.position.x <= 14 + 5 &&
+                      node.position.y - e.position.y >= 47 - 5 &&
+                      node.position.y - e.position.y <= 47 + 5
+                    ) {
+                      params.targetHandle = "r2";
+                      await onConnect(params);
+                    }
+                    break;
+
+                  case "led":
+                    params = {
+                      source: `${e.id}`,
+                      sourceHandle: `l`,
+                      target: `${node.id}`,
+                      targetHandle: "l",
+                    };
+                    if (
+                      node.position.x - e.position.x >= -9 - 5 &&
+                      node.position.x - e.position.x <= -9 + 5 &&
+                      node.position.y - e.position.y >= 21 - 5 &&
+                      node.position.y - e.position.y <= 21 + 5
+                    ) {
+                      await onConnect(params);
+                    }
+                    break;
+                }
+                break;
+              case "junction":
+                params = {
+                  source: `${node.id}`,
+                  sourceHandle: `r`,
+                  target: `${e.id}`,
+                  targetHandle: "r1",
+                };
+                switch (props.type) {
+                  case "voltageDividerCircuit":
                     switch (node.data.specificElType) {
                       case "led":
-                      case "beeper":
-                        let index3 = nodes.find(
-                          (n) => n.data.specificElType === "junction"
-                        );
-                        let index2 = nodes.find(
-                          (n) =>
-                            n.data.specificElType === "junction" &&
-                            n.id != index3.id
-                        );
-  
-                        if (node.data.specificElType === "beeper") {
-                          offsetX = -20;
-                          offsetY = 30;
-                        } else {
-                          offsetX = 0;
-                          offsetY = 0;
-                        }
-                        console.log(
-                          "paramsbeep",
-                          node.position.x - e.position.x,
-                          node.position.y - e.position.y,
-                          "after",
-                          node.position.x - e.position.x - offsetX,
-                          node.position.y - e.position.y - offsetY
-                        );
                         if (
-                          node.position.x - e.position.x >= -159 - 5 + offsetX &&
-                          node.position.x - e.position.x <= -159 + 5 + offsetX
+                          node.position.x - e.position.x >= -159 - 5 &&
+                          node.position.x - e.position.x <= -159 + 5
                         ) {
                           if (
-                            node.position.y - e.position.y >= -7 - 5 + offsetY &&
-                            node.position.y - e.position.y <= -7 + 5 + offsetY
+                            node.position.y - e.position.y >= -7 - 5 &&
+                            node.position.y - e.position.y <= -7 + 5
                           ) {
-                            params.targetHandle = "l1.t" + index2.id;
+                            params.targetHandle = "l1.t";
                             if (
-                              edge.findIndex(
-                                (e) => e.sourceHandle === "l1" + index2.id
-                              ) === -1
+                              edge.findIndex((e) => e.sourceHandle === "l1") ===
+                              -1
                             )
                               await onConnect(params);
                           } else if (
-                            node.position.y - e.position.y >= 9 - 5 + offsetY &&
-                            node.position.y - e.position.y <= 9 + 5 + offsetY
+                            node.position.y - e.position.y >= 9 - 5 &&
+                            node.position.y - e.position.y <= 9 + 5
                           ) {
-                            params.targetHandle = "l2.t" + index2.id;
+                            params.targetHandle = "l2.t";
                             if (
-                              edge.findIndex(
-                                (e) => e.sourceHandle === "l2" + index2.id
-                              ) === -1
+                              edge.findIndex((e) => e.sourceHandle === "l2") ===
+                              -1
                             )
                               await onConnect(params);
                           } else if (
-                            node.position.y - e.position.y >= 27 - 5 + offsetY &&
-                            node.position.y - e.position.y <= 27 + 5 + offsetY
+                            node.position.y - e.position.y >= 27 - 5 &&
+                            node.position.y - e.position.y <= 27 + 5
                           ) {
-                            params.targetHandle = "l3.t" + index2.id;
+                            params.targetHandle = "l3.t";
                             if (
-                              edge.findIndex(
-                                (e) => e.sourceHandle === "l3" + index2.id
-                              ) === -1
+                              edge.findIndex((e) => e.sourceHandle === "l3") ===
+                              -1
                             )
                               await onConnect(params);
                           } else if (
-                            node.position.y - e.position.y >= 44 - 5 + offsetY &&
-                            node.position.y - e.position.y <= 44 + 5 + offsetY
+                            node.position.y - e.position.y >= 44 - 5 &&
+                            node.position.y - e.position.y <= 44 + 5
                           ) {
-                            params.targetHandle = "l4.t" + index2.id;
+                            params.targetHandle = "l4.t";
                             if (
-                              edge.findIndex(
-                                (e) => e.sourceHandle === "l4" + index2.id
-                              ) === -1
+                              edge.findIndex((e) => e.sourceHandle === "l4") ===
+                              -1
                             )
                               await onConnect(params);
                           }
                         } else if (
-                          node.position.x - e.position.x >= -30 - 5 + offsetX &&
-                          node.position.x - e.position.x <= -30 + 5 + offsetX
+                          node.position.x - e.position.x >= -30 - 5 &&
+                          node.position.x - e.position.x <= -30 + 5
                         ) {
                           if (
-                            node.position.y - e.position.y >= -7 - 5 + offsetY &&
+                            node.position.y - e.position.y >= -7 - 5 &&
                             node.position.y - e.position.y <= -7 + 5
                           ) {
-                            params.targetHandle = "r1.t" + index2.id;
+                            params.targetHandle = "r1.t";
                             if (
-                              edge.findIndex(
-                                (e) => e.sourceHandle === "r1" + index2.id
-                              ) === -1
+                              edge.findIndex((e) => e.sourceHandle === "r1") ===
+                              -1
                             )
                               await onConnect(params);
                           } else if (
-                            node.position.y - e.position.y >= 9 - 5 + offsetY &&
-                            node.position.y - e.position.y <= 9 + 5 + offsetY
+                            node.position.y - e.position.y >= 9 - 5 &&
+                            node.position.y - e.position.y <= 9 + 5
                           ) {
-                            params.targetHandle = "r2.t" + index2.id;
+                            params.targetHandle = "r2.t";
                             if (
-                              edge.findIndex(
-                                (e) => e.sourceHandle === "r2" + index2.id
-                              ) === -1
+                              edge.findIndex((e) => e.sourceHandle === "r2") ===
+                              -1
                             )
                               await onConnect(params);
                           } else if (
-                            node.position.y - e.position.y >= 27 - 5 + offsetY &&
-                            node.position.y - e.position.y <= 27 + 5 + offsetY
+                            node.position.y - e.position.y >= 27 - 5 &&
+                            node.position.y - e.position.y <= 27 + 5
                           ) {
-                            params.targetHandle = "r3.t" + index2.id;
+                            params.targetHandle = "r3.t";
                             if (
-                              edge.findIndex(
-                                (e) => e.sourceHandle === "r3" + index2.id
-                              ) === -1
+                              edge.findIndex((e) => e.sourceHandle === "r3") ===
+                              -1
                             )
                               await onConnect(params);
                           } else if (
-                            node.position.y - e.position.y >= 44 - 5 + offsetY &&
-                            node.position.y - e.position.y <= 44 + 5 + offsetY
+                            node.position.y - e.position.y >= 44 - 5 &&
+                            node.position.y - e.position.y <= 44 + 5
                           ) {
-                            params.targetHandle = "r4.t" + index2.id;
+                            params.targetHandle = "r4.t";
                             if (
-                              edge.findIndex(
-                                (e) => e.sourceHandle === "r4" + index2.id
-                              ) === -1
+                              edge.findIndex((e) => e.sourceHandle === "r4") ===
+                              -1
                             )
                               await onConnect(params);
                           }
@@ -6112,23 +5673,18 @@ for(let i =0;i<ele.path.length;i++){
                           node.position.x - e.position.x,
                           node.position.y - e.position.y
                         );
-                        let index1 = edge.findIndex(
-                          (e) =>
-                            e.target === params.target &&
-                            params.targetHandle == "r1"
-                        );
+
                         let y = node.position.y - e.position.y;
-  
-                        if (index1 != -1) {
-                          params.targetHandle = "r2";
-                        }
+
+                        params.targetHandle = "r2";
+
                         if (
                           node.position.x - e.position.x >= -176 - 5 &&
                           node.position.x - e.position.x <= -176 + 5
                         ) {
                           //l1.t or l1
                           if (y)
-                            if (y >= 3 - 5 && y <= 3 + 5) {
+                            if (y >= -54 - 5 && y <= -54 + 5) {
                               params.sourceHandle = "l1";
                               if (
                                 edge.findIndex(
@@ -6138,7 +5694,7 @@ for(let i =0;i<ele.path.length;i++){
                                 await onConnect(params);
                             }
                             //l2.t or l2
-                            else if (y >= 22 - 5 && y <= 22 + 5) {
+                            else if (y >= -38 - 5 && y <= -38 + 5) {
                               params.sourceHandle = "l2";
                               if (
                                 edge.findIndex(
@@ -6148,7 +5704,7 @@ for(let i =0;i<ele.path.length;i++){
                                 await onConnect(params);
                             }
                             //l3.t or l3
-                            else if (y >= 38 - 5 && y <= 38 + 5) {
+                            else if (y >= -19 - 5 && y <= -19 + 5) {
                               params.sourceHandle = "l3";
                               if (
                                 edge.findIndex(
@@ -6158,7 +5714,7 @@ for(let i =0;i<ele.path.length;i++){
                                 await onConnect(params);
                             }
                             //l4.t or l4
-                            else if (y >= 56 - 5 && y <= 56 + 5) {
+                            else if (y >= 1 - 5 && y <= 1 + 5) {
                               params.sourceHandle = "l4";
                               if (
                                 edge.findIndex(
@@ -6175,8 +5731,9 @@ for(let i =0;i<ele.path.length;i++){
                           if (y >= 3 - 5 && y <= 3 + 5) {
                             params.sourceHandle = "r1";
                             if (
-                              edge.findIndex((e) => e.targetHandle === "r1.t") ===
-                              -1
+                              edge.findIndex(
+                                (e) => e.targetHandle === "r1.t"
+                              ) === -1
                             )
                               await onConnect(params);
                           }
@@ -6184,8 +5741,9 @@ for(let i =0;i<ele.path.length;i++){
                           else if (y >= 22 - 5 && y <= 22 + 5) {
                             params.sourceHandle = "r2";
                             if (
-                              edge.findIndex((e) => e.targetHandle === "r2.t") ===
-                              -1
+                              edge.findIndex(
+                                (e) => e.targetHandle === "r2.t"
+                              ) === -1
                             )
                               await onConnect(params);
                           }
@@ -6193,8 +5751,9 @@ for(let i =0;i<ele.path.length;i++){
                           else if (y >= 38 - 5 && y <= 38 + 5) {
                             params.sourceHandle = "r3";
                             if (
-                              edge.findIndex((e) => e.targetHandle === "r3.t") ===
-                              -1
+                              edge.findIndex(
+                                (e) => e.targetHandle === "r3.t"
+                              ) === -1
                             )
                               await onConnect(params);
                           }
@@ -6202,18 +5761,131 @@ for(let i =0;i<ele.path.length;i++){
                           else if (y >= 56 - 5 && y <= 56 + 5) {
                             params.sourceHandle = "r4";
                             if (
-                              edge.findIndex((e) => e.targetHandle === "r4.t") ===
-                              -1
+                              edge.findIndex(
+                                (e) => e.targetHandle === "r4.t"
+                              ) === -1
                             )
                               await onConnect(params);
                           }
                         }
-  
+
                         break;
                     }
-                  break;
-                case "capacitorCircuit":
-                  {
+                    break;
+                  case "transistorCircuit":
+                    switch (node.data.specificElType) {
+                      case "led":
+                      case "res_100":
+                      case "ldr":
+                        params = {
+                          source: `${e.id}`,
+                          sourceHandle: `r`,
+                          target: `${node.id}`,
+                          targetHandle: "l",
+                        };
+                        if (
+                          node.position.x - e.position.x >= 43 - 5 &&
+                          node.position.x - e.position.x <= 43 + 5
+                        ) {
+                          if (
+                            node.position.y - e.position.y >= -7 - 5 &&
+                            node.position.y - e.position.y <= -7 + 5
+                          ) {
+                            params.sourceHandle = "l1";
+                            if (
+                              edge.findIndex(
+                                (e) => e.targetHandle === "l1.t"
+                              ) === -1
+                            )
+                              await onConnect(params);
+                          } else if (
+                            node.position.y - e.position.y >= 9 - 5 &&
+                            node.position.y - e.position.y <= 9 + 5
+                          ) {
+                            params.sourceHandle = "l2";
+                            if (
+                              edge.findIndex(
+                                (e) => e.targetHandle === "l2.t"
+                              ) === -1
+                            )
+                              await onConnect(params);
+                          } else if (
+                            node.position.y - e.position.y >= 27 - 5 &&
+                            node.position.y - e.position.y <= 27 + 5
+                          ) {
+                            params.sourceHandle = "l3";
+                            if (
+                              edge.findIndex(
+                                (e) => e.targetHandle === "l3.t"
+                              ) === -1
+                            )
+                              await onConnect(params);
+                          } else if (
+                            node.position.y - e.position.y >= 44 - 5 &&
+                            node.position.y - e.position.y <= 44 + 5
+                          ) {
+                            params.sourceHandle = "l4";
+                            if (
+                              edge.findIndex(
+                                (e) => e.targetHandle === "l4.t"
+                              ) === -1
+                            )
+                              await onConnect(params);
+                          }
+                        } else if (
+                          node.position.x - e.position.x >= 173 - 5 &&
+                          node.position.x - e.position.x <= 173 + 5
+                        ) {
+                          if (
+                            node.position.y - e.position.y >= -7 - 5 &&
+                            node.position.y - e.position.y <= -7 + 5
+                          ) {
+                            params.sourceHandle = "r1";
+                            if (
+                              edge.findIndex(
+                                (e) => e.targetHandle === "r1.t"
+                              ) === -1
+                            )
+                              await onConnect(params);
+                          } else if (
+                            node.position.y - e.position.y >= 9 - 5 &&
+                            node.position.y - e.position.y <= 9 + 5
+                          ) {
+                            params.sourceHandle = "r2";
+                            if (
+                              edge.findIndex(
+                                (e) => e.targetHandle === "r2.t"
+                              ) === -1
+                            )
+                              await onConnect(params);
+                          } else if (
+                            node.position.y - e.position.y >= 27 - 5 &&
+                            node.position.y - e.position.y <= 27 + 5
+                          ) {
+                            params.sourceHandle = "r3";
+                            if (
+                              edge.findIndex(
+                                (e) => e.targetHandle === "r3.t"
+                              ) === -1
+                            )
+                              await onConnect(params);
+                          } else if (
+                            node.position.y - e.position.y >= 44 - 5 &&
+                            node.position.y - e.position.y <= 44 + 5
+                          ) {
+                            params.sourceHandle = "r4";
+                            if (
+                              edge.findIndex(
+                                (e) => e.targetHandle === "r4.t"
+                              ) === -1
+                            )
+                              await onConnect(params);
+                          }
+                        }
+                        break;
+                    }
+                    break;
+                  case "parallelCircuit":
                     let index1 = nodes.find(
                       (n) => n.data.specificElType === "junction"
                     );
@@ -6222,23 +5894,17 @@ for(let i =0;i<ele.path.length;i++){
                     if (index1.id === e.id)
                       switch (node.data.specificElType) {
                         //add offset for beeper
+
                         case "tact":
-                        case "capacitor100":
-                        case "capacitor1000":
+                        case "led":
                         case "beeper":
-                          console.log(
-                            "tact",
-                            node.position.x - e.position.x,
-                            node.position.y - e.position.y
-                          );
-  
                           params = {
                             source: `${e.id}`,
                             sourceHandle: `r`,
                             target: `${node.id}`,
                             targetHandle: "l",
                           };
-  
+
                           if (node.data.specificElType === "beeper") {
                             offsetX = 20;
                             offsetY = 30;
@@ -6246,10 +5912,12 @@ for(let i =0;i<ele.path.length;i++){
                             offsetX = 0;
                             offsetY = 0;
                           }
-  
+
                           if (
-                            node.position.x - e.position.x >= 43 - 5 + offsetX &&
-                            node.position.x - e.position.x <= 43 + 5 + offsetX &&
+                            node.position.x - e.position.x >=
+                              43 - 5 + offsetX &&
+                            node.position.x - e.position.x <=
+                              43 + 5 + offsetX &&
                             node.data.specificElType != "tact"
                           ) {
                             if (
@@ -6265,7 +5933,8 @@ for(let i =0;i<ele.path.length;i++){
                               )
                                 await onConnect(params);
                             } else if (
-                              node.position.y - e.position.y >= 9 - 5 + offsetY &&
+                              node.position.y - e.position.y >=
+                                9 - 5 + offsetY &&
                               node.position.y - e.position.y <= 9 + 5 + offsetY
                             ) {
                               params.sourceHandle = "l2" + index1.id;
@@ -6301,8 +5970,10 @@ for(let i =0;i<ele.path.length;i++){
                                 await onConnect(params);
                             }
                           } else if (
-                            node.position.x - e.position.x >= 173 - 5 + offsetX &&
-                            node.position.x - e.position.x <= 173 + 5 + offsetX &&
+                            node.position.x - e.position.x >=
+                              173 - 5 + offsetX &&
+                            node.position.x - e.position.x <=
+                              173 + 5 + offsetX &&
                             node.data.specificElType != "tact"
                           ) {
                             if (
@@ -6318,7 +5989,8 @@ for(let i =0;i<ele.path.length;i++){
                               )
                                 await onConnect(params);
                             } else if (
-                              node.position.y - e.position.y >= 9 - 5 + offsetY &&
+                              node.position.y - e.position.y >=
+                                9 - 5 + offsetY &&
                               node.position.y - e.position.y <= 9 + 5 + offsetY
                             ) {
                               params.sourceHandle = "r2" + index1.id;
@@ -6382,7 +6054,8 @@ for(let i =0;i<ele.path.length;i++){
                               )
                                 await onConnect(params);
                             } else if (
-                              node.position.y - e.position.y >= 9 - 5 + offsetY &&
+                              node.position.y - e.position.y >=
+                                9 - 5 + offsetY &&
                               node.position.y - e.position.y <= 9 + 5 + offsetY
                             ) {
                               params.targetHandle = "l2.t" + index1.id;
@@ -6418,8 +6091,10 @@ for(let i =0;i<ele.path.length;i++){
                                 await onConnect(params);
                             }
                           } else if (
-                            node.position.x - e.position.x >= -30 - 5 + offsetX &&
-                            node.position.x - e.position.x <= -30 + 5 + offsetX &&
+                            node.position.x - e.position.x >=
+                              -30 - 5 + offsetX &&
+                            node.position.x - e.position.x <=
+                              -30 + 5 + offsetX &&
                             node.data.specificElType === "tact"
                           ) {
                             params = {
@@ -6441,7 +6116,8 @@ for(let i =0;i<ele.path.length;i++){
                               )
                                 await onConnect(params);
                             } else if (
-                              node.position.y - e.position.y >= 9 - 5 + offsetY &&
+                              node.position.y - e.position.y >=
+                                9 - 5 + offsetY &&
                               node.position.y - e.position.y <= 9 + 5 + offsetY
                             ) {
                               params.targetHandle = "r2.t" + index1.id;
@@ -6476,134 +6152,12 @@ for(let i =0;i<ele.path.length;i++){
                               )
                                 await onConnect(params);
                             }
-                          } else if (
-                            node.position.x - e.position.x >= 42 - 5 + offsetX &&
-                            node.position.x - e.position.x <= 42 + 5 + offsetX &&
-                            node.data.specificElType === "tact"
-                          ) {
-                            console.log(
-                              "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ conecting..........."
-                            );
-                            params = {
-                              source: `${e.id}`,
-                              sourceHandle: `r`,
-                              target: `${node.id}`,
-                              targetHandle: "l",
-                            };
-                            if (
-                              node.position.y - e.position.y >=
-                                -7 - 5 + offsetY &&
-                              node.position.y - e.position.y <= -7 + 5 + offsetY
-                            ) {
-                              params.sourceHandle = "l1" + index1.id;
-                              if (
-                                edge.findIndex(
-                                  (e) => e.targetHandle === "l1.t" + index1.id
-                                ) === -1
-                              )
-                                await onConnect(params);
-                            } else if (
-                              node.position.y - e.position.y >= 9 - 5 + offsetY &&
-                              node.position.y - e.position.y <= 9 + 5 + offsetY
-                            ) {
-                              params.sourceHandle = "l2" + index1.id;
-                              if (
-                                edge.findIndex(
-                                  (e) => e.targetHandle === "l2.t" + index1.id
-                                ) === -1
-                              )
-                                await onConnect(params);
-                            } else if (
-                              node.position.y - e.position.y >=
-                                27 - 5 + offsetY &&
-                              node.position.y - e.position.y <= 27 + 5 + offsetY
-                            ) {
-                              params.sourceHandle = "l3" + index1.id;
-                              if (
-                                edge.findIndex(
-                                  (e) => e.targetHandle === "l3.t" + index1.id
-                                ) === -1
-                              )
-                                await onConnect(params);
-                            } else if (
-                              node.position.y - e.position.y >=
-                                44 - 5 + offsetY &&
-                              node.position.y - e.position.y <= 44 + 5 + offsetY
-                            ) {
-                              params.sourceHandle = "l4" + index1.id;
-                              if (
-                                edge.findIndex(
-                                  (e) => e.targetHandle === "l4.t" + index1.id
-                                ) === -1
-                              )
-                                await onConnect(params);
-                            }
-                          } else if (
-                            node.position.x - e.position.x >= 172 - 5 + offsetX &&
-                            node.position.x - e.position.x <= 172 + 5 + offsetX &&
-                            node.data.specificElType === "tact"
-                          ) {
-                            params = {
-                              source: `${e.id}`,
-                              sourceHandle: `r`,
-                              target: `${node.id}`,
-                              targetHandle: "l",
-                            };
-                            if (
-                              node.position.y - e.position.y >=
-                                -7 - 5 + offsetY &&
-                              node.position.y - e.position.y <= -7 + 5 + offsetY
-                            ) {
-                              params.sourceHandle = "r1" + index1.id;
-                              if (
-                                edge.findIndex(
-                                  (e) => e.targetHandle === "r1.t" + index1.id
-                                ) === -1
-                              )
-                                await onConnect(params);
-                            } else if (
-                              node.position.y - e.position.y >= 9 - 5 + offsetY &&
-                              node.position.y - e.position.y <= 9 + 5 + offsetY
-                            ) {
-                              params.sourceHandle = "r2" + index1.id;
-                              if (
-                                edge.findIndex(
-                                  (e) => e.targetHandle === "r2.t" + index1.id
-                                ) === -1
-                              )
-                                await onConnect(params);
-                            } else if (
-                              node.position.y - e.position.y >=
-                                27 - 5 + offsetY &&
-                              node.position.y - e.position.y <= 27 + 5 + offsetY
-                            ) {
-                              params.sourceHandle = "r3" + index1.id;
-                              if (
-                                edge.findIndex(
-                                  (e) => e.targetHandle === "r3.t" + index1.id
-                                ) === -1
-                              )
-                                await onConnect(params);
-                            } else if (
-                              node.position.y - e.position.y >=
-                                44 - 5 + offsetY &&
-                              node.position.y - e.position.y <= 44 + 5 + offsetY
-                            ) {
-                              params.sourceHandle = "r4" + index1.id;
-                              if (
-                                edge.findIndex(
-                                  (e) => e.targetHandle === "r4.t" + index1.id
-                                ) === -1
-                              )
-                                await onConnect(params);
-                            }
                           }
                           break;
                       }
                     else
                       switch (node.data.specificElType) {
-                        case "capacitor100":
-                        case "capacitor1000":
+                        case "led":
                         case "beeper":
                           let index3 = nodes.find(
                             (n) => n.data.specificElType === "junction"
@@ -6613,7 +6167,7 @@ for(let i =0;i<ele.path.length;i++){
                               n.data.specificElType === "junction" &&
                               n.id != index3.id
                           );
-  
+
                           if (node.data.specificElType === "beeper") {
                             offsetX = -20;
                             offsetY = 30;
@@ -6647,7 +6201,8 @@ for(let i =0;i<ele.path.length;i++){
                               )
                                 await onConnect(params);
                             } else if (
-                              node.position.y - e.position.y >= 9 - 5 + offsetY &&
+                              node.position.y - e.position.y >=
+                                9 - 5 + offsetY &&
                               node.position.y - e.position.y <= 9 + 5 + offsetY
                             ) {
                               params.targetHandle = "l2.t" + index2.id;
@@ -6683,7 +6238,8 @@ for(let i =0;i<ele.path.length;i++){
                                 await onConnect(params);
                             }
                           } else if (
-                            node.position.x - e.position.x >= -30 - 5 + offsetX &&
+                            node.position.x - e.position.x >=
+                              -30 - 5 + offsetX &&
                             node.position.x - e.position.x <= -30 + 5 + offsetX
                           ) {
                             if (
@@ -6699,7 +6255,8 @@ for(let i =0;i<ele.path.length;i++){
                               )
                                 await onConnect(params);
                             } else if (
-                              node.position.y - e.position.y >= 9 - 5 + offsetY &&
+                              node.position.y - e.position.y >=
+                                9 - 5 + offsetY &&
                               node.position.y - e.position.y <= 9 + 5 + offsetY
                             ) {
                               params.targetHandle = "r2.t" + index2.id;
@@ -6754,7 +6311,7 @@ for(let i =0;i<ele.path.length;i++){
                               params.targetHandle == "r1"
                           );
                           let y = node.position.y - e.position.y;
-  
+
                           if (index1 != -1) {
                             params.targetHandle = "r2";
                           }
@@ -6848,805 +6405,1547 @@ for(let i =0;i<ele.path.length;i++){
                                 await onConnect(params);
                             }
                           }
-  
+
                           break;
                       }
-                  }
-                  break;
-                case "resistorCircuit":
-                  {
-                    let index1 = nodes.find(
-                      (n) => n.data.specificElType === "junction"
-                    );
-                    let offsetx = 0,
-                      offsetY = 0;
-                    if (index1.id === e.id)
-                      switch (node.data.specificElType) {
-                        //add offset for beeper
-                        case "tact":
-                        case "res_100":
-                        case "res_250":
-                          console.log(
-                            "tact",
-                            node.position.x - e.position.x,
-                            node.position.y - e.position.y
-                          );
-  
-                          params = {
-                            source: `${e.id}`,
-                            sourceHandle: `r`,
-                            target: `${node.id}`,
-                            targetHandle: "l",
-                          };
-  
-                          if (node.data.specificElType === "beeper") {
-                            offsetX = 20;
-                            offsetY = 30;
-                          } else {
-                            offsetX = 0;
-                            offsetY = 0;
-                          }
-  
-                          if (
-                            node.position.x - e.position.x >= 43 - 5 + offsetX &&
-                            node.position.x - e.position.x <= 43 + 5 + offsetX &&
-                            node.data.specificElType != "tact"
-                          ) {
-                            if (
-                              node.position.y - e.position.y >=
-                                -7 - 5 + offsetY &&
-                              node.position.y - e.position.y <= -7 + 5 + offsetY
-                            ) {
-                              params.sourceHandle = "l1" + index1.id;
-                              if (
-                                edge.findIndex(
-                                  (e) => e.targetHandle === "l1.t" + index1.id
-                                ) === -1
-                              )
-                                await onConnect(params);
-                            } else if (
-                              node.position.y - e.position.y >= 9 - 5 + offsetY &&
-                              node.position.y - e.position.y <= 9 + 5 + offsetY
-                            ) {
-                              params.sourceHandle = "l2" + index1.id;
-                              if (
-                                edge.findIndex(
-                                  (e) => e.targetHandle === "l2.t" + index1.id
-                                ) === -1
-                              )
-                                await onConnect(params);
-                            } else if (
-                              node.position.y - e.position.y >=
-                                27 - 5 + offsetY &&
-                              node.position.y - e.position.y <= 27 + 5 + offsetY
-                            ) {
-                              params.sourceHandle = "l3" + index1.id;
-                              if (
-                                edge.findIndex(
-                                  (e) => e.targetHandle === "l3.t" + index1.id
-                                ) === -1
-                              )
-                                await onConnect(params);
-                            } else if (
-                              node.position.y - e.position.y >=
-                                44 - 5 + offsetY &&
-                              node.position.y - e.position.y <= 44 + 5 + offsetY
-                            ) {
-                              params.sourceHandle = "l4" + index1.id;
-                              if (
-                                edge.findIndex(
-                                  (e) => e.targetHandle === "l4.t" + index1.id
-                                ) === -1
-                              )
-                                await onConnect(params);
-                            }
-                          } else if (
-                            node.position.x - e.position.x >= 173 - 5 + offsetX &&
-                            node.position.x - e.position.x <= 173 + 5 + offsetX &&
-                            node.data.specificElType != "tact"
-                          ) {
-                            if (
-                              node.position.y - e.position.y >=
-                                -7 - 5 + offsetY &&
-                              node.position.y - e.position.y <= -7 + 5 + offsetY
-                            ) {
-                              params.sourceHandle = "r1" + index1.id;
-                              if (
-                                edge.findIndex(
-                                  (e) => e.targetHandle === "r1.t" + index1.id
-                                ) === -1
-                              )
-                                await onConnect(params);
-                            } else if (
-                              node.position.y - e.position.y >= 9 - 5 + offsetY &&
-                              node.position.y - e.position.y <= 9 + 5 + offsetY
-                            ) {
-                              params.sourceHandle = "r2" + index1.id;
-                              if (
-                                edge.findIndex(
-                                  (e) => e.targetHandle === "r2.t" + index1.id
-                                ) === -1
-                              )
-                                await onConnect(params);
-                            } else if (
-                              node.position.y - e.position.y >=
-                                27 - 5 + offsetY &&
-                              node.position.y - e.position.y <= 27 + 5 + offsetY
-                            ) {
-                              params.sourceHandle = "r3" + index1.id;
-                              if (
-                                edge.findIndex(
-                                  (e) => e.targetHandle === "r3.t" + index1.id
-                                ) === -1
-                              )
-                                await onConnect(params);
-                            } else if (
-                              node.position.y - e.position.y >=
-                                44 - 5 + offsetY &&
-                              node.position.y - e.position.y <= 44 + 5 + offsetY
-                            ) {
-                              params.sourceHandle = "r4" + index1.id;
-                              if (
-                                edge.findIndex(
-                                  (e) => e.targetHandle === "r4.t" + index1.id
-                                ) === -1
-                              )
-                                await onConnect(params);
-                            }
-                          } else if (
-                            node.position.x - e.position.x >=
-                              -160 - 5 + offsetX &&
-                            node.position.x - e.position.x <=
-                              -160 + 5 + offsetX &&
-                            node.data.specificElType === "tact"
-                          ) {
-                            console.log(
-                              "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ conecting..........."
-                            );
-                            params = {
-                              source: `${node.id}`,
-                              sourceHandle: `r`,
-                              target: `${e.id}`,
-                              targetHandle: "l",
-                            };
-                            if (
-                              node.position.y - e.position.y >=
-                                -7 - 5 + offsetY &&
-                              node.position.y - e.position.y <= -7 + 5 + offsetY
-                            ) {
-                              params.targetHandle = "l1.t" + index1.id;
-                              if (
-                                edge.findIndex(
-                                  (e) => e.sourceHandle === "l1" + index1.id
-                                ) === -1
-                              )
-                                await onConnect(params);
-                            } else if (
-                              node.position.y - e.position.y >= 9 - 5 + offsetY &&
-                              node.position.y - e.position.y <= 9 + 5 + offsetY
-                            ) {
-                              params.targetHandle = "l2.t" + index1.id;
-                              if (
-                                edge.findIndex(
-                                  (e) => e.sourceHandle === "l2" + index1.id
-                                ) === -1
-                              )
-                                await onConnect(params);
-                            } else if (
-                              node.position.y - e.position.y >=
-                                27 - 5 + offsetY &&
-                              node.position.y - e.position.y <= 27 + 5 + offsetY
-                            ) {
-                              params.targetHandle = "l3.t" + index1.id;
-                              if (
-                                edge.findIndex(
-                                  (e) => e.sourceHandle === "l3" + index1.id
-                                ) === -1
-                              )
-                                await onConnect(params);
-                            } else if (
-                              node.position.y - e.position.y >=
-                                44 - 5 + offsetY &&
-                              node.position.y - e.position.y <= 44 + 5 + offsetY
-                            ) {
-                              params.targetHandle = "l4.t" + index1.id;
-                              if (
-                                edge.findIndex(
-                                  (e) => e.sourceHandle === "l4" + index1.id
-                                ) === -1
-                              )
-                                await onConnect(params);
-                            }
-                          } else if (
-                            node.position.x - e.position.x >= -30 - 5 + offsetX &&
-                            node.position.x - e.position.x <= -30 + 5 + offsetX &&
-                            node.data.specificElType === "tact"
-                          ) {
-                            params = {
-                              source: `${node.id}`,
-                              sourceHandle: `r`,
-                              target: `${e.id}`,
-                              targetHandle: "l",
-                            };
-                            if (
-                              node.position.y - e.position.y >=
-                                -7 - 5 + offsetY &&
-                              node.position.y - e.position.y <= -7 + 5 + offsetY
-                            ) {
-                              params.targetHandle = "r1.t" + index1.id;
-                              if (
-                                edge.findIndex(
-                                  (e) => e.sourceHandle === "r1" + index1.id
-                                ) === -1
-                              )
-                                await onConnect(params);
-                            } else if (
-                              node.position.y - e.position.y >= 9 - 5 + offsetY &&
-                              node.position.y - e.position.y <= 9 + 5 + offsetY
-                            ) {
-                              params.targetHandle = "r2.t" + index1.id;
-                              if (
-                                edge.findIndex(
-                                  (e) => e.sourceHandle === "r2" + index1.id
-                                ) === -1
-                              )
-                                await onConnect(params);
-                            } else if (
-                              node.position.y - e.position.y >=
-                                27 - 5 + offsetY &&
-                              node.position.y - e.position.y <= 27 + 5 + offsetY
-                            ) {
-                              params.targetHandle = "r3.t" + index1.id;
-                              if (
-                                edge.findIndex(
-                                  (e) => e.sourceHandle === "r3" + index1.id
-                                ) === -1
-                              )
-                                await onConnect(params);
-                            } else if (
-                              node.position.y - e.position.y >=
-                                44 - 5 + offsetY &&
-                              node.position.y - e.position.y <= 44 + 5 + offsetY
-                            ) {
-                              params.targetHandle = "r4.t" + index1.id;
-                              if (
-                                edge.findIndex(
-                                  (e) => e.sourceHandle === "r4" + index1.id
-                                ) === -1
-                              )
-                                await onConnect(params);
-                            }
-                          }
-  
-                          break;
-                      }
-                    else
-                      switch (node.data.specificElType) {
-                        case "res_250":
-                        case "res_100":
-                        case "led":
-                          let index3 = nodes.find(
-                            (n) => n.data.specificElType === "junction"
-                          );
-                          let index2 = nodes.find(
-                            (n) =>
-                              n.data.specificElType === "junction" &&
-                              n.id != index3.id
-                          );
-  
-                          if (node.data.specificElType === "beeper") {
-                            offsetX = -20;
-                            offsetY = 30;
-                          } else {
-                            offsetX = 0;
-                            offsetY = 0;
-                          }
-                          console.log(
-                            "paramsbeep",
-                            node.position.x - e.position.x,
-                            node.position.y - e.position.y,
-                            "after",
-                            node.position.x - e.position.x - offsetX,
-                            node.position.y - e.position.y - offsetY
-                          );
-  
-                          if (
-                            node.position.x - e.position.x >=
-                              -159 - 5 + offsetX &&
-                            node.position.x - e.position.x <=
-                              -159 + 5 + offsetX &&
-                            node.data.specificElType != "led"
-                          ) {
-                            if (
-                              node.position.y - e.position.y >=
-                                -7 - 5 + offsetY &&
-                              node.position.y - e.position.y <= -7 + 5 + offsetY
-                            ) {
-                              params.targetHandle = "l1.t" + index2.id;
-                              if (
-                                edge.findIndex(
-                                  (e) => e.sourceHandle === "l1" + index2.id
-                                ) === -1
-                              )
-                                await onConnect(params);
-                            } else if (
-                              node.position.y - e.position.y >= 9 - 5 + offsetY &&
-                              node.position.y - e.position.y <= 9 + 5 + offsetY
-                            ) {
-                              params.targetHandle = "l2.t" + index2.id;
-                              if (
-                                edge.findIndex(
-                                  (e) => e.sourceHandle === "l2" + index2.id
-                                ) === -1
-                              )
-                                await onConnect(params);
-                            } else if (
-                              node.position.y - e.position.y >=
-                                27 - 5 + offsetY &&
-                              node.position.y - e.position.y <= 27 + 5 + offsetY
-                            ) {
-                              params.targetHandle = "l3.t" + index2.id;
-                              if (
-                                edge.findIndex(
-                                  (e) => e.sourceHandle === "l3" + index2.id
-                                ) === -1
-                              )
-                                await onConnect(params);
-                            } else if (
-                              node.position.y - e.position.y >=
-                                44 - 5 + offsetY &&
-                              node.position.y - e.position.y <= 44 + 5 + offsetY
-                            ) {
-                              params.targetHandle = "l4.t" + index2.id;
-                              if (
-                                edge.findIndex(
-                                  (e) => e.sourceHandle === "l4" + index2.id
-                                ) === -1
-                              )
-                                await onConnect(params);
-                            }
-                          } else if (
-                            node.position.x - e.position.x >= -30 - 5 + offsetX &&
-                            node.position.x - e.position.x <= -30 + 5 + offsetX &&
-                            node.data.specificElType != "led"
-                          ) {
-                            if (
-                              node.position.y - e.position.y >=
-                                -7 - 5 + offsetY &&
-                              node.position.y - e.position.y <= -7 + 5
-                            ) {
-                              params.targetHandle = "r1.t" + index2.id;
-                              if (
-                                edge.findIndex(
-                                  (e) => e.sourceHandle === "r1" + index2.id
-                                ) === -1
-                              )
-                                await onConnect(params);
-                            } else if (
-                              node.position.y - e.position.y >= 9 - 5 + offsetY &&
-                              node.position.y - e.position.y <= 9 + 5 + offsetY
-                            ) {
-                              params.targetHandle = "r2.t" + index2.id;
-                              if (
-                                edge.findIndex(
-                                  (e) => e.sourceHandle === "r2" + index2.id
-                                ) === -1
-                              )
-                                await onConnect(params);
-                            } else if (
-                              node.position.y - e.position.y >=
-                                27 - 5 + offsetY &&
-                              node.position.y - e.position.y <= 27 + 5 + offsetY
-                            ) {
-                              params.targetHandle = "r3.t" + index2.id;
-                              if (
-                                edge.findIndex(
-                                  (e) => e.sourceHandle === "r3" + index2.id
-                                ) === -1
-                              )
-                                await onConnect(params);
-                            } else if (
-                              node.position.y - e.position.y >=
-                                44 - 5 + offsetY &&
-                              node.position.y - e.position.y <= 44 + 5 + offsetY
-                            ) {
-                              params.targetHandle = "r4.t" + index2.id;
-                              if (
-                                edge.findIndex(
-                                  (e) => e.sourceHandle === "r4" + index2.id
-                                ) === -1
-                              )
-                                await onConnect(params);
-                            }
-                          }
-                          if (
-                            node.position.x - e.position.x >= 42 - 5 + offsetX &&
-                            node.position.x - e.position.x <= 42 + 5 + offsetX &&
-                            node.data.specificElType === "led"
-                          ) {
-                            console.log(
-                              "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ conecting..........."
-                            );
-                            params = {
-                              source: `${e.id}`,
-                              sourceHandle: `r`,
-                              target: `${node.id}`,
-                              targetHandle: "l",
-                            };
-                            if (
-                              node.position.y - e.position.y >=
-                                -7 - 5 + offsetY &&
-                              node.position.y - e.position.y <= -7 + 5 + offsetY
-                            ) {
-                              params.sourceHandle = "l1" + index2.id;
-                              if (
-                                edge.findIndex(
-                                  (e) => e.targetHandle === "l1.t" + index2.id
-                                ) === -1
-                              )
-                                await onConnect(params);
-                            } else if (
-                              node.position.y - e.position.y >= 9 - 5 + offsetY &&
-                              node.position.y - e.position.y <= 9 + 5 + offsetY
-                            ) {
-                              params.sourceHandle = "l2" + index2.id;
-                              if (
-                                edge.findIndex(
-                                  (e) => e.targetHandle === "l2.t" + index2.id
-                                ) === -1
-                              )
-                                await onConnect(params);
-                            } else if (
-                              node.position.y - e.position.y >=
-                                27 - 5 + offsetY &&
-                              node.position.y - e.position.y <= 27 + 5 + offsetY
-                            ) {
-                              params.sourceHandle = "l3" + index2.id;
-                              if (
-                                edge.findIndex(
-                                  (e) => e.targetHandle === "l3.t" + index2.id
-                                ) === -1
-                              )
-                                await onConnect(params);
-                            } else if (
-                              node.position.y - e.position.y >=
-                                44 - 5 + offsetY &&
-                              node.position.y - e.position.y <= 44 + 5 + offsetY
-                            ) {
-                              params.sourceHandle = "l4" + index2.id;
-                              if (
-                                edge.findIndex(
-                                  (e) => e.targetHandle === "l4.t" + index2.id
-                                ) === -1
-                              )
-                                await onConnect(params);
-                            }
-                          } else if (
-                            node.position.x - e.position.x >= 172 - 5 + offsetX &&
-                            node.position.x - e.position.x <= 172 + 5 + offsetX &&
-                            node.data.specificElType === "led"
-                          ) {
-                            params = {
-                              source: `${e.id}`,
-                              sourceHandle: `r`,
-                              target: `${node.id}`,
-                              targetHandle: "l",
-                            };
-                            if (
-                              node.position.y - e.position.y >=
-                                -7 - 5 + offsetY &&
-                              node.position.y - e.position.y <= -7 + 5 + offsetY
-                            ) {
-                              params.sourceHandle = "r1" + index2.id;
-                              if (
-                                edge.findIndex(
-                                  (e) => e.targetHandle === "r1.t" + index2.id
-                                ) === -1
-                              )
-                                await onConnect(params);
-                            } else if (
-                              node.position.y - e.position.y >= 9 - 5 + offsetY &&
-                              node.position.y - e.position.y <= 9 + 5 + offsetY
-                            ) {
-                              params.sourceHandle = "r2" + index2.id;
-                              if (
-                                edge.findIndex(
-                                  (e) => e.targetHandle === "r2.t" + index2.id
-                                ) === -1
-                              )
-                                await onConnect(params);
-                            } else if (
-                              node.position.y - e.position.y >=
-                                27 - 5 + offsetY &&
-                              node.position.y - e.position.y <= 27 + 5 + offsetY
-                            ) {
-                              params.sourceHandle = "r3" + index2.id;
-                              if (
-                                edge.findIndex(
-                                  (e) => e.targetHandle === "r3.t" + index2.id
-                                ) === -1
-                              )
-                                await onConnect(params);
-                            } else if (
-                              node.position.y - e.position.y >=
-                                44 - 5 + offsetY &&
-                              node.position.y - e.position.y <= 44 + 5 + offsetY
-                            ) {
-                              params.sourceHandle = "r4" + index2.id;
-                              if (
-                                edge.findIndex(
-                                  (e) => e.targetHandle === "r4.t" + index2.id
-                                ) === -1
-                              )
-                                await onConnect(params);
-                            }
-                          }
-                          break;
-  
-                        case "pot":
-                          params = {
-                            source: `${e.id}`,
-                            sourceHandle: `l1`,
-                            target: `${node.id}`,
-                            targetHandle: "r1",
-                          };
-                          console.log(
-                            "potttTTTTTTTTTTTT",
-                            node.position.x - e.position.x,
-                            node.position.y - e.position.y
-                          );
-                          let index1 = edge.findIndex(
-                            (e) =>
-                              e.target === params.target &&
-                              params.targetHandle == "r1"
-                          );
-                          let y = node.position.y - e.position.y;
-  
-                          if (index1 != -1) {
-                            params.targetHandle = "r2";
-                          }
-                          if (
-                            node.position.x - e.position.x >= -176 - 5 &&
-                            node.position.x - e.position.x <= -176 + 5
-                          ) {
-                            //l1.t or l1
-                            if (y)
-                              if (y >= 3 - 5 && y <= 3 + 5) {
-                                params.sourceHandle = "l1";
-                                if (
-                                  edge.findIndex(
-                                    (e) => e.targetHandle === "l1.t"
-                                  ) === -1
-                                )
-                                  await onConnect(params);
-                              }
-                              //l2.t or l2
-                              else if (y >= 22 - 5 && y <= 22 + 5) {
-                                params.sourceHandle = "l2";
-                                if (
-                                  edge.findIndex(
-                                    (e) => e.targetHandle === "l2.t"
-                                  ) === -1
-                                )
-                                  await onConnect(params);
-                              }
-                              //l3.t or l3
-                              else if (y >= 38 - 5 && y <= 38 + 5) {
-                                params.sourceHandle = "l3";
-                                if (
-                                  edge.findIndex(
-                                    (e) => e.targetHandle === "l3.t"
-                                  ) === -1
-                                )
-                                  await onConnect(params);
-                              }
-                              //l4.t or l4
-                              else if (y >= 56 - 5 && y <= 56 + 5) {
-                                params.sourceHandle = "l4";
-                                if (
-                                  edge.findIndex(
-                                    (e) => e.targetHandle === "l4.t"
-                                  ) === -1
-                                )
-                                  await onConnect(params);
-                              }
-                          } else if (
-                            node.position.x - e.position.x >= -40 - 5 &&
-                            node.position.x - e.position.x <= -40 + 5
-                          ) {
-                            //r1.t or r1
-                            if (y >= 3 - 5 && y <= 3 + 5) {
-                              params.sourceHandle = "r1";
-                              if (
-                                edge.findIndex(
-                                  (e) => e.targetHandle === "r1.t"
-                                ) === -1
-                              )
-                                await onConnect(params);
-                            }
-                            //r2.t or r2
-                            else if (y >= 22 - 5 && y <= 22 + 5) {
-                              params.sourceHandle = "r2";
-                              if (
-                                edge.findIndex(
-                                  (e) => e.targetHandle === "r2.t"
-                                ) === -1
-                              )
-                                await onConnect(params);
-                            }
-                            //r3.t or r3
-                            else if (y >= 38 - 5 && y <= 38 + 5) {
-                              params.sourceHandle = "r3";
-                              if (
-                                edge.findIndex(
-                                  (e) => e.targetHandle === "r3.t"
-                                ) === -1
-                              )
-                                await onConnect(params);
-                            }
-                            //r4.t or r4
-                            else if (y >= 56 - 5 && y <= 56 + 5) {
-                              params.sourceHandle = "r4";
-                              if (
-                                edge.findIndex(
-                                  (e) => e.targetHandle === "r4.t"
-                                ) === -1
-                              )
-                                await onConnect(params);
-                            }
-                          }
-  
-                          break;
-                      }
-                  }
-                  break;
-                default:
-                  switch (node.data.specificElType) {
-                    case "capacitor100":
-                    case "capacitor1000":
-                    case "tact":
-                    case "led":
-                      console.log(
-                        "led#####^^^^^^^^^^####",
-                        node.position.x - e.position.x,
-                        node.position.y - e.position.y
+                    break;
+                  case "capacitorCircuit":
+                    {
+                      let index1 = nodes.find(
+                        (n) => n.data.specificElType === "junction"
                       );
-                      if (
-                        node.position.x - e.position.x >= -159 - 5 &&
-                        node.position.x - e.position.x <= -159 + 5
-                      ) {
-                        if (
-                          node.position.y - e.position.y >= -7 - 5 &&
-                          node.position.y - e.position.y <= -7 + 5
-                        ) {
-                          params.targetHandle = "l1.t";
-                          await onConnect(params);
-                        } else if (
-                          node.position.y - e.position.y >= 9 - 5 &&
-                          node.position.y - e.position.y <= 9 + 5
-                        ) {
-                          params.targetHandle = "l2.t";
-                          await onConnect(params);
-                        } else if (
-                          node.position.y - e.position.y >= 27 - 5 &&
-                          node.position.y - e.position.y <= 27 + 5
-                        ) {
-                          params.targetHandle = "l3.t";
-                          await onConnect(params);
-                        } else if (
-                          node.position.y - e.position.y >= 44 - 5 &&
-                          node.position.y - e.position.y <= 44 + 5
-                        ) {
-                          params.targetHandle = "l4.t";
-                          await onConnect(params);
+                      let offsetx = 0,
+                        offsetY = 0;
+                      if (index1.id === e.id)
+                        switch (node.data.specificElType) {
+                          //add offset for beeper
+                          case "tact":
+                          case "capacitor100":
+                          case "capacitor1000":
+                          case "beeper":
+                            console.log(
+                              "tact",
+                              node.position.x - e.position.x,
+                              node.position.y - e.position.y
+                            );
+
+                            params = {
+                              source: `${e.id}`,
+                              sourceHandle: `r`,
+                              target: `${node.id}`,
+                              targetHandle: "l",
+                            };
+
+                            if (node.data.specificElType === "beeper") {
+                              offsetX = 20;
+                              offsetY = 30;
+                            } else {
+                              offsetX = 0;
+                              offsetY = 0;
+                            }
+
+                            if (
+                              node.position.x - e.position.x >=
+                                43 - 5 + offsetX &&
+                              node.position.x - e.position.x <=
+                                43 + 5 + offsetX &&
+                              node.data.specificElType != "tact"
+                            ) {
+                              if (
+                                node.position.y - e.position.y >=
+                                  -7 - 5 + offsetY &&
+                                node.position.y - e.position.y <=
+                                  -7 + 5 + offsetY
+                              ) {
+                                params.sourceHandle = "l1" + index1.id;
+                                if (
+                                  edge.findIndex(
+                                    (e) => e.targetHandle === "l1.t" + index1.id
+                                  ) === -1
+                                )
+                                  await onConnect(params);
+                              } else if (
+                                node.position.y - e.position.y >=
+                                  9 - 5 + offsetY &&
+                                node.position.y - e.position.y <=
+                                  9 + 5 + offsetY
+                              ) {
+                                params.sourceHandle = "l2" + index1.id;
+                                if (
+                                  edge.findIndex(
+                                    (e) => e.targetHandle === "l2.t" + index1.id
+                                  ) === -1
+                                )
+                                  await onConnect(params);
+                              } else if (
+                                node.position.y - e.position.y >=
+                                  27 - 5 + offsetY &&
+                                node.position.y - e.position.y <=
+                                  27 + 5 + offsetY
+                              ) {
+                                params.sourceHandle = "l3" + index1.id;
+                                if (
+                                  edge.findIndex(
+                                    (e) => e.targetHandle === "l3.t" + index1.id
+                                  ) === -1
+                                )
+                                  await onConnect(params);
+                              } else if (
+                                node.position.y - e.position.y >=
+                                  44 - 5 + offsetY &&
+                                node.position.y - e.position.y <=
+                                  44 + 5 + offsetY
+                              ) {
+                                params.sourceHandle = "l4" + index1.id;
+                                if (
+                                  edge.findIndex(
+                                    (e) => e.targetHandle === "l4.t" + index1.id
+                                  ) === -1
+                                )
+                                  await onConnect(params);
+                              }
+                            } else if (
+                              node.position.x - e.position.x >=
+                                173 - 5 + offsetX &&
+                              node.position.x - e.position.x <=
+                                173 + 5 + offsetX &&
+                              node.data.specificElType != "tact"
+                            ) {
+                              if (
+                                node.position.y - e.position.y >=
+                                  -7 - 5 + offsetY &&
+                                node.position.y - e.position.y <=
+                                  -7 + 5 + offsetY
+                              ) {
+                                params.sourceHandle = "r1" + index1.id;
+                                if (
+                                  edge.findIndex(
+                                    (e) => e.targetHandle === "r1.t" + index1.id
+                                  ) === -1
+                                )
+                                  await onConnect(params);
+                              } else if (
+                                node.position.y - e.position.y >=
+                                  9 - 5 + offsetY &&
+                                node.position.y - e.position.y <=
+                                  9 + 5 + offsetY
+                              ) {
+                                params.sourceHandle = "r2" + index1.id;
+                                if (
+                                  edge.findIndex(
+                                    (e) => e.targetHandle === "r2.t" + index1.id
+                                  ) === -1
+                                )
+                                  await onConnect(params);
+                              } else if (
+                                node.position.y - e.position.y >=
+                                  27 - 5 + offsetY &&
+                                node.position.y - e.position.y <=
+                                  27 + 5 + offsetY
+                              ) {
+                                params.sourceHandle = "r3" + index1.id;
+                                if (
+                                  edge.findIndex(
+                                    (e) => e.targetHandle === "r3.t" + index1.id
+                                  ) === -1
+                                )
+                                  await onConnect(params);
+                              } else if (
+                                node.position.y - e.position.y >=
+                                  44 - 5 + offsetY &&
+                                node.position.y - e.position.y <=
+                                  44 + 5 + offsetY
+                              ) {
+                                params.sourceHandle = "r4" + index1.id;
+                                if (
+                                  edge.findIndex(
+                                    (e) => e.targetHandle === "r4.t" + index1.id
+                                  ) === -1
+                                )
+                                  await onConnect(params);
+                              }
+                            } else if (
+                              node.position.x - e.position.x >=
+                                -160 - 5 + offsetX &&
+                              node.position.x - e.position.x <=
+                                -160 + 5 + offsetX &&
+                              node.data.specificElType === "tact"
+                            ) {
+                              console.log(
+                                "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ conecting..........."
+                              );
+                              params = {
+                                source: `${node.id}`,
+                                sourceHandle: `r`,
+                                target: `${e.id}`,
+                                targetHandle: "l",
+                              };
+                              if (
+                                node.position.y - e.position.y >=
+                                  -7 - 5 + offsetY &&
+                                node.position.y - e.position.y <=
+                                  -7 + 5 + offsetY
+                              ) {
+                                params.targetHandle = "l1.t" + index1.id;
+                                if (
+                                  edge.findIndex(
+                                    (e) => e.sourceHandle === "l1" + index1.id
+                                  ) === -1
+                                )
+                                  await onConnect(params);
+                              } else if (
+                                node.position.y - e.position.y >=
+                                  9 - 5 + offsetY &&
+                                node.position.y - e.position.y <=
+                                  9 + 5 + offsetY
+                              ) {
+                                params.targetHandle = "l2.t" + index1.id;
+                                if (
+                                  edge.findIndex(
+                                    (e) => e.sourceHandle === "l2" + index1.id
+                                  ) === -1
+                                )
+                                  await onConnect(params);
+                              } else if (
+                                node.position.y - e.position.y >=
+                                  27 - 5 + offsetY &&
+                                node.position.y - e.position.y <=
+                                  27 + 5 + offsetY
+                              ) {
+                                params.targetHandle = "l3.t" + index1.id;
+                                if (
+                                  edge.findIndex(
+                                    (e) => e.sourceHandle === "l3" + index1.id
+                                  ) === -1
+                                )
+                                  await onConnect(params);
+                              } else if (
+                                node.position.y - e.position.y >=
+                                  44 - 5 + offsetY &&
+                                node.position.y - e.position.y <=
+                                  44 + 5 + offsetY
+                              ) {
+                                params.targetHandle = "l4.t" + index1.id;
+                                if (
+                                  edge.findIndex(
+                                    (e) => e.sourceHandle === "l4" + index1.id
+                                  ) === -1
+                                )
+                                  await onConnect(params);
+                              }
+                            } else if (
+                              node.position.x - e.position.x >=
+                                -30 - 5 + offsetX &&
+                              node.position.x - e.position.x <=
+                                -30 + 5 + offsetX &&
+                              node.data.specificElType === "tact"
+                            ) {
+                              params = {
+                                source: `${node.id}`,
+                                sourceHandle: `r`,
+                                target: `${e.id}`,
+                                targetHandle: "l",
+                              };
+                              if (
+                                node.position.y - e.position.y >=
+                                  -7 - 5 + offsetY &&
+                                node.position.y - e.position.y <=
+                                  -7 + 5 + offsetY
+                              ) {
+                                params.targetHandle = "r1.t" + index1.id;
+                                if (
+                                  edge.findIndex(
+                                    (e) => e.sourceHandle === "r1" + index1.id
+                                  ) === -1
+                                )
+                                  await onConnect(params);
+                              } else if (
+                                node.position.y - e.position.y >=
+                                  9 - 5 + offsetY &&
+                                node.position.y - e.position.y <=
+                                  9 + 5 + offsetY
+                              ) {
+                                params.targetHandle = "r2.t" + index1.id;
+                                if (
+                                  edge.findIndex(
+                                    (e) => e.sourceHandle === "r2" + index1.id
+                                  ) === -1
+                                )
+                                  await onConnect(params);
+                              } else if (
+                                node.position.y - e.position.y >=
+                                  27 - 5 + offsetY &&
+                                node.position.y - e.position.y <=
+                                  27 + 5 + offsetY
+                              ) {
+                                params.targetHandle = "r3.t" + index1.id;
+                                if (
+                                  edge.findIndex(
+                                    (e) => e.sourceHandle === "r3" + index1.id
+                                  ) === -1
+                                )
+                                  await onConnect(params);
+                              } else if (
+                                node.position.y - e.position.y >=
+                                  44 - 5 + offsetY &&
+                                node.position.y - e.position.y <=
+                                  44 + 5 + offsetY
+                              ) {
+                                params.targetHandle = "r4.t" + index1.id;
+                                if (
+                                  edge.findIndex(
+                                    (e) => e.sourceHandle === "r4" + index1.id
+                                  ) === -1
+                                )
+                                  await onConnect(params);
+                              }
+                            } else if (
+                              node.position.x - e.position.x >=
+                                42 - 5 + offsetX &&
+                              node.position.x - e.position.x <=
+                                42 + 5 + offsetX &&
+                              node.data.specificElType === "tact"
+                            ) {
+                              console.log(
+                                "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ conecting..........."
+                              );
+                              params = {
+                                source: `${e.id}`,
+                                sourceHandle: `r`,
+                                target: `${node.id}`,
+                                targetHandle: "l",
+                              };
+                              if (
+                                node.position.y - e.position.y >=
+                                  -7 - 5 + offsetY &&
+                                node.position.y - e.position.y <=
+                                  -7 + 5 + offsetY
+                              ) {
+                                params.sourceHandle = "l1" + index1.id;
+                                if (
+                                  edge.findIndex(
+                                    (e) => e.targetHandle === "l1.t" + index1.id
+                                  ) === -1
+                                )
+                                  await onConnect(params);
+                              } else if (
+                                node.position.y - e.position.y >=
+                                  9 - 5 + offsetY &&
+                                node.position.y - e.position.y <=
+                                  9 + 5 + offsetY
+                              ) {
+                                params.sourceHandle = "l2" + index1.id;
+                                if (
+                                  edge.findIndex(
+                                    (e) => e.targetHandle === "l2.t" + index1.id
+                                  ) === -1
+                                )
+                                  await onConnect(params);
+                              } else if (
+                                node.position.y - e.position.y >=
+                                  27 - 5 + offsetY &&
+                                node.position.y - e.position.y <=
+                                  27 + 5 + offsetY
+                              ) {
+                                params.sourceHandle = "l3" + index1.id;
+                                if (
+                                  edge.findIndex(
+                                    (e) => e.targetHandle === "l3.t" + index1.id
+                                  ) === -1
+                                )
+                                  await onConnect(params);
+                              } else if (
+                                node.position.y - e.position.y >=
+                                  44 - 5 + offsetY &&
+                                node.position.y - e.position.y <=
+                                  44 + 5 + offsetY
+                              ) {
+                                params.sourceHandle = "l4" + index1.id;
+                                if (
+                                  edge.findIndex(
+                                    (e) => e.targetHandle === "l4.t" + index1.id
+                                  ) === -1
+                                )
+                                  await onConnect(params);
+                              }
+                            } else if (
+                              node.position.x - e.position.x >=
+                                172 - 5 + offsetX &&
+                              node.position.x - e.position.x <=
+                                172 + 5 + offsetX &&
+                              node.data.specificElType === "tact"
+                            ) {
+                              params = {
+                                source: `${e.id}`,
+                                sourceHandle: `r`,
+                                target: `${node.id}`,
+                                targetHandle: "l",
+                              };
+                              if (
+                                node.position.y - e.position.y >=
+                                  -7 - 5 + offsetY &&
+                                node.position.y - e.position.y <=
+                                  -7 + 5 + offsetY
+                              ) {
+                                params.sourceHandle = "r1" + index1.id;
+                                if (
+                                  edge.findIndex(
+                                    (e) => e.targetHandle === "r1.t" + index1.id
+                                  ) === -1
+                                )
+                                  await onConnect(params);
+                              } else if (
+                                node.position.y - e.position.y >=
+                                  9 - 5 + offsetY &&
+                                node.position.y - e.position.y <=
+                                  9 + 5 + offsetY
+                              ) {
+                                params.sourceHandle = "r2" + index1.id;
+                                if (
+                                  edge.findIndex(
+                                    (e) => e.targetHandle === "r2.t" + index1.id
+                                  ) === -1
+                                )
+                                  await onConnect(params);
+                              } else if (
+                                node.position.y - e.position.y >=
+                                  27 - 5 + offsetY &&
+                                node.position.y - e.position.y <=
+                                  27 + 5 + offsetY
+                              ) {
+                                params.sourceHandle = "r3" + index1.id;
+                                if (
+                                  edge.findIndex(
+                                    (e) => e.targetHandle === "r3.t" + index1.id
+                                  ) === -1
+                                )
+                                  await onConnect(params);
+                              } else if (
+                                node.position.y - e.position.y >=
+                                  44 - 5 + offsetY &&
+                                node.position.y - e.position.y <=
+                                  44 + 5 + offsetY
+                              ) {
+                                params.sourceHandle = "r4" + index1.id;
+                                if (
+                                  edge.findIndex(
+                                    (e) => e.targetHandle === "r4.t" + index1.id
+                                  ) === -1
+                                )
+                                  await onConnect(params);
+                              }
+                            }
+                            break;
                         }
-                      } else if (
-                        node.position.x - e.position.x >= -30 - 5 &&
-                        node.position.x - e.position.x <= -30 + 5
-                      ) {
-                        if (
-                          node.position.y - e.position.y >= -7 - 5 &&
-                          node.position.y - e.position.y <= -7 + 5
-                        ) {
-                          params.targetHandle = "r1.t";
-                          await onConnect(params);
-                        } else if (
-                          node.position.y - e.position.y >= 9 - 5 &&
-                          node.position.y - e.position.y <= 9 + 5
-                        ) {
-                          params.targetHandle = "r2.t";
-                          await onConnect(params);
-                        } else if (
-                          node.position.y - e.position.y >= 27 - 5 &&
-                          node.position.y - e.position.y <= 27 + 5
-                        ) {
-                          params.targetHandle = "r3.t";
-                          await onConnect(params);
-                        } else if (
-                          node.position.y - e.position.y >= 44 - 5 &&
-                          node.position.y - e.position.y <= 44 + 5
-                        ) {
-                          params.targetHandle = "r4.t";
-                          await onConnect(params);
+                      else
+                        switch (node.data.specificElType) {
+                          case "capacitor100":
+                          case "capacitor1000":
+                          case "beeper":
+                            let index3 = nodes.find(
+                              (n) => n.data.specificElType === "junction"
+                            );
+                            let index2 = nodes.find(
+                              (n) =>
+                                n.data.specificElType === "junction" &&
+                                n.id != index3.id
+                            );
+
+                            if (node.data.specificElType === "beeper") {
+                              offsetX = -20;
+                              offsetY = 30;
+                            } else {
+                              offsetX = 0;
+                              offsetY = 0;
+                            }
+                            console.log(
+                              "paramsbeep",
+                              node.position.x - e.position.x,
+                              node.position.y - e.position.y,
+                              "after",
+                              node.position.x - e.position.x - offsetX,
+                              node.position.y - e.position.y - offsetY
+                            );
+                            if (
+                              node.position.x - e.position.x >=
+                                -159 - 5 + offsetX &&
+                              node.position.x - e.position.x <=
+                                -159 + 5 + offsetX
+                            ) {
+                              if (
+                                node.position.y - e.position.y >=
+                                  -7 - 5 + offsetY &&
+                                node.position.y - e.position.y <=
+                                  -7 + 5 + offsetY
+                              ) {
+                                params.targetHandle = "l1.t" + index2.id;
+                                if (
+                                  edge.findIndex(
+                                    (e) => e.sourceHandle === "l1" + index2.id
+                                  ) === -1
+                                )
+                                  await onConnect(params);
+                              } else if (
+                                node.position.y - e.position.y >=
+                                  9 - 5 + offsetY &&
+                                node.position.y - e.position.y <=
+                                  9 + 5 + offsetY
+                              ) {
+                                params.targetHandle = "l2.t" + index2.id;
+                                if (
+                                  edge.findIndex(
+                                    (e) => e.sourceHandle === "l2" + index2.id
+                                  ) === -1
+                                )
+                                  await onConnect(params);
+                              } else if (
+                                node.position.y - e.position.y >=
+                                  27 - 5 + offsetY &&
+                                node.position.y - e.position.y <=
+                                  27 + 5 + offsetY
+                              ) {
+                                params.targetHandle = "l3.t" + index2.id;
+                                if (
+                                  edge.findIndex(
+                                    (e) => e.sourceHandle === "l3" + index2.id
+                                  ) === -1
+                                )
+                                  await onConnect(params);
+                              } else if (
+                                node.position.y - e.position.y >=
+                                  44 - 5 + offsetY &&
+                                node.position.y - e.position.y <=
+                                  44 + 5 + offsetY
+                              ) {
+                                params.targetHandle = "l4.t" + index2.id;
+                                if (
+                                  edge.findIndex(
+                                    (e) => e.sourceHandle === "l4" + index2.id
+                                  ) === -1
+                                )
+                                  await onConnect(params);
+                              }
+                            } else if (
+                              node.position.x - e.position.x >=
+                                -30 - 5 + offsetX &&
+                              node.position.x - e.position.x <=
+                                -30 + 5 + offsetX
+                            ) {
+                              if (
+                                node.position.y - e.position.y >=
+                                  -7 - 5 + offsetY &&
+                                node.position.y - e.position.y <= -7 + 5
+                              ) {
+                                params.targetHandle = "r1.t" + index2.id;
+                                if (
+                                  edge.findIndex(
+                                    (e) => e.sourceHandle === "r1" + index2.id
+                                  ) === -1
+                                )
+                                  await onConnect(params);
+                              } else if (
+                                node.position.y - e.position.y >=
+                                  9 - 5 + offsetY &&
+                                node.position.y - e.position.y <=
+                                  9 + 5 + offsetY
+                              ) {
+                                params.targetHandle = "r2.t" + index2.id;
+                                if (
+                                  edge.findIndex(
+                                    (e) => e.sourceHandle === "r2" + index2.id
+                                  ) === -1
+                                )
+                                  await onConnect(params);
+                              } else if (
+                                node.position.y - e.position.y >=
+                                  27 - 5 + offsetY &&
+                                node.position.y - e.position.y <=
+                                  27 + 5 + offsetY
+                              ) {
+                                params.targetHandle = "r3.t" + index2.id;
+                                if (
+                                  edge.findIndex(
+                                    (e) => e.sourceHandle === "r3" + index2.id
+                                  ) === -1
+                                )
+                                  await onConnect(params);
+                              } else if (
+                                node.position.y - e.position.y >=
+                                  44 - 5 + offsetY &&
+                                node.position.y - e.position.y <=
+                                  44 + 5 + offsetY
+                              ) {
+                                params.targetHandle = "r4.t" + index2.id;
+                                if (
+                                  edge.findIndex(
+                                    (e) => e.sourceHandle === "r4" + index2.id
+                                  ) === -1
+                                )
+                                  await onConnect(params);
+                              }
+                            }
+                            break;
+                          case "pot":
+                            params = {
+                              source: `${e.id}`,
+                              sourceHandle: `l1`,
+                              target: `${node.id}`,
+                              targetHandle: "r1",
+                            };
+                            console.log(
+                              "potttTTTTTTTTTTTT",
+                              node.position.x - e.position.x,
+                              node.position.y - e.position.y
+                            );
+                            let index1 = edge.findIndex(
+                              (e) =>
+                                e.target === params.target &&
+                                params.targetHandle == "r1"
+                            );
+                            let y = node.position.y - e.position.y;
+
+                            if (index1 != -1) {
+                              params.targetHandle = "r2";
+                            }
+                            if (
+                              node.position.x - e.position.x >= -176 - 5 &&
+                              node.position.x - e.position.x <= -176 + 5
+                            ) {
+                              //l1.t or l1
+                              if (y)
+                                if (y >= 3 - 5 && y <= 3 + 5) {
+                                  params.sourceHandle = "l1";
+                                  if (
+                                    edge.findIndex(
+                                      (e) => e.targetHandle === "l1.t"
+                                    ) === -1
+                                  )
+                                    await onConnect(params);
+                                }
+                                //l2.t or l2
+                                else if (y >= 22 - 5 && y <= 22 + 5) {
+                                  params.sourceHandle = "l2";
+                                  if (
+                                    edge.findIndex(
+                                      (e) => e.targetHandle === "l2.t"
+                                    ) === -1
+                                  )
+                                    await onConnect(params);
+                                }
+                                //l3.t or l3
+                                else if (y >= 38 - 5 && y <= 38 + 5) {
+                                  params.sourceHandle = "l3";
+                                  if (
+                                    edge.findIndex(
+                                      (e) => e.targetHandle === "l3.t"
+                                    ) === -1
+                                  )
+                                    await onConnect(params);
+                                }
+                                //l4.t or l4
+                                else if (y >= 56 - 5 && y <= 56 + 5) {
+                                  params.sourceHandle = "l4";
+                                  if (
+                                    edge.findIndex(
+                                      (e) => e.targetHandle === "l4.t"
+                                    ) === -1
+                                  )
+                                    await onConnect(params);
+                                }
+                            } else if (
+                              node.position.x - e.position.x >= -40 - 5 &&
+                              node.position.x - e.position.x <= -40 + 5
+                            ) {
+                              //r1.t or r1
+                              if (y >= 3 - 5 && y <= 3 + 5) {
+                                params.sourceHandle = "r1";
+                                if (
+                                  edge.findIndex(
+                                    (e) => e.targetHandle === "r1.t"
+                                  ) === -1
+                                )
+                                  await onConnect(params);
+                              }
+                              //r2.t or r2
+                              else if (y >= 22 - 5 && y <= 22 + 5) {
+                                params.sourceHandle = "r2";
+                                if (
+                                  edge.findIndex(
+                                    (e) => e.targetHandle === "r2.t"
+                                  ) === -1
+                                )
+                                  await onConnect(params);
+                              }
+                              //r3.t or r3
+                              else if (y >= 38 - 5 && y <= 38 + 5) {
+                                params.sourceHandle = "r3";
+                                if (
+                                  edge.findIndex(
+                                    (e) => e.targetHandle === "r3.t"
+                                  ) === -1
+                                )
+                                  await onConnect(params);
+                              }
+                              //r4.t or r4
+                              else if (y >= 56 - 5 && y <= 56 + 5) {
+                                params.sourceHandle = "r4";
+                                if (
+                                  edge.findIndex(
+                                    (e) => e.targetHandle === "r4.t"
+                                  ) === -1
+                                )
+                                  await onConnect(params);
+                              }
+                            }
+
+                            break;
                         }
-                      }
-                      break;
-                  }
-              }
-              break;
-            case "diode":
-              params = {
-                source: `${node.id}`,
-                sourceHandle: `r`,
-                target: `${e.id}`,
-                targetHandle: "l1",
-              };
-              if (
-                node.position.x - e.position.x >= -200 - 5 &&
-                node.position.x - e.position.x <= -200 + 5 &&
-                node.position.y - e.position.y >= -2 - 5 &&
-                node.position.y - e.position.y <= -2 + 5
-              ) {
-                let index1 = edge.findIndex((e) => e.targetHandle === "r1");
-                if (index1 === -1) await onConnect(params);
-              } else if (
-                node.position.x - e.position.x >= 200 - 5 &&
-                node.position.x - e.position.x <= 200 + 5 &&
-                node.position.y - e.position.y >= 2 - 5 &&
-                node.position.y - e.position.y <= 2 + 5
-              ) {
-                params = {
-                  source: `${e.id}`,
-                  sourceHandle: `r1`,
-                  target: `${node.id}`,
-                  targetHandle: "l",
-                };
-                let index1 = edge.findIndex((e) => e.sourceHandle === "l1");
-                if (index1 === -1) await onConnect(params);
-                await onConnect(params);
-              }
-              break;
-            case "transistor":
-              if (
-                node.data.specificElType === "tact" ||
-                node.data.specificElType === "ldr"
-              ) {
+                    }
+                    break;
+                  case "resistorCircuit":
+                    {
+                      let index1 = nodes.find(
+                        (n) => n.data.specificElType === "junction"
+                      );
+                      let offsetx = 0,
+                        offsetY = 0;
+                      if (index1.id === e.id)
+                        switch (node.data.specificElType) {
+                          //add offset for beeper
+                          case "tact":
+                          case "res_100":
+                          case "res_250":
+                            console.log(
+                              "tact",
+                              node.position.x - e.position.x,
+                              node.position.y - e.position.y
+                            );
+
+                            params = {
+                              source: `${e.id}`,
+                              sourceHandle: `r`,
+                              target: `${node.id}`,
+                              targetHandle: "l",
+                            };
+
+                            if (node.data.specificElType === "beeper") {
+                              offsetX = 20;
+                              offsetY = 30;
+                            } else {
+                              offsetX = 0;
+                              offsetY = 0;
+                            }
+
+                            if (
+                              node.position.x - e.position.x >=
+                                43 - 5 + offsetX &&
+                              node.position.x - e.position.x <=
+                                43 + 5 + offsetX &&
+                              node.data.specificElType != "tact"
+                            ) {
+                              if (
+                                node.position.y - e.position.y >=
+                                  -7 - 5 + offsetY &&
+                                node.position.y - e.position.y <=
+                                  -7 + 5 + offsetY
+                              ) {
+                                params.sourceHandle = "l1" + index1.id;
+                                if (
+                                  edge.findIndex(
+                                    (e) => e.targetHandle === "l1.t" + index1.id
+                                  ) === -1
+                                )
+                                  await onConnect(params);
+                              } else if (
+                                node.position.y - e.position.y >=
+                                  9 - 5 + offsetY &&
+                                node.position.y - e.position.y <=
+                                  9 + 5 + offsetY
+                              ) {
+                                params.sourceHandle = "l2" + index1.id;
+                                if (
+                                  edge.findIndex(
+                                    (e) => e.targetHandle === "l2.t" + index1.id
+                                  ) === -1
+                                )
+                                  await onConnect(params);
+                              } else if (
+                                node.position.y - e.position.y >=
+                                  27 - 5 + offsetY &&
+                                node.position.y - e.position.y <=
+                                  27 + 5 + offsetY
+                              ) {
+                                params.sourceHandle = "l3" + index1.id;
+                                if (
+                                  edge.findIndex(
+                                    (e) => e.targetHandle === "l3.t" + index1.id
+                                  ) === -1
+                                )
+                                  await onConnect(params);
+                              } else if (
+                                node.position.y - e.position.y >=
+                                  44 - 5 + offsetY &&
+                                node.position.y - e.position.y <=
+                                  44 + 5 + offsetY
+                              ) {
+                                params.sourceHandle = "l4" + index1.id;
+                                if (
+                                  edge.findIndex(
+                                    (e) => e.targetHandle === "l4.t" + index1.id
+                                  ) === -1
+                                )
+                                  await onConnect(params);
+                              }
+                            } else if (
+                              node.position.x - e.position.x >=
+                                173 - 5 + offsetX &&
+                              node.position.x - e.position.x <=
+                                173 + 5 + offsetX &&
+                              node.data.specificElType != "tact"
+                            ) {
+                              if (
+                                node.position.y - e.position.y >=
+                                  -7 - 5 + offsetY &&
+                                node.position.y - e.position.y <=
+                                  -7 + 5 + offsetY
+                              ) {
+                                params.sourceHandle = "r1" + index1.id;
+                                if (
+                                  edge.findIndex(
+                                    (e) => e.targetHandle === "r1.t" + index1.id
+                                  ) === -1
+                                )
+                                  await onConnect(params);
+                              } else if (
+                                node.position.y - e.position.y >=
+                                  9 - 5 + offsetY &&
+                                node.position.y - e.position.y <=
+                                  9 + 5 + offsetY
+                              ) {
+                                params.sourceHandle = "r2" + index1.id;
+                                if (
+                                  edge.findIndex(
+                                    (e) => e.targetHandle === "r2.t" + index1.id
+                                  ) === -1
+                                )
+                                  await onConnect(params);
+                              } else if (
+                                node.position.y - e.position.y >=
+                                  27 - 5 + offsetY &&
+                                node.position.y - e.position.y <=
+                                  27 + 5 + offsetY
+                              ) {
+                                params.sourceHandle = "r3" + index1.id;
+                                if (
+                                  edge.findIndex(
+                                    (e) => e.targetHandle === "r3.t" + index1.id
+                                  ) === -1
+                                )
+                                  await onConnect(params);
+                              } else if (
+                                node.position.y - e.position.y >=
+                                  44 - 5 + offsetY &&
+                                node.position.y - e.position.y <=
+                                  44 + 5 + offsetY
+                              ) {
+                                params.sourceHandle = "r4" + index1.id;
+                                if (
+                                  edge.findIndex(
+                                    (e) => e.targetHandle === "r4.t" + index1.id
+                                  ) === -1
+                                )
+                                  await onConnect(params);
+                              }
+                            } else if (
+                              node.position.x - e.position.x >=
+                                -160 - 5 + offsetX &&
+                              node.position.x - e.position.x <=
+                                -160 + 5 + offsetX &&
+                              node.data.specificElType === "tact"
+                            ) {
+                              console.log(
+                                "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ conecting..........."
+                              );
+                              params = {
+                                source: `${node.id}`,
+                                sourceHandle: `r`,
+                                target: `${e.id}`,
+                                targetHandle: "l",
+                              };
+                              if (
+                                node.position.y - e.position.y >=
+                                  -7 - 5 + offsetY &&
+                                node.position.y - e.position.y <=
+                                  -7 + 5 + offsetY
+                              ) {
+                                params.targetHandle = "l1.t" + index1.id;
+                                if (
+                                  edge.findIndex(
+                                    (e) => e.sourceHandle === "l1" + index1.id
+                                  ) === -1
+                                )
+                                  await onConnect(params);
+                              } else if (
+                                node.position.y - e.position.y >=
+                                  9 - 5 + offsetY &&
+                                node.position.y - e.position.y <=
+                                  9 + 5 + offsetY
+                              ) {
+                                params.targetHandle = "l2.t" + index1.id;
+                                if (
+                                  edge.findIndex(
+                                    (e) => e.sourceHandle === "l2" + index1.id
+                                  ) === -1
+                                )
+                                  await onConnect(params);
+                              } else if (
+                                node.position.y - e.position.y >=
+                                  27 - 5 + offsetY &&
+                                node.position.y - e.position.y <=
+                                  27 + 5 + offsetY
+                              ) {
+                                params.targetHandle = "l3.t" + index1.id;
+                                if (
+                                  edge.findIndex(
+                                    (e) => e.sourceHandle === "l3" + index1.id
+                                  ) === -1
+                                )
+                                  await onConnect(params);
+                              } else if (
+                                node.position.y - e.position.y >=
+                                  44 - 5 + offsetY &&
+                                node.position.y - e.position.y <=
+                                  44 + 5 + offsetY
+                              ) {
+                                params.targetHandle = "l4.t" + index1.id;
+                                if (
+                                  edge.findIndex(
+                                    (e) => e.sourceHandle === "l4" + index1.id
+                                  ) === -1
+                                )
+                                  await onConnect(params);
+                              }
+                            } else if (
+                              node.position.x - e.position.x >=
+                                -30 - 5 + offsetX &&
+                              node.position.x - e.position.x <=
+                                -30 + 5 + offsetX &&
+                              node.data.specificElType === "tact"
+                            ) {
+                              params = {
+                                source: `${node.id}`,
+                                sourceHandle: `r`,
+                                target: `${e.id}`,
+                                targetHandle: "l",
+                              };
+                              if (
+                                node.position.y - e.position.y >=
+                                  -7 - 5 + offsetY &&
+                                node.position.y - e.position.y <=
+                                  -7 + 5 + offsetY
+                              ) {
+                                params.targetHandle = "r1.t" + index1.id;
+                                if (
+                                  edge.findIndex(
+                                    (e) => e.sourceHandle === "r1" + index1.id
+                                  ) === -1
+                                )
+                                  await onConnect(params);
+                              } else if (
+                                node.position.y - e.position.y >=
+                                  9 - 5 + offsetY &&
+                                node.position.y - e.position.y <=
+                                  9 + 5 + offsetY
+                              ) {
+                                params.targetHandle = "r2.t" + index1.id;
+                                if (
+                                  edge.findIndex(
+                                    (e) => e.sourceHandle === "r2" + index1.id
+                                  ) === -1
+                                )
+                                  await onConnect(params);
+                              } else if (
+                                node.position.y - e.position.y >=
+                                  27 - 5 + offsetY &&
+                                node.position.y - e.position.y <=
+                                  27 + 5 + offsetY
+                              ) {
+                                params.targetHandle = "r3.t" + index1.id;
+                                if (
+                                  edge.findIndex(
+                                    (e) => e.sourceHandle === "r3" + index1.id
+                                  ) === -1
+                                )
+                                  await onConnect(params);
+                              } else if (
+                                node.position.y - e.position.y >=
+                                  44 - 5 + offsetY &&
+                                node.position.y - e.position.y <=
+                                  44 + 5 + offsetY
+                              ) {
+                                params.targetHandle = "r4.t" + index1.id;
+                                if (
+                                  edge.findIndex(
+                                    (e) => e.sourceHandle === "r4" + index1.id
+                                  ) === -1
+                                )
+                                  await onConnect(params);
+                              }
+                            }
+
+                            break;
+                        }
+                      else
+                        switch (node.data.specificElType) {
+                          case "res_250":
+                          case "res_100":
+                          case "led":
+                            let index3 = nodes.find(
+                              (n) => n.data.specificElType === "junction"
+                            );
+                            let index2 = nodes.find(
+                              (n) =>
+                                n.data.specificElType === "junction" &&
+                                n.id != index3.id
+                            );
+
+                            if (node.data.specificElType === "beeper") {
+                              offsetX = -20;
+                              offsetY = 30;
+                            } else {
+                              offsetX = 0;
+                              offsetY = 0;
+                            }
+                            console.log(
+                              "paramsbeep",
+                              node.position.x - e.position.x,
+                              node.position.y - e.position.y,
+                              "after",
+                              node.position.x - e.position.x - offsetX,
+                              node.position.y - e.position.y - offsetY
+                            );
+
+                            if (
+                              node.position.x - e.position.x >=
+                                -159 - 5 + offsetX &&
+                              node.position.x - e.position.x <=
+                                -159 + 5 + offsetX &&
+                              node.data.specificElType != "led"
+                            ) {
+                              if (
+                                node.position.y - e.position.y >=
+                                  -7 - 5 + offsetY &&
+                                node.position.y - e.position.y <=
+                                  -7 + 5 + offsetY
+                              ) {
+                                params.targetHandle = "l1.t" + index2.id;
+                                if (
+                                  edge.findIndex(
+                                    (e) => e.sourceHandle === "l1" + index2.id
+                                  ) === -1
+                                )
+                                  await onConnect(params);
+                              } else if (
+                                node.position.y - e.position.y >=
+                                  9 - 5 + offsetY &&
+                                node.position.y - e.position.y <=
+                                  9 + 5 + offsetY
+                              ) {
+                                params.targetHandle = "l2.t" + index2.id;
+                                if (
+                                  edge.findIndex(
+                                    (e) => e.sourceHandle === "l2" + index2.id
+                                  ) === -1
+                                )
+                                  await onConnect(params);
+                              } else if (
+                                node.position.y - e.position.y >=
+                                  27 - 5 + offsetY &&
+                                node.position.y - e.position.y <=
+                                  27 + 5 + offsetY
+                              ) {
+                                params.targetHandle = "l3.t" + index2.id;
+                                if (
+                                  edge.findIndex(
+                                    (e) => e.sourceHandle === "l3" + index2.id
+                                  ) === -1
+                                )
+                                  await onConnect(params);
+                              } else if (
+                                node.position.y - e.position.y >=
+                                  44 - 5 + offsetY &&
+                                node.position.y - e.position.y <=
+                                  44 + 5 + offsetY
+                              ) {
+                                params.targetHandle = "l4.t" + index2.id;
+                                if (
+                                  edge.findIndex(
+                                    (e) => e.sourceHandle === "l4" + index2.id
+                                  ) === -1
+                                )
+                                  await onConnect(params);
+                              }
+                            } else if (
+                              node.position.x - e.position.x >=
+                                -30 - 5 + offsetX &&
+                              node.position.x - e.position.x <=
+                                -30 + 5 + offsetX &&
+                              node.data.specificElType != "led"
+                            ) {
+                              if (
+                                node.position.y - e.position.y >=
+                                  -7 - 5 + offsetY &&
+                                node.position.y - e.position.y <= -7 + 5
+                              ) {
+                                params.targetHandle = "r1.t" + index2.id;
+                                if (
+                                  edge.findIndex(
+                                    (e) => e.sourceHandle === "r1" + index2.id
+                                  ) === -1
+                                )
+                                  await onConnect(params);
+                              } else if (
+                                node.position.y - e.position.y >=
+                                  9 - 5 + offsetY &&
+                                node.position.y - e.position.y <=
+                                  9 + 5 + offsetY
+                              ) {
+                                params.targetHandle = "r2.t" + index2.id;
+                                if (
+                                  edge.findIndex(
+                                    (e) => e.sourceHandle === "r2" + index2.id
+                                  ) === -1
+                                )
+                                  await onConnect(params);
+                              } else if (
+                                node.position.y - e.position.y >=
+                                  27 - 5 + offsetY &&
+                                node.position.y - e.position.y <=
+                                  27 + 5 + offsetY
+                              ) {
+                                params.targetHandle = "r3.t" + index2.id;
+                                if (
+                                  edge.findIndex(
+                                    (e) => e.sourceHandle === "r3" + index2.id
+                                  ) === -1
+                                )
+                                  await onConnect(params);
+                              } else if (
+                                node.position.y - e.position.y >=
+                                  44 - 5 + offsetY &&
+                                node.position.y - e.position.y <=
+                                  44 + 5 + offsetY
+                              ) {
+                                params.targetHandle = "r4.t" + index2.id;
+                                if (
+                                  edge.findIndex(
+                                    (e) => e.sourceHandle === "r4" + index2.id
+                                  ) === -1
+                                )
+                                  await onConnect(params);
+                              }
+                            }
+                            if (
+                              node.position.x - e.position.x >=
+                                42 - 5 + offsetX &&
+                              node.position.x - e.position.x <=
+                                42 + 5 + offsetX &&
+                              node.data.specificElType === "led"
+                            ) {
+                              console.log(
+                                "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ conecting..........."
+                              );
+                              params = {
+                                source: `${e.id}`,
+                                sourceHandle: `r`,
+                                target: `${node.id}`,
+                                targetHandle: "l",
+                              };
+                              if (
+                                node.position.y - e.position.y >=
+                                  -7 - 5 + offsetY &&
+                                node.position.y - e.position.y <=
+                                  -7 + 5 + offsetY
+                              ) {
+                                params.sourceHandle = "l1" + index2.id;
+                                if (
+                                  edge.findIndex(
+                                    (e) => e.targetHandle === "l1.t" + index2.id
+                                  ) === -1
+                                )
+                                  await onConnect(params);
+                              } else if (
+                                node.position.y - e.position.y >=
+                                  9 - 5 + offsetY &&
+                                node.position.y - e.position.y <=
+                                  9 + 5 + offsetY
+                              ) {
+                                params.sourceHandle = "l2" + index2.id;
+                                if (
+                                  edge.findIndex(
+                                    (e) => e.targetHandle === "l2.t" + index2.id
+                                  ) === -1
+                                )
+                                  await onConnect(params);
+                              } else if (
+                                node.position.y - e.position.y >=
+                                  27 - 5 + offsetY &&
+                                node.position.y - e.position.y <=
+                                  27 + 5 + offsetY
+                              ) {
+                                params.sourceHandle = "l3" + index2.id;
+                                if (
+                                  edge.findIndex(
+                                    (e) => e.targetHandle === "l3.t" + index2.id
+                                  ) === -1
+                                )
+                                  await onConnect(params);
+                              } else if (
+                                node.position.y - e.position.y >=
+                                  44 - 5 + offsetY &&
+                                node.position.y - e.position.y <=
+                                  44 + 5 + offsetY
+                              ) {
+                                params.sourceHandle = "l4" + index2.id;
+                                if (
+                                  edge.findIndex(
+                                    (e) => e.targetHandle === "l4.t" + index2.id
+                                  ) === -1
+                                )
+                                  await onConnect(params);
+                              }
+                            } else if (
+                              node.position.x - e.position.x >=
+                                172 - 5 + offsetX &&
+                              node.position.x - e.position.x <=
+                                172 + 5 + offsetX &&
+                              node.data.specificElType === "led"
+                            ) {
+                              params = {
+                                source: `${e.id}`,
+                                sourceHandle: `r`,
+                                target: `${node.id}`,
+                                targetHandle: "l",
+                              };
+                              if (
+                                node.position.y - e.position.y >=
+                                  -7 - 5 + offsetY &&
+                                node.position.y - e.position.y <=
+                                  -7 + 5 + offsetY
+                              ) {
+                                params.sourceHandle = "r1" + index2.id;
+                                if (
+                                  edge.findIndex(
+                                    (e) => e.targetHandle === "r1.t" + index2.id
+                                  ) === -1
+                                )
+                                  await onConnect(params);
+                              } else if (
+                                node.position.y - e.position.y >=
+                                  9 - 5 + offsetY &&
+                                node.position.y - e.position.y <=
+                                  9 + 5 + offsetY
+                              ) {
+                                params.sourceHandle = "r2" + index2.id;
+                                if (
+                                  edge.findIndex(
+                                    (e) => e.targetHandle === "r2.t" + index2.id
+                                  ) === -1
+                                )
+                                  await onConnect(params);
+                              } else if (
+                                node.position.y - e.position.y >=
+                                  27 - 5 + offsetY &&
+                                node.position.y - e.position.y <=
+                                  27 + 5 + offsetY
+                              ) {
+                                params.sourceHandle = "r3" + index2.id;
+                                if (
+                                  edge.findIndex(
+                                    (e) => e.targetHandle === "r3.t" + index2.id
+                                  ) === -1
+                                )
+                                  await onConnect(params);
+                              } else if (
+                                node.position.y - e.position.y >=
+                                  44 - 5 + offsetY &&
+                                node.position.y - e.position.y <=
+                                  44 + 5 + offsetY
+                              ) {
+                                params.sourceHandle = "r4" + index2.id;
+                                if (
+                                  edge.findIndex(
+                                    (e) => e.targetHandle === "r4.t" + index2.id
+                                  ) === -1
+                                )
+                                  await onConnect(params);
+                              }
+                            }
+                            break;
+
+                          case "pot":
+                            params = {
+                              source: `${e.id}`,
+                              sourceHandle: `l1`,
+                              target: `${node.id}`,
+                              targetHandle: "r1",
+                            };
+                            console.log(
+                              "potttTTTTTTTTTTTT",
+                              node.position.x - e.position.x,
+                              node.position.y - e.position.y
+                            );
+                            let index1 = edge.findIndex(
+                              (e) =>
+                                e.target === params.target &&
+                                params.targetHandle == "r1"
+                            );
+                            let y = node.position.y - e.position.y;
+
+                            if (index1 != -1) {
+                              params.targetHandle = "r2";
+                            }
+                            if (
+                              node.position.x - e.position.x >= -176 - 5 &&
+                              node.position.x - e.position.x <= -176 + 5
+                            ) {
+                              //l1.t or l1
+                              if (y)
+                                if (y >= 3 - 5 && y <= 3 + 5) {
+                                  params.sourceHandle = "l1";
+                                  if (
+                                    edge.findIndex(
+                                      (e) => e.targetHandle === "l1.t"
+                                    ) === -1
+                                  )
+                                    await onConnect(params);
+                                }
+                                //l2.t or l2
+                                else if (y >= 22 - 5 && y <= 22 + 5) {
+                                  params.sourceHandle = "l2";
+                                  if (
+                                    edge.findIndex(
+                                      (e) => e.targetHandle === "l2.t"
+                                    ) === -1
+                                  )
+                                    await onConnect(params);
+                                }
+                                //l3.t or l3
+                                else if (y >= 38 - 5 && y <= 38 + 5) {
+                                  params.sourceHandle = "l3";
+                                  if (
+                                    edge.findIndex(
+                                      (e) => e.targetHandle === "l3.t"
+                                    ) === -1
+                                  )
+                                    await onConnect(params);
+                                }
+                                //l4.t or l4
+                                else if (y >= 56 - 5 && y <= 56 + 5) {
+                                  params.sourceHandle = "l4";
+                                  if (
+                                    edge.findIndex(
+                                      (e) => e.targetHandle === "l4.t"
+                                    ) === -1
+                                  )
+                                    await onConnect(params);
+                                }
+                            } else if (
+                              node.position.x - e.position.x >= -40 - 5 &&
+                              node.position.x - e.position.x <= -40 + 5
+                            ) {
+                              //r1.t or r1
+                              if (y >= 3 - 5 && y <= 3 + 5) {
+                                params.sourceHandle = "r1";
+                                if (
+                                  edge.findIndex(
+                                    (e) => e.targetHandle === "r1.t"
+                                  ) === -1
+                                )
+                                  await onConnect(params);
+                              }
+                              //r2.t or r2
+                              else if (y >= 22 - 5 && y <= 22 + 5) {
+                                params.sourceHandle = "r2";
+                                if (
+                                  edge.findIndex(
+                                    (e) => e.targetHandle === "r2.t"
+                                  ) === -1
+                                )
+                                  await onConnect(params);
+                              }
+                              //r3.t or r3
+                              else if (y >= 38 - 5 && y <= 38 + 5) {
+                                params.sourceHandle = "r3";
+                                if (
+                                  edge.findIndex(
+                                    (e) => e.targetHandle === "r3.t"
+                                  ) === -1
+                                )
+                                  await onConnect(params);
+                              }
+                              //r4.t or r4
+                              else if (y >= 56 - 5 && y <= 56 + 5) {
+                                params.sourceHandle = "r4";
+                                if (
+                                  edge.findIndex(
+                                    (e) => e.targetHandle === "r4.t"
+                                  ) === -1
+                                )
+                                  await onConnect(params);
+                              }
+                            }
+
+                            break;
+                        }
+                    }
+                    break;
+                  default:
+                    switch (node.data.specificElType) {
+                      case "capacitor100":
+                      case "capacitor1000":
+                      case "tact":
+                      case "led":
+                        console.log(
+                          "led#####^^^^^^^^^^####",
+                          node.position.x - e.position.x,
+                          node.position.y - e.position.y
+                        );
+                        if (
+                          node.position.x - e.position.x >= -159 - 5 &&
+                          node.position.x - e.position.x <= -159 + 5
+                        ) {
+                          if (
+                            node.position.y - e.position.y >= -7 - 5 &&
+                            node.position.y - e.position.y <= -7 + 5
+                          ) {
+                            params.targetHandle = "l1.t";
+                            await onConnect(params);
+                          } else if (
+                            node.position.y - e.position.y >= 9 - 5 &&
+                            node.position.y - e.position.y <= 9 + 5
+                          ) {
+                            params.targetHandle = "l2.t";
+                            await onConnect(params);
+                          } else if (
+                            node.position.y - e.position.y >= 27 - 5 &&
+                            node.position.y - e.position.y <= 27 + 5
+                          ) {
+                            params.targetHandle = "l3.t";
+                            await onConnect(params);
+                          } else if (
+                            node.position.y - e.position.y >= 44 - 5 &&
+                            node.position.y - e.position.y <= 44 + 5
+                          ) {
+                            params.targetHandle = "l4.t";
+                            await onConnect(params);
+                          }
+                        } else if (
+                          node.position.x - e.position.x >= -30 - 5 &&
+                          node.position.x - e.position.x <= -30 + 5
+                        ) {
+                          if (
+                            node.position.y - e.position.y >= -7 - 5 &&
+                            node.position.y - e.position.y <= -7 + 5
+                          ) {
+                            params.targetHandle = "r1.t";
+                            await onConnect(params);
+                          } else if (
+                            node.position.y - e.position.y >= 9 - 5 &&
+                            node.position.y - e.position.y <= 9 + 5
+                          ) {
+                            params.targetHandle = "r2.t";
+                            await onConnect(params);
+                          } else if (
+                            node.position.y - e.position.y >= 27 - 5 &&
+                            node.position.y - e.position.y <= 27 + 5
+                          ) {
+                            params.targetHandle = "r3.t";
+                            await onConnect(params);
+                          } else if (
+                            node.position.y - e.position.y >= 44 - 5 &&
+                            node.position.y - e.position.y <= 44 + 5
+                          ) {
+                            params.targetHandle = "r4.t";
+                            await onConnect(params);
+                          }
+                        }
+                        break;
+                    }
+                }
+                break;
+              case "diode":
                 params = {
                   source: `${node.id}`,
                   sourceHandle: `r`,
                   target: `${e.id}`,
-                  targetHandle: "l",
+                  targetHandle: "l1",
                 };
                 if (
                   node.position.x - e.position.x >= -200 - 5 &&
                   node.position.x - e.position.x <= -200 + 5 &&
-                  node.position.y - e.position.y >= 20 - 5 &&
-                  node.position.y - e.position.y <= 20 + 5
+                  node.position.y - e.position.y >= -2 - 5 &&
+                  node.position.y - e.position.y <= -2 + 5
                 ) {
+                  let index1 = edge.findIndex((e) => e.targetHandle === "r1");
+                  if (index1 === -1) await onConnect(params);
+                } else if (
+                  node.position.x - e.position.x >= 200 - 5 &&
+                  node.position.x - e.position.x <= 200 + 5 &&
+                  node.position.y - e.position.y >= 2 - 5 &&
+                  node.position.y - e.position.y <= 2 + 5
+                ) {
+                  params = {
+                    source: `${e.id}`,
+                    sourceHandle: `r1`,
+                    target: `${node.id}`,
+                    targetHandle: "l",
+                  };
+                  let index1 = edge.findIndex((e) => e.sourceHandle === "l1");
+                  if (index1 === -1) await onConnect(params);
                   await onConnect(params);
                 }
-              } else if (node.data.specificElType === "led") {
+                break;
+              case "transistor":
                 if (
-                  node.position.x - e.position.x >= -9 - 5 &&
-                  node.position.x - e.position.x <= -9 + 5 &&
-                  node.position.y - e.position.y >= 5 - 5 &&
-                  node.position.y - e.position.y <= 5 + 5
+                  node.data.specificElType === "tact" ||
+                  node.data.specificElType === "ldr"
                 ) {
                   params = {
                     source: `${node.id}`,
                     sourceHandle: `r`,
                     target: `${e.id}`,
-                    targetHandle: "r.t",
+                    targetHandle: "l",
                   };
-                  await onConnect(params);
+                  if (
+                    node.position.x - e.position.x >= -200 - 5 &&
+                    node.position.x - e.position.x <= -200 + 5 &&
+                    node.position.y - e.position.y >= 20 - 5 &&
+                    node.position.y - e.position.y <= 20 + 5
+                  ) {
+                    await onConnect(params);
+                  }
+                } else if (node.data.specificElType === "led") {
+                  if (
+                    node.position.x - e.position.x >= -9 - 5 &&
+                    node.position.x - e.position.x <= -9 + 5 &&
+                    node.position.y - e.position.y >= 5 - 5 &&
+                    node.position.y - e.position.y <= 5 + 5
+                  ) {
+                    params = {
+                      source: `${node.id}`,
+                      sourceHandle: `r`,
+                      target: `${e.id}`,
+                      targetHandle: "r.t",
+                    };
+                    await onConnect(params);
+                  }
                 }
-              }
-              break;
+                break;
+            }
           }
-        }
-      });
+        });
     }
-   
   };
 
   const onNodeClick = async (event, node) => {
@@ -8687,22 +8986,20 @@ for(let i =0;i<ele.path.length;i++){
     }),
     [onDrop]
   );
-  const onNodeDragStart=async(event,node)=>{
+  const onNodeDragStart = async (event, node) => {
     let global = document.getElementsByClassName("react-flow__nodes")[0];
     try {
-
       global = global.childNodes;
-      console.log("eve")
+      console.log("eve");
       for (let i = 0; i < global.length; i++) {
         let temp = await getCoords(global[i]);
         console.log("pla", temp);
         let index = await nodes.findIndex((e) => e.id === temp.id);
-        node_cor.push( temp);
-        
+        node_cor[index] = temp;
       }
       console.log(node_cor, "getCoords");
     } catch (e) {}
-  }
+  };
   // var slider = document.getElementById("myRange");
   // var output = document.getElementById("demo");
   // output.innerHTML = slider.value;

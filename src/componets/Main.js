@@ -1986,7 +1986,7 @@ const DnDFlow = (props) => {
           if (connect_line != null || connect_line != undefined) {
             if (connect_line.source == null)
               connect_line.source = `${newNode.id}`;
-            else if (connect_line.target == null)
+            if (connect_line.target == null)
               connect_line.target = `${newNode.id}`;
             await onConnect(connect_line);
           }

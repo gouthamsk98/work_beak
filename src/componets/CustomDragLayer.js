@@ -384,7 +384,6 @@ export const CustomDragLayer = (props) => {
             )}
             id="dragLayercapacitor100"
           >
-            {" "}
             <Handle
               type="target"
               position="left"

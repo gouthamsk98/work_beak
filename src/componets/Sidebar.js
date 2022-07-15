@@ -14095,20 +14095,18 @@ export default (props) => {
       if (flagI != -1) {
         let mx = 0,
           my = 0;
-
+        // flagI.x = flagI.x - 350;
+        // flagI.y = flagI.y - 90;
         ctx.beginPath();
-        ctx.moveTo(flagI.x + xOffset + mx, flagI.y + yOffset + my);
+        ctx.moveTo(flagI.x - 350, flagI.y - 90);
 
         if (event.clientX == 0 || event.clientY == 0) return;
-        let cx = Math.abs(event.clientX - 500 - (flagI.x + xOffset) + 60) / 2;
+        let cx = Math.abs(event.clientX - (flagI.x + xOffset)) / 2;
         let cy =
-          Math.abs(event.clientY + -105 - screenOffsetY - (flagI.y + yOffset)) /
-          2;
-        if (event.clientX - 144 < flagI.x + xOffset + 60)
-          cx = cx + event.clientX - 144;
+          Math.abs(event.clientY - screenOffsetY - (flagI.y + yOffset)) / 2;
+        if (event.clientX - 144 < flagI.x + 60) cx = cx + event.clientX;
         else cx = cx + flagI.x + xOffset;
-        if (event.clientY - 105 - screenOffsetY < flagI.y + yOffset)
-          cy = cy + event.clientY - 105 - screenOffsetY;
+        if (event.clientY - 105 < flagI.y) cy = cy + event.clientY;
         else cy = cy + flagI.y + yOffset;
         ctx.quadraticCurveTo(
           cx,

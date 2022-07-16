@@ -236,7 +236,7 @@ export default (props) => {
     setId(await event.target.attributes[2].nodeValue);
     console.log(id, "gskMouse");
   };
-
+  console.time("nodeDrag");
   const onDrag = (event, nodeType) => {
     console.time("render");
     let ele;
@@ -322,6 +322,10 @@ export default (props) => {
           if (ele.id === nodeType) ele.style.display = "none";
     }
     switch (props.send.type) {
+    }
+    switch (props.send.type) {
+      case "simpleCircuit":
+      case "parallelCircuit":
       case "freedomCircuit":
         node_cor.map(async (e) => {
           //console.log("event XX",e.handle[3].x,event.path[1])
@@ -352,7 +356,12 @@ export default (props) => {
                   target: null,
                   targetHandle: current.id,
                 };
-                if (params.sourceHandle.includes("l")) {
+                if (
+                  params.sourceHandle.includes("l") ||
+                  (params.source.includes("dndnode_0") &&
+                    (params.sourceHandle.includes("r2") ||
+                      params.sourceHandle.includes("r3")))
+                ) {
                   params = {
                     source: null,
                     sourceHandle: current.id,
@@ -360,6 +369,36 @@ export default (props) => {
                     targetHandle: cord.id,
                   };
                 }
+                let exitFlag = 0;
+                switch (props.send.type) {
+                  case "simpleCircuit":
+                    nodes.map(async (ele) => {
+                      if (ele.id == e.id) {
+                        if (
+                          ele.data.specificElType === "power" &&
+                          nodeType === "tact"
+                        ) {
+                          exitFlag = 1;
+                        } else if (
+                          (ele.data.specificElType === "tact" &&
+                            (nodeType === "led" || nodeType === "beeper")) ||
+                          ((ele.data.specificElType === "led" ||
+                            ele.data.specificElType === "beeper") &&
+                            nodeType === "tact")
+                        ) {
+                          exitFlag = 1;
+                        } else if (
+                          ele.data.specificElType === "power" &&
+                          (nodeType === "led" || nodeType === "beeper") &&
+                          current.id == "r"
+                        ) {
+                          exitFlag = 1;
+                        } else exitFlag = 0;
+                      }
+                    });
+                    break;
+                }
+                //if (exitFlag === 0) return;
                 sessionStorage.setItem(
                   "application/beak/connect",
                   JSON.stringify(params)
@@ -14125,6 +14164,7 @@ export default (props) => {
     }
     console.timeEnd("render");
   };
+  console.timeEnd("nodeDrag");
   const onDragEnd = (event, nodeType) => {
     var c = document.getElementById("myCanvas");
     var ctx = c.getContext("2d");

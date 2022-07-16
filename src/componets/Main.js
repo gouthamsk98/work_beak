@@ -31,11 +31,78 @@ let mouseDownChk = false,
 let eleLed1;
 sessionStorage.setItem("beak-nodes", null);
 sessionStorage.setItem("beak-edges", null);
+class Queue {
+  constructor() {
+    this.items = [];
+  }
+  enqueue(element) {
+    this.items.push(element);
+  }
+  dequeue() {
+    if (this.isEmpty()) return "Underflow";
+    return this.items.shift();
+  }
+  front() {
+    // returns the Front element of
+    // the queue without removing it.
+    if (this.isEmpty()) return "No elements in Queue";
+    return this.items[0];
+  }
+  isEmpty() {
+    return this.items.length == 0;
+  }
+  printQueue() {
+    var str = "";
+    for (var i = 0; i < this.items.length; i++) str += this.items[i] + " ";
+    return str;
+  }
+  copyQueue(value) {
+    for (let i = 0; i < value.items.length; i++) {
+      this.items.push(value.items[i]);
+    }
+  }
+}
+class Stack {
+  constructor() {
+    this.items = [];
+  }
+
+  push(element) {
+    this.items.push(element);
+  }
+  pop() {
+    // Underflow if stack is empty
+    if (this.items.length == 0) return "Underflow";
+    return this.items.pop();
+  }
+  pop() {
+    // Underflow if stack is empty
+    if (this.items.length == 0) return "Underflow";
+    return this.items.pop();
+  }
+
+  isEmpty() {
+    return this.items.length == 0;
+  }
+
+  printStack() {
+    var str = "";
+    for (var i = 0; i < this.items.length; i++) str += this.items[i] + " ";
+    return str;
+  }
+  copyStack(value) {
+    for (let i = 0; i < value.items.length; i++) {
+      this.items.push(value.items[i]);
+    }
+  }
+}
 const DnDFlow = (props) => {
   const text = (type, _id) => {
     switch (props.type) {
       //parallelCircuit 2way connection on r1 and r2
+      case "simpleCircuit":
       case "freedomCircuit":
+      case "parallelCircuit":
         if (type === "beeper") {
           // console.log("start");
 
@@ -54,13 +121,13 @@ const DnDFlow = (props) => {
               <Handle
                 type="target"
                 position="left"
-                style={{ left: " -0.7vw", top: " 1.8vh" }}
+                style={{ left: " 1vw", top: " 0.3vh" }}
                 id="l"
               />
               <Handle
                 type="source"
                 position="right"
-                style={{ left: "11.5vw", top: " 2.2vh" }}
+                style={{ left: "9.5vw", top: " 0.3vh" }}
                 id="r"
               />
             </>
@@ -467,6 +534,11 @@ const DnDFlow = (props) => {
                 id="image-render"
                 key={v4()}
               ></div>
+              <button
+                onClick={(e) => tactHandler(e, _id)}
+                onMouseDownCapture={(e) => tactHandler(e, _id)}
+                value={tact[_id]}
+              ></button>
               <Handle
                 type="target"
                 position="left"
@@ -1765,6 +1837,7 @@ const DnDFlow = (props) => {
   const [reactFlowInstance, setReactFlowInstance] = useState(null);
   const [nodesDraggable, setNodesDraggable] = useState(true);
   const [rangeVal, setRangeVal] = useState(50);
+  const [tact, setTact] = useState([]);
   useEffect(() => {
     sessionStorage.setItem("beak-edges", JSON.stringify(edges));
     console.log(edges, "edges use effect");
@@ -1821,7 +1894,20 @@ const DnDFlow = (props) => {
       }
     };
   }, [rangeVal]);
-
+  const tactHandler = (e, id) => {
+    console.log("tact handler", e, id);
+    let q1 = new Queue();
+    let s1 = new Stack();
+    q1.enqueue(1);
+    q1.enqueue(2);
+    s1.push(3);
+    s1.push(10);
+    s1.push(100);
+    let s2 = new Stack();
+    let q2 = new Queue();
+    q2.copyQueue(q1);
+    s2.copyStack(s1);
+  };
   const onConnect = async (params, event) => {
     console.log(params, event, "EVEEEEE");
     var index1 = await edge.findIndex(
@@ -1837,13 +1923,16 @@ const DnDFlow = (props) => {
         if (index1 != -1) return;
         if (index2 != -1) return;
         await setEdges((eds) => addEdge(params, eds));
+
         return;
       //event.returnValue = false;
     }
 
     return;
   };
-
+  const onConnectEnd = (e) => {
+    console.log("enter onCen", e);
+  };
   //to check the circuit is completed
   const closedChk = async (n, e) => {
     let start = getOutgoers(n[0], n, e);
@@ -1983,6 +2072,7 @@ const DnDFlow = (props) => {
       );
       switch (props.type) {
         case "freedomCircuit":
+        case "simpleCircuit":
           if (connect_line != null || connect_line != undefined) {
             if (connect_line.source == null)
               connect_line.source = `${newNode.id}`;
@@ -2093,8 +2183,11 @@ const DnDFlow = (props) => {
       }
     }
   };
+
   const onNodeDrag = async (event, node) => {
     switch (props.type) {
+      case "simpleCircuit":
+      case "parallelCircuit":
       case "freedomCircuit":
         node_cor.map(async (e) => {
           //console.log("event XX",e.handle[3].x,event.path[1])
@@ -2125,7 +2218,12 @@ const DnDFlow = (props) => {
                     target: node.id,
                     targetHandle: current.id,
                   };
-                  if (params.sourceHandle.includes("l")) {
+                  if (
+                    params.sourceHandle.includes("l") ||
+                    (params.source.includes("dndnode_0") &&
+                      (params.sourceHandle.includes("r2") ||
+                        params.sourceHandle.includes("r3")))
+                  ) {
                     params = {
                       source: node.id,
                       sourceHandle: current.id,
@@ -2133,6 +2231,39 @@ const DnDFlow = (props) => {
                       targetHandle: cord.id,
                     };
                   }
+                  let exitFlag = 0;
+                  switch (props.type) {
+                    case "simpleCircuit":
+                      nodes.map(async (ele) => {
+                        if (ele.id == e.id) {
+                          if (
+                            ele.data.specificElType === "power" &&
+                            node.data.specificElType === "tact"
+                          ) {
+                            exitFlag = 1;
+                          } else if (
+                            (ele.data.specificElType === "tact" &&
+                              (node.data.specificElType === "led" ||
+                                node.data.specificElType === "beeper") &&
+                              current.id == "") ||
+                            ((ele.data.specificElType === "led" ||
+                              ele.data.specificElType === "beeper") &&
+                              node.data.specificElType === "tact")
+                          ) {
+                            exitFlag = 1;
+                          } else if (
+                            ele.data.specificElType === "power" &&
+                            (node.data.specificElType === "led" ||
+                              node.data.specificElType === "beeper") &&
+                            current.id == "r"
+                          ) {
+                            exitFlag = 1;
+                          } else exitFlag = 0;
+                        }
+                      });
+                      break;
+                  }
+                  //if (exitFlag === 0) return;
                   await onConnect(params);
                   return;
                 }

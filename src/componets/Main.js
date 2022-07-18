@@ -80,6 +80,9 @@ class Stack {
     if (this.items.length == 0) return "Underflow";
     return this.items.pop();
   }
+  peak() {
+    return this.items[this.items.length - 1];
+  }
 
   isEmpty() {
     return this.items.length == 0;
@@ -96,6 +99,7 @@ class Stack {
     }
   }
 }
+let s = [new Stack()];
 const DnDFlow = (props) => {
   const text = (type, _id) => {
     switch (props.type) {
@@ -1845,6 +1849,17 @@ const DnDFlow = (props) => {
     console.log("range", Object.keys(edges).length);
 
     circuitClosed = closedChk(nodes, edges);
+    (async () => {
+      console.log("closGGGGGGGGG!!!!!!!!", await circuitClosed);
+      if (
+        (await circuitClosed) ||
+        (await circuitClosed) === 0 ||
+        (await circuitClosed) === 1
+      ) {
+        await nodeStack(0);
+        console.log("clo ENtered##############", await s);
+      }
+    })();
     if (props.type === "transistorCircuit" && Object.keys(edges).length < 6) {
       console.log("range$$%&^&^^^&*^&*", Object.keys(edges).length, eleLed1);
 
@@ -1908,6 +1923,34 @@ const DnDFlow = (props) => {
     q2.copyQueue(q1);
     s2.copyStack(s1);
   };
+  const nodeStack = async (n) => {
+    if (s[n].isEmpty()) s[n].push(node[0]);
+    if (
+      s[n].peak().data.specificElType === "power" &&
+      s[n].peak().id != "dndnode_0"
+    )
+      return;
+
+    let next = await getOutgoers(s[n].peak(), node, edge);
+    if (next == undefined || next == null || next.length === 0) return;
+    if (next.length == 1) {
+      s[n].push(next[0]);
+      await nodeStack(n);
+    }
+    // for (let i = 0; i < next.length; i++) {
+    //   if (i == n) {
+    //     s[n].push(next[i]);
+    //     await nodeStack(n);
+    //   }
+    //   if (i != n) {
+    //     s[i] = new Stack();
+    //     s[i].copyStack(s[n]);
+    //     //s[i].push(next[i]);
+    //     await nodeStack(i);
+    //   }
+    // }
+  };
+
   const onConnect = async (params, event) => {
     console.log(params, event, "EVEEEEE");
     var index1 = await edge.findIndex(
@@ -1924,6 +1967,7 @@ const DnDFlow = (props) => {
         if (index2 != -1) return;
         await setEdges((eds) => addEdge(params, eds));
 
+        console.log("stack+++++", s);
         return;
       //event.returnValue = false;
     }
@@ -2140,48 +2184,50 @@ const DnDFlow = (props) => {
   let node_cor = [];
   const current_node_cord = (ele) => {
     // console.log("eve",ele.path.length,ele.path[1])
-    let han;
-    for (let i = 0; i < ele.path.length; i++) {
-      let handle = [];
-      if (
-        ele.path[i].className.includes(
-          "react-flow__node react-flow__node-output nopan selected selectable"
-        )
-      ) {
-        han = ele.path[i].childNodes;
-        //console.log("eve",han.length)
-        for (let j = 0; j < han.length; j++) {
-          if (
-            han[j].className.includes("react-flow__handle") &&
-            !han[j].className.includes("react-flow__handle-top")
-          ) {
-            let handle_elem = han[j];
-            var box = handle_elem.getBoundingClientRect();
+    try {
+      let han;
+      for (let i = 0; i < ele.path.length; i++) {
+        let handle = [];
+        if (
+          ele.path[i].className.includes(
+            "react-flow__node react-flow__node-output nopan selected selectable"
+          )
+        ) {
+          han = ele.path[i].childNodes;
+          //console.log("eve",han.length)
+          for (let j = 0; j < han.length; j++) {
+            if (
+              han[j].className.includes("react-flow__handle") &&
+              !han[j].className.includes("react-flow__handle-top")
+            ) {
+              let handle_elem = han[j];
+              var box = handle_elem.getBoundingClientRect();
 
-            var body = document.body;
-            var docEl = document.documentElement;
+              var body = document.body;
+              var docEl = document.documentElement;
 
-            var scrollTop =
-              window.pageYOffset || docEl.scrollTop || body.scrollTop;
-            var scrollLeft =
-              window.pageXOffset || docEl.scrollLeft || body.scrollLeft;
+              var scrollTop =
+                window.pageYOffset || docEl.scrollTop || body.scrollTop;
+              var scrollLeft =
+                window.pageXOffset || docEl.scrollLeft || body.scrollLeft;
 
-            var clientTop = docEl.clientTop || body.clientTop || 0;
-            var clientLeft = docEl.clientLeft || body.clientLeft || 0;
+              var clientTop = docEl.clientTop || body.clientTop || 0;
+              var clientLeft = docEl.clientLeft || body.clientLeft || 0;
 
-            var top = box.top + scrollTop - clientTop;
-            var left = box.left + scrollLeft - clientLeft;
-            let temp = {
-              id: handle_elem.dataset.handleid,
-              x: Math.round(left),
-              y: Math.round(top),
-            };
-            handle.push(temp);
+              var top = box.top + scrollTop - clientTop;
+              var left = box.left + scrollLeft - clientLeft;
+              let temp = {
+                id: handle_elem.dataset.handleid,
+                x: Math.round(left),
+                y: Math.round(top),
+              };
+              handle.push(temp);
+            }
           }
+          return handle;
         }
-        return handle;
       }
-    }
+    } catch (e) {}
   };
 
   const onNodeDrag = async (event, node) => {

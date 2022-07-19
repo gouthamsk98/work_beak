@@ -88,11 +88,13 @@ class Stack {
     return this.items.length == 0;
   }
   findLed() {
+    let a=[]
     for (let i = 0; i < this.items.length; i++) {
       if (this.items[i].data.specificElType === "led") {
-        return this.items[i];
+         a.push(this.items[i]);
       }
     }
+    if(a.length!=0) return a
     return null;
   }
   findBeeper() {
@@ -1979,16 +1981,7 @@ const DnDFlow = (props) => {
     //   }
     // }
   };
-  (async () => {
-    if (
-      (await circuitClosed) ||
-      (await circuitClosed) === 0 ||
-      (await circuitClosed) === 1
-    ) {
-      debugger;
-      await trigger();
-    }
-  })();
+  
   const onConnect = async (params, event) => {
     console.log(params, event, "EVEEEEE");
     var index1 = await edge.findIndex(
@@ -2057,7 +2050,28 @@ const DnDFlow = (props) => {
       index1Count = 0;
       index2Count = 0;
       index3Count = 0;
+
     }
+    if (
+      (await circuitClosed) ||
+      (await circuitClosed) === 0 ||
+      (await circuitClosed) === 1
+    ) {
+  }else{
+    for (let i = 0; i < s.length; i++) {
+      let len = s[i].length();
+
+      let led = await s[i].findLed();
+      for (let j = 0; j < len; j++) {
+        if (led != null) {
+          // debugger;
+          for(let k=0;k<led.length;k++){
+            led[k] = document.getElementById(`led${led[k].id}`);
+            led[k].classList.remove("led-light");}
+      }
+          console.log("noooooooo",e)
+        }}
+  }
   };
 
   //get cordinate while zooming
@@ -8860,9 +8874,23 @@ const DnDFlow = (props) => {
       s[0] = new Stack();
       // setRes(1);
       await nodeStack(0);
-      // await trigger();
+      await trigger();
       console.log("clo ENtered##############", await s, await s2);
     } else {
+      for (let i = 0; i < s.length; i++) {
+      let len = s[i].length();
+
+      let led = await s[i].findLed();
+      for (let j = 0; j < len; j++) {
+        if (led != null) {
+          // debugger;
+          for(let k=0;k<led.length;k++){
+            led[k] = document.getElementById(`led${led[k].id}`);
+            led[k].classList.remove("led-light");}
+      }
+          console.log("noooooooo",e)
+        }}
+      
       setRes(1);
     }
     if (await circuitClosed)
@@ -9243,33 +9271,37 @@ const DnDFlow = (props) => {
       //   await s[i].pop();
       // }
       let led = await s[i].findLed();
-      if (led != null) led = document.getElementById(`led${led.id}`);
       let beeper = await s[i].findBeeper();
       if (beeper != null)
-        beeper = document.getElementById(`beeper${beeper.id}`);
+      beeper = document.getElementById(`beeper${beeper.id}`);
       let len = s[i].length();
-      let resC = 0;
+      let resC = 50;
       for (let j = 0; j < len; j++) {
         let element = await s[i].items[j];
         if (element.data.specificElType === "tact") {
           tact_flag[i][j] = 1;
         }
         if (element.data.specificElType === "res_100")
-          resC = (await resC) + 100;
-
-        if (element.data.specificElType === "res_1000")
-          resC = (await resC) + 1000;
-        await setRes(resC / 100);
+        resC = (await resC) + 100;
+        
+        if (element.data.specificElType === "res_250")
+        resC = (await resC) + 250;
       }
+      await setRes(resC / 50);
       for (let j = 0; j < len; j++) {
         let element = await s[i].items[j];
-
+        
         if (element.data.specificElType === "led") {
           if (tact_flag[i][j] == null || tact_flag[i][j] == undefined) {
             if (led != null) {
               // debugger;
-              led.classList.add("led-light");
-              led.style.transform = `scale(${3 / res} )`;
+              for(let k=0;k<led.length;k++){
+                led[k] = document.getElementById(`led${led[k].id}`);
+                led[k].classList.add("led-light");
+                led[k].style.transform = `scale(${3 /(resC/50)})`;
+
+              }
+              debugger;
             }
           }
         }

@@ -87,7 +87,22 @@ class Stack {
   isEmpty() {
     return this.items.length == 0;
   }
-
+  findLed() {
+    for (let i = 0; i < this.items.length; i++) {
+      if (this.items[i].data.specificElType === "led") {
+        return this.items[i];
+      }
+    }
+    return null;
+  }
+  findBeeper() {
+    for (let i = 0; i < this.items.length; i++) {
+      if (this.items[i].data.specificElType === "beeper") {
+        return this.items[i];
+      }
+    }
+    return null;
+  }
   printStack() {
     var str = "";
     for (var i = 0; i < this.items.length; i++) str += this.items[i] + " ";
@@ -98,8 +113,12 @@ class Stack {
       this.items.push(value.items[i]);
     }
   }
+  length() {
+    return this.items.length;
+  }
 }
-let s = [new Stack()];
+let s = [],
+  s2 = [];
 const DnDFlow = (props) => {
   const text = (type, _id) => {
     switch (props.type) {
@@ -1842,6 +1861,8 @@ const DnDFlow = (props) => {
   const [nodesDraggable, setNodesDraggable] = useState(true);
   const [rangeVal, setRangeVal] = useState(50);
   const [tact, setTact] = useState([]);
+  const [res, setRes] = useState(1);
+
   useEffect(() => {
     sessionStorage.setItem("beak-edges", JSON.stringify(edges));
     console.log(edges, "edges use effect");
@@ -1849,17 +1870,7 @@ const DnDFlow = (props) => {
     console.log("range", Object.keys(edges).length);
 
     circuitClosed = closedChk(nodes, edges);
-    (async () => {
-      console.log("closGGGGGGGGG!!!!!!!!", await circuitClosed);
-      if (
-        (await circuitClosed) ||
-        (await circuitClosed) === 0 ||
-        (await circuitClosed) === 1
-      ) {
-        await nodeStack(0);
-        console.log("clo ENtered##############", await s);
-      }
-    })();
+
     if (props.type === "transistorCircuit" && Object.keys(edges).length < 6) {
       console.log("range$$%&^&^^^&*^&*", Object.keys(edges).length, eleLed1);
 
@@ -1925,17 +1936,35 @@ const DnDFlow = (props) => {
   };
   const nodeStack = async (n) => {
     if (s[n].isEmpty()) s[n].push(node[0]);
-    if (
-      s[n].peak().data.specificElType === "power" &&
-      s[n].peak().id != "dndnode_0"
+    else if (
+      (await s[n].peak().data.specificElType) === "power" &&
+      (await s[n].peak().id) == "dndnode_0"
     )
       return;
 
-    let next = await getOutgoers(s[n].peak(), node, edge);
+    let next = await getOutgoers(await s[n].peak(), node, edge);
+
+    console.log("clo", next);
     if (next == undefined || next == null || next.length === 0) return;
     if (next.length == 1) {
-      s[n].push(next[0]);
+      await s[n].push(next[0]);
       await nodeStack(n);
+    } else if (next.length > 1) {
+      for (let i = 0; i < next.length; i++) {
+        if (i != n) {
+          s[i] = new Stack();
+          s[i].copyStack(s[n]);
+        }
+      }
+      for (let i = 0; i < next.length; i++) {
+        if (i == n) {
+          s[n].push(next[i]);
+          await nodeStack(n);
+        } else {
+          s[i].push(next[i]);
+          await nodeStack(i);
+        }
+      }
     }
     // for (let i = 0; i < next.length; i++) {
     //   if (i == n) {
@@ -1950,7 +1979,16 @@ const DnDFlow = (props) => {
     //   }
     // }
   };
-
+  (async () => {
+    if (
+      (await circuitClosed) ||
+      (await circuitClosed) === 0 ||
+      (await circuitClosed) === 1
+    ) {
+      debugger;
+      await trigger();
+    }
+  })();
   const onConnect = async (params, event) => {
     console.log(params, event, "EVEEEEE");
     var index1 = await edge.findIndex(
@@ -1967,7 +2005,6 @@ const DnDFlow = (props) => {
         if (index2 != -1) return;
         await setEdges((eds) => addEdge(params, eds));
 
-        console.log("stack+++++", s);
         return;
       //event.returnValue = false;
     }
@@ -2235,89 +2272,91 @@ const DnDFlow = (props) => {
       case "simpleCircuit":
       case "parallelCircuit":
       case "freedomCircuit":
-        node_cor.map(async (e) => {
-          //console.log("event XX",e.handle[3].x,event.path[1])
-          ///console.log("eve###################",node_cor[0].handle, current_node_cord(event))
-          let cur_cord = await current_node_cord(event);
-          if (e.id != node.id) {
-            e.handle.map((cord) => {
-              cur_cord.map(async (current) => {
-                console.log("event cord XX", cord.x, current.x);
-                if (
-                  cord.x - current.x >= -10 &&
-                  cord.x - current.x <= 10 &&
-                  cord.y - current.y >= -10 &&
-                  cord.y - current.y <= 10
-                ) {
-                  console.log(
-                    "eve%%%%%%%%",
-                    "source=",
-                    cord.id,
-                    e.id,
-                    "target",
-                    current.id,
-                    node.id
-                  );
-                  let params = {
-                    source: e.id,
-                    sourceHandle: cord.id,
-                    target: node.id,
-                    targetHandle: current.id,
-                  };
+        try {
+          node_cor.map(async (e) => {
+            //console.log("event XX",e.handle[3].x,event.path[1])
+            ///console.log("eve###################",node_cor[0].handle, current_node_cord(event))
+            let cur_cord = await current_node_cord(event);
+            if (e.id != node.id) {
+              e.handle.map((cord) => {
+                cur_cord.map(async (current) => {
+                  console.log("event cord XX", cord.x, current.x);
                   if (
-                    params.sourceHandle.includes("l") ||
-                    (params.source.includes("dndnode_0") &&
-                      (params.sourceHandle.includes("r2") ||
-                        params.sourceHandle.includes("r3")))
+                    cord.x - current.x >= -10 &&
+                    cord.x - current.x <= 10 &&
+                    cord.y - current.y >= -10 &&
+                    cord.y - current.y <= 10
                   ) {
-                    params = {
-                      source: node.id,
-                      sourceHandle: current.id,
-                      target: e.id,
-                      targetHandle: cord.id,
+                    console.log(
+                      "eve%%%%%%%%",
+                      "source=",
+                      cord.id,
+                      e.id,
+                      "target",
+                      current.id,
+                      node.id
+                    );
+                    let params = {
+                      source: e.id,
+                      sourceHandle: cord.id,
+                      target: node.id,
+                      targetHandle: current.id,
                     };
-                  }
-                  let exitFlag = 0;
-                  switch (props.type) {
-                    case "simpleCircuit":
-                      nodes.map(async (ele) => {
-                        if (ele.id == e.id) {
-                          if (
-                            ele.data.specificElType === "power" &&
-                            node.data.specificElType === "tact"
-                          ) {
-                            exitFlag = 1;
-                          } else if (
-                            (ele.data.specificElType === "tact" &&
+                    if (
+                      params.sourceHandle.includes("l") ||
+                      (params.source.includes("dndnode_0") &&
+                        (params.sourceHandle.includes("r2") ||
+                          params.sourceHandle.includes("r3")))
+                    ) {
+                      params = {
+                        source: node.id,
+                        sourceHandle: current.id,
+                        target: e.id,
+                        targetHandle: cord.id,
+                      };
+                    }
+                    let exitFlag = 0;
+                    switch (props.type) {
+                      case "simpleCircuit":
+                        nodes.map(async (ele) => {
+                          if (ele.id == e.id) {
+                            if (
+                              ele.data.specificElType === "power" &&
+                              node.data.specificElType === "tact"
+                            ) {
+                              exitFlag = 1;
+                            } else if (
+                              (ele.data.specificElType === "tact" &&
+                                (node.data.specificElType === "led" ||
+                                  node.data.specificElType === "beeper") &&
+                                current.id == "") ||
+                              ((ele.data.specificElType === "led" ||
+                                ele.data.specificElType === "beeper") &&
+                                node.data.specificElType === "tact")
+                            ) {
+                              exitFlag = 1;
+                            } else if (
+                              ele.data.specificElType === "power" &&
                               (node.data.specificElType === "led" ||
                                 node.data.specificElType === "beeper") &&
-                              current.id == "") ||
-                            ((ele.data.specificElType === "led" ||
-                              ele.data.specificElType === "beeper") &&
-                              node.data.specificElType === "tact")
-                          ) {
-                            exitFlag = 1;
-                          } else if (
-                            ele.data.specificElType === "power" &&
-                            (node.data.specificElType === "led" ||
-                              node.data.specificElType === "beeper") &&
-                            current.id == "r"
-                          ) {
-                            exitFlag = 1;
-                          } else exitFlag = 0;
-                        }
-                      });
-                      break;
+                              current.id == "r"
+                            ) {
+                              exitFlag = 1;
+                            } else exitFlag = 0;
+                          }
+                        });
+                        break;
+                    }
+                    //if (exitFlag === 0) return;
+                    await onConnect(params);
+                    return;
                   }
-                  //if (exitFlag === 0) return;
-                  await onConnect(params);
-                  return;
-                }
+                });
+                //   console.log(cord.x-cur_cord.x,"ele")
               });
-              //   console.log(cord.x-cur_cord.x,"ele")
-            });
-          }
-        });
+            }
+          });
+        } catch (e) {}
         break;
       default:
         nodes.map(async (e) => {
@@ -8813,6 +8852,19 @@ const DnDFlow = (props) => {
     } else mouseDownChk = false;
   };
   const onNodeDragEnd = async (e, node) => {
+    if (
+      (await circuitClosed) ||
+      (await circuitClosed) === 0 ||
+      (await circuitClosed) === 1
+    ) {
+      s[0] = new Stack();
+      // setRes(1);
+      await nodeStack(0);
+      // await trigger();
+      console.log("clo ENtered##############", await s, await s2);
+    } else {
+      setRes(1);
+    }
     if (await circuitClosed)
       switch (props.type) {
         case "simpleCircuit":
@@ -9146,7 +9198,9 @@ const DnDFlow = (props) => {
           }
           break;
       }
+    console.log("closGGGGGGGGG!!!!!!!!", await circuitClosed);
   };
+
   const [{}, drop] = useDrop(
     () => ({
       accept: "yellow",
@@ -9176,6 +9230,52 @@ const DnDFlow = (props) => {
       }
       console.log(node_cor, "getCoords");
     } catch (e) {}
+  };
+  let tact_flag = [[]];
+  const trigger = async () => {
+    //remove this
+
+    for (let i = 0; i < s.length; i++) {
+      // s2[i] = new Stack();
+      // let len = s[i].length();
+      // for (let j = 0; j < len; j++) {
+      //   await s2[i].push(await s[i].peak());
+      //   await s[i].pop();
+      // }
+      let led = await s[i].findLed();
+      if (led != null) led = document.getElementById(`led${led.id}`);
+      let beeper = await s[i].findBeeper();
+      if (beeper != null)
+        beeper = document.getElementById(`beeper${beeper.id}`);
+      let len = s[i].length();
+      let resC = 0;
+      for (let j = 0; j < len; j++) {
+        let element = await s[i].items[j];
+        if (element.data.specificElType === "tact") {
+          tact_flag[i][j] = 1;
+        }
+        if (element.data.specificElType === "res_100")
+          resC = (await resC) + 100;
+
+        if (element.data.specificElType === "res_1000")
+          resC = (await resC) + 1000;
+        await setRes(resC / 100);
+      }
+      for (let j = 0; j < len; j++) {
+        let element = await s[i].items[j];
+
+        if (element.data.specificElType === "led") {
+          if (tact_flag[i][j] == null || tact_flag[i][j] == undefined) {
+            if (led != null) {
+              // debugger;
+              led.classList.add("led-light");
+              led.style.transform = `scale(${3 / res} )`;
+            }
+          }
+        }
+      }
+      console.log(led, beeper);
+    }
   };
   // var slider = document.getElementById("myRange");
   // var output = document.getElementById("demo");

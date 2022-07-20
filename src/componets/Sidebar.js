@@ -326,6 +326,7 @@ export default (props) => {
     switch (props.send.type) {
       case "simpleCircuit":
       case "parallelCircuit":
+      case "seriesCircuit":
       case "freedomCircuit":
         node_cor.map(async (e) => {
           //console.log("event XX",e.handle[3].x,event.path[1])

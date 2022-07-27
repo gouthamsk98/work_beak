@@ -44,27 +44,28 @@ const DnDFlow = (props) => {
           return (
             <>
               <div
-                className="Image-render"
+                className="Image-render beeper-component"
                 style={{
                   backgroundImage: `url(${renderImage("beeper")})`,
                   bottom: "38px",
                 }}
                 id="image-render"
                 key={v4()}
-              ></div>
-              <div id={"beeperdndnode_" + _id} style={{}}></div>
-              <Handle
-                type="target"
-                position="left"
-                style={{ left: " 1.2vw", top: " -0.3vh" }}
-                id="l"
-              />
-              <Handle
-                type="source"
-                position="right"
-                style={{ left: "9.4vw", top: " -0.3vh" }}
-                id="r"
-              />
+              >
+                <div id={"beeperdndnode_" + _id} style={{}}></div>
+                <Handle
+                  type="target"
+                  position="left"
+                  style={{ left: " 0.39vw", top: " 2.1vh" }}
+                  id="l"
+                />
+                <Handle
+                  type="source"
+                  position="right"
+                  style={{ left: "10.3vw", top: " 2.1vh" }}
+                  id="r"
+                />
+              </div>
             </>
           );
         }
@@ -73,25 +74,26 @@ const DnDFlow = (props) => {
           return (
             <>
               <div
-                className="Image-render"
+                className="Image-render capacitor100-component"
                 style={{
                   backgroundImage: `url(${renderImage("capasitor100")})`,
                 }}
                 id="image-render"
                 key={v4()}
-              ></div>
-              <Handle
-                type="target"
-                position="left"
-                style={{ left: " 0.5vw", top: "5.6vh" }}
-                id="l"
-              />
-              <Handle
-                type="source"
-                position="right"
-                style={{ left: "9.9vw", top: " 5.6vh" }}
-                id="r"
-              />
+              >
+                <Handle
+                  type="target"
+                  position="left"
+                  style={{ left: " 0.4vw", top: "5.69vh" }}
+                  id="l"
+                />
+                <Handle
+                  type="source"
+                  position="right"
+                  style={{ left: "10.2vw", top: " 5.69vh" }}
+                  id="r"
+                />
+              </div>
             </>
           );
         }
@@ -99,25 +101,26 @@ const DnDFlow = (props) => {
           return (
             <>
               <div
-                className="Image-render"
+                className="Image-render capacitor1000-component"
                 style={{
                   backgroundImage: `url(${renderImage("capasitor1000")})`,
                 }}
                 id="image-render"
                 key={v4()}
-              ></div>
-              <Handle
-                type="target"
-                position="left"
-                style={{ left: " 0.4vw", top: " 5.5vh" }}
-                id="l"
-              />
-              <Handle
-                type="source"
-                position="right"
-                style={{ left: "9.9vw", top: " 5.5vh" }}
-                id="r"
-              />
+              >
+                <Handle
+                  type="target"
+                  position="left"
+                  style={{ left: " 0.3vw", top: " 5.7vh" }}
+                  id="l"
+                />
+                <Handle
+                  type="source"
+                  position="right"
+                  style={{ left: "10.2vw", top: " 5.7vh" }}
+                  id="r"
+                />
+              </div>
             </>
           );
         }
@@ -125,37 +128,38 @@ const DnDFlow = (props) => {
           return (
             <>
               <div
-                className="Image-render"
+                className="Image-render diode-component"
                 style={{
                   backgroundImage: `url(${renderImage("diode")})`,
                 }}
                 id="image-render"
                 key={v4()}
-              ></div>
-              <Handle
-                type="target"
-                position="left"
-                style={{ left: " 0.6vw", top: " 5.3vh" }}
-                id="l1"
-              />
-              <Handle
-                type="source"
-                position="right"
-                style={{ left: "9.9vw", top: " 5.3vh" }}
-                id="r1"
-              />
-              <Handle
-                type="source"
-                position="right"
-                style={{ left: " 0.6vw", top: " 5.3vh" }}
-                id="l2"
-              />
-              <Handle
-                type="target"
-                position="right"
-                style={{ left: "9.9vw", top: " 5.3vh" }}
-                id="r2"
-              />
+              >
+                <Handle
+                  type="target"
+                  position="left"
+                  style={{ left: " 0.5vw", top: " 5.5vh" }}
+                  id="l1"
+                />
+                <Handle
+                  type="source"
+                  position="right"
+                  style={{ left: "10.1vw", top: " 5.5vh" }}
+                  id="r1"
+                />
+                <Handle
+                  type="source"
+                  position="right"
+                  style={{ left: " 0.5vw", top: " 5.5vh" }}
+                  id="l2"
+                />
+                <Handle
+                  type="target"
+                  position="right"
+                  style={{ left: "10.1vw", top: " 5.5vh" }}
+                  id="r2"
+                />
+              </div>
             </>
           );
         }
@@ -189,7 +193,7 @@ const DnDFlow = (props) => {
           return (
             <>
               <div
-                className="Image-render"
+                className="Image-render junction-component"
                 style={{
                   backgroundImage: `url(${renderImage("junction")})`,
                 }}
@@ -199,97 +203,97 @@ const DnDFlow = (props) => {
               <Handle
                 type="source"
                 position="left"
-                style={{ left: "2.9vw", top: " 4vh" }}
+                style={{ left: "2.39vw", top: " 4.39vh" }}
                 id={"l1" + "dndnode_" + _id}
               />
               <Handle
                 type="source"
                 position="left"
-                style={{ left: "2.9vw", top: " 5.6vh" }}
+                style={{ left: "2.39vw", top: " 5.8vh" }}
                 id={"l2" + "dndnode_" + _id}
               />
               <Handle
                 type="source"
                 position="left"
-                style={{ left: "2.9vw", top: " 7.1vh" }}
+                style={{ left: "2.39vw", top: " 7.3vh" }}
                 id={"l3" + "dndnode_" + _id}
               />
               <Handle
                 type="source"
                 position="left"
-                style={{ left: "2.9vw", top: " 8.6vh" }}
+                style={{ left: "2.39vw", top: " 8.8vh" }}
                 id={"l4" + "dndnode_" + _id}
               />
               <Handle
                 type="target"
                 position="left"
-                style={{ left: "2.9vw", top: " 4vh" }}
+                style={{ left: "2.39vw", top: " 4.39vh" }}
                 id={"l1.t" + "dndnode_" + _id}
               />
               <Handle
                 type="target"
                 position="left"
-                style={{ left: "2.9vw", top: " 5.6vh" }}
+                style={{ left: "2.39vw", top: " 5.8vh" }}
                 id={"l2.t" + "dndnode_" + _id}
               />
               <Handle
                 type="target"
                 position="left"
-                style={{ left: "2.9vw", top: " 7.1vh" }}
+                style={{ left: "2.39vw", top: " 7.3vh" }}
                 id={"l3.t" + "dndnode_" + _id}
               />
               <Handle
                 type="target"
                 position="left"
-                style={{ left: "2.9vw", top: " 8.6vh" }}
+                style={{ left: "2.39vw", top: " 8.8vh" }}
                 id={"l4.t" + "dndnode_" + _id}
               />
               <Handle
                 type="source"
                 position="right"
-                style={{ left: "7.5vw", top: " 4vh" }}
+                style={{ left: "8.3vw", top: " 4.39vh" }}
                 id={"r1" + "dndnode_" + _id}
               />
               <Handle
                 type="source"
                 position="right"
-                style={{ left: "7.5vw", top: " 5.6vh" }}
+                style={{ left: "8.3vw", top: " 5.8vh" }}
                 id={"r2" + "dndnode_" + _id}
               />
               <Handle
                 type="source"
                 position="right"
-                style={{ left: "7.5vw", top: " 7.1vh" }}
+                style={{ left: "8.3vw", top: " 7.3vh" }}
                 id={"r3" + "dndnode_" + _id}
               />{" "}
               <Handle
                 type="source"
                 position="right"
-                style={{ left: "7.5vw", top: " 8.6vh" }}
+                style={{ left: "8.3vw", top: " 8.8vh" }}
                 id={"r4" + "dndnode_" + _id}
               />
               <Handle
                 type="target"
                 position="right"
-                style={{ left: "7.5vw", top: " 4vh" }}
+                style={{ left: "8.3vw", top: " 4.39vh" }}
                 id={"r1.t" + "dndnode_" + _id}
               />
               <Handle
                 type="target"
                 position="right"
-                style={{ left: "7.5vw", top: " 5.6vh" }}
+                style={{ left: "8.3vw", top: " 5.8vh" }}
                 id={"r2.t" + "dndnode_" + _id}
               />
               <Handle
                 type="target"
                 position="right"
-                style={{ left: "7.5vw", top: " 7.1vh" }}
+                style={{ left: "8.3vw", top: " 7.3vh" }}
                 id={"r3.t" + "dndnode_" + _id}
               />{" "}
               <Handle
                 type="target"
                 position="right"
-                style={{ left: "7.5vw", top: " 8.6vh" }}
+                style={{ left: "8.3vw", top: " 8.8vh" }}
                 id={"r4.t" + "dndnode_" + _id}
               />
             </>
@@ -299,49 +303,50 @@ const DnDFlow = (props) => {
           return (
             <>
               <div
-                className="Image-render"
+                className="Image-render ldr-component"
                 style={{
                   backgroundImage: `url(${renderImage("ldr")})`,
                 }}
                 id="image-render"
                 key={v4()}
-              ></div>
-              <div
-                class="slidecontainer"
-                style={{ top: "2vh", left: "0.5vw", position: "relative" }}
               >
-                <input
-                  type="range"
-                  min="1"
-                  max="100"
-                  class="slider"
-                  onInput={(e) => {
-                    console.log(e.target.value);
-                    setRangeVal(e.target.value);
-                  }}
-                  onChange={sliderOnChange}
-                  id={"myRangedndnode_" + _id}
-                  onMouseEnter={(e) => {
-                    console.log(e.target.value, "e.target.value@@@@@@@@@@@@");
-                    setNodesDraggable(false);
-                  }}
-                  onMouseLeave={(e) => {
-                    setNodesDraggable(true);
-                  }}
+                <div
+                  class="slidecontainer"
+                  style={{ top: "2vh", left: "1.8vw", position: "relative" }}
+                >
+                  <input
+                    type="range"
+                    min="1"
+                    max="100"
+                    class="slider"
+                    onInput={(e) => {
+                      console.log(e.target.value);
+                      setRangeVal(e.target.value);
+                    }}
+                    onChange={sliderOnChange}
+                    id={"myRangedndnode_" + _id}
+                    onMouseEnter={(e) => {
+                      console.log(e.target.value, "e.target.value@@@@@@@@@@@@");
+                      setNodesDraggable(false);
+                    }}
+                    onMouseLeave={(e) => {
+                      setNodesDraggable(true);
+                    }}
+                  />
+                </div>
+                <Handle
+                  type="target"
+                  position="left"
+                  style={{ left: " 0.4vw", top: " 5.6vh" }}
+                  id="l"
+                />
+                <Handle
+                  type="source"
+                  position="right"
+                  style={{ left: "10vw", top: " 5.6vh" }}
+                  id="r"
                 />
               </div>
-              <Handle
-                type="target"
-                position="left"
-                style={{ left: " 0.4vw", top: " 5.8vh" }}
-                id="l"
-              />
-              <Handle
-                type="source"
-                position="right"
-                style={{ left: "10vw", top: " 5.8vh" }}
-                id="r"
-              />
             </>
           );
         }
@@ -349,26 +354,27 @@ const DnDFlow = (props) => {
           return (
             <>
               <div
-                className="Image-render"
+                className="Image-render led-component"
                 style={{
                   backgroundImage: `url(${renderImage("led")})`,
                 }}
                 id="image-render"
                 key={v4()}
-              ></div>
-              <div id={"leddndnode_" + _id} style={{}}></div>
-              <Handle
-                type="target"
-                position="left"
-                style={{ left: " 0.69vw", top: " 5.5vh" }}
-                id="l"
-              />
-              <Handle
-                type="source"
-                position="right"
-                style={{ left: "9.7vw", top: " 5.5vh" }}
-                id="r"
-              />
+              >
+                <div id={"leddndnode_" + _id} style={{}}></div>
+                <Handle
+                  type="target"
+                  position="left"
+                  style={{ left: " 0.59vw", top: " 5.7vh" }}
+                  id="l"
+                />
+                <Handle
+                  type="source"
+                  position="right"
+                  style={{ left: "10vw", top: " 5.7vh" }}
+                  id="r"
+                />
+              </div>
             </>
           );
         }
@@ -376,54 +382,55 @@ const DnDFlow = (props) => {
           return (
             <>
               <div
-                className="Image-render"
+                className="Image-render pot-component"
                 style={{
                   backgroundImage: `url(${renderImage("pot")})`,
                 }}
                 id="image-render"
                 key={v4()}
-              ></div>
-              <div
-                class="slidecontainer"
-                style={{ top: "2vh", left: "0.8vw", position: "relative" }}
               >
-                <input
-                  type="range"
-                  min="1"
-                  max="100"
-                  class="slider"
-                  onInput={(e) => {
-                    console.log(e.target.value);
-                    setRangeVal(e.target.value);
-                  }}
-                  id={"myRangedndnode_" + _id}
-                  onMouseEnter={(e) => {
-                    console.log(e.target.value, "e.target.value@@@@@@@@@@@@");
-                    setNodesDraggable(false);
-                  }}
-                  onMouseLeave={(e) => {
-                    setNodesDraggable(true);
-                  }}
+                <div
+                  class="slidecontainer"
+                  style={{ top: "2vh", left: "1.8vw", position: "relative" }}
+                >
+                  <input
+                    type="range"
+                    min="1"
+                    max="100"
+                    class="slider"
+                    onInput={(e) => {
+                      console.log(e.target.value);
+                      setRangeVal(e.target.value);
+                    }}
+                    id={"myRangedndnode_" + _id}
+                    onMouseEnter={(e) => {
+                      console.log(e.target.value, "e.target.value@@@@@@@@@@@@");
+                      setNodesDraggable(false);
+                    }}
+                    onMouseLeave={(e) => {
+                      setNodesDraggable(true);
+                    }}
+                  />
+                </div>
+                <Handle
+                  type="source"
+                  position="left"
+                  style={{ left: " 0.3vw", top: " 5.7vh" }}
+                  id="l"
+                />
+                <Handle
+                  type="target"
+                  position="right"
+                  style={{ left: "10.2vw", top: " 3.4vh" }}
+                  id="r1"
+                />
+                <Handle
+                  type="target"
+                  position="right"
+                  style={{ left: "10.2vw", top: " 8.1vh" }}
+                  id="r2"
                 />
               </div>
-              <Handle
-                type="source"
-                position="left"
-                style={{ left: " 0.8vw", top: " 5.7vh" }}
-                id="l"
-              />
-              <Handle
-                type="target"
-                position="right"
-                style={{ left: "9.5vw", top: " 2.8vh" }}
-                id="r1"
-              />
-              <Handle
-                type="target"
-                position="right"
-                style={{ left: "9.5vw", top: " 8vh" }}
-                id="r2"
-              />
             </>
           );
         }
@@ -431,7 +438,7 @@ const DnDFlow = (props) => {
           return (
             <>
               <div
-                className="Image-render"
+                className="Image-render power-component"
                 style={{
                   backgroundImage: `url(${renderImage("power")})`,
                 }}
@@ -441,25 +448,25 @@ const DnDFlow = (props) => {
               <Handle
                 type="source"
                 position="right"
-                style={{ left: "8.5vw", top: " 4.9vh" }}
+                style={{ left: "9vw", top: " 5vh" }}
                 id="r1"
               />
               <Handle
                 type="target"
                 position="right"
-                style={{ left: "8.5vw", top: " 7.3vh" }}
+                style={{ left: "9vw", top: " 7.8vh" }}
                 id="r2"
               />
               <Handle
                 type="target"
                 position="right"
-                style={{ left: "8.5vw", top: " 9.1vh" }}
+                style={{ left: "9vw", top: " 9.4vh" }}
                 id="r3"
               />
               <Handle
                 type="source"
                 position="right"
-                style={{ left: "8.5vw", top: " 3.1vh" }}
+                style={{ left: "9vw", top: " 3.2vh" }}
                 id="r4"
               />
             </>
@@ -469,25 +476,26 @@ const DnDFlow = (props) => {
           return (
             <>
               <div
-                className="Image-render"
+                className="Image-render res_100-component "
                 style={{
                   backgroundImage: `url(${renderImage("res_100")})`,
                 }}
                 id="image-render"
                 key={v4()}
-              ></div>
-              <Handle
-                type="target"
-                position="left"
-                style={{ left: " 0.3vw", top: " 5.5vh" }}
-                id="l"
-              />
-              <Handle
-                type="source"
-                position="right"
-                style={{ left: "10.2vw", top: " 5.5vh" }}
-                id="r"
-              />
+              >
+                <Handle
+                  type="target"
+                  position="left"
+                  style={{ left: " 0.3vw", top: " 5.7vh" }}
+                  id="l"
+                />
+                <Handle
+                  type="source"
+                  position="right"
+                  style={{ left: "10.2vw", top: " 5.7vh" }}
+                  id="r"
+                />
+              </div>
             </>
           );
         }
@@ -495,25 +503,26 @@ const DnDFlow = (props) => {
           return (
             <>
               <div
-                className="Image-render"
+                className="Image-render res_250-component "
                 style={{
                   backgroundImage: `url(${renderImage("res_250")})`,
                 }}
                 id="image-render"
                 key={v4()}
-              ></div>
-              <Handle
-                type="target"
-                position="left"
-                style={{ left: " 0.5vw", top: " 5.5vh" }}
-                id="l"
-              />
-              <Handle
-                type="source"
-                position="right"
-                style={{ left: "9.9vw", top: " 5.5vh" }}
-                id="r"
-              />
+              >
+                <Handle
+                  type="target"
+                  position="left"
+                  style={{ left: " 0.5vw", top: " 5.7vh" }}
+                  id="l"
+                />
+                <Handle
+                  type="source"
+                  position="right"
+                  style={{ left: "10vw", top: " 5.7vh" }}
+                  id="r"
+                />
+              </div>
             </>
           );
         }
@@ -521,25 +530,26 @@ const DnDFlow = (props) => {
           return (
             <>
               <div
-                className="Image-render"
+                className="Image-render tact-component"
                 style={{
                   backgroundImage: `url(${renderImage("tact")})`,
                 }}
                 id="image-render"
                 key={v4()}
-              ></div>
-              <Handle
-                type="target"
-                position="left"
-                style={{ left: " 0.4vw", top: " 6vh" }}
-                id="l"
-              />
-              <Handle
-                type="source"
-                position="right"
-                style={{ left: "10.1vw", top: " 6vh" }}
-                id="r"
-              />
+              >
+                <Handle
+                  type="target"
+                  position="left"
+                  style={{ left: " 0.4vw", top: " 5.7vh" }}
+                  id="l"
+                />
+                <Handle
+                  type="source"
+                  position="right"
+                  style={{ left: "10.2vw", top: " 5.7vh" }}
+                  id="r"
+                />
+              </div>
             </>
           );
         }
@@ -561,31 +571,32 @@ const DnDFlow = (props) => {
           return (
             <>
               <div
-                className="Image-render"
+                className="Image-render transistor-component"
                 style={{
                   backgroundImage: `url(${renderImage("transistor")})`,
                 }}
                 id="image-render"
                 key={v4()}
-              ></div>
-              <Handle
-                type="target"
-                position="left"
-                style={{ left: " 0.5vw", top: " 6.2vh" }}
-                id="l"
-              />
-              <Handle
-                type="target"
-                position="right"
-                style={{ left: "10vw", top: " 4.5vh" }}
-                id="r.t"
-              />
-              <Handle
-                type="source"
-                position="right"
-                style={{ left: "10vw", top: " 7.8vh" }}
-                id="r"
-              />
+              >
+                <Handle
+                  type="target"
+                  position="left"
+                  style={{ left: " 0.5vw", top: " 6.4vh" }}
+                  id="l"
+                />
+                <Handle
+                  type="target"
+                  position="right"
+                  style={{ left: "10.2vw", top: " 5vh" }}
+                  id="r.t"
+                />
+                <Handle
+                  type="source"
+                  position="right"
+                  style={{ left: "10.2vw", top: " 7.6vh" }}
+                  id="r"
+                />
+              </div>
             </>
           );
         }
@@ -593,31 +604,32 @@ const DnDFlow = (props) => {
           return (
             <>
               <div
-                className="Image-render"
+                className="Image-render two_way_switch-component"
                 style={{
                   backgroundImage: `url(${renderImage("two_way_switch")})`,
                 }}
                 id="image-render"
                 key={v4()}
-              ></div>
-              <Handle
-                type="target"
-                position="left"
-                style={{ left: " 0.4vw", top: " 6.2vh" }}
-                id="l"
-              />
-              <Handle
-                type="source"
-                position="right"
-                style={{ left: "10.1vw", top: " 4vh" }}
-                id="r"
-              />
-              <Handle
-                type="source"
-                position="right"
-                style={{ left: "10.1vw", top: " 8.5vh" }}
-                id="r"
-              />
+              >
+                <Handle
+                  type="target"
+                  position="left"
+                  style={{ left: " 0.3vw", top: " 6.3vh" }}
+                  id="l"
+                />
+                <Handle
+                  type="source"
+                  position="right"
+                  style={{ left: "10.3vw", top: " 4.5vh" }}
+                  id="r"
+                />
+                <Handle
+                  type="source"
+                  position="right"
+                  style={{ left: "10.3vw", top: " 8.2vh" }}
+                  id="r"
+                />
+              </div>
             </>
           );
         }
@@ -629,27 +641,28 @@ const DnDFlow = (props) => {
           return (
             <>
               <div
-                className="Image-render"
+                className="Image-render beeper-component"
                 style={{
                   backgroundImage: `url(${renderImage("beeper")})`,
                   bottom: "38px",
                 }}
                 id="image-render"
                 key={v4()}
-              ></div>
-              <div id={"beeperdndnode_" + _id} style={{}}></div>
-              <Handle
-                type="target"
-                position="left"
-                style={{ left: " 1.2vw", top: " -0.3vh" }}
-                id="l"
-              />
-              <Handle
-                type="source"
-                position="right"
-                style={{ left: "9.4vw", top: " -0.3vh" }}
-                id="r"
-              />
+              >
+                <div id={"beeperdndnode_" + _id} style={{}}></div>
+                <Handle
+                  type="target"
+                  position="left"
+                  style={{ left: " 0.39vw", top: " 2.1vh" }}
+                  id="l"
+                />
+                <Handle
+                  type="source"
+                  position="right"
+                  style={{ left: "10.3vw", top: " 2.1vh" }}
+                  id="r"
+                />
+              </div>
             </>
           );
         }
@@ -658,25 +671,26 @@ const DnDFlow = (props) => {
           return (
             <>
               <div
-                className="Image-render"
+                className="Image-render capacitor100-component"
                 style={{
                   backgroundImage: `url(${renderImage("capasitor100")})`,
                 }}
                 id="image-render"
                 key={v4()}
-              ></div>
-              <Handle
-                type="target"
-                position="left"
-                style={{ left: " 0.5vw", top: "5.6vh" }}
-                id="l"
-              />
-              <Handle
-                type="source"
-                position="right"
-                style={{ left: "9.9vw", top: " 5.6vh" }}
-                id="r"
-              />
+              >
+                <Handle
+                  type="target"
+                  position="left"
+                  style={{ left: " 0.4vw", top: "5.69vh" }}
+                  id="l"
+                />
+                <Handle
+                  type="source"
+                  position="right"
+                  style={{ left: "10.2vw", top: " 5.69vh" }}
+                  id="r"
+                />
+              </div>
             </>
           );
         }
@@ -684,25 +698,26 @@ const DnDFlow = (props) => {
           return (
             <>
               <div
-                className="Image-render"
+                className="Image-render capacitor1000-component"
                 style={{
                   backgroundImage: `url(${renderImage("capasitor1000")})`,
                 }}
                 id="image-render"
                 key={v4()}
-              ></div>
-              <Handle
-                type="target"
-                position="left"
-                style={{ left: " 0.4vw", top: " 5.5vh" }}
-                id="l"
-              />
-              <Handle
-                type="source"
-                position="right"
-                style={{ left: "9.9vw", top: " 5.5vh" }}
-                id="r"
-              />
+              >
+                <Handle
+                  type="target"
+                  position="left"
+                  style={{ left: " 0.3vw", top: " 5.7vh" }}
+                  id="l"
+                />
+                <Handle
+                  type="source"
+                  position="right"
+                  style={{ left: "10.2vw", top: " 5.7vh" }}
+                  id="r"
+                />
+              </div>
             </>
           );
         }
@@ -710,37 +725,38 @@ const DnDFlow = (props) => {
           return (
             <>
               <div
-                className="Image-render"
+                className="Image-render diode-component"
                 style={{
                   backgroundImage: `url(${renderImage("diode")})`,
                 }}
                 id="image-render"
                 key={v4()}
-              ></div>
-              <Handle
-                type="target"
-                position="left"
-                style={{ left: " 0.6vw", top: " 5.3vh" }}
-                id="l1"
-              />
-              <Handle
-                type="source"
-                position="right"
-                style={{ left: "9.9vw", top: " 5.3vh" }}
-                id="r1"
-              />
-              <Handle
-                type="source"
-                position="left"
-                style={{ left: " 0.6vw", top: " 5.3vh" }}
-                id="l2"
-              />
-              <Handle
-                type="target"
-                position="right"
-                style={{ left: "9.9vw", top: " 5.3vh" }}
-                id="r2"
-              />
+              >
+                <Handle
+                  type="target"
+                  position="left"
+                  style={{ left: " 0.6vw", top: " 5.3vh" }}
+                  id="l1"
+                />
+                <Handle
+                  type="source"
+                  position="right"
+                  style={{ left: "9.9vw", top: " 5.3vh" }}
+                  id="r1"
+                />
+                <Handle
+                  type="source"
+                  position="left"
+                  style={{ left: " 0.6vw", top: " 5.3vh" }}
+                  id="l2"
+                />
+                <Handle
+                  type="target"
+                  position="right"
+                  style={{ left: "9.9vw", top: " 5.3vh" }}
+                  id="r2"
+                />
+              </div>
             </>
           );
         }
@@ -785,97 +801,137 @@ const DnDFlow = (props) => {
                 <Handle
                   type="source"
                   position="left"
-                  style={{ position: "absolute", left: "2.9vw", top: " 4vh" }}
+                  style={{
+                    position: "absolute",
+                    left: "2.39vw",
+                    top: " 4.39vh",
+                  }}
                   id="l1"
                 />
                 <Handle
                   type="source"
                   position="left"
-                  style={{ position: "absolute", left: "2.9vw", top: " 5.6vh" }}
+                  style={{
+                    position: "absolute",
+                    left: "2.39vw",
+                    top: " 5.8vh",
+                  }}
                   id="l2"
                 />
                 <Handle
                   type="source"
                   position="left"
-                  style={{ position: "absolute", left: "2.9vw", top: " 7.1vh" }}
+                  style={{
+                    position: "absolute",
+                    left: "2.39vw",
+                    top: " 7.3vh",
+                  }}
                   id="l3"
                 />
                 <Handle
                   type="source"
                   position="left"
-                  style={{ position: "absolute", left: "2.9vw", top: " 8.6vh" }}
+                  style={{
+                    position: "absolute",
+                    left: "2.39vw",
+                    top: " 8.8vh",
+                  }}
                   id="l4"
                 />
                 <Handle
                   type="target"
                   position="left"
-                  style={{ position: "absolute", left: "2.9vw", top: " 4vh" }}
+                  style={{
+                    position: "absolute",
+                    left: "2.39vw",
+                    top: " 4.39vh",
+                  }}
                   id="l1.t"
                 />
                 <Handle
                   type="target"
                   position="left"
-                  style={{ position: "absolute", left: "2.9vw", top: " 5.6vh" }}
+                  style={{
+                    position: "absolute",
+                    left: "2.39vw",
+                    top: " 5.8vh",
+                  }}
                   id="l2.t"
                 />
                 <Handle
                   type="target"
                   position="left"
-                  style={{ position: "absolute", left: "2.9vw", top: " 7.1vh" }}
+                  style={{
+                    position: "absolute",
+                    left: "2.39vw",
+                    top: " 7.3vh",
+                  }}
                   id="l3.t"
                 />
                 <Handle
                   type="target"
                   position="left"
-                  style={{ position: "absolute", left: "2.9vw", top: " 8.6vh" }}
+                  style={{
+                    position: "absolute",
+                    left: "2.39vw",
+                    top: " 8.8vh",
+                  }}
                   id="l4.t"
                 />
                 <Handle
                   type="source"
                   position="right"
-                  style={{ position: "absolute", left: "7.5vw", top: " 4vh" }}
+                  style={{
+                    position: "absolute",
+                    left: "8.3vw",
+                    top: " 4.39vh",
+                  }}
                   id="r1"
                 />
                 <Handle
                   type="source"
                   position="right"
-                  style={{ position: "absolute", left: "7.5vw", top: " 5.6vh" }}
+                  style={{ position: "absolute", left: "8.3vw", top: " 5.8vh" }}
                   id="r2"
                 />
                 <Handle
                   type="source"
                   position="right"
-                  style={{ position: "absolute", left: "7.5vw", top: " 7.1vh" }}
+                  style={{ position: "absolute", left: "8.3vw", top: " 7.3vh" }}
                   id="r3"
                 />{" "}
                 <Handle
                   type="source"
                   position="right"
-                  style={{ position: "absolute", left: "7.5vw", top: " 8.6vh" }}
+                  style={{ position: "absolute", left: "8.3vw", top: " 8.8vh" }}
                   id="r4"
                 />
                 <Handle
                   type="target"
                   position="right"
-                  style={{ position: "absolute", left: "7.5vw", top: " 4vh" }}
+                  style={{
+                    position: "absolute",
+                    left: "8.3vw",
+                    top: " 4.39vh",
+                  }}
                   id="r1.t"
                 />
                 <Handle
                   type="target"
                   position="right"
-                  style={{ position: "absolute", left: "7.5vw", top: " 5.6vh" }}
+                  style={{ position: "absolute", left: "8.3vw", top: " 5.8vh" }}
                   id="r2.t"
                 />
                 <Handle
                   type="target"
                   position="right"
-                  style={{ position: "absolute", left: "7.5vw", top: " 7.1vh" }}
+                  style={{ position: "absolute", left: "8.3vw", top: " 7.3vh" }}
                   id="r3.t"
                 />{" "}
                 <Handle
                   type="target"
                   position="right"
-                  style={{ position: "absolute", left: "7.5vw", top: " 8.6vh" }}
+                  style={{ position: "absolute", left: "8.3vw", top: " 8.8vh" }}
                   id="r4.t"
                 />
               </div>
@@ -886,49 +942,51 @@ const DnDFlow = (props) => {
           return (
             <>
               <div
-                className="Image-render"
+                div
+                className="Image-render ldr-component"
                 style={{
                   backgroundImage: `url(${renderImage("ldr")})`,
                 }}
                 id="image-render"
                 key={v4()}
-              ></div>
-              <div
-                class="slidecontainer"
-                style={{ top: "2vh", left: "0.5vw", position: "relative" }}
               >
-                <input
-                  type="range"
-                  min="1"
-                  max="100"
-                  class="slider"
-                  onInput={(e) => {
-                    console.log(e.target.value);
-                    setRangeVal(e.target.value);
-                  }}
-                  onChange={sliderOnChange}
-                  id={"myRangedndnode_" + _id}
-                  onMouseEnter={(e) => {
-                    console.log(e.target.value, "e.target.value@@@@@@@@@@@@");
-                    setNodesDraggable(false);
-                  }}
-                  onMouseLeave={(e) => {
-                    setNodesDraggable(true);
-                  }}
+                <div
+                  class="slidecontainer"
+                  style={{ top: "2vh", left: "1.8vw", position: "relative" }}
+                >
+                  <input
+                    type="range"
+                    min="1"
+                    max="100"
+                    class="slider"
+                    onInput={(e) => {
+                      console.log(e.target.value);
+                      setRangeVal(e.target.value);
+                    }}
+                    onChange={sliderOnChange}
+                    id={"myRangedndnode_" + _id}
+                    onMouseEnter={(e) => {
+                      console.log(e.target.value, "e.target.value@@@@@@@@@@@@");
+                      setNodesDraggable(false);
+                    }}
+                    onMouseLeave={(e) => {
+                      setNodesDraggable(true);
+                    }}
+                  />
+                </div>
+                <Handle
+                  type="target"
+                  position="left"
+                  style={{ left: " 0.4vw", top: " 5.6vh" }}
+                  id="l"
+                />
+                <Handle
+                  type="source"
+                  position="right"
+                  style={{ left: "10vw", top: " 5.6vh" }}
+                  id="r"
                 />
               </div>
-              <Handle
-                type="target"
-                position="left"
-                style={{ left: " 0.4vw", top: " 5.4vh" }}
-                id="l"
-              />
-              <Handle
-                type="source"
-                position="right"
-                style={{ left: "9.8vw", top: " 5.4vh" }}
-                id="r"
-              />
             </>
           );
         }
@@ -936,26 +994,27 @@ const DnDFlow = (props) => {
           return (
             <>
               <div
-                className="Image-render"
+                className="Image-render led-component"
                 style={{
                   backgroundImage: `url(${renderImage("led")})`,
                 }}
                 id="image-render"
                 key={v4()}
-              ></div>
-              <div id={"leddndnode_" + _id} style={{}}></div>
-              <Handle
-                type="target"
-                position="left"
-                style={{ left: " 0.69vw", top: " 5.5vh" }}
-                id="l"
-              />
-              <Handle
-                type="source"
-                position="right"
-                style={{ left: "9.7vw", top: " 5.5vh" }}
-                id="r"
-              />
+              >
+                <div id={"leddndnode_" + _id} style={{}}></div>
+                <Handle
+                  type="target"
+                  position="left"
+                  style={{ left: " 0.59vw", top: " 5.7vh" }}
+                  id="l"
+                />
+                <Handle
+                  type="source"
+                  position="right"
+                  style={{ left: "10vw", top: " 5.7vh" }}
+                  id="r"
+                />
+              </div>
             </>
           );
         }
@@ -963,54 +1022,55 @@ const DnDFlow = (props) => {
           return (
             <>
               <div
-                className="Image-render"
+                className="Image-render pot-component"
                 style={{
                   backgroundImage: `url(${renderImage("pot")})`,
                 }}
                 id="image-render"
                 key={v4()}
-              ></div>
-              <div
-                class="slidecontainer"
-                style={{ top: "2vh", left: "0.8vw", position: "relative" }}
               >
-                <input
-                  type="range"
-                  min="1"
-                  max="100"
-                  class="slider"
-                  onInput={(e) => {
-                    console.log(e.target.value);
-                    setRangeVal(e.target.value);
-                  }}
-                  id={"myRangedndnode_" + _id}
-                  onMouseEnter={(e) => {
-                    console.log(e.target.value, "e.target.value@@@@@@@@@@@@");
-                    setNodesDraggable(false);
-                  }}
-                  onMouseLeave={(e) => {
-                    setNodesDraggable(true);
-                  }}
+                <div
+                  class="slidecontainer"
+                  style={{ top: "2vh", left: "1.8vw", position: "relative" }}
+                >
+                  <input
+                    type="range"
+                    min="1"
+                    max="100"
+                    class="slider"
+                    onInput={(e) => {
+                      console.log(e.target.value);
+                      setRangeVal(e.target.value);
+                    }}
+                    id={"myRangedndnode_" + _id}
+                    onMouseEnter={(e) => {
+                      console.log(e.target.value, "e.target.value@@@@@@@@@@@@");
+                      setNodesDraggable(false);
+                    }}
+                    onMouseLeave={(e) => {
+                      setNodesDraggable(true);
+                    }}
+                  />
+                </div>
+                <Handle
+                  type="source"
+                  position="left"
+                  style={{ left: " 0.3vw", top: " 5.7vh" }}
+                  id="l"
+                />
+                <Handle
+                  type="target"
+                  position="right"
+                  style={{ left: "10.2vw", top: " 3.4vh" }}
+                  id="r1"
+                />
+                <Handle
+                  type="target"
+                  position="right"
+                  style={{ left: "10.2vw", top: " 8.1vh" }}
+                  id="r2"
                 />
               </div>
-              <Handle
-                type="source"
-                position="left"
-                style={{ left: " 0.8vw", top: " 5.7vh" }}
-                id="l"
-              />
-              <Handle
-                type="target"
-                position="right"
-                style={{ left: "9.5vw", top: " 2.8vh" }}
-                id="r1"
-              />
-              <Handle
-                type="target"
-                position="right"
-                style={{ left: "9.5vw", top: " 8vh" }}
-                id="r2"
-              />
             </>
           );
         }
@@ -1018,37 +1078,38 @@ const DnDFlow = (props) => {
           return (
             <>
               <div
-                className="Image-render"
+                className="Image-render power-component"
                 style={{
                   backgroundImage: `url(${renderImage("power")})`,
                 }}
                 id="image-render"
                 key={v4()}
-              ></div>
-              <Handle
-                type="source"
-                position="right"
-                style={{ left: "8.5vw", top: " 4.9vh" }}
-                id="r1"
-              />
-              <Handle
-                type="target"
-                position="right"
-                style={{ left: "8.5vw", top: " 7.3vh" }}
-                id="r2"
-              />
-              <Handle
-                type="target"
-                position="right"
-                style={{ left: "8.5vw", top: " 9.1vh" }}
-                id="r3"
-              />
-              <Handle
-                type="source"
-                position="right"
-                style={{ left: "8.5vw", top: " 3.1vh" }}
-                id="r4"
-              />
+              >
+                <Handle
+                  type="source"
+                  position="right"
+                  style={{ left: "9vw", top: " 5vh" }}
+                  id="r1"
+                />
+                <Handle
+                  type="target"
+                  position="right"
+                  style={{ left: "9vw", top: " 7.8vh" }}
+                  id="r2"
+                />
+                <Handle
+                  type="target"
+                  position="right"
+                  style={{ left: "9vw", top: " 9.4vh" }}
+                  id="r3"
+                />
+                <Handle
+                  type="source"
+                  position="right"
+                  style={{ left: "9vw", top: " 3.2vh" }}
+                  id="r4"
+                />
+              </div>
             </>
           );
         }
@@ -1056,25 +1117,26 @@ const DnDFlow = (props) => {
           return (
             <>
               <div
-                className="Image-render"
+                className="Image-render res_100-component"
                 style={{
                   backgroundImage: `url(${renderImage("res_100")})`,
                 }}
                 id="image-render"
                 key={v4()}
-              ></div>
-              <Handle
-                type="target"
-                position="left"
-                style={{ left: " 0.3vw", top: " 5.5vh" }}
-                id="l"
-              />
-              <Handle
-                type="source"
-                position="right"
-                style={{ left: "10.2vw", top: " 5.5vh" }}
-                id="r"
-              />
+              >
+                <Handle
+                  type="target"
+                  position="left"
+                  style={{ left: " 0.3vw", top: " 5.7vh" }}
+                  id="l"
+                />
+                <Handle
+                  type="source"
+                  position="right"
+                  style={{ left: "10.2vw", top: " 5.7vh" }}
+                  id="r"
+                />
+              </div>
             </>
           );
         }
@@ -1082,25 +1144,26 @@ const DnDFlow = (props) => {
           return (
             <>
               <div
-                className="Image-render"
+                className="Image-render res_250-component"
                 style={{
                   backgroundImage: `url(${renderImage("res_250")})`,
                 }}
                 id="image-render"
                 key={v4()}
-              ></div>
-              <Handle
-                type="target"
-                position="left"
-                style={{ left: " 0.5vw", top: " 5.5vh" }}
-                id="l"
-              />
-              <Handle
-                type="source"
-                position="right"
-                style={{ left: "9.9vw", top: " 5.5vh" }}
-                id="r"
-              />
+              >
+                <Handle
+                  type="target"
+                  position="left"
+                  style={{ left: " 0.5vw", top: " 5.7vh" }}
+                  id="l"
+                />
+                <Handle
+                  type="source"
+                  position="right"
+                  style={{ left: "10vw", top: " 5.7vh" }}
+                  id="r"
+                />
+              </div>
             </>
           );
         }
@@ -1108,25 +1171,26 @@ const DnDFlow = (props) => {
           return (
             <>
               <div
-                className="Image-render"
+                className="Image-render tact-component"
                 style={{
                   backgroundImage: `url(${renderImage("tact")})`,
                 }}
                 id="image-render"
                 key={v4()}
-              ></div>
-              <Handle
-                type="target"
-                position="left"
-                style={{ left: " 0.5vw", top: " 5.6vh" }}
-                id="l"
-              />
-              <Handle
-                type="source"
-                position="right"
-                style={{ left: "9.9vw", top: " 5.6vh" }}
-                id="r"
-              />
+              >
+                <Handle
+                  type="target"
+                  position="left"
+                  style={{ left: " 0.4vw", top: " 5.7vh" }}
+                  id="l"
+                />
+                <Handle
+                  type="source"
+                  position="right"
+                  style={{ left: "10.2vw", top: " 5.7vh" }}
+                  id="r"
+                />
+              </div>
             </>
           );
         }
@@ -1148,31 +1212,32 @@ const DnDFlow = (props) => {
           return (
             <>
               <div
-                className="Image-render"
+                className="Image-render transistor-component"
                 style={{
                   backgroundImage: `url(${renderImage("transistor")})`,
                 }}
                 id="image-render"
                 key={v4()}
-              ></div>
-              <Handle
-                type="target"
-                position="left"
-                style={{ left: " 0.5vw", top: " 6.2vh" }}
-                id="l"
-              />
-              <Handle
-                type="target"
-                position="right"
-                style={{ left: "10vw", top: " 4.5vh" }}
-                id="r.t"
-              />
-              <Handle
-                type="source"
-                position="right"
-                style={{ left: "10vw", top: " 7.8vh" }}
-                id="r"
-              />
+              >
+                <Handle
+                  type="target"
+                  position="left"
+                  style={{ left: " 0.5vw", top: " 6.4vh" }}
+                  id="l"
+                />
+                <Handle
+                  type="target"
+                  position="right"
+                  style={{ left: "10.2vw", top: " 5vh" }}
+                  id="r.t"
+                />
+                <Handle
+                  type="source"
+                  position="right"
+                  style={{ left: "10.2vw", top: " 7.6vh" }}
+                  id="r"
+                />
+              </div>
             </>
           );
         }
@@ -1180,31 +1245,32 @@ const DnDFlow = (props) => {
           return (
             <>
               <div
-                className="Image-render"
+                className="Image-render two_way_switch-component"
                 style={{
                   backgroundImage: `url(${renderImage("two_way_switch")})`,
                 }}
                 id="image-render"
                 key={v4()}
-              ></div>
-              <Handle
-                type="target"
-                position="left"
-                style={{ left: " 0.4vw", top: " 6.2vh" }}
-                id="l"
-              />
-              <Handle
-                type="source"
-                position="right"
-                style={{ left: "10.1vw", top: " 4vh" }}
-                id="r"
-              />
-              <Handle
-                type="source"
-                position="right"
-                style={{ left: "10.1vw", top: " 8.5vh" }}
-                id="r"
-              />
+              >
+                <Handle
+                  type="target"
+                  position="left"
+                  style={{ left: " 0.3vw", top: " 6.3vh" }}
+                  id="l"
+                />
+                <Handle
+                  type="source"
+                  position="right"
+                  style={{ left: "10.3vw", top: " 4.5vh" }}
+                  id="r"
+                />
+                <Handle
+                  type="source"
+                  position="right"
+                  style={{ left: "10.3vw", top: " 8.2vh" }}
+                  id="r"
+                />
+              </div>
             </>
           );
         }

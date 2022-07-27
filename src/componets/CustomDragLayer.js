@@ -37,14 +37,15 @@ function getItemStyles(initialOffset, currentOffset, xOffset, yOffset, type) {
 
   if (zoom != 1) zoom = zoom.zoom;
   //now edit
-  zoom = 1;
+  //zoom = 1;
   let height = 12,
     width = 11;
 
   let { x, y } = currentOffset;
   x = x - xOffset;
   y = y - yOffset;
-
+  if (type == "res_100" || type == "res_250") zoom = 2;
+  else zoom = 1;
   const transform = `translate(${x}px, ${y}px) scale(${zoom})`;
   return {
     backgroundImage: `url(${Background}) `,
@@ -305,7 +306,6 @@ export const CustomDragLayer = (props) => {
             )}
             id="dragLayerres_250"
           >
-            {" "}
             <Handle
               type="target"
               position="left"

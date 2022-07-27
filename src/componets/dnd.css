@@ -333,6 +333,7 @@
   overflow-y: auto;
   text-align: justify;
   margin: 0px 0vw;
+  background-color: antiquewhite;
 }
 .react-flow__handle-top {
   display: none;
@@ -367,4 +368,211 @@
   position: relative;
   background-color: red;
   opacity: 0.75;
+}
+.react-flow__handle.connectable {
+  cursor: crosshair;
+  transform: scale(1.2);
+  background: #f97b62;
+}
+.react-flow .react-flow__edges {
+  overflow: visible;
+  pointer-events: none;
+  width: 100%;
+}
+
+@media screen and (max-width: 1208px), screen and (max-height: 720px) {
+  .react-flow__handle.connectable {
+    transform: scale(0.8) !important;
+  }
+
+  /* Junction */
+  .junction-component > div:nth-child(-n + 8) {
+    position: absolute;
+    left: calc(100% - 8.9vw) !important;
+  }
+
+  .junction-component > div:nth-child(1),
+  .junction-component > div:nth-child(5),
+  .junction-component > div:nth-child(9),
+  .junction-component > div:nth-child(13) {
+    top: 4.2vh !important;
+  }
+  .junction-component > div:nth-child(2),
+  .junction-component > div:nth-child(6),
+  .junction-component > div:nth-child(10),
+  .junction-component > div:nth-child(14) {
+    top: 5.7vh !important;
+  }
+  .junction-component > div:nth-child(3),
+  .junction-component > div:nth-child(7),
+  .junction-component > div:nth-child(11),
+  .junction-component > div:nth-child(15) {
+    top: 7.2vh !important;
+  }
+  .junction-component > div:nth-child(4),
+  .junction-component > div:nth-child(8),
+  .junction-component > div:nth-child(12),
+  .junction-component > div:nth-child(16) {
+    top: 8.6vh !important;
+  }
+
+  /* power */
+
+  .power-component > div:nth-child(1) {
+    position: absolute;
+    top: 4.7vh !important;
+  }
+  .power-component > div:nth-child(2) {
+    top: 7.5vh !important;
+  }
+  .power-component > div:nth-child(3) {
+    top: 9.1vh !important;
+  }
+  .power-component > div:nth-child(4) {
+    top: 3vh !important;
+  }
+
+  /* beeper */
+
+  .beeper-component > div:nth-child(2),
+  .beeper-component > div:nth-child(3) {
+    top: 5.4vh !important;
+  }
+  .beeper-component > div:nth-child(2) {
+    left: 0.2vw !important;
+  }
+  /* led */
+
+  .led-component > div:nth-child(2),
+  .led-component > div:nth-child(3) {
+    top: 5.5vh !important;
+  }
+  .led-component > div:nth-child(2) {
+    left: 0.3vw !important;
+  }
+  /* tact */
+  .tact-component > div:nth-child(1),
+  .tact-component > div:nth-child(2) {
+    top: 5.4vh !important;
+  }
+  .tact-component > div:nth-child(1) {
+    left: 0.2vw !important;
+  }
+  /* pot */
+
+  .pot-component > div:nth-child(1) {
+    top: 12vh !important;
+    left: 0.2vw !important;
+  }
+  .pot-component > div:nth-child(2) {
+    top: 5.5vh !important;
+    left: 0.25vw !important;
+  }
+  .pot-component > div:nth-child(3) {
+    top: 3.2vh !important;
+  }
+  .pot-component > div:nth-child(4) {
+    top: 7.8vh !important;
+  }
+
+  /* ldr */
+  .ldr-component > div:nth-child(1) {
+    top: 9vh !important;
+    left: -1vw !important;
+  }
+  .ldr-component > div:nth-child(2),
+  .ldr-component > div:nth-child(3) {
+    top: 5.5vh !important;
+  }
+  .ldr-component > div:nth-child(2) {
+    left: 0.2vw !important;
+  }
+  /* diode */
+
+  .diode-component > :nth-child(1),
+  .diode-component > :nth-child(3) {
+    left: 0.5vw !important;
+    /* border: 2px solid black; */
+  }
+
+  /* transistor */
+  .transistor-component > :nth-child(1) {
+    /* border: 1px solid red; */
+    top: 6.1vh !important;
+    left: 0.3vw !important;
+  }
+  .transistor-component > :nth-child(2) {
+    top: 4.8vh !important;
+  }
+  .transistor-component > :nth-child(3) {
+    top: 7.3vh !important;
+  }
+  /* res_100 */
+  .res_100-component > :nth-child(1),
+  .res_100-component > :nth-child(2) {
+    top: 5.5vh !important;
+  }
+  .res_100-component > :nth-child(1) {
+    left: 0.1vw !important;
+  }
+  /* res_250 */
+  .res_250-component > :nth-child(1),
+  .res_250-component > :nth-child(2) {
+    top: 5.5vh !important;
+  }
+  .res_250-component > :nth-child(1) {
+    left: 0.3vw !important;
+  }
+
+  /* capacitor100 */
+
+  .capacitor100-component > :nth-child(1),
+  .capacitor100-component > :nth-child(2) {
+    top: 5.5vh !important;
+  }
+  .capacitor100-component > :nth-child(1) {
+    left: 0.2vw !important;
+  }
+
+  /* capacitor1000 */
+  .capacitor1000-component > :nth-child(1),
+  .capacitor1000-component > :nth-child(2) {
+    top: 5.5vh !important;
+  }
+  .capacitor1000-component > :nth-child(1) {
+    left: 0.2vw !important;
+  }
+  .capacitor1000-component > :nth-child(2) {
+    left: 10.1vw !important;
+  }
+
+  /* two_way_switch */
+
+  .two_way_switch-component > div:nth-child(1) {
+    top: 6vh !important;
+    left: 0.25vw !important;
+  }
+  .two_way_switch-component > div:nth-child(2) {
+    top: 4.3vh !important;
+  }
+  .two_way_switch-component > div:nth-child(3) {
+    top: 7.8vh !important;
+  }
+}
+
+@media screen, (min-width: 769px) and (max-width: 1240px) {
+}
+
+@media screen, (min-width: 726px) and (min-width: 768px) {
+  .dndflow {
+    display: flex;
+    flex-direction: row !important;
+    justify-content: start !important;
+  }
+}
+
+@media screen and (max-width: 425px) {
+  .react-flow__handle.connectable {
+    transform: scale(0.5);
+  }
 }

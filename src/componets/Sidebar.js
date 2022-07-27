@@ -5,6 +5,7 @@ import { getEmptyImage } from "react-dnd-html5-backend";
 let seriesCircuitLedCount = 0,
   seriesCircuitBeeperCount = 0,
   junctionCount = 0;
+
 let nodes,
   edges,
   flagI = -1;
@@ -34,80 +35,43 @@ function getCoords(elem) {
 let globalpass = [],
   node_cor = [];
 const current_node_cord = (ele) => {
-  let element = document.getElementById("dragLayer" + ele);
+  try {
+    let element = document.getElementById("dragLayer" + ele);
 
-  let han = element.childNodes;
-  let handle = [];
-  for (let j = 0; j < han.length; j++) {
-    if (
-      han[j].className.includes("react-flow__handle") &&
-      !han[j].className.includes("react-flow__handle-top")
-    ) {
-      let handle_elem = han[j];
-      var box = handle_elem.getBoundingClientRect();
+    let han = element.childNodes;
+    console.log("han 2", han);
+    let handle = [];
+    for (let j = 0; j < han.length; j++) {
+      console.log("han", han[j]);
+      if (
+        han[j].className.includes("react-flow__handle") &&
+        !han[j].className.includes("react-flow__handle-top")
+      ) {
+        let handle_elem = han[j];
+        var box = handle_elem.getBoundingClientRect();
 
-      var body = document.body;
-      var docEl = document.documentElement;
+        var body = document.body;
+        var docEl = document.documentElement;
 
-      var scrollTop = window.pageYOffset || docEl.scrollTop || body.scrollTop;
-      var scrollLeft =
-        window.pageXOffset || docEl.scrollLeft || body.scrollLeft;
+        var scrollTop = window.pageYOffset || docEl.scrollTop || body.scrollTop;
+        var scrollLeft =
+          window.pageXOffset || docEl.scrollLeft || body.scrollLeft;
 
-      var clientTop = docEl.clientTop || body.clientTop || 0;
-      var clientLeft = docEl.clientLeft || body.clientLeft || 0;
+        var clientTop = docEl.clientTop || body.clientTop || 0;
+        var clientLeft = docEl.clientLeft || body.clientLeft || 0;
 
-      var top = box.top + scrollTop - clientTop;
-      var left = box.left + scrollLeft - clientLeft;
-      let temp = {
-        id: handle_elem.dataset.handleid,
-        x: Math.round(left),
-        y: Math.round(top),
-      };
-      handle.push(temp);
+        var top = box.top + scrollTop - clientTop;
+        var left = box.left + scrollLeft - clientLeft;
+        let temp = {
+          id: handle_elem.dataset.handleid,
+          x: Math.round(left),
+          y: Math.round(top),
+        };
+        handle.push(temp);
+      }
     }
-  }
-  // for (let i = 0; i < ele.path.length; i++) {
-  //   let handle = [];
-  //   if (
-  //     ele.path[i].className.includes(
-  //       "react-flow__node react-flow__node-output nopan selected selectable"
-  //     )
-  //   ) {
-  //     han = ele.path[i].childNodes;
-  //     //console.log("eve",han.length)
-  //     for (let j = 0; j < han.length; j++) {
-  //       if (
-  //         han[j].className.includes("react-flow__handle") &&
-  //         !han[j].className.includes("react-flow__handle-top")
-  //       ) {
-  //         let handle_elem = han[j];
-  //         var box = handle_elem.getBoundingClientRect();
-
-  //         var body = document.body;
-  //         var docEl = document.documentElement;
-
-  //         var scrollTop =
-  //           window.pageYOffset || docEl.scrollTop || body.scrollTop;
-  //         var scrollLeft =
-  //           window.pageXOffset || docEl.scrollLeft || body.scrollLeft;
-
-  //         var clientTop = docEl.clientTop || body.clientTop || 0;
-  //         var clientLeft = docEl.clientLeft || body.clientLeft || 0;
-
-  //         var top = box.top + scrollTop - clientTop;
-  //         var left = box.left + scrollLeft - clientLeft;
-  //         let temp = {
-  //           id: handle_elem.dataset.handleid,
-  //           x: Math.round(left),
-  //           y: Math.round(top),
-  //         };
-  //         handle.push(temp);
-  //       }
-  //     }
-  //     return handle;
-  //   }
-  // }
-  return handle;
+    return handle;
+  } catch (e) {}
 };
 function getCoords2(elem) {
   // crossbrowser version
@@ -163,6 +127,13 @@ function getCoords2(elem) {
     handle: handle,
   };
 }
+sessionStorage.setItem(
+  "seriesCircuitLedCount",
+  JSON.parse(sessionStorage.getItem("seriesCircuitLedCount")) || 0
+);
+
+sessionStorage.setItem("seriesCircuitBeeperCount", 0);
+sessionStorage.setItem("junctionCount", 10);
 export default (props) => {
   let zoom;
   const onDragStart = async (event, nodeType) => {
@@ -237,7 +208,7 @@ export default (props) => {
     console.log(id, "gskMouse");
   };
   console.time("nodeDrag");
-  const onDrag = (event, nodeType) => {
+  const onDrag = async (event, nodeType) => {
     console.time("render");
     let ele;
     eles.forEach((e) => {
@@ -258,21 +229,35 @@ export default (props) => {
         if (nodeType == "tact") {
           if (ele.id === nodeType) ele.style.display = "none";
         }
-        if (nodeType === "led" && seriesCircuitLedCount === 1) {
+        if (
+          nodeType === "led" &&
+          JSON.parse(sessionStorage.getItem("seriesCircuitLedCount")) == 1
+        ) {
           if (ele.id === nodeType) ele.style.display = "none";
-          seriesCircuitLedCount = 0;
+          //sessionStorage.setItem("seriesCircuitLedCount", 1);
+          //seriesCircuitLedCount = 0;
         }
-        if (nodeType === "beeper" && seriesCircuitBeeperCount === 1) {
+        if (
+          nodeType === "beeper" &&
+          JSON.parse(sessionStorage.getItem("seriesCircuitBeeperCount")) === 1
+        ) {
           if (ele.id === nodeType) ele.style.display = "none";
+
           seriesCircuitBeeperCount = 0;
         }
-        if (nodeType === "junction" && junctionCount === 1) {
+        if (
+          nodeType === "junction" &&
+          JSON.parse(sessionStorage.getItem("junctionCount")) === 1
+        ) {
           if (ele.id === nodeType) ele.style.display = "none";
           //junctionCount = 0;
         }
         break;
       case "resistorCircuit":
-        if (nodeType === "junction" && junctionCount === 1) {
+        if (
+          nodeType === "junction" &&
+          JSON.parse(sessionStorage.getItem("junctionCount")) === 1
+        ) {
           if (ele.id === nodeType) ele.style.display = "none";
           //junctionCount = 0;
         }
@@ -286,7 +271,10 @@ export default (props) => {
 
         break;
       case "capacitorCircuit":
-        if (nodeType === "junction" && junctionCount === 1) {
+        if (
+          nodeType === "junction" &&
+          JSON.parse(sessionStorage.getItem("junctionCount"))
+        ) {
           if (ele.id === nodeType) ele.style.display = "none";
           // junctionCount = 0;
         }
@@ -327,11 +315,12 @@ export default (props) => {
       case "simpleCircuit":
       case "parallelCircuit":
       case "seriesCircuit":
+      case "resistorCircuit":
       case "freedomCircuit":
+        let cur_cord = await current_node_cord(nodeType);
         node_cor.map(async (e) => {
           //console.log("event XX",e.handle[3].x,event.path[1])
           ///console.log("eve###################",node_cor[0].handle, current_node_cord(event))
-          let cur_cord = await current_node_cord(nodeType);
           console.log("cur_cord", cur_cord);
           e.handle.map((cord) => {
             cur_cord.map(async (current) => {
@@ -14173,9 +14162,30 @@ export default (props) => {
 
     ctx.clearRect(0, 0, 1500, 800);
 
-    if (nodeType === "led") seriesCircuitLedCount = 1;
-    if (nodeType === "beeper") seriesCircuitBeeperCount = 1;
-    if (nodeType === "junction") junctionCount = 1;
+    let beeper = JSON.parse(sessionStorage.getItem("seriesCircuitBeeperCount"));
+    let junction = JSON.parse(sessionStorage.getItem("junctionCount"));
+
+    if (nodeType === "led") {
+      seriesCircuitLedCount = 1;
+      sessionStorage.setItem(
+        "seriesCircuitLedCount",
+        JSON.parse(sessionStorage.getItem("seriesCircuitLedCount")) + 1
+      );
+    }
+    if (nodeType === "beeper") {
+      seriesCircuitBeeperCount = 1;
+      sessionStorage.setItem(
+        "seriesCircuitBeeperCount",
+        JSON.parse(sessionStorage.getItem("seriesCircuitBeeperCount")) + 1
+      );
+    }
+    if (nodeType === "junction") {
+      junctionCount = 1;
+      sessionStorage.setItem(
+        "junctionCount",
+        JSON.parse(sessionStorage.getItem("junctionCount")) + 1
+      );
+    }
     let send = { index: -1, sourceHandle: undefined, flag: false };
     sessionStorage.setItem(
       "application/reactflow/connect",
@@ -14226,20 +14236,7 @@ export default (props) => {
           onDragStart={(event) => onDragStart(event, "capacitor1000")}
           onDragEnd={(event) => onDragEnd(event, "capacitor1000")}
           onMouseEnter={onMouseEnter}
-        >
-          <Handle
-            type="target"
-            position="left"
-            style={{ left: " 0.3vw", top: " 4.6vh" }}
-            id="l"
-          />
-          <Handle
-            type="source"
-            position="right"
-            style={{ left: "10.5vw", top: " 5.2vh" }}
-            id="r"
-          />
-        </div>
+        ></div>
         <div
           style={{}}
           onDrag={(event) => onDrag(event, "junction")}

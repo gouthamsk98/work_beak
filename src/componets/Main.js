@@ -28,7 +28,7 @@ let mouseDownChk = false,
   index1Count = 0,
   index2Count = 0,
   index3Count = 0;
-let eleLed1;
+let eleLed1, toDeleteNode;
 sessionStorage.setItem("beak-nodes", null);
 sessionStorage.setItem("beak-edges", null);
 class Queue {
@@ -98,11 +98,13 @@ class Stack {
     return null;
   }
   findBeeper() {
+    let a = [];
     for (let i = 0; i < this.items.length; i++) {
       if (this.items[i].data.specificElType === "beeper") {
-        return this.items[i];
+        a.push(this.items[i]);
       }
     }
+    if (a.length != 0) return a;
     return null;
   }
   printStack() {
@@ -129,11 +131,13 @@ class Stack {
 }
 let s = [],
   s2 = [];
+
 const DnDFlow = (props) => {
   const text = (type, _id) => {
     switch (props.type) {
       //parallelCircuit 2way connection on r1 and r2
       case "simpleCircuit":
+      case "resistorCircuit":
       case "freedomCircuit":
       case "seriesCircuit":
       case "parallelCircuit":
@@ -143,7 +147,7 @@ const DnDFlow = (props) => {
           return (
             <>
               <div
-                className="Image-render"
+                className="Image-render beeper-component"
                 style={{
                   backgroundImage: `url(${renderImage("beeper")})`,
                   bottom: "38px",
@@ -155,13 +159,13 @@ const DnDFlow = (props) => {
               <Handle
                 type="target"
                 position="left"
-                style={{ left: " 1vw", top: " 0.3vh" }}
+                style={{ left: " 0.39vw", top: " 2.1vh" }}
                 id="l"
               />
               <Handle
                 type="source"
                 position="right"
-                style={{ left: "9.5vw", top: " 0.3vh" }}
+                style={{ left: "10.3vw", top: " 2.1vh" }}
                 id="r"
               />
             </>
@@ -182,13 +186,13 @@ const DnDFlow = (props) => {
               <Handle
                 type="target"
                 position="left"
-                style={{ left: " 0.3vw", top: " 4.6vh" }}
+                style={{ left: " 0.5vw", top: "5.6vh" }}
                 id="l"
               />
               <Handle
                 type="source"
                 position="right"
-                style={{ left: "10.5vw", top: " 5.2vh" }}
+                style={{ left: "9.9vw", top: " 5.6vh" }}
                 id="r"
               />
             </>
@@ -208,13 +212,13 @@ const DnDFlow = (props) => {
               <Handle
                 type="target"
                 position="left"
-                style={{ left: " 0.3vw", top: " 4.6vh" }}
+                style={{ left: " 0.4vw", top: " 5.5vh" }}
                 id="l"
               />
               <Handle
                 type="source"
                 position="right"
-                style={{ left: "10.5vw", top: " 5.2vh" }}
+                style={{ left: "9.9vw", top: " 5.5vh" }}
                 id="r"
               />
             </>
@@ -234,7 +238,7 @@ const DnDFlow = (props) => {
               <Handle
                 type="target"
                 position="left"
-                style={{ left: " 0.3vw", top: " 4.6vh" }}
+                style={{ left: "9.9vw", top: " 5.3vh" }}
                 id="l"
               />
               <Handle
@@ -287,49 +291,49 @@ const DnDFlow = (props) => {
               <Handle
                 type="target"
                 position="left"
-                style={{ left: "2.5vw", top: " 3.99vh" }}
+                style={{ left: "2.9vw", top: " 4vh" }}
                 id="l1"
               />
               <Handle
                 type="target"
                 position="left"
-                style={{ left: "2.5vw", top: " 5.79vh" }}
+                style={{ left: "2.9vw", top: " 5.6vh" }}
                 id="l2"
               />
               <Handle
                 type="target"
                 position="left"
-                style={{ left: "2.5vw", top: " 7.5vh" }}
+                style={{ left: "2.9vw", top: " 7.1vh" }}
                 id="l3"
               />
               <Handle
                 type="target"
                 position="left"
-                style={{ left: "2.5vw", top: " 9.3vh" }}
+                style={{ left: "2.9vw", top: " 8.6vh" }}
                 id="l4"
               />
               <Handle
                 type="source"
                 position="right"
-                style={{ left: "9.28vw", top: " 3.99vh" }}
+                style={{ left: "7.5vw", top: " 4vh" }}
                 id="r1"
               />
               <Handle
                 type="source"
                 position="right"
-                style={{ left: "9.28vw", top: " 5.79vh" }}
+                style={{ left: "7.5vw", top: " 5.6vh" }}
                 id="r2"
               />
               <Handle
                 type="source"
                 position="right"
-                style={{ left: "9.28vw", top: " 7.5vh" }}
+                style={{ left: "7.5vw", top: " 7.1vh" }}
                 id="r3"
               />
               <Handle
                 type="source"
                 position="right"
-                style={{ left: "9.28vw", top: " 9.3vh" }}
+                style={{ left: "7.5vw", top: " 8.6vh" }}
                 id="r4"
               />
             </>
@@ -373,13 +377,13 @@ const DnDFlow = (props) => {
               <Handle
                 type="target"
                 position="left"
-                style={{ left: " 0.3vw", top: " 4.6vh" }}
+                style={{ left: " 0.4vw", top: " 5.8vh" }}
                 id="l"
               />
               <Handle
                 type="source"
                 position="right"
-                style={{ left: "10.5vw", top: " 5.2vh" }}
+                style={{ left: "10vw", top: " 5.8vh" }}
                 id="r"
               />
             </>
@@ -400,13 +404,13 @@ const DnDFlow = (props) => {
               <Handle
                 type="target"
                 position="left"
-                style={{ left: " 0.3vw", top: " 4.6vh" }}
+                style={{ left: " 0.69vw", top: " 5.5vh" }}
                 id="l"
               />
               <Handle
                 type="source"
                 position="right"
-                style={{ left: "10.5vw", top: " 5.2vh" }}
+                style={{ left: "9.7vw", top: " 5.5vh" }}
                 id="r"
               />
             </>
@@ -449,19 +453,19 @@ const DnDFlow = (props) => {
               <Handle
                 type="source"
                 position="left"
-                style={{ left: " -0.2vw", top: " 6.6vh" }}
+                style={{ left: " 0.8vw", top: " 5.7vh" }}
                 id="l"
               />
               <Handle
                 type="target"
                 position="right"
-                style={{ left: "11.3vw", top: " 4.1vh" }}
+                style={{ left: "9.5vw", top: " 2.8vh" }}
                 id="r1"
               />
               <Handle
                 type="target"
                 position="right"
-                style={{ left: "11.3vw", top: " 9.9vh" }}
+                style={{ left: "9.5vw", top: " 8vh" }}
                 id="r2"
               />
             </>
@@ -481,25 +485,25 @@ const DnDFlow = (props) => {
               <Handle
                 type="source"
                 position="right"
-                style={{ left: "8.7vw", top: " 5.5vh" }}
+                style={{ left: "8.5vw", top: " 4.9vh" }}
                 id="r1"
               />
               <Handle
                 type="target"
                 position="right"
-                style={{ left: "8.5vw", top: " 8.9vh" }}
+                style={{ left: "8.5vw", top: " 7.3vh" }}
                 id="r2"
               />
               <Handle
                 type="target"
                 position="right"
-                style={{ left: "8.7vw", top: " 10.4vh" }}
+                style={{ left: "8.5vw", top: " 9.1vh" }}
                 id="r3"
               />
               <Handle
                 type="source"
                 position="right"
-                style={{ left: "8.5vw", top: " 4.2vh" }}
+                style={{ left: "8.5vw", top: " 3.1vh" }}
                 id="r4"
               />
             </>
@@ -519,13 +523,13 @@ const DnDFlow = (props) => {
               <Handle
                 type="target"
                 position="left"
-                style={{ left: " 0.3vw", top: " 4.6vh" }}
+                style={{ left: " 0.3vw", top: " 5.5vh" }}
                 id="l"
               />
               <Handle
                 type="source"
                 position="right"
-                style={{ left: "10.5vw", top: " 5.2vh" }}
+                style={{ left: "10.2vw", top: " 5.5vh" }}
                 id="r"
               />
             </>
@@ -545,13 +549,13 @@ const DnDFlow = (props) => {
               <Handle
                 type="target"
                 position="left"
-                style={{ left: " 0.3vw", top: " 4.6vh" }}
+                style={{ left: " 0.5vw", top: " 5.5vh" }}
                 id="l"
               />
               <Handle
                 type="source"
                 position="right"
-                style={{ left: "10.5vw", top: " 5.2vh" }}
+                style={{ left: "9.9vw", top: " 5.5vh" }}
                 id="r"
               />
             </>
@@ -582,13 +586,13 @@ const DnDFlow = (props) => {
               <Handle
                 type="target"
                 position="left"
-                style={{ left: " 0.3vw", top: " 4.6vh" }}
+                style={{ left: " 0.4vw", top: " 6vh" }}
                 id="l"
               />
               <Handle
                 type="source"
                 position="right"
-                style={{ left: "10.5vw", top: " 5.2vh" }}
+                style={{ left: "10.1vw", top: " 6vh" }}
                 id="r"
               />
             </>
@@ -622,19 +626,19 @@ const DnDFlow = (props) => {
               <Handle
                 type="target"
                 position="left"
-                style={{ left: " 0.4vw", top: " 6.7vh" }}
+                style={{ left: " 0.5vw", top: " 6.2vh" }}
                 id="l"
               />
               <Handle
                 type="target"
                 position="right"
-                style={{ left: "10.1vw", top: " 5.7vh" }}
+                style={{ left: "10vw", top: " 4.5vh" }}
                 id="r.t"
               />
               <Handle
                 type="source"
                 position="right"
-                style={{ left: "10.1vw", top: " 8.5vh" }}
+                style={{ left: "10vw", top: " 7.8vh" }}
                 id="r"
               />
             </>
@@ -654,19 +658,19 @@ const DnDFlow = (props) => {
               <Handle
                 type="target"
                 position="left"
-                style={{ left: " 0.4vw", top: " 7.2vh" }}
+                style={{ left: " 0.4vw", top: " 6.2vh" }}
                 id="l"
               />
               <Handle
                 type="source"
                 position="right"
-                style={{ left: "11.6vw", top: " 5.533vh" }}
+                style={{ left: "10.1vw", top: " 4vh" }}
                 id="r"
               />
               <Handle
                 type="source"
                 position="right"
-                style={{ left: "11.6vw", top: " 9.9vh" }}
+                style={{ left: "10.1vw", top: " 8.5vh" }}
                 id="r"
               />
             </>
@@ -674,7 +678,7 @@ const DnDFlow = (props) => {
         }
         break;
       case "capacitorCircuit":
-      case "resistorCircuit":
+
       case "parallelCircuit":
         if (type === "beeper") {
           // console.log("start");
@@ -1267,7 +1271,7 @@ const DnDFlow = (props) => {
           return (
             <>
               <div
-                className="Image-render"
+                className="Image-render beeper-component"
                 style={{
                   backgroundImage: `url(${renderImage("beeper")})`,
                   bottom: "38px",
@@ -1279,13 +1283,13 @@ const DnDFlow = (props) => {
               <Handle
                 type="target"
                 position="left"
-                style={{ left: " -0.7vw", top: " 1.8vh" }}
+                style={{ left: " 0.39vw", top: " 2.1vh" }}
                 id="l"
               />
               <Handle
                 type="source"
                 position="right"
-                style={{ left: "11.5vw", top: " 2.2vh" }}
+                style={{ left: "10.3vw", top: " 2.1vh" }}
                 id="r"
               />
             </>
@@ -1941,18 +1945,9 @@ const DnDFlow = (props) => {
     console.log("tact handler", e, id);
     if (e.type === "click") {
       for (let i = 0; i < s.length; i++) {
-        // s2[i] = new Stack();
-        // let len = s[i].length();
-        // for (let j = 0; j < len; j++) {
-        //   await s2[i].push(await s[i].peak());
-        //   await s[i].pop();
-        // }
         if (!s[i].powerCheck()) return;
-
         let led = await s[i].findLed();
         let beeper = await s[i].findBeeper();
-        if (beeper != null)
-          beeper = document.getElementById(`beeper${beeper.id}`);
         let len = s[i].length();
         let resC = 50;
         tact_flag[i] = 0;
@@ -1962,7 +1957,10 @@ const DnDFlow = (props) => {
           if (element.data.specificElType === "tact") {
             tact_flag[i] = 1;
           }
-          if (element.data.specificElType === "led") {
+          if (
+            element.data.specificElType === "led" ||
+            element.data.specificElType === "beeper"
+          ) {
             tact_id.push(element.id);
           }
           if (element.data.specificElType === "res_100")
@@ -1988,6 +1986,21 @@ const DnDFlow = (props) => {
               }
             }
           }
+          if (element.data.specificElType === "beeper") {
+            if (tact_flag[i] === 1) {
+              if (beeper != null) {
+                // debugger;
+                for (let k = 0; k < beeper.length; k++) {
+                  if (tact_id.findIndex((e) => e === beeper[k].id) != -1) {
+                    beeper[k] = document.getElementById(
+                      `beeper${beeper[k].id}`
+                    );
+                    beeper[k].classList.remove("beeper");
+                  }
+                }
+              }
+            }
+          }
         }
         console.log(led, beeper);
       }
@@ -2005,8 +2018,7 @@ const DnDFlow = (props) => {
 
         let led = await s[i].findLed();
         let beeper = await s[i].findBeeper();
-        if (beeper != null)
-          beeper = document.getElementById(`beeper${beeper.id}`);
+
         let len = s[i].length();
         let resC = 50;
         tact_flag[i] = 0;
@@ -2016,7 +2028,10 @@ const DnDFlow = (props) => {
           if (element.data.specificElType === "tact") {
             tact_flag[i] = 1;
           }
-          if (element.data.specificElType === "led") {
+          if (
+            element.data.specificElType === "led" ||
+            element.data.specificElType === "beeper"
+          ) {
             tact_id.push(element.id);
           }
           if (element.data.specificElType === "res_100")
@@ -2038,6 +2053,22 @@ const DnDFlow = (props) => {
                     led[k] = document.getElementById(`led${led[k].id}`);
                     led[k].classList.add("led-light");
                     led[k].style.transform = `scale(${3 / (resC / 50)})`;
+                  }
+                }
+              }
+            }
+          }
+          if (element.data.specificElType === "beeper") {
+            if (tact_flag[i] === 1) {
+              if (beeper != null) {
+                // debugger;
+                for (let k = 0; k < beeper.length; k++) {
+                  if (tact_id.findIndex((e) => e === beeper[k].id) != -1) {
+                    beeper[k] = document.getElementById(
+                      `beeper${beeper[k].id}`
+                    );
+                    beeper[k].classList.add("beeper");
+                    beeper[k].style.transform = `scale(${3 / (resC / 50)})`;
                   }
                 }
               }
@@ -2166,6 +2197,8 @@ const DnDFlow = (props) => {
       index2Count = 0;
       index3Count = 0;
     }
+    if ((await circuitClosed) == false) {
+    }
     if (
       (await circuitClosed) ||
       (await circuitClosed) === 0 ||
@@ -2176,15 +2209,20 @@ const DnDFlow = (props) => {
         let len = s[i].length();
 
         let led = await s[i].findLed();
+        let beeper = await s[i].findBeeper();
         for (let j = 0; j < len; j++) {
           if (led != null) {
-            // debugger;
             for (let k = 0; k < led.length; k++) {
               led[k] = document.getElementById(`led${led[k].id}`);
               led[k].classList.remove("led-light");
             }
           }
-          console.log("noooooooo", e);
+          if (beeper != null) {
+            for (let k = 0; k < beeper.length; k++) {
+              beeper[k] = document.getElementById(`beeper${beeper[k].id}`);
+              beeper[k].classList.remove("beeper");
+            }
+          }
         }
       }
     }
@@ -2402,92 +2440,89 @@ const DnDFlow = (props) => {
       case "simpleCircuit":
       case "seriesCircuit":
       case "parallelCircuit":
+      case "resistorCircuit":
       case "freedomCircuit":
+        //delete
+
         try {
+          let cur_cord = await current_node_cord(event);
           node_cor.map(async (e) => {
             //console.log("event XX",e.handle[3].x,event.path[1])
             ///console.log("eve###################",node_cor[0].handle, current_node_cord(event))
-            let cur_cord = await current_node_cord(event);
             if (e.id != node.id) {
               e.handle.map((cord) => {
-                cur_cord.map(async (current) => {
-                  console.log("event cord XX", cord.x, current.x);
-                  if (
-                    cord.x - current.x >= -10 &&
-                    cord.x - current.x <= 10 &&
-                    cord.y - current.y >= -10 &&
-                    cord.y - current.y <= 10
-                  ) {
-                    console.log(
-                      "eve%%%%%%%%",
-                      "source=",
-                      cord.id,
-                      e.id,
-                      "target",
-                      current.id,
-                      node.id
-                    );
-                    let params = {
-                      source: e.id,
-                      sourceHandle: cord.id,
-                      target: node.id,
-                      targetHandle: current.id,
-                    };
+                try {
+                  cur_cord.map(async (current) => {
                     if (
-                      params.sourceHandle.includes("l") ||
-                      (params.source.includes("dndnode_0") &&
-                        (params.sourceHandle.includes("r2") ||
-                          params.sourceHandle.includes("r3")))
+                      cord.x - current.x >= -10 &&
+                      cord.x - current.x <= 10 &&
+                      cord.y - current.y >= -10 &&
+                      cord.y - current.y <= 10
                     ) {
-                      params = {
-                        source: node.id,
-                        sourceHandle: current.id,
-                        target: e.id,
-                        targetHandle: cord.id,
+                      let params = {
+                        source: e.id,
+                        sourceHandle: cord.id,
+                        target: node.id,
+                        targetHandle: current.id,
                       };
+                      if (
+                        params.sourceHandle.includes("l") ||
+                        (params.source.includes("dndnode_0") &&
+                          (params.sourceHandle.includes("r2") ||
+                            params.sourceHandle.includes("r3")))
+                      ) {
+                        params = {
+                          source: node.id,
+                          sourceHandle: current.id,
+                          target: e.id,
+                          targetHandle: cord.id,
+                        };
+                      }
+                      let exitFlag = 0;
+                      // switch (props.type) {
+                      //   case "simpleCircuit":
+                      //     nodes.map(async (ele) => {
+                      //       if (ele.id == e.id) {
+                      //         if (
+                      //           ele.data.specificElType === "power" &&
+                      //           node.data.specificElType === "tact"
+                      //         ) {
+                      //           exitFlag = 1;
+                      //         } else if (
+                      //           (ele.data.specificElType === "tact" &&
+                      //             (node.data.specificElType === "led" ||
+                      //               node.data.specificElType === "beeper") &&
+                      //             current.id == "") ||
+                      //           ((ele.data.specificElType === "led" ||
+                      //             ele.data.specificElType === "beeper") &&
+                      //             node.data.specificElType === "tact")
+                      //         ) {
+                      //           exitFlag = 1;
+                      //         } else if (
+                      //           ele.data.specificElType === "power" &&
+                      //           (node.data.specificElType === "led" ||
+                      //             node.data.specificElType === "beeper") &&
+                      //           current.id == "r"
+                      //         ) {
+                      //           exitFlag = 1;
+                      //         } else exitFlag = 0;
+                      //       }
+                      //     });
+                      //     break;
+                      // }
+                      //if (exitFlag === 0) return;
+                      await onConnect(params);
+                      return;
                     }
-                    let exitFlag = 0;
-                    switch (props.type) {
-                      case "simpleCircuit":
-                        nodes.map(async (ele) => {
-                          if (ele.id == e.id) {
-                            if (
-                              ele.data.specificElType === "power" &&
-                              node.data.specificElType === "tact"
-                            ) {
-                              exitFlag = 1;
-                            } else if (
-                              (ele.data.specificElType === "tact" &&
-                                (node.data.specificElType === "led" ||
-                                  node.data.specificElType === "beeper") &&
-                                current.id == "") ||
-                              ((ele.data.specificElType === "led" ||
-                                ele.data.specificElType === "beeper") &&
-                                node.data.specificElType === "tact")
-                            ) {
-                              exitFlag = 1;
-                            } else if (
-                              ele.data.specificElType === "power" &&
-                              (node.data.specificElType === "led" ||
-                                node.data.specificElType === "beeper") &&
-                              current.id == "r"
-                            ) {
-                              exitFlag = 1;
-                            } else exitFlag = 0;
-                          }
-                        });
-                        break;
-                    }
-                    //if (exitFlag === 0) return;
-                    await onConnect(params);
-                    return;
-                  }
-                });
+                  });
+                } catch (e) {}
                 //   console.log(cord.x-cur_cord.x,"ele")
               });
             }
           });
         } catch (e) {}
+        console.log("elements", event.clientX, event.clientY);
+
         break;
       default:
         nodes.map(async (e) => {
@@ -8293,6 +8328,16 @@ const DnDFlow = (props) => {
           }
         });
     }
+    if (event.clientX <= 300) {
+      var index = await nodes.findIndex((e) => e.id === node.id);
+      if (index != -1) {
+        let ele = document.getElementById(node.data.specificElType);
+
+        ele.style.display = "";
+        toDeleteNode = node;
+        await setNodes(nodes.filter((n) => n.id !== node.id));
+      }
+    }
   };
 
   const onNodeClick = async (event, node) => {
@@ -8983,6 +9028,26 @@ const DnDFlow = (props) => {
     } else mouseDownChk = false;
   };
   const onNodeDragEnd = async (e, node) => {
+    if (e.clientX <= 300) {
+      if (toDeleteNode.data.specificElType === "led") {
+        sessionStorage.setItem(
+          "seriesCircuitLedCount",
+          JSON.parse(sessionStorage.getItem("seriesCircuitLedCount")) - 1
+        );
+      }
+      if (toDeleteNode.data.specificElType === "beeper") {
+        sessionStorage.setItem(
+          "seriesCircuitBeeperCount",
+          JSON.parse(sessionStorage.getItem("seriesCircuitBeeperCount")) - 1
+        );
+      }
+      if (toDeleteNode.data.specificElType === "junction") {
+        sessionStorage.setItem(
+          "junctionCount",
+          JSON.parse(sessionStorage.getItem("junctionCount")) - 1
+        );
+      }
+    }
     if (
       (await circuitClosed) ||
       (await circuitClosed) === 0 ||
@@ -8996,6 +9061,7 @@ const DnDFlow = (props) => {
     } else {
       for (let i = 0; i < s.length; i++) {
         let len = s[i].length();
+        let beeper = await s[i].findBeeper();
 
         let led = await s[i].findLed();
         for (let j = 0; j < len; j++) {
@@ -9006,7 +9072,14 @@ const DnDFlow = (props) => {
               led[k].classList.remove("led-light");
             }
           }
-          console.log("noooooooo", e);
+          if (beeper != null) {
+            for (let k = 0; k < beeper.length; k++) {
+              debugger;
+              beeper[k] = document.getElementById(`beeper${beeper[k].id}`);
+              debugger;
+              beeper[k].classList.remove("beeper");
+            }
+          }
         }
       }
 
@@ -9379,18 +9452,14 @@ const DnDFlow = (props) => {
       console.log(node_cor, "getCoords");
     } catch (e) {}
   };
+
   let tact_flag = [],
     tact_id = [];
+
   const trigger = async () => {
     //remove this
 
     for (let i = 0; i < s.length; i++) {
-      // s2[i] = new Stack();
-      // let len = s[i].length();
-      // for (let j = 0; j < len; j++) {
-      //   await s2[i].push(await s[i].peak());
-      //   await s[i].pop();
-      // }
       let len = s[i].length();
       if (!s[i].powerCheck()) {
         for (let j = 0; j < len; j++) {
@@ -9399,13 +9468,16 @@ const DnDFlow = (props) => {
             let ele = document.getElementById(`led${element.id}`);
             ele.classList.remove("led-light");
           }
+          if (element.data.specificElType === "beeper") {
+            let ele = document.getElementById(`beeper${element.id}`);
+            ele.classList.remove("beeper");
+          }
         }
         return;
       }
       let led = await s[i].findLed();
       let beeper = await s[i].findBeeper();
-      if (beeper != null)
-        beeper = document.getElementById(`beeper${beeper.id}`);
+
       let resC = 50;
       tact_flag[i] = 0;
       for (let j = 0; j < len; j++) {
@@ -9433,6 +9505,22 @@ const DnDFlow = (props) => {
                 console.log("led", ele.classList);
 
                 ele.classList.add("led-light");
+                ele.style.transform = `scale(${3 / (resC / 50)})`;
+              }
+            }
+          }
+        }
+        if (element.data.specificElType === "beeper" || tact) {
+          if (tact_flag[i] === 0) {
+            if (beeper != null) {
+              // debugger;
+              for (let k = 0; k < beeper.length; k++) {
+                let ele = document.getElementById(`beeper${beeper[k].id}`);
+
+                console.log("led", ele.classList);
+
+                ele.classList.add("beeper");
+
                 ele.style.transform = `scale(${3 / (resC / 50)})`;
               }
             }

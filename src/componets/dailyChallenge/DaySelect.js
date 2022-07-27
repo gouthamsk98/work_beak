@@ -1,4 +1,6 @@
 import React, { Component } from "react";
+import { Outlet, Link } from "react-router-dom";
+
 import Main from "../../componets/Main";
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
@@ -10,6 +12,8 @@ class DaySelect extends Component {
     };
   }
   render() {
+    sessionStorage.clear();
+
     const onClick = (e, val) => {
       console.log(val);
       this.setState({ value: val });
@@ -89,7 +93,7 @@ class DaySelect extends Component {
     };
     return (
       <>
-        <div>
+        {/* <div>
           <button onClick={(value) => onClick(value, "simpleCircuit")}>
             Simple Circuit
           </button>
@@ -120,10 +124,50 @@ class DaySelect extends Component {
           <button onClick={(value) => onClick(value, "capacitorCircuit")}>
             Capacitor Circuit
           </button>
+          <nav
+            style={{
+              borderBottom: "solid 1px",
+              paddingBottom: "1rem",
+            }}
+          >
+            
+          </nav>
         </div>
         <DndProvider backend={HTML5Backend}>
           {mainRender(this.state.value)}
-        </DndProvider>
+        </DndProvider> */}
+        <Link to="/simpleCircuit">simpleCircuit</Link> <br />
+        <br />
+        <br />
+        <Link to="/seriesCircuit">seriesCircuit</Link>
+        <br />
+        <br />
+        <br />
+        <Link to="/parallelCircuit">parallelCircuit</Link>
+        <br />
+        <br />
+        <br />
+        <Link to="/resistorCircuit">resistorCircuit</Link>
+        <br />
+        <br />
+        <br />
+        <Link to="/capacitorCircuit">capacitorCircuit</Link>
+        <br />
+        <br />
+        <br />
+        <Link to="/voltageDividerCircuit">voltageDividerCircuit</Link>
+        <br />
+        <br />
+        <br />
+        <Link to="/semi-conductorDiodeCircuit">semi-conductorDiodeCircuit</Link>
+        <br />
+        <br />
+        <br />
+        <Link to="/transistorCircuit">transistorCircuit</Link>
+        <br />
+        <br />
+        <br />
+        <Link to="/freedomCircuit">freedomCircuit</Link>
       </>
     );
   }

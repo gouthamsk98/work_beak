@@ -9,9 +9,20 @@ class DaySelect extends Component {
       value: "day0",
     };
   }
+
+  componentDidMount() {
+    let a = window.location.pathname;
+    let currentUrl = a.slice(1, a.length);
+    this.setState({ value: currentUrl });
+    window.addEventListener("popstate", (event) => {
+      this.setState({ value: "day0" });
+    });
+  }
   render() {
     const onClick = (e, val) => {
-      console.log(val);
+      // this.props.navigator, "byeeeeeeeeeeeeeee");
+      // navigator(url);
+      this.props.navigator(`${val}`);
       this.setState({ value: val });
     };
     const mainRender = (e) => {
@@ -87,39 +98,85 @@ class DaySelect extends Component {
           />
         );
     };
+    console.log(this.state.value, "hiihiihihihihihi");
     return (
       <>
         <div>
-          <button onClick={(value) => onClick(value, "simpleCircuit")}>
-            Simple Circuit
-          </button>
-          <button onClick={(value) => onClick(value, "seriesCircuit")}>
-            Series Circuit
-          </button>
-          <button onClick={(value) => onClick(value, "parallelCircuit")}>
-            Parallel Circuit
-          </button>
+          {this.state.value === "day0" ||
+          this.state.value === "" ||
+          this.state.value === "simpleCircuit" ? (
+            <button onClick={(value) => onClick(value, "simpleCircuit")}>
+              Simple Circuit
+            </button>
+          ) : null}
 
-          <button onClick={(value) => onClick(value, "voltageDividerCircuit")}>
-            Voltage Divider Circuit
-          </button>
-          <button
-            onClick={(value) => onClick(value, "semi-conductorDiodeCircuit")}
-          >
-            Semi-Conductor Diode Circuit
-          </button>
-          <button onClick={(value) => onClick(value, "transistorCircuit")}>
-            Transistor Circuit
-          </button>
-          <button onClick={(value) => onClick(value, "freedomCircuit")}>
-            Freedom Circuit
-          </button>
-          <button onClick={(value) => onClick(value, "resistorCircuit")}>
-            Resistor Circuit
-          </button>
-          <button onClick={(value) => onClick(value, "capacitorCircuit")}>
-            Capacitor Circuit
-          </button>
+          {this.state.value == "day0" ||
+          this.state.value === "" ||
+          this.state.value == "seriesCircuit" ? (
+            <button onClick={(value) => onClick(value, "seriesCircuit")}>
+              Series Circuit
+            </button>
+          ) : null}
+
+          {this.state.value === "day0" ||
+          this.state.value === "" ||
+          this.state.value === "parallelCircuit" ? (
+            <button onClick={(value) => onClick(value, "parallelCircuit")}>
+              Parallel Circuit
+            </button>
+          ) : null}
+
+          {this.state.value === "day0" ||
+          this.state.value === "" ||
+          this.state.value === "voltageDividerCircuit" ? (
+            <button
+              onClick={(value) => onClick(value, "voltageDividerCircuit")}
+            >
+              Voltage Divider Circuit
+            </button>
+          ) : null}
+
+          {this.state.value === "day0" ||
+          this.state.value === "" ||
+          this.state.value === "semi-conductorDiodeCircuit" ? (
+            <button
+              onClick={(value) => onClick(value, "semi-conductorDiodeCircuit")}
+            >
+              Semi-Conductor Diode Circuit
+            </button>
+          ) : null}
+
+          {this.state.value === "day0" ||
+          this.state.value === "" ||
+          this.state.value === "transistorCircuit" ? (
+            <button onClick={(value) => onClick(value, "transistorCircuit")}>
+              Transistor Circuit
+            </button>
+          ) : null}
+
+          {this.state.value === "day0" ||
+          this.state.value === "" ||
+          this.state.value === "freedomCircuit" ? (
+            <button onClick={(value) => onClick(value, "freedomCircuit")}>
+              Freedom Circuit
+            </button>
+          ) : null}
+
+          {this.state.value === "day0" ||
+          this.state.value === "" ||
+          this.state.value === "resistorCircuit" ? (
+            <button onClick={(value) => onClick(value, "resistorCircuit")}>
+              Resistor Circuit
+            </button>
+          ) : null}
+
+          {this.state.value === "day0" ||
+          this.state.value === "" ||
+          this.state.value === "capacitorCircuit" ? (
+            <button onClick={(value) => onClick(value, "capacitorCircuit")}>
+              Capacitor Circuit
+            </button>
+          ) : null}
         </div>
         <DndProvider backend={HTML5Backend}>
           {mainRender(this.state.value)}

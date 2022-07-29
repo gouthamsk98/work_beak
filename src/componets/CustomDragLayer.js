@@ -1,5 +1,5 @@
 import { useDragLayer } from "react-dnd";
-import renderImage from "./renderImageWithDots";
+import renderImage from "./renderImage";
 import ReactFlow, { State, Controls, Handle } from "react-flow-renderer";
 const layerStyles = {
   position: "fixed",
@@ -25,8 +25,8 @@ function getItemStyles(initialOffset, currentOffset, xOffset, yOffset, type) {
   else if (type == "res_100") Background = renderImage("res_100");
   else if (type == "res_250") Background = renderImage("res_250");
   else if (type == "transistor") Background = renderImage("transistor");
-  else if (type == "capacitor100") Background = renderImage("capacitor100");
-  else if (type == "capacitor1000") Background = renderImage("capacitor1000");
+  else if (type == "capacitor100") Background = renderImage("capasitor100");
+  else if (type == "capacitor1000") Background = renderImage("capasitor1000");
 
   if (!initialOffset || !currentOffset) {
     return {
@@ -37,15 +37,15 @@ function getItemStyles(initialOffset, currentOffset, xOffset, yOffset, type) {
 
   if (zoom != 1) zoom = zoom.zoom;
   //now edit
-  //zoom = 1;
+  zoom = 1;
   let height = 12,
     width = 11;
 
   let { x, y } = currentOffset;
   x = x - xOffset;
   y = y - yOffset;
-  if (type == "res_100" || type == "res_250") zoom = 2;
-  else zoom = 1;
+  // if (type == "res_100" || type == "res_250") zoom = 2;
+  // else zoom = 1;
   const transform = `translate(${x}px, ${y}px) scale(${zoom})`;
   return {
     backgroundImage: `url(${Background}) `,

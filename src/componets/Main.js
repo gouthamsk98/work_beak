@@ -128,6 +128,24 @@ class Stack {
       return true;
     return false;
   }
+  commonChk(s) {
+    let sAraay = [];
+    for (let j = 0; j < s.length; j++) {
+      sAraay.push(s[j]);
+    }
+
+    if (sAraay.length <= 1) return null;
+
+    let filters = sAraay[0].items.filter((value) =>
+      sAraay[1].items.includes(value)
+    );
+    let returnFilter = filters;
+    for (let i = 2; i < sAraay.length; i++) {
+      returnFilter = sAraay[i].items.filter((value) => filters.includes(value));
+    }
+
+    return returnFilter;
+  }
 }
 let s = [],
   s2 = [];
@@ -9053,6 +9071,7 @@ const DnDFlow = (props) => {
       (await circuitClosed) === 0 ||
       (await circuitClosed) === 1
     ) {
+      s = [];
       s[0] = new Stack();
       // setRes(1);
       await nodeStack(0);
@@ -9458,9 +9477,11 @@ const DnDFlow = (props) => {
 
   const trigger = async () => {
     //remove this
-
+    let resP = [];
+    let repeactChk;
     for (let i = 0; i < s.length; i++) {
       let len = s[i].length();
+      resP[i] = 0;
       if (!s[i].powerCheck()) {
         for (let j = 0; j < len; j++) {
           let element = await s[i].items[j];
@@ -9491,6 +9512,7 @@ const DnDFlow = (props) => {
         if (element.data.specificElType === "res_250")
           resC = (await resC) + 250;
       }
+      resP[i] = resC;
       await setRes(resC / 50);
       for (let j = 0; j < len; j++) {
         let element = await s[i].items[j];
@@ -9501,8 +9523,6 @@ const DnDFlow = (props) => {
               // debugger;
               for (let k = 0; k < led.length; k++) {
                 let ele = document.getElementById(`led${led[k].id}`);
-
-                console.log("led", ele.classList);
 
                 ele.classList.add("led-light");
                 ele.style.transform = `scale(${3 / (resC / 50)})`;
@@ -9527,8 +9547,27 @@ const DnDFlow = (props) => {
           }
         }
       }
-      console.log(led, beeper);
     }
+    let resT,
+      top = 1,
+      down = 0;
+    for (let i = 0; i < resP.length; i++) {
+      top *= resP[i];
+      down += resP[i];
+    }
+    resT = top / down;
+    let commonNode = await s[0].commonChk(s);
+    if (commonNode == null) return;
+    let filterLed = await commonNode.filter(
+      (e) => e.data.specificElType === "led"
+    );
+
+    for (let i = 0; i < filterLed.length; i++) {
+      let ele = document.getElementById(`led${filterLed[i].id}`);
+      ele.classList.add("led-light");
+      ele.style.transform = `scale(${3 / (resT / 50)})`;
+    }
+    debugger;
   };
   // var slider = document.getElementById("myRange");
   // var output = document.getElementById("demo");

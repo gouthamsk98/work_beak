@@ -94,13 +94,13 @@ export const CustomDragLayer = (props) => {
               <Handle
                 type="target"
                 position="left"
-                style={{ left: " -0.7vw", top: " 1.8vh" }}
+                style={{ left: " 0.39vw", top: " 5.7vh" }}
                 id="l"
               />
               <Handle
                 type="source"
                 position="right"
-                style={{ left: "11.5vw", top: " 2.2vh" }}
+                style={{ left: "10.3vw", top: " 5.7vh" }}
                 id="r"
               />
             </div>
@@ -122,13 +122,13 @@ export const CustomDragLayer = (props) => {
               <Handle
                 type="target"
                 position="left"
-                style={{ left: " 0.3vw", top: " 4.6vh" }}
+                style={{ left: " 0.3vw", top: " 5.7vh" }}
                 id="l"
               />
               <Handle
                 type="source"
                 position="right"
-                style={{ left: "10.5vw", top: " 5.2vh" }}
+                style={{ left: "10.3vw", top: " 5.7vh" }}
                 id="r"
               />
             </div>
@@ -143,13 +143,13 @@ export const CustomDragLayer = (props) => {
             <Handle
               type="target"
               position="left"
-              style={{ left: " 0.3vw", top: " 4.6vh" }}
+              style={{ left: " 0.3vw", top: " 5.65vh" }}
               id="l"
             />
             <Handle
               type="source"
               position="right"
-              style={{ left: "10.5vw", top: " 5.2vh" }}
+              style={{ left: "10.2vw", top: " 5.65vh" }}
               id="r"
             />
           </div>
@@ -169,49 +169,49 @@ export const CustomDragLayer = (props) => {
             <Handle
               type="target"
               position="left"
-              style={{ left: "2.5vw", top: " 3.99vh" }}
+              style={{ left: "2.3vw", top: " 4.4vh" }}
               id="l1"
             />
             <Handle
               type="target"
               position="left"
-              style={{ left: "2.5vw", top: " 5.79vh" }}
+              style={{ left: "2.3vw", top: " 5.79vh" }}
               id="l2"
             />
             <Handle
               type="target"
               position="left"
-              style={{ left: "2.5vw", top: " 7.5vh" }}
+              style={{ left: "2.3vw", top: " 7.5vh" }}
               id="l3"
             />
             <Handle
               type="target"
               position="left"
-              style={{ left: "2.5vw", top: " 9.3vh" }}
+              style={{ left: "2.3vw", top: " 9vh" }}
               id="l4"
             />
             <Handle
               type="source"
               position="right"
-              style={{ left: "9.28vw", top: " 3.99vh" }}
+              style={{ left: "8.4vw", top: " 4.4vh" }}
               id="r1"
             />
             <Handle
               type="source"
               position="right"
-              style={{ left: "9.28vw", top: " 5.79vh" }}
+              style={{ left: "8.4vw", top: " 5.79vh" }}
               id="r2"
             />
             <Handle
               type="source"
               position="right"
-              style={{ left: "9.28vw", top: " 7.5vh" }}
+              style={{ left: "8.4vw", top: " 7.5vh" }}
               id="r3"
             />
             <Handle
               type="source"
               position="right"
-              style={{ left: "9.28vw", top: " 9.3vh" }}
+              style={{ left: "8.4vw", top: " 9vh" }}
               id="r4"
             />
           </div>
@@ -225,19 +225,19 @@ export const CustomDragLayer = (props) => {
             <Handle
               type="source"
               position="left"
-              style={{ left: " -0.2vw", top: " 6.6vh" }}
+              style={{ left: " 0.3vw", top: " 5.8vh" }}
               id="l"
             />
             <Handle
               type="target"
               position="right"
-              style={{ left: "11.3vw", top: " 4.1vh" }}
+              style={{ left: "10.3vw", top: " 3.4vh" }}
               id="r1"
             />
             <Handle
               type="target"
               position="right"
-              style={{ left: "11.3vw", top: " 9.9vh" }}
+              style={{ left: "10.3vw", top: " 8.2vh" }}
               id="r2"
             />
           </div>
@@ -257,13 +257,13 @@ export const CustomDragLayer = (props) => {
             <Handle
               type="source"
               position="bottom"
-              style={{ left: 90, top: 35 }}
+              style={{ left: "0.3vw", top: "5.6vh" }}
               id="d"
             />
             <Handle
               type="source"
               position="right"
-              style={{ left: 140, top: 20 }}
+              style={{ left: "10.3vw", top: "5.6vh" }}
               id="r"
             />
           </div>
@@ -283,13 +283,13 @@ export const CustomDragLayer = (props) => {
             <Handle
               type="target"
               position="left"
-              style={{ left: " 0.3vw", top: " 4.6vh" }}
+              style={{ left: " 0.2vw", top: " 5.7vh" }}
               id="l"
             />
             <Handle
               type="source"
               position="right"
-              style={{ left: "10.5vw", top: " 5.2vh" }}
+              style={{ left: "10.3vw", top: " 5.7vh" }}
               id="r"
             />
           </div>
@@ -309,13 +309,13 @@ export const CustomDragLayer = (props) => {
             <Handle
               type="target"
               position="left"
-              style={{ left: " 0.3vw", top: " 4.6vh" }}
+              style={{ left: " 0.4vw", top: " 5.7vh" }}
               id="l"
             />
             <Handle
               type="source"
               position="right"
-              style={{ left: "10.5vw", top: " 5.2vh" }}
+              style={{ left: "10.2vw", top: " 5.7vh" }}
               id="r"
             />
           </div>
@@ -329,13 +329,13 @@ export const CustomDragLayer = (props) => {
             <Handle
               type="target"
               position="left"
-              style={{ left: " 0.3vw", top: " 4.6vh" }}
+              style={{ left: " 0.3vw", top: " 5.65vh" }}
               id="l"
             />
             <Handle
               type="source"
               position="right"
-              style={{ left: "10.5vw", top: " 5.2vh" }}
+              style={{ left: "10.2vw", top: " 5.65vh" }}
               id="r"
             />
           </div>
@@ -355,19 +355,19 @@ export const CustomDragLayer = (props) => {
             <Handle
               type="target"
               position="left"
-              style={{ left: " 0.4vw", top: " 6.7vh" }}
+              style={{ left: " 0.4vw", top: " 6.4vh" }}
               id="l"
             />
             <Handle
               type="target"
               position="right"
-              style={{ left: "10.1vw", top: " 5.7vh" }}
+              style={{ left: "10.1vw", top: " 5vh" }}
               id="r.t"
             />
             <Handle
               type="source"
               position="right"
-              style={{ left: "10.1vw", top: " 8.5vh" }}
+              style={{ left: "10.1vw", top: " 7.8vh" }}
               id="r"
             />
           </div>
@@ -387,13 +387,13 @@ export const CustomDragLayer = (props) => {
             <Handle
               type="target"
               position="left"
-              style={{ left: " 0.3vw", top: " 4.6vh" }}
+              style={{ left: " 0.3vw", top: " 5.7vh" }}
               id="l"
             />
             <Handle
               type="source"
               position="right"
-              style={{ left: "10.5vw", top: " 5.2vh" }}
+              style={{ left: "10.3vw", top: " 5.7vh" }}
               id="r"
             />
           </div>
@@ -413,13 +413,13 @@ export const CustomDragLayer = (props) => {
             <Handle
               type="target"
               position="left"
-              style={{ left: " 0.3vw", top: " 4.6vh" }}
+              style={{ left: " 0.3vw", top: " 5.8vh" }}
               id="l"
             />
             <Handle
               type="source"
               position="right"
-              style={{ left: "10.5vw", top: " 5.2vh" }}
+              style={{ left: "10.5vw", top: " 5.8vh" }}
               id="r"
             />
           </div>

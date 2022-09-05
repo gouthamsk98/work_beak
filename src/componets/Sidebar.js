@@ -360,34 +360,34 @@ export default (props) => {
                   };
                 }
                 let exitFlag = 0;
-                switch (props.send.type) {
-                  case "simpleCircuit":
-                    nodes.map(async (ele) => {
-                      if (ele.id == e.id) {
-                        if (
-                          ele.data.specificElType === "power" &&
-                          nodeType === "tact"
-                        ) {
-                          exitFlag = 1;
-                        } else if (
-                          (ele.data.specificElType === "tact" &&
-                            (nodeType === "led" || nodeType === "beeper")) ||
-                          ((ele.data.specificElType === "led" ||
-                            ele.data.specificElType === "beeper") &&
-                            nodeType === "tact")
-                        ) {
-                          exitFlag = 1;
-                        } else if (
-                          ele.data.specificElType === "power" &&
-                          (nodeType === "led" || nodeType === "beeper") &&
-                          current.id == "r"
-                        ) {
-                          exitFlag = 1;
-                        } else exitFlag = 0;
-                      }
-                    });
-                    break;
-                }
+                // switch (props.send.type) {
+                //   case "simpleCircuit":
+                //     nodes.map(async (ele) => {
+                //       if (ele.id == e.id) {
+                //         if (
+                //           ele.data.specificElType === "power" &&
+                //           nodeType === "tact"
+                //         ) {
+                //           exitFlag = 1;
+                //         } else if (
+                //           (ele.data.specificElType === "tact" &&
+                //             (nodeType === "led" || nodeType === "beeper")) ||
+                //           ((ele.data.specificElType === "led" ||
+                //             ele.data.specificElType === "beeper") &&
+                //             nodeType === "tact")
+                //         ) {
+                //           exitFlag = 1;
+                //         } else if (
+                //           ele.data.specificElType === "power" &&
+                //           (nodeType === "led" || nodeType === "beeper") &&
+                //           current.id == "r"
+                //         ) {
+                //           exitFlag = 1;
+                //         } else exitFlag = 0;
+                //       }
+                //     });
+                //     break;
+                // }
                 //if (exitFlag === 0) return;
                 sessionStorage.setItem(
                   "application/beak/connect",
@@ -14122,12 +14122,21 @@ export default (props) => {
       var ctx = c.getContext("2d");
 
       if (flagI != -1) {
+        if (
+          props.send.type != "simpleCircuit" &&
+          props.send.type != "parallelCircuit" &&
+          props.send.type != "seriesCircuit" &&
+          props.send.type != "seriesCresistorCircuitircuit" &&
+          props.send.type != "freedomCircuit"
+        ) {
+          flagI = flagI[0];
+        }
         let mx = 0,
           my = 0;
         // flagI.x = flagI.x - 350;
         // flagI.y = flagI.y - 90;
         ctx.beginPath();
-        ctx.moveTo(flagI.x - 350, flagI.y - 90);
+        ctx.moveTo(flagI.x + 50, flagI.y + 10);
 
         if (event.clientX == 0 || event.clientY == 0) return;
         let cx = Math.abs(event.clientX - (flagI.x + xOffset)) / 2;
@@ -14140,8 +14149,8 @@ export default (props) => {
         ctx.quadraticCurveTo(
           cx,
           cy,
-          event.clientX - 410,
-          event.clientY - 125 + 13 - screenOffsetY
+          event.clientX + 60,
+          event.clientY + 25 + 13 - screenOffsetY
         );
         ctx.lineWidth = 4;
         ctx.strokeStyle = " #09B8A7";

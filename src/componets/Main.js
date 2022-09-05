@@ -2144,7 +2144,6 @@ const DnDFlow = (props) => {
   };
 
   const onConnect = async (params, event) => {
-    console.log(params, event, "EVEEEEE");
     var index1 = await edge.findIndex(
       (e) =>
         e.source === params.source && e.sourceHandle === params.sourceHandle
@@ -2153,10 +2152,18 @@ const DnDFlow = (props) => {
       (e) =>
         e.target === params.target && e.targetHandle === params.targetHandle
     );
+    console.log(index1, edge, params, "EVEEEEE");
+
     switch (props.type) {
       default:
-        if (index1 != -1) return;
-        if (index2 != -1) return;
+        if (index1 != -1) {
+          debugger;
+          return;
+        }
+        if (index2 != -1) {
+          debugger;
+          return;
+        }
         await setEdges((eds) => addEdge(params, eds));
 
         return;
@@ -2340,15 +2347,15 @@ const DnDFlow = (props) => {
       switch (props.type) {
         case "freedomCircuit":
         case "simpleCircuit":
-          if (connect_line != null || connect_line != undefined) {
-            if (connect_line.source == null)
-              connect_line.source = `${newNode.id}`;
-            if (connect_line.target == null)
-              connect_line.target = `${newNode.id}`;
-            await onConnect(connect_line);
-          }
+        // if (connect_line != null || connect_line != undefined) {
+        //   if (connect_line.source == null)
+        //     connect_line.source = `${newNode.id}`;
+        //   if (connect_line.target == null)
+        //     connect_line.target = `${newNode.id}`;
+        //   await onConnect(connect_line);
+        // }
 
-          break;
+        // break;
         default:
           if (connect_line.index != -1) {
             let connect = {
@@ -2454,6 +2461,20 @@ const DnDFlow = (props) => {
   };
 
   const onNodeDrag = async (event, node) => {
+    if (event.clientX <= 100) {
+      if (node == undefined) return;
+      var index = await nodes.findIndex((e) => e.id === node.id);
+      if (index != -1) {
+        let ele = document.getElementById(node.data.specificElType);
+        ele.style.display = "";
+        toDeleteNode = node;
+        await setNodes(nodes.filter((n) => n.id !== node.id));
+        await setEdges(edges.filter((n) => n.target !== node.id));
+        await setEdges(edges.filter((n) => !n.id.includes(node.id)));
+        debugger;
+        return;
+      }
+    }
     switch (props.type) {
       case "simpleCircuit":
       case "seriesCircuit":
@@ -2464,10 +2485,12 @@ const DnDFlow = (props) => {
 
         try {
           let cur_cord = await current_node_cord(event);
+
           node_cor.map(async (e) => {
+            console.log(node_cor, e, "gskSSSSS");
             //console.log("event XX",e.handle[3].x,event.path[1])
             ///console.log("eve###################",node_cor[0].handle, current_node_cord(event))
-            if (e.id != node.id) {
+            if ((await e.id) != node.id) {
               e.handle.map((cord) => {
                 try {
                   cur_cord.map(async (current) => {
@@ -8346,16 +8369,6 @@ const DnDFlow = (props) => {
           }
         });
     }
-    if (event.clientX <= 300) {
-      var index = await nodes.findIndex((e) => e.id === node.id);
-      if (index != -1) {
-        let ele = document.getElementById(node.data.specificElType);
-
-        ele.style.display = "";
-        toDeleteNode = node;
-        await setNodes(nodes.filter((n) => n.id !== node.id));
-      }
-    }
   };
 
   const onNodeClick = async (event, node) => {
@@ -9046,7 +9059,7 @@ const DnDFlow = (props) => {
     } else mouseDownChk = false;
   };
   const onNodeDragEnd = async (e, node) => {
-    if (e.clientX <= 300) {
+    if (e.clientX <= 100) {
       if (toDeleteNode.data.specificElType === "led") {
         sessionStorage.setItem(
           "seriesCircuitLedCount",
